@@ -29,15 +29,11 @@ class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0;
 
   List<Widget> get _screens => [
-    const TokensScreen(),
     const ButtonsScreen(),
     const InputsScreen(),
     const DisplayScreen(),
     const DataTableScreen(),
-    const FeedbackScreen(),
     const NavigationScreen(),
-    const OverlaysScreen(),
-    const TemplatesScreen(),
   ];
 
   @override
@@ -91,10 +87,6 @@ class _HomeScreenState extends State<HomeScreen> {
             labelType: NavigationRailLabelType.all,
             destinations: const [
               NavigationRailDestination(
-                icon: Icon(LucideIcons.palette),
-                label: Text('Tokens'),
-              ),
-              NavigationRailDestination(
                 icon: Icon(LucideIcons.mousePointerClick),
                 label: Text('Buttons'),
               ),
@@ -111,20 +103,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 label: Text('Data Table'),
               ),
               NavigationRailDestination(
-                icon: Icon(LucideIcons.messageCircle),
-                label: Text('Feedback'),
-              ),
-              NavigationRailDestination(
                 icon: Icon(LucideIcons.navigation2),
                 label: Text('Navigation'),
-              ),
-              NavigationRailDestination(
-                icon: Icon(LucideIcons.layers),
-                label: Text('Overlays'),
-              ),
-              NavigationRailDestination(
-                icon: Icon(LucideIcons.layoutTemplate),
-                label: Text('Templates'),
               ),
             ],
           ),
