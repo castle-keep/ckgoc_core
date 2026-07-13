@@ -1,3 +1,12 @@
+## 0.1.1
+
+Fixed:
+- Updated GitHub repository and homepage URLs.
+- Updated installation instructions to use the published package from pub.dev.
+- Replaced outdated `showcase/` references with `example/`.
+- Improved README and package documentation.
+- Minor documentation and metadata improvements.
+
 ## 0.1.0
 
 - Release: initial package published as `0.1.0`.

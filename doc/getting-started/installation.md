@@ -2,17 +2,14 @@
 
 ## 1. Add the dependency
 
-In your app's `pubspec.yaml`:
+Add the released package from pub.dev to your app's `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  ckgoc_core:
-    git:
-      url: https://github.com/company/ckgoc_core.git
-      ref: main
+  ckgoc_core: ^0.1.1
 ```
 
-Or using a local path during development:
+Or, while developing locally, point to a path:
 
 ```yaml
 dependencies:
