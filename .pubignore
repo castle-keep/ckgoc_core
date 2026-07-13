@@ -1,0 +1,10 @@
+build/
+showcase/build/
+.dart_tool/
+.idea/
+*.iml
+
+test/
+golden/
+
+coverage/
