@@ -1,0 +1,34 @@
+analyzer:
+  exclude:
+    - "**.bottomsheets.dart"
+    - "**.dialogs.dart"
+    - "**.locator.dart"
+    - "**.locator.custom.dart"
+    - "**.router.dart"
+    - "**.logger.dart"
+    - "**.g.dart"
+    - "**.form.dart"
+    - "**.freezed.dart"
+    - "**.mocks.dart"
+    # - "**_test.dart"
+    - "**_helpers.dart"
+    - "**.md"
+  errors:
+    lines_longer_than_80_chars: error
+    invalid_annotation_target: ignore # recently added suggestion based on Freezed documentation to enable jsonSerializable annotation inside the freezed class
+
+linter:
+  rules:
+    public_member_api_docs: false
+    sort_constructors_first: true
+    annotate_overrides: true
+    always_use_package_imports: true
+    prefer_single_quotes: true
+    require_trailing_commas: true
+    unawaited_futures: true
+    prefer_const_constructors: true
+    always_put_required_named_parameters_first: true
+    unnecessary_overrides: true
+    combinators_ordering: true
+    no_leading_underscores_for_local_identifiers: true
+    use_super_parameters: true

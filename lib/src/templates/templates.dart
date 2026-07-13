@@ -1,0 +1,12 @@
+export 'auth/login_template.dart';
+export 'auth/register_template.dart';
+export 'auth/forgot_password_template.dart';
+export 'crud/list_template.dart';
+export 'crud/create_template.dart';
+export 'crud/edit_template.dart';
+export 'crud/detail_template.dart';
+export 'dashboard/dashboard_template.dart';
+export 'states/loading_template.dart';
+export 'states/error_template.dart';
+export 'states/empty_template.dart';
+export 'states/offline_template.dart';

@@ -1,0 +1,57 @@
+name: ckgoc_core
+description: "A Flutter design system package providing UI components, design tokens, and multi-brand themes (CastleKeep & SkyGo)."
+version: 0.1.0
+homepage: https://github.com/company/ckgoc_core
+repository: https://github.com/company/ckgoc_core
+
+platforms:
+  android:
+  ios:
+  web:
+  macos:
+  linux:
+  windows:
+
+environment:
+  sdk: ^3.9.2
+  flutter: ">=3.10.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  lucide_icons: ^0.257.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/images/
+    - assets/icons/
+
+  # Fonts — uncomment and add asset paths once font files are added.
+  # fonts:
+  #   - family: CKSans
+  #     fonts:
+  #       - asset: assets/fonts/castlekeep/CKSans-Regular.ttf
+  #       - asset: assets/fonts/castlekeep/CKSans-Medium.ttf
+  #         weight: 500
+  #       - asset: assets/fonts/castlekeep/CKSans-SemiBold.ttf
+  #         weight: 600
+  #       - asset: assets/fonts/castlekeep/CKSans-Bold.ttf
+  #         weight: 700
+  #   - family: SGSans
+  #     fonts:
+  #       - asset: assets/fonts/skygo/SGSans-Regular.ttf
+  #       - asset: assets/fonts/skygo/SGSans-Medium.ttf
+  #         weight: 500
+  #       - asset: assets/fonts/skygo/SGSans-SemiBold.ttf
+  #         weight: 600
+  #       - asset: assets/fonts/skygo/SGSans-Bold.ttf
+  #         weight: 700
+  #       - asset: assets/fonts/skygo/SGSans-ExtraBold.ttf
+  #         weight: 800
