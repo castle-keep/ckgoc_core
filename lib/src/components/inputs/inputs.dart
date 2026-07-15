@@ -1,3 +1,6 @@
+/// Input widgets exported by the components package.
+///
+/// Includes text fields, switches, radios, checkboxes and other form controls.
 export 'ckgoc_text_field.dart';
 export 'ckgoc_password_field.dart';
 export 'ckgoc_search_field.dart';

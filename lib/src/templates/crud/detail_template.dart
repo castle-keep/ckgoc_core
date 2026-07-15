@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
-// Record detail / view screen layout.
-// TODO: Implement layout. See docs/templates/ for specification.
+/// Record detail / view screen layout.
+///
+/// TODO: Implement layout. See docs/templates/ for specification.
 class DetailTemplate extends StatelessWidget {
   const DetailTemplate({
     required this.header,

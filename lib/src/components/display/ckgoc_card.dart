@@ -3,6 +3,7 @@ import 'package:lucide_icons/lucide_icons.dart';
 import 'package:ckgoc_core/src/themes/ckgoc_theme.dart';
 import 'package:ckgoc_core/src/components/component_enums.dart';
 
+/// Card component with optional media, action and variant styling.
 class CkgocCard extends StatelessWidget {
   const CkgocCard({
     required this.title,

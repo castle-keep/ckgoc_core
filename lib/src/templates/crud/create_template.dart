@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-// Create / new record screen layout.
 // TODO: Implement layout. See docs/templates/ for specification.
+/// Create / new record screen layout.
 class CreateTemplate extends StatelessWidget {
   const CreateTemplate({
     required this.form,

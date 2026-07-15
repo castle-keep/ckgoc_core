@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 @immutable
+/// Typography styles used across the design system.
 class CkgocTypography {
   const CkgocTypography({
     required this.display2xl,
@@ -71,7 +72,7 @@ class CkgocTypography {
     );
   }
 
-  // Applies [color] to every style in this typography set.
+  /// Applies [color] to every style in this typography set.
   CkgocTypography applyColor(Color color) {
     return CkgocTypography(
       display2xl: display2xl.copyWith(color: color),

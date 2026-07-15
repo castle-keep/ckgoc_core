@@ -4,7 +4,7 @@ import 'package:ckgoc_core/src/themes/ckgoc_brand.dart';
 import 'package:ckgoc_core/src/themes/ckgoc_theme.dart';
 import 'package:ckgoc_core/src/themes/ckgoc_theme_resolver.dart';
 
-// Root widget. Wraps your app to inject [CkgocThemeData] for the given brand.
+/// Root widget. Wraps your app to inject [CkgocThemeData] for the given brand.
 class CkgocApp extends StatelessWidget {
   const CkgocApp({
     required this.brand,
@@ -14,9 +14,10 @@ class CkgocApp extends StatelessWidget {
   });
   final CkgocBrand brand;
 
-  // Override system brightness. Leave null to follow the device setting.
+  /// Override system brightness. Leave null to follow the device setting.
   final Brightness? brightness;
 
+  /// The widget subtree wrapped by `CkgocApp`.
   final Widget child;
 
   @override

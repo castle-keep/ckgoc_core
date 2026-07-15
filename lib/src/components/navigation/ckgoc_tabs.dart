@@ -32,6 +32,7 @@ Widget _tabLabel(CkgocTab tab, Color fg, CkgocThemeData theme) {
   );
 }
 
+/// Tabs component supporting line, pill and card variants.
 class CkgocTabs extends StatefulWidget {
   const CkgocTabs({
     required this.tabs,

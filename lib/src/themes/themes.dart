@@ -1,4 +1,4 @@
-// Themes barrel — exports all theme-related classes.
+/// Themes barrel — exports all theme-related classes.
 library;
 
 export 'ckgoc_brand.dart';

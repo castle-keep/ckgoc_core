@@ -1,3 +1,4 @@
+/// Opacity scale used across the design system.
 class CkgocOpacity {
   const CkgocOpacity({
     this.disabled = 0.38,
@@ -36,5 +37,6 @@ class CkgocOpacity {
     );
   }
 
+  /// Default opacity scale values.
   static const CkgocOpacity defaults = CkgocOpacity();
 }

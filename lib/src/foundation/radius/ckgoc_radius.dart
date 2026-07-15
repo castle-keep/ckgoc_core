@@ -1,3 +1,4 @@
+/// Corner radius tokens used across the design system.
 class CkgocRadius {
   const CkgocRadius({
     this.none = 0,
@@ -44,5 +45,6 @@ class CkgocRadius {
     );
   }
 
+  /// Default radius token values.
   static const CkgocRadius defaults = CkgocRadius();
 }

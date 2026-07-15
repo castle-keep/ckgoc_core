@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:ckgoc_core/src/themes/ckgoc_theme.dart';
 
-// Time picker trigger + field.
-//
-// TODO: Implement widget body.
+/// Time picker trigger and display field.
+///
+/// Tappable control that opens a time picker and reports the selection via
+/// [onChanged]. Use [label] to provide an accessible label for the control.
 class CkgocTimePicker extends StatelessWidget {
   const CkgocTimePicker({this.value, this.onChanged, this.label, super.key});
   final TimeOfDay? value;

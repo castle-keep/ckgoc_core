@@ -11,7 +11,7 @@ import 'package:flutter/material.dart';
 
 import 'package:ckgoc_core/src/themes/ckgoc_brand.dart';
 
-// Immutable theme data for a brand + brightness combination.
+/// Immutable theme data for a brand + brightness combination.
 @immutable
 class CkgocThemeData {
   const CkgocThemeData({
@@ -27,7 +27,8 @@ class CkgocThemeData {
     required this.opacity,
     required this.breakpoints,
   });
-  // Which brand this theme belongs to.
+
+  /// Which brand this theme belongs to.
   final CkgocBrand brand;
   final Brightness brightness;
 
@@ -41,11 +42,15 @@ class CkgocThemeData {
   final CkgocOpacity opacity;
   final CkgocBreakpoints breakpoints;
 
+  /// True when the theme's brightness is `Brightness.dark`.
   bool get isDark => brightness == Brightness.dark;
+
+  /// True when the theme's brightness is `Brightness.light`.
   bool get isLight => brightness == Brightness.light;
 
-  // Returns a copy of this theme with the given fields overridden.
-  // Useful for one-off overrides in a widget subtree.
+  /// Returns a copy of this theme with the given fields overridden.
+  ///
+  /// Useful for one-off overrides in a widget subtree.
   CkgocThemeData copyWith({
     CkgocBrand? brand,
     Brightness? brightness,

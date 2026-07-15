@@ -6,6 +6,7 @@ import 'package:ckgoc_core/src/themes/ckgoc_theme.dart';
 import 'package:ckgoc_core/src/components/buttons/ckgoc_button.dart';
 import 'package:ckgoc_core/src/components/component_enums.dart';
 
+/// Dialog widget with convenience `show` and `showDestructive` helpers.
 class CkgocDialog extends StatelessWidget {
   const CkgocDialog.destructive({
     required this.content,

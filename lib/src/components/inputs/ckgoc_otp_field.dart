@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:ckgoc_core/src/themes/ckgoc_theme.dart';
 
+/// One-time-password (OTP) input represented as multiple fixed-width cells.
+///
+/// Captures numeric input and notifies via [onChanged] and [onCompleted]
+/// when the configured [length] is reached.
 class CkgocOtpField extends StatefulWidget {
   const CkgocOtpField({
     this.length = 6,

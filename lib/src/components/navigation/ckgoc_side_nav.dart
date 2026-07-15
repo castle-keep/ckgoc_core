@@ -3,6 +3,10 @@ import 'package:lucide_icons/lucide_icons.dart';
 import 'package:ckgoc_core/src/themes/ckgoc_theme.dart';
 import 'package:ckgoc_core/src/components/component_enums.dart';
 
+/// Collapsible side navigation used by app shells.
+///
+/// Displays sections and items with optional badges, branding, and collapse
+/// behavior.
 class CkgocSideNav extends StatelessWidget {
   const CkgocSideNav({
     required this.sections,

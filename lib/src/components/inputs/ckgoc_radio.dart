@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ckgoc_core/src/themes/ckgoc_theme.dart';
 import 'package:ckgoc_core/src/components/component_enums.dart';
 
+/// Radio control with optional label and variant coloring.
 class CkgocRadio<T> extends StatelessWidget {
   const CkgocRadio({
     required this.value,

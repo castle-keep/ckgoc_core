@@ -4,6 +4,11 @@ import 'package:ckgoc_core/src/themes/ckgoc_theme.dart';
 // Single-selection dropdown. Stateless — value controlled externally.
 //
 // TODO: Implement widget body.
+/// Single-selection dropdown.
+///
+/// A lightweight, externally-controlled dropdown that renders [items] and
+/// reports selection changes through [onChanged]. [label] and [errorText]
+/// provide contextual UI hints for forms.
 class CkgocDropdown<T> extends StatelessWidget {
   const CkgocDropdown({
     required this.items,

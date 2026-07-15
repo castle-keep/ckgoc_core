@@ -4,6 +4,9 @@ import 'package:ckgoc_core/src/foundation/foundation.dart';
 import 'package:ckgoc_core/src/themes/ckgoc_theme.dart';
 import 'package:ckgoc_core/src/components/component_enums.dart';
 
+/// App bar used across the design system.
+///
+/// Provides consistent spacing, typography and colors for app headers.
 class CkgocAppBar extends StatelessWidget implements PreferredSizeWidget {
   const CkgocAppBar({
     this.title,

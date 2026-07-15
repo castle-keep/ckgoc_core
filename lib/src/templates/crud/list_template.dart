@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
-// List / index screen layout.
-// TODO: Implement layout. See docs/templates/ for specification.
+/// List / index screen layout.
+///
+/// TODO: Implement layout. See docs/templates/ for specification.
 class ListTemplate extends StatelessWidget {
   const ListTemplate({
     required this.list,

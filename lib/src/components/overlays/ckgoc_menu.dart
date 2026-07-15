@@ -5,6 +5,9 @@ import 'package:ckgoc_core/src/components/component_enums.dart';
 // Contextual dropdown menu.
 //
 // TODO: Implement widget body.
+/// Contextual dropdown menu anchored to a trigger widget.
+///
+/// TODO: implement the actionable menu body.
 class CkgocMenu extends StatelessWidget {
   const CkgocMenu({required this.trigger, required this.items, super.key});
   final Widget trigger;

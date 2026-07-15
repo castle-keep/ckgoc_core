@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
-// Full-screen error state layout.
-// TODO: Implement layout. See docs/templates/ for specification.
+/// Full-screen error state layout.
+///
+/// TODO: Implement layout. See docs/templates/ for specification.
 class ErrorTemplate extends StatelessWidget {
   const ErrorTemplate({
     required this.title,

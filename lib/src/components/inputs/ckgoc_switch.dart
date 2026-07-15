@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ckgoc_core/src/themes/ckgoc_theme.dart';
 import 'package:ckgoc_core/src/components/component_enums.dart';
 
+/// Switch control with label support and variant coloring.
 class CkgocSwitch extends StatelessWidget {
   const CkgocSwitch({
     required this.value,

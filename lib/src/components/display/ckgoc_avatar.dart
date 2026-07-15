@@ -34,6 +34,7 @@ double _fontSize(AvatarSize s, CkgocSpacing spacing) =>
 double _dotSize(AvatarSize s, CkgocSpacing spacing) =>
     (_dp(s, spacing) * 0.25).clamp(spacing.sm, spacing.s12).roundToDouble();
 
+/// Circular (or square) avatar widget supporting initials, images and status.
 class CkgocAvatar extends StatelessWidget {
   const CkgocAvatar({
     this.initials,
@@ -143,6 +144,7 @@ class CkgocAvatar extends StatelessWidget {
   }
 }
 
+/// Compact avatar group that shows overlapping `CkgocAvatar` instances.
 class CkgocAvatarGroup extends StatelessWidget {
   const CkgocAvatarGroup({
     required this.avatars,

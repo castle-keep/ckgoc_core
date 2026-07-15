@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+/// Motion durations and curves used by the design system.
 class CkgocMotion {
   const CkgocMotion({
     this.instant = const Duration(milliseconds: 50),
@@ -46,6 +47,7 @@ class CkgocMotion {
     );
   }
 
+  /// Default motion values.
   static const CkgocMotion defaults = CkgocMotion();
 }
 

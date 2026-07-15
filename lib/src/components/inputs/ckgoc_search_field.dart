@@ -3,6 +3,7 @@ import 'package:lucide_icons/lucide_icons.dart';
 import 'package:ckgoc_core/src/themes/ckgoc_theme.dart';
 import 'package:ckgoc_core/src/components/inputs/ckgoc_text_field.dart';
 
+/// Search field wrapper providing a leading search icon and optional clear.
 class CkgocSearchField extends StatelessWidget {
   const CkgocSearchField({
     this.controller,

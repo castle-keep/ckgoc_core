@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:ckgoc_core/src/themes/ckgoc_theme.dart';
 import 'package:ckgoc_core/src/components/component_enums.dart';
 
+/// Generic surface container that applies design-system background, borders,
+/// and padding according to `ContainerVariant`.
 class CkgocContainer extends StatelessWidget {
   const CkgocContainer({
     required this.child,

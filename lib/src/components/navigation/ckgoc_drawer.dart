@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:ckgoc_core/src/themes/ckgoc_theme.dart';
 
+/// Simple item model used by `CkgocDrawer`.
 class CkgocDrawerItem {
   const CkgocDrawerItem({required this.icon, required this.label});
   final IconData icon;
   final String label;
 }
 
+/// App drawer that displays app name, optional user info and navigation items.
 class CkgocDrawer extends StatelessWidget {
   const CkgocDrawer({
     required this.appName,

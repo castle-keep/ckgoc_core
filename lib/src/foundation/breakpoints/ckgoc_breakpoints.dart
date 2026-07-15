@@ -1,3 +1,4 @@
+/// Breakpoint definitions for responsive layouts.
 class CkgocBreakpoints {
   const CkgocBreakpoints({
     this.xs = 0,
@@ -14,5 +15,6 @@ class CkgocBreakpoints {
   final double xl;
   final double x2l;
 
+  /// Default breakpoint values.
   static const CkgocBreakpoints defaults = CkgocBreakpoints();
 }

@@ -4,6 +4,11 @@ import 'package:ckgoc_core/src/themes/ckgoc_theme.dart';
 // Date picker trigger + field.
 //
 // TODO: Implement widget body.
+/// Date picker trigger and display field.
+///
+/// Presents a tappable field that invokes a date picker and reports the
+/// selected date via [onChanged]. If [label] is provided it will be used as
+/// an accessible label for the control.
 class CkgocDatePicker extends StatelessWidget {
   const CkgocDatePicker({
     this.value,

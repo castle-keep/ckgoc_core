@@ -1,4 +1,4 @@
-// Elevation tokens.
+/// Elevation tokens.
 class CkgocElevation {
   const CkgocElevation({
     this.none = 0,
@@ -15,21 +15,21 @@ class CkgocElevation {
   final double lg;
   final double xl;
 
-  // Named aliases
+  /// Named aliases
 
-  // Flat surface: backgrounds, canvas.
+  /// Flat surface: backgrounds, canvas.
   double get surface => none;
 
-  // Slight lift: list items, rows.
+  /// Slight lift: list items, rows.
   double get card => sm;
 
-  // Floating: dropdowns, menus.
+  /// Floating: dropdowns, menus.
   double get dropdown => md;
 
-  // Modals, drawers.
+  /// Modals, drawers.
   double get modal => lg;
 
-  // Highest: toasts, alerts.
+  /// Highest: toasts, alerts.
   double get toast => xl;
 
   CkgocElevation copyWith({
@@ -50,5 +50,6 @@ class CkgocElevation {
     );
   }
 
+  /// Default elevation tokens.
   static const CkgocElevation defaults = CkgocElevation();
 }

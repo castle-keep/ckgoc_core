@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-// Semantic color tokens.
+/// Semantic color tokens.
 @immutable
 class CkgocColors {
   const CkgocColors({
@@ -134,7 +134,7 @@ class CkgocColors {
   final Color tagProEnd;
   final Color onTagPro;
 
-  // Creates a copy of this [CkgocColors] with the given fields replaced.
+  /// Creates a copy of this [CkgocColors] with the given fields replaced.
   CkgocColors copyWith({
     Color? primary,
     Color? primaryHover,

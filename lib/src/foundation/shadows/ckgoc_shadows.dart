@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+/// Shadow definitions used by the design system for different elevations.
 class CkgocShadows {
   const CkgocShadows({
     required this.none,
@@ -14,7 +15,7 @@ class CkgocShadows {
   final List<BoxShadow> lg;
   final List<BoxShadow> xl;
 
-  // Light-mode shadow set.
+  /// Light-mode shadow set.
   static CkgocShadows light() => const CkgocShadows(
     none: [],
     sm: [
@@ -34,7 +35,7 @@ class CkgocShadows {
     ],
   );
 
-  // Dark-mode shadow set.
+  /// Dark-mode shadow set.
   static CkgocShadows dark() => const CkgocShadows(
     none: [],
     sm: [

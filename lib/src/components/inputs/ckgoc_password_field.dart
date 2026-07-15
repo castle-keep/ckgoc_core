@@ -3,6 +3,7 @@ import 'package:lucide_icons/lucide_icons.dart';
 import 'package:ckgoc_core/src/themes/ckgoc_theme.dart';
 import 'package:ckgoc_core/src/components/inputs/ckgoc_text_field.dart';
 
+/// Password field built on top of `CkgocTextField` with toggleable visibility.
 class CkgocPasswordField extends StatefulWidget {
   const CkgocPasswordField({
     this.controller,

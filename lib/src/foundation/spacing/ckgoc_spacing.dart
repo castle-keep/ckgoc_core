@@ -1,3 +1,4 @@
+/// Spacing scale used throughout the design system.
 class CkgocSpacing {
   const CkgocSpacing({
     this.none = 0,
@@ -68,5 +69,6 @@ class CkgocSpacing {
     );
   }
 
+  /// Default spacing scale values.
   static const CkgocSpacing defaults = CkgocSpacing();
 }

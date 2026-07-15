@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
-// Edit record screen layout.
-// TODO: Implement layout. See docs/templates/ for specification.
+/// Edit record screen layout.
+///
+/// TODO: Implement layout. See docs/templates/ for specification.
 class EditTemplate extends StatelessWidget {
   const EditTemplate({
     required this.form,

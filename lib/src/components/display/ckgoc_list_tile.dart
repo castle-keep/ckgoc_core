@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:ckgoc_core/src/themes/ckgoc_theme.dart';
 
-// TODO: Implement widget body.
+/// List tile used by list views and selection lists.
+///
+/// TODO: implement rendering body.
 class CkgocListTile extends StatelessWidget {
   const CkgocListTile({
     required this.title,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ckgoc_core/src/themes/ckgoc_theme.dart';
 
+/// Compact icon button with consistent spacing and disabled handling.
 class CkgocIconButton extends StatelessWidget {
   const CkgocIconButton({
     required this.icon,

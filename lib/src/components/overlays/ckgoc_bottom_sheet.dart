@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ckgoc_core/src/themes/ckgoc_theme.dart';
 
+/// Bottom sheet that follows the design system surface and spacing.
 class CkgocBottomSheet extends StatelessWidget {
   const CkgocBottomSheet({
     required this.children,

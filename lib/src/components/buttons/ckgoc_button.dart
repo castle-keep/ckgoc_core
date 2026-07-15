@@ -4,6 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:ckgoc_core/src/themes/ckgoc_theme.dart';
 import 'package:ckgoc_core/src/components/component_enums.dart';
 
+/// Button widget that follows the design system tokens and variants.
+///
+/// Supports `variant`, `size`, loading state, disabled state and full-width mode.
 class CkgocButton extends StatelessWidget {
   const CkgocButton({
     this.variant = ButtonVariant.primary,
