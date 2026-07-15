@@ -57,6 +57,16 @@ final o = theme.opacity;
 final e = theme.elevation;
 final sh = theme.shadows;
 ```
+
+## Brand scaffolding CLI
+
+There is a small Dart CLI that scaffolds a new brand (colors, typography, light/dark theme files) and registers it in the theme resolver. Run it from the repository root:
+
+```bash
+dart run bin/ckgoc.dart add brand "Acme"
+```
+
+Generated files live under `lib/src/themes/brands/<brand>/`.
 # Components Quick Guide
 
 A concise reference for the package components. For full API details see the source in `lib/src/components/` and examples in the `showcase/` app.
@@ -342,8 +352,3 @@ Helper
 - Use `context.ckgocTheme` to access `colors`, `typography`, `spacing`, `radius`, `motion`, `shadows`, `opacity`, `elevation`.
 
 ---
-
-If you want, I can now:
-- generate a full prop-reference page for a single component (table) with every parameter explained and examples, or
-- produce per-component Markdown files under `doc/components/` with full API tables.
-Which do you prefer I do next?

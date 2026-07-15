@@ -1,7 +1,7 @@
 name: showcase
 description: "Showcase app — living documentation for the Company UI design system."
 publish_to: 'none'
-version: 1.0.0+1
+version: 0.1.2
 
 environment:
   sdk: ^3.9.2

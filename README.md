@@ -63,6 +63,16 @@ Select `CompanyBrand.castleKeep` or `CompanyBrand.skyGo` when creating
 `CkgocApp`. To add a new brand, create a brand folder under
 `lib/src/themes/brands/` and register it in the theme resolver.
 
+Brand scaffolding CLI
+---------------------
+This repository includes a small CLI to scaffold a new brand and auto-register it in the theme resolver. It creates a folder under `lib/src/themes/brands/<brand>/` with placeholder color, typography, and light/dark theme files, then updates the enum and resolver.
+
+Run from the project root:
+
+```bash
+dart run bin/ckgoc.dart add brand "Acme"
+```
+
 Components and usage
 --------------------
 The library exposes themed components such as `CkgocButton`,

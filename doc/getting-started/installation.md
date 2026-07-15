@@ -6,7 +6,7 @@ Add the released package from pub.dev to your app's `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  ckgoc_core: ^0.1.1
+  ckgoc_core: ^0.1.2
 ```
 
 Or, while developing locally, point to a path:
