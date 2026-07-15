@@ -85,11 +85,21 @@ class _CompanyDataTableState extends State<CkgocDataTable> {
   final ScrollController _hScrollController = ScrollController();
   final ScrollController _vScrollController = ScrollController();
 
+  String? _internalSortColumnKey;
+  bool _internalSortAscending = true;
+  List<Map<String, dynamic>>? _sortedRows;
+
   @override
   void initState() {
     super.initState();
     _searchController = TextEditingController(text: widget.searchQuery ?? '');
     _syncEditControllers();
+
+    if (widget.onSortChanged == null) {
+      _internalSortColumnKey = widget.sortColumnKey;
+      _internalSortAscending = widget.sortAscending;
+      _applyInternalSort();
+    }
   }
 
   @override
@@ -102,6 +112,19 @@ class _CompanyDataTableState extends State<CkgocDataTable> {
     if (widget.rows != oldWidget.rows ||
         widget.editableColumns != oldWidget.editableColumns) {
       _syncEditControllers();
+    }
+    // Keep internal sort state in sync when uncontrolled.
+    if (widget.onSortChanged == null) {
+      if (widget.sortColumnKey != oldWidget.sortColumnKey ||
+          widget.sortAscending != oldWidget.sortAscending ||
+          widget.rows != oldWidget.rows) {
+        _internalSortColumnKey = widget.sortColumnKey;
+        _internalSortAscending = widget.sortAscending;
+        _applyInternalSort();
+      }
+    } else {
+      // if parent takes control, drop internal cache
+      _sortedRows = null;
     }
   }
 
@@ -146,27 +169,55 @@ class _CompanyDataTableState extends State<CkgocDataTable> {
     }
   }
 
+  List<Map<String, dynamic>> get _displayRows =>
+      widget.onSortChanged != null ? widget.rows : (_sortedRows ?? widget.rows);
+
+  void _applyInternalSort() {
+    final key = _internalSortColumnKey;
+    if (key == null) {
+      _sortedRows = List<Map<String, dynamic>>.from(widget.rows);
+      return;
+    }
+    _sortedRows = List<Map<String, dynamic>>.from(widget.rows);
+    _sortedRows!.sort((a, b) {
+      final va = a[key];
+      final vb = b[key];
+      if (va == null && vb == null) return 0;
+      if (va == null) return 1;
+      if (vb == null) return -1;
+      int cmp = 0;
+      if (va is num && vb is num) {
+        cmp = va.compareTo(vb);
+      } else if (va is DateTime && vb is DateTime) {
+        cmp = va.compareTo(vb);
+      } else {
+        cmp = va.toString().compareTo(vb.toString());
+      }
+      return _internalSortAscending ? cmp : -cmp;
+    });
+  }
+
   List<CkgocTableColumn> get _visibleColumns =>
       widget.columns.where((c) => !c.hidden).toList();
 
   bool get _hasSelection => widget.selectionMode != TableSelectionMode.none;
 
   bool get _allSelected =>
-      widget.rows.isNotEmpty &&
-      widget.rows.every((r) => widget.selectedKeys.contains(r[widget.rowKey]));
+      _displayRows.isNotEmpty &&
+      _displayRows.every((r) => widget.selectedKeys.contains(r[widget.rowKey]));
 
   bool get _someSelected =>
-      widget.rows.any((r) => widget.selectedKeys.contains(r[widget.rowKey]));
+      _displayRows.any((r) => widget.selectedKeys.contains(r[widget.rowKey]));
 
   void _toggleAll() {
     if (widget.onSelectionChanged == null) return;
     if (_allSelected) {
       final next = Set<dynamic>.from(widget.selectedKeys)
-        ..removeAll(widget.rows.map((r) => r[widget.rowKey]));
+        ..removeAll(_displayRows.map((r) => r[widget.rowKey]));
       widget.onSelectionChanged!(next);
     } else {
       final next = Set<dynamic>.from(widget.selectedKeys)
-        ..addAll(widget.rows.map((r) => r[widget.rowKey]));
+        ..addAll(_displayRows.map((r) => r[widget.rowKey]));
       widget.onSelectionChanged!(next);
     }
   }
@@ -189,12 +240,25 @@ class _CompanyDataTableState extends State<CkgocDataTable> {
   }
 
   void _handleSort(String key) {
-    if (widget.onSortChanged == null) return;
-    if (widget.sortColumnKey == key) {
-      widget.onSortChanged!(key, !widget.sortAscending);
-    } else {
-      widget.onSortChanged!(key, true);
+    if (widget.onSortChanged != null) {
+      if (widget.sortColumnKey == key) {
+        widget.onSortChanged!(key, !widget.sortAscending);
+      } else {
+        widget.onSortChanged!(key, true);
+      }
+      return;
     }
+
+    // uncontrolled: sort internally
+    setState(() {
+      if (_internalSortColumnKey == key) {
+        _internalSortAscending = !_internalSortAscending;
+      } else {
+        _internalSortColumnKey = key;
+        _internalSortAscending = true;
+      }
+      _applyInternalSort();
+    });
   }
 
   @override
@@ -256,7 +320,7 @@ class _CompanyDataTableState extends State<CkgocDataTable> {
                     )
                   : widget.errorMessage != null
                   ? ErrorState(message: widget.errorMessage!)
-                  : widget.rows.isEmpty
+                  : _displayRows.isEmpty
                   ? (widget.emptyWidget ??
                         EmptyState(
                           message:
@@ -265,40 +329,44 @@ class _CompanyDataTableState extends State<CkgocDataTable> {
                   : Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        for (final row in widget.rows)
+                        for (var i = 0; i < _displayRows.length; i++)
                           DataRowWidget(
-                            row: row,
+                            row: _displayRows[i],
                             rowKey: widget.rowKey,
                             columns: _visibleColumns,
                             widths: widths,
                             hasSelection: _hasSelection,
                             selectionWidth: s.x2l,
                             isSelected: widget.selectedKeys.contains(
-                              row[widget.rowKey],
+                              _displayRows[i][widget.rowKey],
                             ),
-                            isHovered: _hoveredKey == row[widget.rowKey],
+                            isHovered:
+                                _hoveredKey == _displayRows[i][widget.rowKey],
+                            isStriped: i.isOdd,
                             rowHeight: s.x2l,
                             onTap: () {
-                              _toggleRow(row[widget.rowKey]);
-                              widget.onRowTap?.call(row);
+                              _toggleRow(_displayRows[i][widget.rowKey]);
+                              widget.onRowTap?.call(_displayRows[i]);
                             },
                             onHoverChanged: (v) => setState(
-                              () => _hoveredKey = v ? row[widget.rowKey] : null,
+                              () => _hoveredKey = v
+                                  ? _displayRows[i][widget.rowKey]
+                                  : null,
                             ),
                             editControllers: widget.editableColumns == null
                                 ? const {}
                                 : {
                                     for (final col in widget.editableColumns!)
                                       if (_editControllers.containsKey(
-                                        '${row[widget.rowKey]}_$col',
+                                        '${_displayRows[i][widget.rowKey]}_$col',
                                       ))
                                         col:
-                                            _editControllers['${row[widget.rowKey]}_$col']!,
+                                            _editControllers['${_displayRows[i][widget.rowKey]}_$col']!,
                                   },
                             onCellChanged: widget.onCellChanged == null
                                 ? null
                                 : (colKey, value) => widget.onCellChanged!(
-                                    row[widget.rowKey],
+                                    _displayRows[i][widget.rowKey],
                                     colKey,
                                     value,
                                   ),
@@ -348,8 +416,12 @@ class _CompanyDataTableState extends State<CkgocDataTable> {
                     allSelected: _allSelected,
                     someSelected: _someSelected,
                     onToggleAll: _toggleAll,
-                    sortColumnKey: widget.sortColumnKey,
-                    sortAscending: widget.sortAscending,
+                    sortColumnKey: widget.onSortChanged != null
+                        ? widget.sortColumnKey
+                        : _internalSortColumnKey,
+                    sortAscending: widget.onSortChanged != null
+                        ? widget.sortAscending
+                        : _internalSortAscending,
                     onSort: _handleSort,
                     rowHeight: s.s40,
                   ),

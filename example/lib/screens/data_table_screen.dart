@@ -101,6 +101,7 @@ class _DataTableScreenState extends State<DataTableScreen> {
       key: 'name',
       label: 'Name',
       type: CkgocColumnType.avatarText,
+      sortable: true,
       flex: 2,
     ),
     const CkgocTableColumn(key: 'email', label: 'Email', flex: 2),

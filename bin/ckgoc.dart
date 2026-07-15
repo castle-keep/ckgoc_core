@@ -327,13 +327,13 @@ final class ${pascal}DarkTheme {
 
   // Add displayName case
   final switchRegex = RegExp(
-    r"String get displayName => switch \(this\) \{([\s\S]*?)\};",
+    r'String get displayName => switch \(this\) \{([\s\S]*?)\};',
   );
   final switchMatch = switchRegex.firstMatch(brandContent);
   if (switchMatch != null) {
     final inside = switchMatch.group(1)!;
     final caseLine = "    CkgocBrand.$enumValue => '$pascal',\n";
-    if (!inside.contains("CkgocBrand.$enumValue")) {
+    if (!inside.contains('CkgocBrand.$enumValue')) {
       final newInside = inside.trimRight() + '\n' + caseLine;
       brandContent = brandContent.replaceFirst(inside, newInside);
       print('Added displayName mapping for $enumValue');

@@ -47,31 +47,36 @@ class TableFooter extends StatelessWidget {
     return LayoutBuilder(
       builder: (context, constraints) {
         final isNarrow = constraints.maxWidth < bp.md;
-
         if (isNarrow) {
-          return Padding(
-            padding: EdgeInsets.symmetric(horizontal: s.md, vertical: s.sm),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                countText,
-                if (pagination != null) ...[
-                  SizedBox(height: s.sm),
-                  Center(child: pagination),
+          return Container(
+            color: c.surfaceVariant,
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: s.md, vertical: s.sm),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  countText,
+                  if (pagination != null) ...[
+                    SizedBox(height: s.sm),
+                    Center(child: pagination),
+                  ],
                 ],
-              ],
+              ),
             ),
           );
         }
 
-        return Padding(
-          padding: EdgeInsets.symmetric(horizontal: s.md, vertical: s.sm),
-          child: Wrap(
-            alignment: WrapAlignment.spaceBetween,
-            runSpacing: s.sm,
-            crossAxisAlignment: WrapCrossAlignment.center,
-            children: [countText, if (pagination != null) pagination],
+        return Container(
+          color: c.surfaceVariant,
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: s.md, vertical: s.sm),
+            child: Wrap(
+              alignment: WrapAlignment.spaceBetween,
+              runSpacing: s.sm,
+              crossAxisAlignment: WrapCrossAlignment.center,
+              children: [countText, if (pagination != null) pagination],
+            ),
           ),
         );
       },

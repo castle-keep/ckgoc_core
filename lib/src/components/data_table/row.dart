@@ -14,6 +14,7 @@ class DataRowWidget extends StatelessWidget {
     required this.rowHeight,
     required this.onTap,
     required this.onHoverChanged,
+    this.isStriped = false,
     this.editControllers = const {},
     this.onCellChanged,
     super.key,
@@ -26,6 +27,7 @@ class DataRowWidget extends StatelessWidget {
   final double selectionWidth;
   final bool isSelected;
   final bool isHovered;
+  final bool isStriped;
   final double rowHeight;
   final VoidCallback onTap;
   final ValueChanged<bool> onHoverChanged;
@@ -44,6 +46,8 @@ class DataRowWidget extends StatelessWidget {
       rowBg = c.primary.withValues(alpha: o.subtle);
     } else if (isHovered) {
       rowBg = c.primary.withValues(alpha: o.hover);
+    } else if (isStriped) {
+      rowBg = c.background;
     }
 
     return MouseRegion(

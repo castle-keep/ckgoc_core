@@ -40,7 +40,7 @@ class ColumnHeaderRow extends StatelessWidget {
     final t = theme.typography;
 
     return Container(
-      color: c.surface,
+      color: c.surfaceVariant,
       height: rowHeight,
       child: Row(
         children: [
