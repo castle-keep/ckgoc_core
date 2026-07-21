@@ -1,3 +1,14 @@
+## 0.2.0
+
+Added:
+- Brand scaffolding CLI via `bin/ckgoc.dart` for generating brand configuration and setup artifacts.
+- Data table sorting support, including updated table behavior and documentation.
+- Bundled Inter font assets and brand logo assets for CastleKeep and SkyGo.
+
+Changed:
+- Expanded public API and getting-started documentation, including brand scaffolding, data table usage, installation, and quick guide updates.
+- Updated README and package configuration to support the new CLI/assets release.
+
 ## 0.1.1
 
 Fixed:
