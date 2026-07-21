@@ -220,6 +220,12 @@ class CkgocSideNavSection {
   final List<CkgocSideNavItem> items;
 }
 
+/// Variant selections for brand icon helpers.
+///
+/// Use this when requesting a specific `master`, `logo` (symbol), or
+/// `name` variant from packaged brand assets.
+enum BrandIconVariant { master, logo, name }
+
 // Menu
 
 /// Model for items in a menu.

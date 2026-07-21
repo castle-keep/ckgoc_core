@@ -21,6 +21,7 @@ dependencies:
   flutter:
     sdk: flutter
   lucide_icons: ^0.257.0
+  flutter_svg: ^2.0.0
 
 dev_dependencies:
   flutter_test:
@@ -31,8 +32,24 @@ flutter:
   uses-material-design: true
 
   assets:
-    - assets/images/
-    - assets/icons/
+    - assets/images/logos/ck/
+    - assets/images/logos/skygo/
+
+  fonts:
+    - family: Inter
+      fonts:
+        - asset: assets/fonts/Inter/static/Inter_24pt-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/Inter/static/Inter_24pt-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Inter/static/Inter_24pt-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/Inter/static/Inter_24pt-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/Inter/static/Inter_24pt-ExtraBold.ttf
+          weight: 800
+        - asset: assets/fonts/Inter/static/Inter_24pt-Italic.ttf
+          style: italic
 
   # Fonts — uncomment and add asset paths once font files are added.
   # fonts:

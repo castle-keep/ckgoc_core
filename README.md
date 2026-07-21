@@ -34,6 +34,99 @@ Then run:
 flutter pub get
 ```
 
+Dependencies
+------------
+This package depends on the Flutter SDK and a small set of runtime
+dependencies, including `flutter_svg` for SVG rendering and `lucide_icons` for
+icons. Consumers only need to add `ckgoc_core` to their `pubspec.yaml`; the
+package will bring the required runtime dependencies.
+
+Logo asset naming
+------------
+Logo assets are stored under `assets/images/logos/<brand>/` and should follow
+the project's canonical naming convention: lowercase, underscore-separated,
+and include a type segment. Use these names for clarity:
+
+- `brand_master_logo` — combined mark (both symbol and name)
+- `brand_logo` — symbol-only (logo)
+- `brand_name` — name-only (wordmark)
+
+When there are multiple variants include an index suffix, for example:
+
+- `assets/images/logos/castlekeep/castlekeep_master_logo_1.png`
+- `assets/images/logos/castlekeep/castlekeep_logo_1.svg`
+- `assets/images/logos/castlekeep/castlekeep_name_logo_1.png`
+
+To normalize existing files, run the provided script from the project root:
+
+```bash
+./tools/normalize_logos.sh
+```
+
+Using packaged logos
+--------------------
+The package exports stable asset identifiers via `BrandIcon`. Use these
+constants and Flutter's asset loaders to render specific variants from the
+package. Examples:
+
+Image (PNG) from the package:
+
+```dart
+import 'package:ckgoc_core/ckgoc_core.dart';
+
+Image.asset(
+  BrandIcon.castlekeepName,
+  package: 'ckgoc_core',
+  width: 160,
+  fit: BoxFit.contain,
+);
+```
+
+SVG from the package (rendered by the package using `flutter_svg`):
+
+```dart
+import 'package:ckgoc_core/ckgoc_core.dart';
+
+// The package will render SVG assets where appropriate; you can also use
+// SvgPicture.asset directly if you prefer.
+Widget svg = BrandIcon.brandLogoWidget(context, CkgocBrand.skyGo, size: 160);
+```
+
+Side-nav specific logo injection:
+
+```dart
+CkgocSideNav(
+  sections: sections,
+  selectedIndex: selected,
+  onItemSelected: onSelect,
+  brandName: '',
+  logo: Image.asset(
+    BrandIcon.castlekeepSymbol,
+    package: 'ckgoc_core',
+    width: 32,
+    height: 32,
+  ),
+)
+```
+
+Package helpers
+---------------
+`BrandIcon.brandLogoWidget(context, brand)` provides a packaged default
+widget for the active brand. The package also exposes `BrandIcon` constants
+for every bundled variant and a convenience `assetLogoWidget` helper that
+renders raster assets and uses `flutter_svg` to render SVG assets.
+
+Next steps
+----------
+- Remove non-image files from `assets/images/logos/` (e.g. `.DS_Store`, `.eps`) before publishing.
+- Optionally add `flutter_svg` to your app to render SVG variants directly.
+- Consider using `CkgocSideNav.logo` to inject a specific logo variant when you need precise control.
+If you want a higher-level API, we added `BrandIconWidget` that accepts `brand` + `variant` enums and handles raster/SVG selection and rendering.
+
+The script will rename files and directories under `assets/images/logos` to
+the canonical underscore format and attempt to use `git mv` when run inside a
+git repository.
+
 Quick start
 -----------
 Wrap your app with `CkgocApp` to inject the design system:

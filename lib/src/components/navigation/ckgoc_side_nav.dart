@@ -1,5 +1,8 @@
+import 'package:ckgoc_core/src/components/components.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
+import 'package:ckgoc_core/src/themes/brand_icon.dart';
+import 'package:ckgoc_core/src/themes/ckgoc_brand.dart';
 import 'package:ckgoc_core/src/themes/ckgoc_theme.dart';
 import 'package:ckgoc_core/src/components/component_enums.dart';
 
@@ -38,6 +41,9 @@ class CkgocSideNav extends StatelessWidget {
     final typography = theme.typography;
     final radius = theme.radius;
     final motion = theme.motion;
+    final resolvedBrandName = brandName?.trim();
+    final hasBrandName =
+        resolvedBrandName != null && resolvedBrandName.isNotEmpty;
 
     final opacity = theme.opacity;
 
@@ -253,29 +259,44 @@ class CkgocSideNav extends StatelessWidget {
                 if (logo != null)
                   SizedBox(width: spacing.xl, height: spacing.xl, child: logo!)
                 else
-                  Container(
-                    width: spacing.xl,
-                    height: spacing.xl,
-                    decoration: BoxDecoration(
-                      color: isBrand
-                          ? colors.onPrimary.withValues(alpha: opacity.subtle)
-                          : colors.surfaceVariant,
-                      borderRadius: BorderRadius.circular(radius.base),
-                    ),
-                    child: Icon(
-                      LucideIcons.layers,
-                      size: spacing.md,
-                      color: isBrand ? colors.onPrimary : colors.primary,
+                  CkgocContainer(
+                    padding: EdgeInsets.zero,
+                    child: SizedBox(
+                      width: spacing.xl,
+                      height: spacing.xl,
+                      child: Builder(
+                        builder: (ctx) {
+                          String? assetPath;
+                          switch (theme.brand) {
+                            case CkgocBrand.castleKeep:
+                              assetPath = BrandIcon.castlekeepLogo2Svg;
+                              break;
+                            case CkgocBrand.skyGo:
+                              assetPath = BrandIcon.skygoLogo2;
+                              break;
+                          }
+
+                          return BrandIcon.brandLogoWidget(
+                            ctx,
+                            theme.brand,
+                            size: spacing.xl,
+                            assetPath: assetPath,
+                          );
+                        },
+                      ),
                     ),
                   ),
                 SizedBox(width: spacing.sm),
-                Expanded(
-                  child: Text(
-                    brandName ?? 'Company',
-                    style: typography.labelLg.copyWith(color: fg),
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
+                if (hasBrandName)
+                  Expanded(
+                    child: Text(
+                      resolvedBrandName,
+                      style: typography.labelLg.copyWith(color: fg),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  )
+                else
+                  const Spacer(),
                 if (onToggleCollapse != null)
                   InkWell(
                     onTap: onToggleCollapse,

@@ -12,7 +12,6 @@ dependencies:
   cupertino_icons: ^1.0.8
   ckgoc_core:
     path: ../
-  lucide_icons: ^0.257.0
 
 dev_dependencies:
   flutter_test:

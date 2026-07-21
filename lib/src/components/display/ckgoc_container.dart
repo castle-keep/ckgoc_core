@@ -35,6 +35,7 @@ class CkgocContainer extends StatelessWidget {
     };
 
     return Container(
+      clipBehavior: Clip.hardEdge,
       decoration: BoxDecoration(
         color: bg,
         border: border,

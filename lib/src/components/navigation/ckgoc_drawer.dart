@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:lucide_icons/lucide_icons.dart';
 import 'package:ckgoc_core/src/themes/ckgoc_theme.dart';
+import 'package:ckgoc_core/src/themes/brand_icon.dart';
+import 'package:ckgoc_core/src/themes/ckgoc_brand.dart';
 
 /// Simple item model used by `CkgocDrawer`.
 class CkgocDrawerItem {
@@ -57,17 +58,27 @@ class CkgocDrawer extends StatelessWidget {
                 if (logo != null)
                   SizedBox.square(dimension: spacing.s40, child: logo!)
                 else
-                  Container(
-                    width: spacing.s40,
-                    height: spacing.s40,
-                    decoration: BoxDecoration(
-                      color: colors.onPrimary.withValues(alpha: 0.2),
-                      borderRadius: BorderRadius.circular(radius.md),
-                    ),
-                    child: Icon(
-                      LucideIcons.layers,
-                      size: spacing.s20,
-                      color: colors.onPrimary,
+                  SizedBox.square(
+                    dimension: spacing.s40,
+                    child: Builder(
+                      builder: (ctx) {
+                        String? assetPath;
+                        switch (theme.brand) {
+                          case CkgocBrand.castleKeep:
+                            assetPath = BrandIcon.castlekeepLogo2Svg;
+                            break;
+                          case CkgocBrand.skyGo:
+                            assetPath = BrandIcon.skygoLogo2;
+                            break;
+                        }
+
+                        return BrandIcon.brandLogoWidget(
+                          ctx,
+                          theme.brand,
+                          size: spacing.s40,
+                          assetPath: assetPath,
+                        );
+                      },
                     ),
                   ),
                 SizedBox(height: spacing.sm),

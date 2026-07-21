@@ -9,106 +9,105 @@ import 'package:ckgoc_core/src/foundation/foundation.dart';
 // [assets/fonts/skygo/]. Once added, set [_fontFamily] to 'SGSans' and
 // uncomment the fonts section in pubspec.yaml.
 abstract final class SkyGoTypography {
-  // TODO: set to 'SGSans' and add font assets under assets/fonts/skygo/
-  static const String? _fontFamily = null;
+  // Inter via google_fonts for consistent typography.
+  static TextStyle _interStyle({
+    required double size,
+    required FontWeight weight,
+    required double height,
+    required Color color,
+  }) {
+    return TextStyle(
+      fontFamily: 'Inter',
+      fontSize: size,
+      fontWeight: weight,
+      height: height,
+      color: color,
+    );
+  }
 
   static CkgocTypography scale({required Color defaultColor}) =>
       CkgocTypography(
-        display2xl: TextStyle(
-          fontFamily: _fontFamily,
-          fontSize: 32,
-          fontWeight: FontWeight.w700,
+        display2xl: _interStyle(
+          size: 32,
+          weight: FontWeight.w700,
           height: 40 / 32,
           color: defaultColor,
         ),
-        displayXl: TextStyle(
-          fontFamily: _fontFamily,
-          fontSize: 28,
-          fontWeight: FontWeight.w700,
+        displayXl: _interStyle(
+          size: 28,
+          weight: FontWeight.w700,
           height: 36 / 28,
           color: defaultColor,
         ),
-        displayLg: TextStyle(
-          fontFamily: _fontFamily,
-          fontSize: 24,
-          fontWeight: FontWeight.w700,
+        displayLg: _interStyle(
+          size: 24,
+          weight: FontWeight.w700,
           height: 32 / 24,
           color: defaultColor,
         ),
-        displayMd: TextStyle(
-          fontFamily: _fontFamily,
-          fontSize: 20,
-          fontWeight: FontWeight.w700,
+        displayMd: _interStyle(
+          size: 20,
+          weight: FontWeight.w700,
           height: 28 / 20,
           color: defaultColor,
         ),
-        displaySm: TextStyle(
-          fontFamily: _fontFamily,
-          fontSize: 18,
-          fontWeight: FontWeight.w500,
+        displaySm: _interStyle(
+          size: 18,
+          weight: FontWeight.w500,
           height: 24 / 18,
           color: defaultColor,
         ),
-        textXl: TextStyle(
-          fontFamily: _fontFamily,
-          fontSize: 20,
-          fontWeight: FontWeight.w400,
+        textXl: _interStyle(
+          size: 20,
+          weight: FontWeight.w400,
           height: 28 / 20,
           color: defaultColor,
         ),
-        textLg: TextStyle(
-          fontFamily: _fontFamily,
-          fontSize: 18,
-          fontWeight: FontWeight.w400,
+        textLg: _interStyle(
+          size: 18,
+          weight: FontWeight.w400,
           height: 24 / 18,
           color: defaultColor,
         ),
-        textMd: TextStyle(
-          fontFamily: _fontFamily,
-          fontSize: 16,
-          fontWeight: FontWeight.w400,
+        textMd: _interStyle(
+          size: 16,
+          weight: FontWeight.w400,
           height: 24 / 16,
           color: defaultColor,
         ),
-        textSm: TextStyle(
-          fontFamily: _fontFamily,
-          fontSize: 14,
-          fontWeight: FontWeight.w400,
+        textSm: _interStyle(
+          size: 14,
+          weight: FontWeight.w400,
           height: 20 / 14,
           color: defaultColor,
         ),
-        textXs: TextStyle(
-          fontFamily: _fontFamily,
-          fontSize: 12,
-          fontWeight: FontWeight.w400,
+        textXs: _interStyle(
+          size: 12,
+          weight: FontWeight.w400,
           height: 18 / 12,
           color: defaultColor,
         ),
-        labelXl: TextStyle(
-          fontFamily: _fontFamily,
-          fontSize: 18,
-          fontWeight: FontWeight.w500,
+        labelXl: _interStyle(
+          size: 18,
+          weight: FontWeight.w500,
           height: 28 / 18,
           color: defaultColor,
         ),
-        labelLg: TextStyle(
-          fontFamily: _fontFamily,
-          fontSize: 16,
-          fontWeight: FontWeight.w500,
+        labelLg: _interStyle(
+          size: 16,
+          weight: FontWeight.w500,
           height: 24 / 16,
           color: defaultColor,
         ),
-        labelMd: TextStyle(
-          fontFamily: _fontFamily,
-          fontSize: 14,
-          fontWeight: FontWeight.w500,
+        labelMd: _interStyle(
+          size: 14,
+          weight: FontWeight.w500,
           height: 20 / 14,
           color: defaultColor,
         ),
-        labelSm: TextStyle(
-          fontFamily: _fontFamily,
-          fontSize: 12,
-          fontWeight: FontWeight.w500,
+        labelSm: _interStyle(
+          size: 12,
+          weight: FontWeight.w500,
           height: 18 / 12,
           color: defaultColor,
         ),

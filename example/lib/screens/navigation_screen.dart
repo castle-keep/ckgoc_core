@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:lucide_icons/lucide_icons.dart';
 import 'package:ckgoc_core/ckgoc_core.dart';
 
 class NavigationScreen extends StatefulWidget {
@@ -148,6 +147,9 @@ class _NavigationScreenState extends State<NavigationScreen> {
             title: 'SIDE NAVIGATION — SURFACE',
             selected: _selectedSurface,
             collapsed: _collapsedSurface,
+            brandName: theme.brand == CkgocBrand.castleKeep
+                ? 'CastleKeep'
+                : 'SkyGo',
             onSelect: (i) => setState(() => _selectedSurface = i),
             onToggle: () =>
                 setState(() => _collapsedSurface = !_collapsedSurface),
@@ -160,7 +162,9 @@ class _NavigationScreenState extends State<NavigationScreen> {
             onSelect: (i) => setState(() => _selectedBrand = i),
             onToggle: () => setState(() => _collapsedBrand = !_collapsedBrand),
             style: SideNavStyle.brand,
-            brandName: 'Castlekeep',
+            brandName: theme.brand == CkgocBrand.castleKeep
+                ? 'CastleKeep'
+                : 'SkyGo',
           ),
           SizedBox(height: s.xl),
           ..._tabSections(context),
