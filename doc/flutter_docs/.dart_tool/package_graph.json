@@ -14,6 +14,13 @@
       "devDependencies": []
     },
     {
+      "name": "lucide_icons",
+      "version": "0.256.0",
+      "dependencies": [
+        "flutter"
+      ]
+    },
+    {
       "name": "ckgoc_core",
       "version": "0.2.0",
       "dependencies": [
@@ -48,13 +55,6 @@
         "vector_graphics",
         "vector_graphics_codec",
         "vector_graphics_compiler"
-      ]
-    },
-    {
-      "name": "lucide_icons",
-      "version": "0.257.0",
-      "dependencies": [
-        "flutter"
       ]
     },
     {
