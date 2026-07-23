@@ -32,6 +32,10 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0;
 
+  void _showMenuMessage(String message) {
+    CkgocSnackbar.show(context, message, variant: ToastVariant.info);
+  }
+
   List<Widget> get _screens => [
     const TokensScreen(),
     const ButtonsScreen(),
@@ -53,6 +57,32 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         title: const Text('Company UI Showcase'),
         actions: [
+          CkgocMenu(
+            trigger: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              child: Icon(
+                LucideIcons.moreVertical,
+                color: theme.colors.onSurface,
+              ),
+            ),
+            items: [
+              CkgocMenuItem(
+                label: 'Reset to Tokens',
+                icon: LucideIcons.home,
+                onTap: () => setState(() => _selectedIndex = 0),
+              ),
+              CkgocMenuItem(
+                label: 'Open Overlays',
+                icon: LucideIcons.layers,
+                onTap: () => setState(() => _selectedIndex = 7),
+              ),
+              CkgocMenuItem(
+                label: 'Templates (Coming soon)',
+                icon: LucideIcons.layoutTemplate,
+                onTap: () => _showMenuMessage('Templates is coming soon.'),
+              ),
+            ],
+          ),
           // Brand switcher
           DropdownButton<CkgocBrand>(
             value: widget.currentBrand,

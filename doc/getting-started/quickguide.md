@@ -291,8 +291,13 @@ Wraps `showDialog` for brand-consistent dialogs. Provide `title`, `content`, `ac
 ### CkgocBottomSheet
 Wraps `showModalBottomSheet` styling and maxHeight options.
 
-### CkgocMenu / CkgocPopover / CkgocTooltip
-- Contextual overlays with `items`, `onSelected`, and placement options.
+### CkgocMenu
+- Contextual dropdown overlay anchored to a `trigger` widget.
+- Supply `items: List<CkgocMenuItem>` and attach per-item `onTap` handlers.
+- Use `destructive: true` for high-risk actions like delete.
+
+### CkgocPopover / CkgocTooltip
+- Anchored helper overlays for richer contextual content and lightweight hints.
 
 ---
 

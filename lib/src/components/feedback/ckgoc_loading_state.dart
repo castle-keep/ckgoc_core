@@ -1,9 +1,14 @@
-import 'package:ckgoc_core/src/components/feedback/ckgoc_loader.dart';
+import 'package:ckgoc_core/ckgoc_core.dart';
 import 'package:flutter/material.dart';
-import 'package:ckgoc_core/src/themes/ckgoc_theme.dart';
 
 class CkgocLoadingState extends StatelessWidget {
-  const CkgocLoadingState({this.message, this.loaderSize, super.key});
+  const CkgocLoadingState({
+    this.message,
+    this.loaderSize,
+    this.variant = LoaderType.circular,
+    super.key,
+  });
+  final LoaderType variant;
   final String? message;
   // Defaults to spacing.s40 (40dp) — const required for default param value
   final double? loaderSize;
@@ -20,7 +25,7 @@ class CkgocLoadingState extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          CkgocLoader(size: resolvedSize),
+          CkgocLoader(size: resolvedSize, type: variant),
           if (message != null) ...[
             SizedBox(height: spacing.md),
             Text(

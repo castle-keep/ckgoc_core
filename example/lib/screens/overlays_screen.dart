@@ -11,6 +11,10 @@ class OverlaysScreen extends StatefulWidget {
 class _OverlaysScreenState extends State<OverlaysScreen> {
   int _drawerSelected = 0;
 
+  void _showMenuMessage(String message) {
+    CkgocSnackbar.show(context, message, variant: ToastVariant.info);
+  }
+
   static const _drawerItems = [
     CkgocDrawerItem(icon: LucideIcons.layoutDashboard, label: 'Dashboard'),
     CkgocDrawerItem(icon: LucideIcons.barChart2, label: 'Analytics'),
@@ -96,6 +100,39 @@ class _OverlaysScreenState extends State<OverlaysScreen> {
               ],
             ),
             child: const Text('Open Bottom Sheet'),
+          ),
+          SizedBox(height: s.xl),
+          _label('MENU', theme),
+          CkgocMenu(
+            trigger: CkgocButton(
+              variant: ButtonVariant.outline,
+              onPressed: null,
+              child: const Text('Open Menu'),
+            ),
+            items: [
+              CkgocMenuItem(
+                label: 'Refresh data',
+                icon: LucideIcons.refreshCw,
+                onTap: () => _showMenuMessage('Refresh started.'),
+              ),
+              CkgocMenuItem(
+                label: 'Pin dashboard',
+                icon: LucideIcons.pin,
+                onTap: () => _showMenuMessage('Dashboard pinned.'),
+              ),
+              CkgocMenuItem(
+                label: 'Export CSV (Coming soon)',
+                icon: LucideIcons.download,
+                onTap: () => _showMenuMessage('Export CSV is coming soon.'),
+              ),
+              CkgocMenuItem(
+                label: 'Delete view',
+                icon: LucideIcons.trash2,
+                destructive: true,
+                onTap: () =>
+                    _showMenuMessage('Delete view requires confirmation.'),
+              ),
+            ],
           ),
           SizedBox(height: s.xl),
           _label('DRAWER', theme),

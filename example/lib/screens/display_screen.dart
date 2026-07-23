@@ -442,16 +442,23 @@ class _DisplayScreenState extends State<DisplayScreen> {
               CkgocTimelineEvent(
                 title: 'Order Shipped',
                 timestamp: 'Apr 7 · 2 Nov',
+                status: StepStatus.completed,
               ),
               CkgocTimelineEvent(
                 title: 'Payment OK',
                 timestamp: 'Apr 6 · 2:30 PM',
+                status: StepStatus.inProgress,
               ),
               CkgocTimelineEvent(
                 title: 'Order Placed',
                 timestamp: 'Apr 5 · 10:00 AM',
+                status: StepStatus.pending,
               ),
-              CkgocTimelineEvent(title: 'Delivery', timestamp: 'Apr 9 (est)'),
+              CkgocTimelineEvent(
+                title: 'Delivery',
+                timestamp: 'Apr 9 (est)',
+                status: StepStatus.pending,
+              ),
             ],
           ),
           SizedBox(height: s.xl),
@@ -460,10 +467,26 @@ class _DisplayScreenState extends State<DisplayScreen> {
           const CkgocTimeline(
             orientation: CkgocTimelineOrientation.horizontal,
             events: [
-              CkgocTimelineEvent(title: 'Order Placed', timestamp: 'Apr 5'),
-              CkgocTimelineEvent(title: 'Payment OK', timestamp: 'Apr 6'),
-              CkgocTimelineEvent(title: 'Shipped', timestamp: 'Apr 7'),
-              CkgocTimelineEvent(title: 'Delivery', timestamp: 'Apr 9'),
+              CkgocTimelineEvent(
+                title: 'Order Placed',
+                timestamp: 'Apr 5',
+                status: StepStatus.completed,
+              ),
+              CkgocTimelineEvent(
+                title: 'Payment OK',
+                timestamp: 'Apr 6',
+                status: StepStatus.inProgress,
+              ),
+              CkgocTimelineEvent(
+                title: 'Shipped',
+                timestamp: 'Apr 7',
+                status: StepStatus.pending,
+              ),
+              CkgocTimelineEvent(
+                title: 'Delivery',
+                timestamp: 'Apr 9',
+                status: StepStatus.pending,
+              ),
             ],
           ),
           SizedBox(height: s.xl),

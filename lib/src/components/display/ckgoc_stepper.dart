@@ -3,6 +3,20 @@ import 'package:lucide_icons/lucide_icons.dart';
 import 'package:ckgoc_core/src/themes/ckgoc_theme.dart';
 import 'package:ckgoc_core/src/components/component_enums.dart';
 
+Color _stepperConnectorColor({
+  required CkgocStep current,
+  required CkgocStep next,
+  required Color primaryColor,
+  required Color pendingColor,
+}) {
+  if (current.status == StepStatus.pending ||
+      next.status == StepStatus.pending) {
+    return pendingColor;
+  }
+
+  return primaryColor;
+}
+
 class CkgocStepper extends StatelessWidget {
   const CkgocStepper({
     required this.steps,
@@ -114,7 +128,7 @@ class _VerticalStepper extends StatelessWidget {
     final spacing = theme.spacing;
     final typography = theme.typography;
 
-    final connectorColor = lineColor ?? colors.outlineVariant;
+    final defaultConnectorColor = lineColor ?? colors.outlineVariant;
 
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -131,7 +145,12 @@ class _VerticalStepper extends StatelessWidget {
                     Container(
                       width: spacing.xxs,
                       height: spacing.xl,
-                      color: connectorColor,
+                      color: _stepperConnectorColor(
+                        current: steps[i],
+                        next: steps[i + 1],
+                        primaryColor: colors.primary,
+                        pendingColor: defaultConnectorColor,
+                      ),
                     ),
                 ],
               ),
@@ -183,7 +202,7 @@ class _HorizontalStepper extends StatelessWidget {
     final spacing = theme.spacing;
     final typography = theme.typography;
 
-    final connectorColor = lineColor ?? colors.outlineVariant;
+    final defaultConnectorColor = lineColor ?? colors.outlineVariant;
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -198,7 +217,12 @@ class _HorizontalStepper extends StatelessWidget {
                       Expanded(
                         child: Container(
                           height: spacing.xxs,
-                          color: connectorColor,
+                          color: _stepperConnectorColor(
+                            current: steps[i - 1],
+                            next: steps[i],
+                            primaryColor: colors.primary,
+                            pendingColor: defaultConnectorColor,
+                          ),
                         ),
                       )
                     else
@@ -208,7 +232,12 @@ class _HorizontalStepper extends StatelessWidget {
                       Expanded(
                         child: Container(
                           height: spacing.xxs,
-                          color: connectorColor,
+                          color: _stepperConnectorColor(
+                            current: steps[i],
+                            next: steps[i + 1],
+                            primaryColor: colors.primary,
+                            pendingColor: defaultConnectorColor,
+                          ),
                         ),
                       )
                     else

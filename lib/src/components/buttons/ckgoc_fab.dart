@@ -33,7 +33,10 @@ class CkgocFab extends StatelessWidget {
           icon: Icon(icon),
           label: Padding(
             padding: EdgeInsets.only(left: spacing.xs),
-            child: Text(label!, style: typography.labelLg),
+            child: Text(
+              label!,
+              style: typography.labelLg.copyWith(color: colors.onPrimary),
+            ),
           ),
         ),
       );

@@ -150,11 +150,13 @@ class CkgocTimelineEvent {
     this.timestamp,
     this.icon,
     this.dotColor,
+    this.status,
   });
   final String title;
   final String? timestamp;
   final Widget? icon;
   final Color? dotColor;
+  final StepStatus? status;
 }
 
 // Navigation
