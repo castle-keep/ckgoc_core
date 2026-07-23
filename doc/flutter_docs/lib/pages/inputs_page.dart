@@ -20,6 +20,7 @@ class InputsPage extends StatelessWidget {
         DocSection(data: _radioDoc()),
         DocSection(data: _switchDoc()),
         DocSection(data: _dropdownDoc()),
+        DocSection(data: _numberStepperDoc()),
         DocSection(data: _otpDoc()),
         DocSection(data: _datePickerDoc()),
         DocSection(data: _timePickerDoc()),
@@ -475,12 +476,13 @@ CkgocSwitch(
 ComponentDocData _dropdownDoc() => const ComponentDocData(
       title: 'CkgocDropdown<T>',
       summary:
-          'Single-selection dropdown API surface. The current implementation is a placeholder that returns an empty widget, but the docs still cover the intended public API.',
+          'Single-selection dropdown that matches the styling and states of CkgocTextField. It uses a custom anchored overlay that opens below the field by default and flips above when below-space is insufficient.',
       demo: _DropdownDocDemo(),
       code: '''
 CkgocDropdown<String>(
   label: 'Role',
   value: selectedRole,
+  menuMaxHeight: 240,
   items: const [
     DropdownMenuItem(value: 'admin', child: Text('Admin')),
     DropdownMenuItem(value: 'editor', child: Text('Editor')),
@@ -507,25 +509,146 @@ CkgocDropdown<String>(
         ),
         DocParam(name: 'label', type: 'String?', description: 'Input label.'),
         DocParam(
+          name: 'hint',
+          type: 'String?',
+          description: 'Placeholder when no option is selected.',
+        ),
+        DocParam(
+          name: 'helperText',
+          type: 'String?',
+          description: 'Supporting text below the field.',
+        ),
+        DocParam(
           name: 'errorText',
           type: 'String?',
           description: 'External error text.',
         ),
+        DocParam(
+          name: 'successText',
+          type: 'String?',
+          description: 'Optional success state helper text.',
+        ),
+        DocParam(
+          name: 'menuMaxHeight',
+          type: 'double',
+          description: 'Maximum overlay height before the menu scrolls.',
+          defaultValue: '400',
+        ),
+        DocParam(
+          name: 'menuMinHeight',
+          type: 'double',
+          description:
+              'Minimum preferred space below the field before the menu flips above.',
+          defaultValue: '144',
+        ),
       ],
       faqs: [
         DocFaq(
-          question: 'Why is the live output blank?',
+          question: 'How do I control the selected value?',
           answer:
-              'This component is still a placeholder in the package implementation and currently returns SizedBox.shrink().',
+              'Provide `value` and `onChanged` to control selection externally.',
         ),
         DocFaq(
-          question: 'Should I still document it now?',
+          question:
+              'How does the overlay decide whether to open above or below?',
           answer:
-              'Yes. The public API already exists, so consumers need intended usage documented before the visual body is finished.',
+              'It opens below by default, shrinks to available space, and flips above when the space below is smaller than the configured minimum.',
         ),
       ],
-      notes: [
-        'Implementation status: placeholder widget body in the package source.',
+    );
+
+ComponentDocData _numberStepperDoc() => const ComponentDocData(
+      title: 'CkgocNumberStepper',
+      summary:
+          'Numeric stepper input styled like CkgocTextField, with minus and plus controls around a centered value display.',
+      demo: _NumberStepperDocDemo(),
+      code: '''
+CkgocNumberStepper(
+  label: 'Quantity',
+  value: quantity,
+  min: 1,
+  max: 10,
+  helperText: 'Use - and + to adjust',
+  onChanged: (value) => setState(() => quantity = value),
+)
+''',
+      params: [
+        DocParam(
+          name: 'value',
+          type: 'int?',
+          description: 'Current numeric value displayed by the control.',
+          requiredParam: true,
+        ),
+        DocParam(
+          name: 'onChanged',
+          type: 'ValueChanged<int>?',
+          description: 'Called after increment and decrement actions.',
+        ),
+        DocParam(
+          name: 'label',
+          type: 'String?',
+          description: 'Field label shown above the control.',
+        ),
+        DocParam(
+          name: 'hint',
+          type: 'String?',
+          description: 'Placeholder shown when value is null.',
+        ),
+        DocParam(
+          name: 'helperText',
+          type: 'String?',
+          description: 'Neutral supporting text.',
+        ),
+        DocParam(
+          name: 'errorText',
+          type: 'String?',
+          description: 'External error text.',
+        ),
+        DocParam(
+          name: 'successText',
+          type: 'String?',
+          description: 'Optional success state helper text.',
+        ),
+        DocParam(
+          name: 'min',
+          type: 'int?',
+          description: 'Optional lower bound.',
+        ),
+        DocParam(
+          name: 'max',
+          type: 'int?',
+          description: 'Optional upper bound.',
+        ),
+        DocParam(
+          name: 'step',
+          type: 'int',
+          description: 'Increment and decrement amount.',
+          defaultValue: '1',
+        ),
+        DocParam(
+          name: 'enabled',
+          type: 'bool',
+          description: 'Disables the control when false.',
+          defaultValue: 'true',
+        ),
+        DocParam(
+          name: 'borderless',
+          type: 'bool',
+          description: 'Removes filled and outline styles for inline layouts.',
+          defaultValue: 'false',
+        ),
+      ],
+      faqs: [
+        DocFaq(
+          question: 'Is this a free-form text input?',
+          answer:
+              'No. It looks like a text field, but the value changes only through the minus and plus controls.',
+        ),
+        DocFaq(
+          question: 'What happens at min and max bounds?',
+          answer:
+              'The control clamps the next value and disables the corresponding action when the boundary is reached.',
+        ),
       ],
     );
 
@@ -879,24 +1002,66 @@ class _SwitchDocDemoState extends State<_SwitchDocDemo> {
   }
 }
 
-class _DropdownDocDemo extends StatelessWidget {
+class _DropdownDocDemo extends StatefulWidget {
   const _DropdownDocDemo();
 
   @override
+  State<_DropdownDocDemo> createState() => _DropdownDocDemoState();
+}
+
+class _DropdownDocDemoState extends State<_DropdownDocDemo> {
+  String? _value = 'editor';
+
+  @override
   Widget build(BuildContext context) {
-    return const Column(
+    return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('Current implementation returns an empty widget.'),
+        Text('Selected: ${_value ?? 'none'}'),
         VSpace(height: 12),
         CkgocDropdown<String>(
           label: 'Role',
-          items: [
+          hint: 'Select role',
+          value: _value,
+          menuMaxHeight: 180,
+          helperText: 'Overlay flips above when needed',
+          items: const [
             DropdownMenuItem(value: 'admin', child: Text('Admin')),
             DropdownMenuItem(value: 'editor', child: Text('Editor')),
+            DropdownMenuItem(value: 'viewer', child: Text('Viewer')),
+            DropdownMenuItem(value: 'owner', child: Text('Owner')),
+            DropdownMenuItem(value: 'guest', child: Text('Guest')),
+            DropdownMenuItem(value: 'analyst', child: Text('Analyst')),
           ],
+          onChanged: (v) => setState(() => _value = v),
         ),
       ],
+    );
+  }
+}
+
+class _NumberStepperDocDemo extends StatefulWidget {
+  const _NumberStepperDocDemo();
+
+  @override
+  State<_NumberStepperDocDemo> createState() => _NumberStepperDocDemoState();
+}
+
+class _NumberStepperDocDemoState extends State<_NumberStepperDocDemo> {
+  int _quantity = 2;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: 420,
+      child: CkgocNumberStepper(
+        label: 'Quantity',
+        value: _quantity,
+        min: 1,
+        max: 10,
+        helperText: 'Current value: $_quantity',
+        onChanged: (value) => setState(() => _quantity = value),
+      ),
     );
   }
 }

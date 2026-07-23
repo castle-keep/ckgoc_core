@@ -28,7 +28,8 @@ lib/
       buttons/             # CkgocButton, CkgocIconButton
       display/             # CkgocBadge, CkgocChip, CkgocAvatar, CkgocCard
       inputs/              # CkgocTextField, CkgocPasswordField, CkgocSearchField,
-                           # CkgocSwitch, CkgocOtpField, CkgocCheckbox, CkgocRadio…
+               # CkgocDropdown, CkgocNumberStepper, CkgocSwitch, CkgocOtpField,
+               # CkgocCheckbox, CkgocRadio…
       feedback/            # CkgocProgressBar, CkgocSlider, CkgocLoader,
                            # CkgocLoadingState, CkgocAlert, CkgocSkeleton…
       navigation/          # Nav bars, tabs, breadcrumbs, menus
@@ -181,7 +182,55 @@ Params (high-level)
 - `value` (T?): selected value.
 - `items` (List<DropdownMenuItem<T>>): options.
 - `onChanged` (ValueChanged<T?>?): selection callback.
-- `hint`/`label`/`enabled` — typical dropdown props.
+- `hint` / `label` / `helperText` / `errorText` / `successText` — text-field style props.
+- `menuMaxHeight` (double): max overlay height before internal scrolling. Default: `400`.
+- `menuMinHeight` (double): preferred minimum space below the field before the menu flips above. Default: `144`.
+
+Example
+```dart
+CkgocDropdown<String>(
+  label: 'Role',
+  hint: 'Select role',
+  value: selectedRole,
+  menuMaxHeight: 240,
+  items: const [
+    DropdownMenuItem(value: 'admin', child: Text('Admin')),
+    DropdownMenuItem(value: 'editor', child: Text('Editor')),
+  ],
+  onChanged: (v) => setState(() => selectedRole = v),
+)
+```
+
+Notes
+- The dropdown follows the same visual tokens as `CkgocTextField` (filled background, outline, focus ring).
+- The menu is a custom anchored overlay rendered below the field when possible and above it when the available height below is smaller than the minimum threshold.
+- Use `helperText`, `errorText`, or `successText` to show contextual messages below the control.
+
+### CkgocNumberStepper
+Numeric stepper input that looks like a text field and uses `-` and `+` controls to change the value.
+
+Params (high-level)
+- `value` (int?): current value.
+- `onChanged` (ValueChanged<int>?): increment/decrement callback.
+- `min` / `max` (int?): optional lower and upper bounds.
+- `step` (int): amount added or removed per tap.
+- `hint` / `label` / `helperText` / `errorText` / `enabled` — text-field style props.
+
+Example
+```dart
+CkgocNumberStepper(
+  label: 'Quantity',
+  value: quantity,
+  min: 1,
+  max: 10,
+  helperText: 'Use - and + to adjust',
+  onChanged: (value) => setState(() => quantity = value),
+)
+```
+
+Notes
+- The component is display-first: users change the number through the controls rather than typing arbitrary text.
+- Boundaries are enforced internally, so decrement and increment stop at `min` and `max`.
 
 ### CkgocDatePicker / CkgocTimePicker
 - Themed pickers that open platform dialogs. Provide `initialDate`, `firstDate`, `lastDate`, and `onChanged` callbacks.

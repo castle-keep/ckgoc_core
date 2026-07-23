@@ -25,7 +25,7 @@ class OverviewPage extends StatelessWidget {
                   '• Display: Accordion, Avatar, AvatarGroup, Badge, Card, Filter/Input chips, Container, Divider, ListTile, Stepper, Timeline',
                 ),
                 Text(
-                  '• Inputs: TextField, PasswordField, SearchField, Dropdown, Checkbox, Radio, Switch, OTP, DatePicker, TimePicker',
+                  '• Inputs: TextField, PasswordField, SearchField, Dropdown, NumberStepper, Checkbox, Radio, Switch, OTP, DatePicker, TimePicker',
                 ),
                 Text(
                   '• Feedback: Alert, Loader, ProgressBar, Slider, Snackbar, Toast, Skeleton, EmptyState, LoadingState, ErrorState',

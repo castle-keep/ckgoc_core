@@ -27,6 +27,8 @@ class _InputsScreenState extends State<InputsScreen> {
   String? _radioGroup = 'b';
   String? _radioErrorGroup;
   String? _radioCKGroup = 'e';
+  String? _dropdownValue = 'a';
+  int _quantity = 1;
 
   final _filledCtrl = TextEditingController(text: 'Maria Santos');
   String? _otpValue;
@@ -100,6 +102,36 @@ class _InputsScreenState extends State<InputsScreen> {
                   hint: 'Cannot edit',
                   label: 'Label',
                   enabled: false,
+                ),
+              ),
+              SizedBox(
+                width: 200,
+                child: CkgocDropdown<String>(
+                  label: 'Select option',
+                  hint: 'Choose...',
+                  value: _dropdownValue,
+                  menuMaxHeight: 180,
+                  items: const [
+                    DropdownMenuItem(value: 'a', child: Text('Option A')),
+                    DropdownMenuItem(value: 'b', child: Text('Option B')),
+                    DropdownMenuItem(value: 'c', child: Text('Option C')),
+                    DropdownMenuItem(value: 'd', child: Text('Option D')),
+                    DropdownMenuItem(value: 'e', child: Text('Option E')),
+                    DropdownMenuItem(value: 'f', child: Text('Option F')),
+                  ],
+                  helperText: 'Menu is anchored to the field',
+                  onChanged: (value) => setState(() => _dropdownValue = value),
+                ),
+              ),
+              SizedBox(
+                width: 200,
+                child: CkgocNumberStepper(
+                  label: 'Quantity',
+                  value: _quantity,
+                  min: 1,
+                  max: 10,
+                  helperText: 'Use - and + to adjust',
+                  onChanged: (value) => setState(() => _quantity = value),
                 ),
               ),
             ],
