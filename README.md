@@ -25,7 +25,7 @@ Add the package from pub.dev to your application's `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  ckgoc_core: ^0.1.1
+  ckgoc_core: ^0.2.1
 ```
 
 Then run:

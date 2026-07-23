@@ -1,3 +1,13 @@
+## 0.2.1
+
+Added:
+- Flutter documentation app for browsing ckgoc_core components and usage examples.
+- `CkgocNumberStepper` input component and expanded `CkgocDropdown` support.
+
+Changed:
+- Migrated icon usage from `lucide_icons` to `lucide_icons_flutter`.
+- Expanded example and quick-start documentation for the updated input components.
+
 ## 0.2.0
 
 Added:
