@@ -1,4 +1,5 @@
-import 'package:ckgoc_core/ckgoc_core.dart';
+import 'package:ckgoc_core/src/components/component_enums.dart';
+import 'package:ckgoc_core/src/themes/themes.dart';
 import 'package:flutter/material.dart';
 
 Widget _tabLabel(CkgocTab tab, Color fg, CkgocThemeData theme) {

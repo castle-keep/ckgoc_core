@@ -1,4 +1,5 @@
-import 'package:ckgoc_core/ckgoc_core.dart';
+import 'package:ckgoc_core/src/components/components.dart';
+import 'package:ckgoc_core/src/themes/themes.dart';
 import 'package:flutter/material.dart';
 
 Map<String, double> resolveTableWidths({

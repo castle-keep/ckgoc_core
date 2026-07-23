@@ -1,5 +1,6 @@
-import 'package:ckgoc_core/ckgoc_core.dart';
 import 'package:flutter/material.dart';
+import 'package:ckgoc_core/src/components/components.dart';
+import 'package:ckgoc_core/src/themes/themes.dart';
 
 class DataRowWidget extends StatelessWidget {
   const DataRowWidget({

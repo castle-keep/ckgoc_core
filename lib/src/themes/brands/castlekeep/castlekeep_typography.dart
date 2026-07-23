@@ -104,11 +104,12 @@ abstract final class CastleKeepTypography {
           height: 18 / 12,
           color: defaultColor,
         ),
-        codeMd: const TextStyle(
+        codeMd: TextStyle(
           fontFamily: 'monospace',
           fontSize: 14,
           fontWeight: FontWeight.w400,
           height: 20 / 14,
+          color: defaultColor,
         ),
       );
 }

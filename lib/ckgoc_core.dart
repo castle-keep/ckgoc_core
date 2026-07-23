@@ -10,4 +10,4 @@ export 'src/components/components.dart';
 
 export 'src/templates/templates.dart';
 
-export 'package:lucide_icons/lucide_icons.dart';
+export 'package:lucide_icons_flutter/lucide_icons.dart';

@@ -165,12 +165,6 @@ class _ThemeSwitcher extends StatelessWidget {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(
-                  LucideIcons.building,
-                  size: theme.spacing.md,
-                  color: theme.colors.primary,
-                ),
-                SizedBox(width: theme.spacing.xs),
                 Text(
                   _brandLabel,
                   style: theme.typography.labelSm.copyWith(
@@ -205,7 +199,7 @@ class _ThemeSwitcher extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Icon(
-                  LucideIcons.sun,
+                  Icons.sunny,
                   size: theme.spacing.md,
                   color: theme.colors.primary,
                 ),
@@ -222,17 +216,17 @@ class _ThemeSwitcher extends StatelessWidget {
           items: [
             CkgocMenuItem(
               label: 'Follow system',
-              icon: LucideIcons.monitor,
+              icon: Icons.monitor,
               onTap: () => onBrightnessChanged(null),
             ),
             CkgocMenuItem(
               label: 'Force light',
-              icon: LucideIcons.sun,
+              icon: Icons.sunny,
               onTap: () => onBrightnessChanged(Brightness.light),
             ),
             CkgocMenuItem(
               label: 'Force dark',
-              icon: LucideIcons.moon,
+              icon: Icons.nightlight_round,
               onTap: () => onBrightnessChanged(Brightness.dark),
             ),
           ],

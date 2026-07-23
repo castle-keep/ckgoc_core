@@ -1,6 +1,7 @@
 import 'dart:math' as math;
-
-import 'package:ckgoc_core/ckgoc_core.dart';
+import 'package:ckgoc_core/src/foundation/foundation.dart';
+import 'package:ckgoc_core/src/themes/themes.dart';
+import 'package:ckgoc_core/src/components/components.dart';
 import 'package:flutter/material.dart';
 
 class CkgocLoader extends StatelessWidget {

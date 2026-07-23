@@ -1,5 +1,6 @@
-import 'package:ckgoc_core/ckgoc_core.dart';
+import 'package:ckgoc_core/src/themes/ckgoc_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:ckgoc_core/src/components/components.dart';
 
 class FooterTotalsRow extends StatelessWidget {
   const FooterTotalsRow({

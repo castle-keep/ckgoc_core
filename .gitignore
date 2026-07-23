@@ -8,3 +8,22 @@ doc/flutter_docs/.metadata
 
 # Local Chrome profile used by flutter run -d chrome
 doc/flutter_docs/chrome-device/
+
+# smoketest generated files
+smoketest/
+
+# Example app generated files
+example/.dart_tool/
+example/.flutter-plugins
+example/.flutter-plugins-dependencies
+example/.packages
+example/build/
+example/.metadata
+
+# Flutter docs app generated files
+doc/flutter_docs/.dart_tool
+doc/flutter_docs/.flutter-plugins
+doc/flutter_docs/.flutter-plugins-dependencies
+doc/flutter_docs/.packages
+doc/flutter_docs/build/
+doc/flutter_docs/.metadata

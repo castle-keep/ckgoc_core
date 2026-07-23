@@ -1,5 +1,8 @@
-import 'package:ckgoc_core/ckgoc_core.dart';
+import 'package:ckgoc_core/src/foundation/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:ckgoc_core/src/themes/themes.dart';
+import 'package:ckgoc_core/src/components/components.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 typedef _P = CkgocPrimitiveColors;
 

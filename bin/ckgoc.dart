@@ -93,7 +93,7 @@ abstract final class ${pascal}Typography {
         labelLg: TextStyle(fontFamily: _fontFamily, fontSize: 16, fontWeight: FontWeight.w500, height: 24/16, color: defaultColor),
         labelMd: TextStyle(fontFamily: _fontFamily, fontSize: 14, fontWeight: FontWeight.w500, height: 20/14, color: defaultColor),
         labelSm: TextStyle(fontFamily: _fontFamily, fontSize: 12, fontWeight: FontWeight.w500, height: 18/12, color: defaultColor),
-        codeMd: const TextStyle(fontFamily: 'monospace', fontSize: 14, fontWeight: FontWeight.w400, height: 20/14),
+        codeMd: TextStyle(fontFamily: 'monospace', fontSize: 14, fontWeight: FontWeight.w400, height: 20/14, color: defaultColor),
       );
 }
 ''');

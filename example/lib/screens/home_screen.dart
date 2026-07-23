@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:ckgoc_core/ckgoc_core.dart';
-
 import 'buttons_screen.dart';
 import 'data_table_screen.dart';
 import 'display_screen.dart';
@@ -32,10 +31,6 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0;
 
-  void _showMenuMessage(String message) {
-    CkgocSnackbar.show(context, message, variant: ToastVariant.info);
-  }
-
   List<Widget> get _screens => [
     const TokensScreen(),
     const ButtonsScreen(),
@@ -57,32 +52,6 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         title: const Text('Company UI Showcase'),
         actions: [
-          CkgocMenu(
-            trigger: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8),
-              child: Icon(
-                LucideIcons.moreVertical,
-                color: theme.colors.onSurface,
-              ),
-            ),
-            items: [
-              CkgocMenuItem(
-                label: 'Reset to Tokens',
-                icon: LucideIcons.home,
-                onTap: () => setState(() => _selectedIndex = 0),
-              ),
-              CkgocMenuItem(
-                label: 'Open Overlays',
-                icon: LucideIcons.layers,
-                onTap: () => setState(() => _selectedIndex = 7),
-              ),
-              CkgocMenuItem(
-                label: 'Templates (Coming soon)',
-                icon: LucideIcons.layoutTemplate,
-                onTap: () => _showMenuMessage('Templates is coming soon.'),
-              ),
-            ],
-          ),
           // Brand switcher
           DropdownButton<CkgocBrand>(
             value: widget.currentBrand,
@@ -97,21 +66,18 @@ class _HomeScreenState extends State<HomeScreen> {
             },
           ),
           const SizedBox(width: 8),
-          // Brightness toggle
-          IconButton(
-            icon: Icon(
-              widget.currentBrightness == Brightness.dark
-                  ? LucideIcons.sun
-                  : LucideIcons.moon,
-            ),
-            tooltip: 'Toggle brightness',
-            onPressed: () {
+          // Brightness toggle using CkgocSwitch
+          CkgocSwitch(
+            value: widget.currentBrightness == Brightness.dark,
+            onChanged: (isDark) {
               widget.onBrightnessChanged(
-                widget.currentBrightness == Brightness.dark
-                    ? Brightness.light
-                    : Brightness.dark,
+                isDark ? Brightness.dark : Brightness.light,
               );
             },
+          ),
+          Text(
+            widget.currentBrightness == Brightness.dark ? 'Dark' : 'Light',
+            style: theme.typography.textXs,
           ),
           const SizedBox(width: 8),
         ],

@@ -134,76 +134,73 @@ class DocSection extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(bottom: 24),
       child: CkgocContainer(
-        variant: coming ? ContainerVariant.muted : ContainerVariant.outlined,
-        elevated: true,
-        child: Stack(
+        variant: coming ? ContainerVariant.surface : ContainerVariant.outlined,
+        elevated: coming ? false : true,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Padding(
-              padding: const EdgeInsets.all(0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(data.title, style: theme.typography.labelLg),
-                  const VSpace(height: 8),
-                  Text(data.summary),
-                  if (data.notes.isNotEmpty) ...[
-                    const VSpace(height: 12),
-                    ...data.notes.map(
-                      (note) => Padding(
-                        padding: const EdgeInsets.only(bottom: 6),
-                        child: Text(
-                          '• $note',
-                        ),
-                      ),
-                    ),
-                  ],
-                  const VSpace(height: 16),
-                  Text('Live demo', style: theme.typography.labelMd),
-                  const VSpace(height: 8),
-                  // Demo area is disabled and dimmed when comingSoon is true.
-                  IgnorePointer(
-                    ignoring: coming,
-                    child: CkgocContainer(
-                      variant: ContainerVariant.outlined,
-                      child: HeroMode(enabled: false, child: data.demo),
+            Row(
+              children: [
+                if (coming)
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: CkgocBadge(
+                      label: 'Coming soon',
+                      variant: BadgeVariant.live,
                     ),
                   ),
-                  const VSpace(height: 16),
-                  Text('Usage code', style: theme.typography.labelMd),
-                  const VSpace(height: 8),
-                  CodeBlock(code: data.code),
-                  const VSpace(height: 16),
-                  Text('Parameters', style: theme.typography.labelMd),
-                  const VSpace(height: 8),
-                  ParamTable(params: data.params),
-                  if (data.faqs.isNotEmpty) ...[
-                    const VSpace(height: 16),
-                    Text('FAQs', style: theme.typography.labelMd),
-                    const VSpace(height: 8),
-                    CkgocAccordion(
-                      items: [
-                        for (final faq in data.faqs)
-                          CkgocAccordionItem(
-                            title: faq.question,
-                            content: Align(
-                                alignment: Alignment.centerLeft,
-                                child: Text(faq.answer)),
-                          ),
-                      ],
-                    ),
-                  ],
-                ],
-              ),
+                Text(data.title, style: theme.typography.labelLg),
+              ],
             ),
-            if (coming)
-              const Positioned(
-                top: 8,
-                right: 8,
-                child: CkgocBadge(
-                  label: 'Coming soon',
-                  variant: BadgeVariant.live,
+            const VSpace(height: 8),
+            Text(data.summary, style: theme.typography.textSm),
+            if (data.notes.isNotEmpty) ...[
+              const VSpace(height: 12),
+              ...data.notes.map(
+                (note) => Padding(
+                  padding: const EdgeInsets.only(bottom: 6),
+                  child: Text(
+                    '• $note',
+                    style: theme.typography.textXs,
+                  ),
                 ),
               ),
+            ],
+            const VSpace(height: 16),
+            Text('Live demo', style: theme.typography.labelMd),
+            const VSpace(height: 8),
+            // Demo area is disabled and dimmed when comingSoon is true.
+            IgnorePointer(
+              ignoring: coming,
+              child: CkgocContainer(
+                variant: ContainerVariant.outlined,
+                child: HeroMode(enabled: false, child: data.demo),
+              ),
+            ),
+            const VSpace(height: 16),
+            Text('Usage code', style: theme.typography.labelMd),
+            const VSpace(height: 8),
+            CodeBlock(code: data.code),
+            const VSpace(height: 16),
+            Text('Parameters', style: theme.typography.labelMd),
+            const VSpace(height: 8),
+            ParamTable(params: data.params),
+            if (data.faqs.isNotEmpty) ...[
+              const VSpace(height: 16),
+              Text('FAQs', style: theme.typography.labelMd),
+              const VSpace(height: 8),
+              CkgocAccordion(
+                items: [
+                  for (final faq in data.faqs)
+                    CkgocAccordionItem(
+                      title: faq.question,
+                      content: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(faq.answer)),
+                    ),
+                ],
+              ),
+            ],
           ],
         ),
       ),
@@ -270,6 +267,7 @@ class CodeBlock extends StatelessWidget {
   Widget build(BuildContext context) {
     return CkgocContainer(
       variant: ContainerVariant.muted,
+      elevated: true,
       child: SizedBox(
         width: double.infinity,
         child: SelectableText(
@@ -296,7 +294,7 @@ class EnumCasesCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(title, style: Theme.of(context).textTheme.headlineSmall),
+            Text(title, style: CkgocTheme.of(context).typography.labelLg),
             const VSpace(height: 12),
             Wrap(
               spacing: 12,
@@ -311,8 +309,9 @@ class EnumCasesCard extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(item.name,
-                                    style:
-                                        Theme.of(context).textTheme.titleSmall),
+                                    style: CkgocTheme.of(context)
+                                        .typography
+                                        .labelMd),
                                 const VSpace(height: 6),
                                 Text(item.description),
                               ]),
