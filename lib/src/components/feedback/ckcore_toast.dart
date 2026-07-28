@@ -52,37 +52,40 @@ class CKToast extends StatelessWidget {
       ),
     };
 
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        color: bg,
-        borderRadius: BorderRadius.circular(radius.lg),
-      ),
-      child: Padding(
-        padding: EdgeInsets.symmetric(
-          horizontal: spacing.md,
-          vertical: spacing.s12,
+    return ConstrainedBox(
+      constraints: const BoxConstraints(maxWidth: double.infinity),
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          color: bg,
+          borderRadius: BorderRadius.circular(radius.lg),
         ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            if (icon != null) ...[
-              Icon(icon, size: spacing.md, color: fg),
-              SizedBox(width: spacing.sm),
-            ],
-            Expanded(
-              child: Text(
-                message,
-                style: typography.textSm.copyWith(color: fg),
+        child: Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: spacing.md,
+            vertical: spacing.s12,
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              if (icon != null) ...[
+                Icon(icon, size: spacing.md, color: fg),
+                SizedBox(width: spacing.sm),
+              ],
+              Expanded(
+                child: Text(
+                  message,
+                  style: typography.textSm.copyWith(color: fg),
+                ),
               ),
-            ),
-            if (onDismiss != null) ...[
-              SizedBox(width: spacing.sm),
-              GestureDetector(
-                onTap: onDismiss,
-                child: Icon(LucideIcons.x, size: spacing.md, color: fg),
-              ),
+              if (onDismiss != null) ...[
+                SizedBox(width: spacing.sm),
+                GestureDetector(
+                  onTap: onDismiss,
+                  child: Icon(LucideIcons.x, size: spacing.md, color: fg),
+                ),
+              ],
             ],
-          ],
+          ),
         ),
       ),
     );

@@ -39,17 +39,59 @@ class OverviewPage extends StatelessWidget {
                   '• Data table: CKDataTable, CKTableColumn, selection and width enums',
                 ),
                 Text(
+                  '• Screen layout: CKScreenLayout with responsive CKSideNav',
+                ),
+                Text(
                   '• Themes and assets: ckcoreBrand, BrandIcon, BrandIconVariant, all packaged logo assets',
                 ),
-                Text('• App wrapper: ckcoreApp'),
+                Text(
+                  '• App wrapper: ckcoreApp with CKApp.router for Navigator 2.0',
+                ),
                 Text(
                   '• Foundation tokens: colors, typography, spacing, radius, elevation, shadows, motion, opacity, breakpoints',
                 ),
                 Text(
-                  '• Templates: auth, CRUD, dashboard, loading/error/empty/offline exports',
+                  '• Text extensions: semantic heading shortcuts (.h1–.h6), typography styles, color modifiers, text transforms',
                 ),
                 Text(
-                  '• Empty folders confirmed: extensions/ and utils/ currently have no files to document',
+                  '• Templates: auth, CRUD, dashboard, loading/error/empty/offline exports',
+                ),
+              ],
+            ),
+          ),
+        ),
+        VSpace(height: 24),
+        Card(
+          child: Padding(
+            padding: EdgeInsets.all(20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('Getting Started with CKApp').h3,
+                VSpace(height: 12),
+                Text(
+                  'CKApp automatically wraps your app with theme context. Any descendant widget can access the design system via context.ckcoreTheme.',
+                  style: context.ckcoreTheme.typography.textMd,
+                ),
+                VSpace(height: 12),
+                SelectableText(
+                  '''CKApp(
+  brand: ckcoreBrand.castleKeep,
+  home: MyHomePage(),
+)
+
+// Now use theme anywhere in the tree:
+Text('Hello').h1.primary // Heading with primary color
+''',
+                  style: context.ckcoreTheme.typography.codeMd,
+                ),
+                VSpace(height: 12),
+                Text(
+                  'For Navigator 2.0 routing, use CKApp.router with a RouterConfig. Theme context is automatically available to all routes.',
+                  style: context.ckcoreTheme.typography.textSm.copyWith(
+                    fontStyle: FontStyle.italic,
+                    color: context.ckcoreTheme.colors.onSurfaceVariant,
+                  ),
                 ),
               ],
             ),

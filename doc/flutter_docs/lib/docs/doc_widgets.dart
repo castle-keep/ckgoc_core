@@ -82,7 +82,7 @@ class _DocsAppState extends State<DocsApp> {
         return const TemplatesPage();
 
       case '/screen-layout':
-        return const ScreenLayoutDemoPage();
+        return const ScreenLayoutPage();
 
       default:
         return const OverviewPage();

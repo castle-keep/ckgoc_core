@@ -164,6 +164,7 @@ class CKCard extends StatelessWidget {
       };
 
       body = Row(
+        mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: cross,
         children: [
           ClipRRect(
@@ -173,7 +174,7 @@ class CKCard extends StatelessWidget {
             ),
             child: Align(alignment: align, child: media!),
           ),
-          Expanded(
+          Flexible(
             child: Padding(padding: EdgeInsets.all(spacing.md), child: content),
           ),
         ],

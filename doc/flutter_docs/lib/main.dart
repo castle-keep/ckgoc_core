@@ -115,7 +115,7 @@ class _DocsPage extends StatelessWidget {
       case '/templates':
         return const TemplatesPage();
       case '/screen-layout':
-        return const ScreenLayoutDemoPage();
+        return const ScreenLayoutPage();
       default:
         return const OverviewPage();
     }

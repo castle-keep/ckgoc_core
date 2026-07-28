@@ -52,42 +52,48 @@ class CKAlert extends StatelessWidget {
       ),
     };
 
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        color: bg,
-        borderRadius: BorderRadius.circular(radius.lg),
-        border: Border.all(color: border),
-      ),
-      child: Padding(
-        padding: EdgeInsets.symmetric(
-          horizontal: spacing.md,
-          vertical: spacing.s12,
+    return ConstrainedBox(
+      constraints: const BoxConstraints(maxWidth: double.infinity),
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          color: bg,
+          borderRadius: BorderRadius.circular(radius.lg),
+          border: Border.all(color: border),
         ),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Icon(icon, size: spacing.md, color: fg),
-            SizedBox(width: spacing.sm),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  if (title != null)
-                    Text(title!, style: typography.labelMd.copyWith(color: fg)),
-                  if (title != null) SizedBox(height: spacing.xxs),
-                  Text(message, style: typography.textSm.copyWith(color: fg)),
-                ],
-              ),
-            ),
-            if (onDismiss != null) ...[
+        child: Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: spacing.md,
+            vertical: spacing.s12,
+          ),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Icon(icon, size: spacing.md, color: fg),
               SizedBox(width: spacing.sm),
-              GestureDetector(
-                onTap: onDismiss,
-                child: Icon(LucideIcons.x, size: spacing.md, color: fg),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    if (title != null)
+                      Text(
+                        title!,
+                        style: typography.labelMd.copyWith(color: fg),
+                      ),
+                    if (title != null) SizedBox(height: spacing.xxs),
+                    Text(message, style: typography.textSm.copyWith(color: fg)),
+                  ],
+                ),
               ),
+              if (onDismiss != null) ...[
+                SizedBox(width: spacing.sm),
+                GestureDetector(
+                  onTap: onDismiss,
+                  child: Icon(LucideIcons.x, size: spacing.md, color: fg),
+                ),
+              ],
             ],
-          ],
+          ),
         ),
       ),
     );
