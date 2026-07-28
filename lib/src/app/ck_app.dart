@@ -527,8 +527,17 @@ class _CKAppState extends State<CKApp> {
 
   @override
   Widget build(BuildContext context) {
-    final effectiveBrightness =
-        widget.brightness ?? MediaQuery.platformBrightnessOf(context);
+    late final Brightness effectiveBrightness;
+    if (widget.brightness != null) {
+      effectiveBrightness = widget.brightness!;
+    } else if (widget.themeMode == ThemeMode.light) {
+      effectiveBrightness = Brightness.light;
+    } else if (widget.themeMode == ThemeMode.dark) {
+      effectiveBrightness = Brightness.dark;
+    } else {
+      // ThemeMode.system
+      effectiveBrightness = MediaQuery.platformBrightnessOf(context);
+    }
 
     // Resolve theme data for both light and dark variants so MaterialApp
     // can toggle between them when using ThemeMode.system.
@@ -582,9 +591,11 @@ class _CKAppState extends State<CKApp> {
       darkTheme: widget.darkTheme ?? _materialFrom(darkThemeData),
       highContrastTheme: widget.highContrastTheme,
       highContrastDarkTheme: widget.highContrastDarkTheme,
-      themeMode: widget.brightness == Brightness.dark
-          ? ThemeMode.dark
-          : ThemeMode.light,
+      themeMode: widget.brightness != null
+          ? (widget.brightness == Brightness.dark
+                ? ThemeMode.dark
+                : ThemeMode.light)
+          : widget.themeMode,
       locale: widget.locale,
       localizationsDelegates: widget.localizationsDelegates,
       localeListResolutionCallback: widget.localeListResolutionCallback,
@@ -627,7 +638,11 @@ class _CKAppState extends State<CKApp> {
           ),
       highContrastTheme: widget.highContrastTheme,
       highContrastDarkTheme: widget.highContrastDarkTheme,
-      themeMode: widget.themeMode,
+      themeMode: widget.brightness != null
+          ? (widget.brightness == Brightness.dark
+                ? ThemeMode.dark
+                : ThemeMode.light)
+          : widget.themeMode,
       locale: widget.locale,
       localizationsDelegates: widget.localizationsDelegates,
       localeListResolutionCallback: widget.localeListResolutionCallback,
