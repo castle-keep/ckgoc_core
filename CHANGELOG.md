@@ -1,3 +1,19 @@
+## 0.3.0
+
+Changed:
+- Renamed package from `ckgoc_core` to `ckcoreui`. Deprecated aliases are preserved for backward compatibility.
+- Refactored theme structure: introduced `CKCoreThemeData`, `CKCoreTheme`, and new brand management enums. Removed `CkgocTheme` and `CkgocThemeData` (deprecated aliases still available).
+- Updated `bin/ckgoc.dart` CLI, README, LICENSE, and all internal references to use the new package name.
+
+Added:
+- Semantic heading extension getters `.h1`–`.h6` on `Text`, mapping to `display2xl`, `displayXl`, `displayLg`, `displayMd`, `displaySm`, and `textXl` typography tokens.
+- Significantly expanded Flutter docs app: new `ScreenLayoutPage` and `RouterPage` using `DocSection`/`ComponentDocData` pattern; updated `OverviewPage` with CKApp theme-injection guide; updated `FoundationPage` with heading-shorthand showcase.
+- `CKApp.router` documentation explaining theme-context injection for descendants.
+
+Fixed:
+- Layout exceptions (`RenderDecoratedBox`/`_RenderInkFeatures` given infinite size) in `CKCard`, `CKAlert`, and `CKToast` when placed in unbounded-width parents (e.g. `Wrap`).
+- `CKCard` horizontal layout: replaced `Expanded` with `Flexible` and added `mainAxisSize: MainAxisSize.min` to prevent infinite-width propagation.
+
 ## 0.2.1
 
 Added:
