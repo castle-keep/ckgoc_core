@@ -1,3 +1,7 @@
+## 0.3.1
+
+Updated documentation
+
 ## 0.3.0
 
 Changed:
