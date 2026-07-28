@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ckgoc_core/ckgoc_core.dart';
+import 'package:ckcoreui/ckcore_core.dart';
 
 class OverlaysScreen extends StatefulWidget {
   const OverlaysScreen({super.key});
@@ -12,19 +12,19 @@ class _OverlaysScreenState extends State<OverlaysScreen> {
   int _drawerSelected = 0;
 
   void _showMenuMessage(String message) {
-    CkgocSnackbar.show(context, message, variant: ToastVariant.info);
+    CKSnackbar.show(context, message, variant: ToastVariant.info);
   }
 
   static const _drawerItems = [
-    CkgocDrawerItem(icon: LucideIcons.layoutDashboard, label: 'Dashboard'),
-    CkgocDrawerItem(icon: LucideIcons.barChart2, label: 'Analytics'),
-    CkgocDrawerItem(icon: LucideIcons.users, label: 'Users'),
-    CkgocDrawerItem(icon: LucideIcons.package, label: 'Products'),
-    CkgocDrawerItem(icon: LucideIcons.settings, label: 'Settings'),
-    CkgocDrawerItem(icon: LucideIcons.helpCircle, label: 'Help'),
+    CKDrawerItem(icon: LucideIcons.layoutDashboard, label: 'Dashboard'),
+    CKDrawerItem(icon: LucideIcons.barChart2, label: 'Analytics'),
+    CKDrawerItem(icon: LucideIcons.users, label: 'Users'),
+    CKDrawerItem(icon: LucideIcons.package, label: 'Products'),
+    CKDrawerItem(icon: LucideIcons.settings, label: 'Settings'),
+    CKDrawerItem(icon: LucideIcons.helpCircle, label: 'Help'),
   ];
 
-  Widget _label(String text, CkgocThemeData theme) => Padding(
+  Widget _label(String text, ckcoreThemeData theme) => Padding(
     padding: EdgeInsets.only(bottom: theme.spacing.sm),
     child: Text(
       text,
@@ -37,7 +37,7 @@ class _OverlaysScreenState extends State<OverlaysScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = context.ckgocTheme;
+    final theme = context.ckcoreTheme;
     final s = theme.spacing;
     final c = theme.colors;
     final r = theme.radius;
@@ -52,9 +52,9 @@ class _OverlaysScreenState extends State<OverlaysScreen> {
             spacing: s.sm,
             runSpacing: s.sm,
             children: [
-              CkgocButton(
+              CKButton(
                 variant: ButtonVariant.outline,
-                onPressed: () => CkgocDialog.show(
+                onPressed: () => CKDialog.show(
                   context: context,
                   title: 'Dialog Title',
                   content: const Text(
@@ -66,9 +66,31 @@ class _OverlaysScreenState extends State<OverlaysScreen> {
                 ),
                 child: const Text('Default Dialog'),
               ),
-              CkgocButton(
+              CKButton(
+                variant: ButtonVariant.outline,
+                onPressed: () => CKDialog.show(
+                  context: context,
+                  title: 'Custom Content',
+                  content: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Text('This dialog has custom content.'),
+                      SizedBox(height: s.md),
+                      CKBadge(
+                        label: 'New Feature',
+                        variant: BadgeVariant.success,
+                      ),
+                    ],
+                  ),
+                  confirmLabel: 'OK',
+                  cancelLabel: 'Cancel',
+                  onConfirm: () => Navigator.of(context).pop(),
+                ),
+                child: const Text('Custom Content Dialog'),
+              ),
+              CKButton(
                 variant: ButtonVariant.destructive,
-                onPressed: () => CkgocDialog.showDestructive(
+                onPressed: () => CKDialog.showDestructive(
                   context: context,
                   title: 'Delete Item',
                   content: const Text(
@@ -80,13 +102,23 @@ class _OverlaysScreenState extends State<OverlaysScreen> {
                 ),
                 child: const Text('Destructive Dialog'),
               ),
+              CKButton(
+                variant: ButtonVariant.outline,
+                onPressed: () => CKDialog.showInfoDialog(
+                  context: context,
+                  title: 'Info',
+                  text: 'Operation completed successfully.',
+                  confirmLabel: 'OK',
+                ),
+                child: const Text('Info Dialog'),
+              ),
             ],
           ),
           SizedBox(height: s.xl),
           _label('BOTTOM SHEET', theme),
-          CkgocButton(
+          CKButton(
             variant: ButtonVariant.outline,
-            onPressed: () => CkgocBottomSheet.show(
+            onPressed: () => CKBottomSheet.show(
               context: context,
               title: 'Share Options',
               children: [
@@ -103,29 +135,29 @@ class _OverlaysScreenState extends State<OverlaysScreen> {
           ),
           SizedBox(height: s.xl),
           _label('MENU', theme),
-          CkgocMenu(
-            trigger: CkgocButton(
+          CKMenu(
+            trigger: CKButton(
               variant: ButtonVariant.outline,
               onPressed: null,
               child: const Text('Open Menu'),
             ),
             items: [
-              CkgocMenuItem(
+              CKMenuItem(
                 label: 'Refresh data',
                 icon: LucideIcons.refreshCw,
                 onTap: () => _showMenuMessage('Refresh started.'),
               ),
-              CkgocMenuItem(
+              CKMenuItem(
                 label: 'Pin dashboard',
                 icon: LucideIcons.pin,
                 onTap: () => _showMenuMessage('Dashboard pinned.'),
               ),
-              CkgocMenuItem(
+              CKMenuItem(
                 label: 'Export CSV (Coming soon)',
                 icon: LucideIcons.download,
                 onTap: () => _showMenuMessage('Export CSV is coming soon.'),
               ),
-              CkgocMenuItem(
+              CKMenuItem(
                 label: 'Delete view',
                 icon: LucideIcons.trash2,
                 destructive: true,
@@ -169,7 +201,7 @@ class _SheetItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = context.ckgocTheme;
+    final theme = context.ckcoreTheme;
     return InkWell(
       onTap: () => Navigator.of(context).pop(),
       child: Padding(
@@ -195,7 +227,7 @@ class _SheetItem extends StatelessWidget {
 }
 
 class _DrawerPreview extends StatelessWidget {
-  final List<CkgocDrawerItem> items;
+  final List<CKDrawerItem> items;
   final int selected;
   final ValueChanged<int> onSelected;
 
@@ -207,7 +239,7 @@ class _DrawerPreview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = context.ckgocTheme;
+    final theme = context.ckcoreTheme;
     final colors = theme.colors;
     final spacing = theme.spacing;
     final typography = theme.typography;

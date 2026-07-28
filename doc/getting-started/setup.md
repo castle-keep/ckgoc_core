@@ -2,13 +2,13 @@
 
 ## Wrap your app
 
-Wrap your root widget with `CkgocApp` to inject the design system into the widget tree.
+Wrap your root widget with `ckcoreApp` to inject the design system into the widget tree.
 
 ```dart
 void main() {
   runApp(
-    CkgocApp(
-      brand: CkgocBrand.skyGo,  // or CkgocBrand.castleKeep
+    ckcoreApp(
+      brand: ckcoreBrand.skyGo,  // or ckcoreBrand.castleKeep
       child: MaterialApp(
         home: MyHomePage(),
       ),
@@ -17,11 +17,11 @@ void main() {
 }
 ```
 
-`CkgocApp` reads the system brightness by default. To override:
+`ckcoreApp` reads the system brightness by default. To override:
 
 ```dart
-CkgocApp(
-  brand: CkgocBrand.castleKeep,
+ckcoreApp(
+  brand: ckcoreBrand.castleKeep,
   brightness: Brightness.dark,  // force dark mode
   child: ...,
 )
@@ -31,39 +31,76 @@ CkgocApp(
 
 ```dart
 // Preferred — extension method
-final theme = context.ckgocTheme;
+final theme = context.ckcoreTheme;
 
 // Explicit static method
-final theme = CkgocTheme.of(context);
+final theme = ckcoreTheme.of(context);
 ```
 
 ## Override theme for a subtree
 
 ```dart
-CkgocTheme(
-  data: CkgocTheme.of(context).copyWith(
+ckcoreTheme(
+  data: ckcoreTheme.of(context).copyWith(
     colors: myOverrideColors,
   ),
   child: MySpecialSection(),
 )
 ```
 
-## Migration: Replace local widgets with `ckgoc_core` components
+## Text Extensions
 
-Follow these steps to migrate an existing app that uses local/company widgets to the `ckgoc_core` design system.
+### Blockquote
+
+Apply blockquote styling with the `.blockQuote` extension for clean, semantic text formatting:
+
+```dart
+const Text('This is a blockquote').blockQuote
+```
+
+This creates a left-bordered, italicized text container using the design system's primary color and spacing tokens.
+
+### All available extensions
+
+The package exposes a set of small, chainable text extension helpers for common typographic and semantic needs. Use them directly on `Text` widgets, for example: `Text('Hello').bold.primary`.
+
+- Text modifiers: `.bold`, `.italic`, `.underline`, `.strikethrough`, `.uppercase`, `.lowercase`
+- Semantic heading shortcuts: `.h1`, `.h2`, `.h3`, `.h4`, `.h5`, `.h6` (maps to `display2xl`, `displayXl`, `displayLg`, `displayMd`, `displaySm`, `textXl`)
+- Typography styles: `.display2xl`, `.displayXl`, `.displayLg`, `.displayMd`, `.displaySm`, `.textXl`, `.textLg`, `.textMd`, `.textSm`, `.textXs`, `.labelXl`, `.labelLg`, `.labelMd`, `.labelSm`, `.codeMd`
+- Semantic & color helpers: `.primary`, `.primaryHover`, `.primaryActive`, `.primaryDisabled`, `.onPrimary`, `.secondary`, `.secondaryHover`, `.secondaryActive`, `.onSecondary`, `.accent`, `.onAccent`, `.background`, `.onBackground`, `.surface`, `.surfaceVariant`, `.onSurface`, `.onSurfaceVariant`, `.inverseSurface`, `.onInverseSurface`, `.outline`, `.outlineVariant`, `.error`, `.errorContainer`, `.onError`, `.onErrorContainer`, `.success`, `.successContainer`, `.onSuccess`, `.onSuccessContainer`, `.warning`, `.warningContainer`, `.onWarning`, `.onWarningContainer`, `.info`, `.infoContainer`, `.onInfo`, `.onInfoContainer`, `.neutral`, `.neutralVariant`, `.muted`, `.onMuted`, `.shadow`, `.scrim`, `.ring`
+
+Example usages:
+
+```dart
+Text('Bold').bold
+Text('Primary color').primary
+Text('Bold + primary').bold.primary
+Text('Code').codeMd.primary
+const Text('Blockquote').blockQuote
+
+// Semantic heading shortcuts
+Text('Page Title').h1
+Text('Section').h2.primary
+Text('Subsection').h3
+Text('Card Title').h4.bold
+```
+
+## Migration: Replace local widgets with `ckcoreui` components
+
+Follow these steps to migrate an existing app that uses local/company widgets to the `ckcoreui` design system.
 
 1. Add the dependency
 
 ```bash
-flutter pub add ckgoc_core
+flutter pub add ckcoreui
 # or, during development using a local copy:
-dart pub add --path ../ckgoc_core
+dart pub add --path ../ckcoreui
 ```
 
 2. Import the package
 
 ```dart
-import 'package:ckgoc_core/ckgoc_core.dart';
+import 'package:ckcoreui/ckcore_core.dart';
 ```
 
 3. Replace your app root
@@ -78,8 +115,8 @@ After:
 
 ```dart
 void main() => runApp(
-  CkgocApp(
-    brand: CkgocBrand.skyGo,
+  ckcoreApp(
+    brand: ckcoreBrand.skyGo,
     child: MaterialApp(home: MyHomePage()),
   ),
 );
@@ -87,7 +124,7 @@ void main() => runApp(
 
 4. Use the design system theme
 
-Search for `context.companyTheme` and replace with `context.ckgocTheme`.
+Search for `context.companyTheme` and replace with `context.ckcoreTheme`.
 
 Before:
 
@@ -98,12 +135,12 @@ final theme = context.companyTheme;
 After:
 
 ```dart
-final theme = context.ckgocTheme;
+final theme = context.ckcoreTheme;
 ```
 
 5. Replace component types and imports
 
-- Replace local widgets like `CompanyButton` with `CkgocButton` and remove local imports in favor of the package import above.
+- Replace local widgets like `CompanyButton` with `ckcoreButton` and remove local imports in favor of the package import above.
 
 Before:
 
@@ -116,14 +153,14 @@ CompanyButton(onPressed: () {}, label: 'Save')
 After:
 
 ```dart
-import 'package:ckgoc_core/ckgoc_core.dart';
+import 'package:ckcoreui/ckcore_core.dart';
 
-CkgocButton(onPressed: () {}, label: 'Save')
+ckcoreButton(onPressed: () {}, label: 'Save')
 ```
 
 6. Update assets & fonts
 
-If your local widgets relied on custom fonts or icons, add them to your app's `pubspec.yaml` under `fonts:` and `assets:` and copy any required files from `ckgoc_core`'s `assets/` directory.
+If your local widgets relied on custom fonts or icons, add them to your app's `pubspec.yaml` under `fonts:` and `assets:` and copy any required files from `ckcoreui`'s `assets/` directory.
 
 7. Run dependency fetch, analyze, and test
 
@@ -135,8 +172,8 @@ flutter run
 
 8. Debugging tips
 
-- Use a workspace-wide search/replace for legacy `company_` identifiers: replace `company_` → `ckgoc_` and `Company` → `Ckgoc` where appropriate.
-- If you encounter duplicate-type errors, ensure you import only `package:ckgoc_core/ckgoc_core.dart` (not local `company_*` files) and remove any compatibility shims you previously added unless you need them.
+- Use a workspace-wide search/replace for legacy `company_` identifiers: replace `company_` → `ckcore_` and `Company` → `ckcoreui` where appropriate.
+- If you encounter duplicate-type errors, ensure you import only `package:ckcoreui/ckcoreui.dart` (not local `company_*` files) and remove any compatibility shims you previously added unless you need them.
 
 9. Validate for pub.dev (optional)
 

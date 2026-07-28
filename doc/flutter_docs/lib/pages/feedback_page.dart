@@ -1,8 +1,8 @@
-import 'package:ckgoc_core/ckgoc_core.dart';
+import 'package:ckcoreui/ckcore_core.dart';
 import 'package:flutter/material.dart';
 
-import 'package:ckgoc_docs_app/docs/doc_models.dart';
-import 'package:ckgoc_docs_app/docs/doc_widgets.dart';
+import 'package:ckcore_docs_app/docs/doc_models.dart';
+import 'package:ckcore_docs_app/docs/doc_widgets.dart';
 
 class FeedbackPage extends StatelessWidget {
   const FeedbackPage({super.key});
@@ -28,12 +28,12 @@ class FeedbackPage extends StatelessWidget {
 }
 
 ComponentDocData _alertDoc() => const ComponentDocData(
-      title: 'CkgocAlert',
+      title: 'CKAlert',
       summary:
           'Inline message banner for info, success, warning, and error states.',
       demo: _AlertDemo(),
       code: '''
-CkgocAlert(
+CKAlert(
   title: 'Settings saved',
   message: 'Your preferences were updated successfully.',
   variant: AlertVariant.success,
@@ -80,7 +80,7 @@ CkgocAlert(
     );
 
 ComponentDocData _loaderDoc() => const ComponentDocData(
-      title: 'CkgocLoader',
+      title: 'CKLoader',
       summary:
           'Token-based loading indicators. The live demo renders every LoaderType value.',
       demo: _LoaderDemo(),
@@ -89,7 +89,7 @@ Wrap(
   spacing: 16,
   children: [
     for (final type in LoaderType.values)
-      CkgocLoader(type: type, size: 32),
+      CKLoader(type: type, size: 32),
   ],
 )
 ''',
@@ -130,12 +130,12 @@ Wrap(
     );
 
 ComponentDocData _progressDoc() => const ComponentDocData(
-      title: 'CkgocProgressBar and CkgocSlider',
+      title: 'CKProgressBar and CKSlider',
       summary:
           'Determinate and indeterminate progress plus value selection. The demo renders every ProgressVariant and a live slider.',
       demo: _ProgressDemo(),
       code: '''
-CkgocProgressBar(
+CKProgressBar(
   value: 64,
   maxValue: 100,
   variant: ProgressVariant.success,
@@ -207,11 +207,11 @@ CkgocProgressBar(
     );
 
 ComponentDocData _snackbarDoc() => const ComponentDocData(
-      title: 'CkgocSnackbar',
-      summary: 'Static helper that shows a SnackBar with CkgocToast content.',
+      title: 'CKSnackbar',
+      summary: 'Static helper that shows a SnackBar with CKToast content.',
       demo: _SnackbarDemo(),
       code: '''
-CkgocSnackbar.show(
+CKSnackbar.show(
   context,
   'Profile updated',
   variant: ToastVariant.success,
@@ -263,11 +263,11 @@ CkgocSnackbar.show(
     );
 
 ComponentDocData _toastDoc() => const ComponentDocData(
-      title: 'CkgocToast',
+      title: 'CKToast',
       summary: 'Transient toast surface used directly or as snackbar content.',
       demo: _ToastDemo(),
       code: '''
-CkgocToast(
+CKToast(
   message: 'Changes saved',
   variant: ToastVariant.info,
   onDismiss: () {},
@@ -311,12 +311,12 @@ CkgocToast(
 
 ComponentDocData _skeletonDoc() => const ComponentDocData(
       comingSoon: true,
-      title: 'CkgocSkeleton',
+      title: 'CKSkeleton',
       summary:
           'Loading placeholder API surface. The current package implementation is a placeholder widget body.',
       demo: _SkeletonDemo(),
       code: '''
-CkgocSkeleton(
+CKSkeleton(
   width: 240,
   height: 20,
   borderRadius: 12,
@@ -360,15 +360,15 @@ CkgocSkeleton(
 
 ComponentDocData _emptyStateDoc() => const ComponentDocData(
       comingSoon: true,
-      title: 'CkgocEmptyState',
+      title: 'CKEmptyState',
       summary:
           'Empty state API surface for no-results and no-data scenarios. Current implementation is a placeholder widget body.',
       demo: _EmptyStateDemo(),
       code: '''
-CkgocEmptyState(
+CKEmptyState(
   title: 'No projects yet',
   description: 'Create your first project to get started.',
-  action: CkgocButton(onPressed: () {}, child: Text('Create project')),
+  action: CKButton(onPressed: () {}, child: Text('Create project')),
 )
 ''',
       params: [
@@ -412,12 +412,12 @@ CkgocEmptyState(
     );
 
 ComponentDocData _loadingStateDoc() => const ComponentDocData(
-      title: 'CkgocLoadingState',
+      title: 'CKLoadingState',
       summary:
           'Centered loader plus optional message for full-screen or card-level loading experiences.',
       demo: _LoadingStateDemo(),
       code: '''
-CkgocLoadingState(
+CKLoadingState(
   message: 'Loading team members...',
   loaderSize: 40,
   variant: LoaderType.circular,
@@ -443,7 +443,7 @@ CkgocLoadingState(
       ],
       faqs: [
         DocFaq(
-          question: 'When should I use this instead of CkgocLoader?',
+          question: 'When should I use this instead of CKLoader?',
           answer:
               'Use this composite widget when you want layout and copy bundled together instead of composing them manually.',
         ),
@@ -453,18 +453,18 @@ CkgocLoadingState(
         ),
       ],
       notes: [
-        'The loader type is forwarded to the internal CkgocLoader via the variant property.',
+        'The loader type is forwarded to the internal CKLoader via the variant property.',
       ],
     );
 
 ComponentDocData _errorStateDoc() => const ComponentDocData(
-      title: 'CkgocErrorState',
+      title: 'CKErrorState',
       comingSoon: true,
       summary:
           'Error state API surface for failed page or module loads. Current implementation is a placeholder widget body.',
       demo: _ErrorStateDemo(),
       code: '''
-CkgocErrorState(
+CKErrorState(
   title: 'Could not load projects',
   description: 'Check your connection and try again.',
   onRetry: () {},
@@ -515,7 +515,7 @@ class _AlertDemo extends StatelessWidget {
         for (final variant in AlertVariant.values)
           Padding(
             padding: const EdgeInsets.only(bottom: 12),
-            child: CkgocAlert(
+            child: CKAlert(
               title: variant.name,
               message: 'This alert demonstrates the ${variant.name} state.',
               variant: variant,
@@ -539,7 +539,7 @@ class _LoaderDemo extends StatelessWidget {
           Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              CkgocLoader(type: type, size: 32),
+              CKLoader(type: type, size: 32),
               const SizedBox(height: 8),
               Text(type.name),
             ],
@@ -567,7 +567,7 @@ class _ProgressDemoState extends State<_ProgressDemo> {
         for (final variant in ProgressVariant.values)
           Padding(
             padding: const EdgeInsets.only(bottom: 12),
-            child: CkgocProgressBar(
+            child: CKProgressBar(
               value: variant == ProgressVariant.indeterminate ? null : value,
               maxValue: 100,
               variant: variant,
@@ -575,7 +575,7 @@ class _ProgressDemoState extends State<_ProgressDemo> {
             ),
           ),
         const SizedBox(height: 12),
-        CkgocSlider(
+        CKSlider(
           value: value,
           showValue: true,
           onChanged: (next) => setState(() => value = next),
@@ -595,8 +595,8 @@ class _SnackbarDemo extends StatelessWidget {
       runSpacing: 12,
       children: [
         for (final variant in ToastVariant.values)
-          CkgocButton(
-            onPressed: () => CkgocSnackbar.show(
+          CKButton(
+            onPressed: () => CKSnackbar.show(
               context,
               'Snackbar: ${variant.name}',
               variant: variant,
@@ -620,7 +620,7 @@ class _ToastDemo extends StatelessWidget {
             padding: const EdgeInsets.only(bottom: 12),
             child: SizedBox(
               width: 420,
-              child: CkgocToast(
+              child: CKToast(
                 message: 'Toast variant: ${variant.name}',
                 variant: variant,
               ),
@@ -641,7 +641,7 @@ class _SkeletonDemo extends StatelessWidget {
       children: [
         Text('Current implementation returns an empty widget.'),
         SizedBox(height: 12),
-        CkgocSkeleton(width: 240, height: 18, borderRadius: 12),
+        CKSkeleton(width: 240, height: 18, borderRadius: 12),
       ],
     );
   }
@@ -657,10 +657,10 @@ class _EmptyStateDemo extends StatelessWidget {
       children: [
         const Text('Current implementation returns an empty widget.'),
         const SizedBox(height: 12),
-        CkgocEmptyState(
+        CKEmptyState(
           title: 'No projects yet',
           description: 'Create your first project to get started.',
-          action: CkgocButton(
+          action: CKButton(
             onPressed: () {},
             child: const Text('Create project'),
           ),
@@ -680,7 +680,7 @@ class _LoadingStateDemo extends StatelessWidget {
       child: Column(
         children: [
           Expanded(
-            child: CkgocLoadingState(
+            child: CKLoadingState(
               message: 'Loading dashboard data...',
               loaderSize: 40,
               variant: LoaderType.circular,
@@ -688,7 +688,7 @@ class _LoadingStateDemo extends StatelessWidget {
           ),
           SizedBox(height: 16),
           Expanded(
-            child: CkgocLoadingState(
+            child: CKLoadingState(
               message: 'Preparing analytics...',
               loaderSize: 28,
               variant: LoaderType.dots,
@@ -710,7 +710,7 @@ class _ErrorStateDemo extends StatelessWidget {
       children: [
         Text('Current implementation returns an empty widget.'),
         SizedBox(height: 12),
-        CkgocErrorState(
+        CKErrorState(
           title: 'Could not load projects',
           description: 'Check your connection and try again.',
         ),

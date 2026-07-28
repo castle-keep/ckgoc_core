@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ckgoc_core/ckgoc_core.dart';
+import 'package:ckcoreui/ckcore_core.dart';
 
 class FeedbackScreen extends StatefulWidget {
   const FeedbackScreen({super.key});
@@ -35,10 +35,10 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
   final Set<AlertVariant> _dismissedAlerts = {};
 
   void _showSnackbar(BuildContext ctx, ToastVariant variant, String message) {
-    CkgocSnackbar.show(ctx, message, variant: variant);
+    CKSnackbar.show(ctx, message, variant: variant);
   }
 
-  Widget _label(String text, CkgocThemeData theme) => Text(
+  Widget _label(String text, ckcoreThemeData theme) => Text(
     text,
     style: theme.typography.labelSm.copyWith(
       color: theme.colors.onSurfaceVariant,
@@ -48,7 +48,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = context.ckgocTheme;
+    final theme = context.ckcoreTheme;
     final s = theme.spacing;
 
     final progressVariants = [
@@ -72,7 +72,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
               .map(
                 (e) => Padding(
                   padding: EdgeInsets.only(bottom: s.sm),
-                  child: CkgocAlert(
+                  child: CKAlert(
                     variant: e.$1,
                     title: e.$2,
                     message: e.$3,
@@ -95,7 +95,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
             spacing: s.sm,
             runSpacing: s.sm,
             children: [
-              CkgocButton(
+              CKButton(
                 size: ButtonSize.sm,
                 variant: ButtonVariant.secondary,
                 onPressed: () => _showSnackbar(
@@ -105,7 +105,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                 ),
                 child: const Text('Default'),
               ),
-              CkgocButton(
+              CKButton(
                 size: ButtonSize.sm,
                 variant: ButtonVariant.success,
                 onPressed: () => _showSnackbar(
@@ -115,7 +115,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                 ),
                 child: const Text('Success'),
               ),
-              CkgocButton(
+              CKButton(
                 size: ButtonSize.sm,
                 variant: ButtonVariant.destructive,
                 onPressed: () => _showSnackbar(
@@ -125,7 +125,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                 ),
                 child: const Text('Error'),
               ),
-              CkgocButton(
+              CKButton(
                 size: ButtonSize.sm,
                 variant: ButtonVariant.warning,
                 onPressed: () => _showSnackbar(
@@ -135,7 +135,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                 ),
                 child: const Text('Warning'),
               ),
-              CkgocButton(
+              CKButton(
                 size: ButtonSize.sm,
                 variant: ButtonVariant.info,
                 onPressed: () => _showSnackbar(
@@ -162,7 +162,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                 ),
               ),
               SizedBox(width: s.xs),
-              CkgocSwitch(
+              CKSwitch(
                 value: _showProgressValues,
                 onChanged: (v) => setState(() => _showProgressValues = v),
               ),
@@ -184,7 +184,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                     ),
                   ),
                   Expanded(
-                    child: CkgocProgressBar(
+                    child: CKProgressBar(
                       value: entry.$3,
                       variant: entry.$1,
                       showValue: _showProgressValues,
@@ -209,14 +209,14 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                 ),
               ),
               SizedBox(width: s.xs),
-              CkgocSwitch(
+              CKSwitch(
                 value: _showSliderValue,
                 onChanged: (v) => setState(() => _showSliderValue = v),
               ),
             ],
           ),
           SizedBox(height: s.sm),
-          CkgocSlider(
+          CKSlider(
             value: _sliderValue,
             min: 0,
             max: 100,
@@ -249,7 +249,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
             spacing: s.lg,
             runSpacing: s.md,
             children: [24.0, 32.0, 40.0, 56.0, 72.0]
-                .map((sz) => CkgocLoader(type: LoaderType.circular, size: sz))
+                .map((sz) => CKLoader(type: LoaderType.circular, size: sz))
                 .toList(),
           ),
 
@@ -261,17 +261,20 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
             spacing: s.lg,
             runSpacing: s.md,
             children: [
-              CkgocLoader(type: LoaderType.circular),
-              CkgocLoader(
+              CKLoader(type: LoaderType.circular),
+              CKLoader(
                 type: LoaderType.circular,
                 color: theme.colors.success,
               ),
-              CkgocLoader(
+              CKLoader(
                 type: LoaderType.circular,
                 color: theme.colors.warning,
               ),
-              CkgocLoader(type: LoaderType.circular, color: theme.colors.error),
-              CkgocLoader(type: LoaderType.circular, color: theme.colors.info),
+              CKLoader(
+                type: LoaderType.circular,
+                color: theme.colors.error,
+              ),
+              CKLoader(type: LoaderType.circular, color: theme.colors.info),
             ],
           ),
 
@@ -281,7 +284,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
     );
   }
 
-  Widget _loaderTile(LoaderType type, String label, CkgocThemeData theme) {
+  Widget _loaderTile(LoaderType type, String label, ckcoreThemeData theme) {
     final s = theme.spacing;
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -289,7 +292,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
         SizedBox(
           width: 72,
           height: 72,
-          child: Center(child: CkgocLoader(type: type)),
+          child: Center(child: CKLoader(type: type)),
         ),
         SizedBox(height: s.xs),
         Text(

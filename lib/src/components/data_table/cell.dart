@@ -1,11 +1,11 @@
-import 'package:ckgoc_core/src/components/data_table/ckgoc_table_column.dart';
-import 'package:ckgoc_core/src/components/display/ckgoc_avatar.dart';
-import 'package:ckgoc_core/src/components/display/ckgoc_badge.dart';
-import 'package:ckgoc_core/src/components/inputs/ckgoc_text_field.dart';
+import 'package:ckcoreui/src/components/data_table/ckcore_table_column.dart';
+import 'package:ckcoreui/src/components/display/ckcore_avatar.dart';
+import 'package:ckcoreui/src/components/display/ckcore_badge.dart';
+import 'package:ckcoreui/src/components/inputs/ckcore_text_field.dart';
 import 'package:flutter/material.dart';
 
-import 'package:ckgoc_core/src/themes/ckgoc_theme.dart';
-import 'package:ckgoc_core/src/components/component_enums.dart';
+import 'package:ckcoreui/src/themes/ckcore_theme.dart';
+import 'package:ckcoreui/src/components/component_enums.dart';
 
 class TableCellWidget extends StatelessWidget {
   const TableCellWidget({
@@ -16,7 +16,7 @@ class TableCellWidget extends StatelessWidget {
     this.onCellChanged,
     super.key,
   });
-  final CkgocTableColumn column;
+  final CKTableColumn column;
   final dynamic value;
   final Map<String, dynamic> row;
   final TextEditingController? editController;
@@ -34,16 +34,16 @@ class TableCellWidget extends StatelessWidget {
       return column.cellBuilder!(value, row);
     }
     return switch (column.type) {
-      CkgocColumnType.badge => _badgeCell(context),
-      CkgocColumnType.avatarText => _avatarTextCell(context),
-      CkgocColumnType.progress => _progressCell(context),
-      CkgocColumnType.custom => const SizedBox.shrink(),
-      CkgocColumnType.text => _textCell(context),
+      CKColumnType.badge => _badgeCell(context),
+      CKColumnType.avatarText => _avatarTextCell(context),
+      CKColumnType.progress => _progressCell(context),
+      CKColumnType.custom => const SizedBox.shrink(),
+      CKColumnType.text => _textCell(context),
     };
   }
 
   Widget _textCell(BuildContext context) {
-    final theme = context.ckgocTheme;
+    final theme = context.ckcoreTheme;
     return Text(
       value?.toString() ?? '',
       style: theme.typography.textSm.copyWith(color: theme.colors.onSurface),
@@ -54,11 +54,11 @@ class TableCellWidget extends StatelessWidget {
   Widget _badgeCell(BuildContext context) {
     final variant =
         column.badgeVariantBuilder?.call(value) ?? BadgeVariant.defaultFill;
-    return CkgocBadge(label: value?.toString() ?? '', variant: variant);
+    return CKBadge(label: value?.toString() ?? '', variant: variant);
   }
 
   Widget _avatarTextCell(BuildContext context) {
-    final theme = context.ckgocTheme;
+    final theme = context.ckcoreTheme;
     final s = theme.spacing;
     final label = value?.toString() ?? '';
     final initials = _initials(label);
@@ -66,7 +66,7 @@ class TableCellWidget extends StatelessWidget {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        CkgocAvatar(initials: initials, size: AvatarSize.sm),
+        CKAvatar(initials: initials, size: AvatarSize.sm),
         SizedBox(width: s.sm),
         Flexible(
           child: Text(
@@ -82,7 +82,7 @@ class TableCellWidget extends StatelessWidget {
   }
 
   Widget _progressCell(BuildContext context) {
-    final theme = context.ckgocTheme;
+    final theme = context.ckcoreTheme;
     final s = theme.spacing;
     final pct = (value is num ? (value as num).toDouble() : 0.0).clamp(
       0.0,
@@ -132,7 +132,7 @@ class EditableCellWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CkgocTextField(
+    return CKTextField(
       controller: controller,
       hint: null,
       onChanged: onChanged == null ? null : (v) => onChanged!(v),

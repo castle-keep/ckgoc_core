@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
-import 'package:ckgoc_core/src/themes/ckgoc_theme.dart';
-import 'package:ckgoc_core/src/components/data_table/ckgoc_table_column.dart';
-import 'package:ckgoc_core/src/components/inputs/ckgoc_checkbox.dart';
+import 'package:ckcoreui/src/themes/ckcore_theme.dart';
+import 'package:ckcoreui/src/components/data_table/ckcore_table_column.dart';
+import 'package:ckcoreui/src/components/inputs/ckcore_checkbox.dart';
 
 class ColumnHeaderRow extends StatelessWidget {
   const ColumnHeaderRow({
@@ -20,7 +20,7 @@ class ColumnHeaderRow extends StatelessWidget {
     required this.rowHeight,
     super.key,
   });
-  final List<CkgocTableColumn> columns;
+  final List<CKTableColumn> columns;
   final Map<String, double> widths;
   final bool hasSelection;
   final double selectionWidth;
@@ -34,7 +34,7 @@ class ColumnHeaderRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = context.ckgocTheme;
+    final theme = context.ckcoreTheme;
     final c = theme.colors;
     final s = theme.spacing;
     final t = theme.typography;
@@ -48,7 +48,7 @@ class ColumnHeaderRow extends StatelessWidget {
             SizedBox(
               width: selectionWidth,
               child: Center(
-                child: CkgocCheckbox(
+                child: CKCheckbox(
                   value: allSelected ? true : (someSelected ? null : false),
                   onChanged: (_) => onToggleAll(),
                 ),

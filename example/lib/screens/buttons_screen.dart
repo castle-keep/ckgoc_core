@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ckgoc_core/ckgoc_core.dart';
+import 'package:ckcoreui/ckcore_core.dart';
 
 class ButtonsScreen extends StatelessWidget {
   const ButtonsScreen({super.key});
@@ -8,7 +8,7 @@ class ButtonsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = context.ckgocTheme;
+    final theme = context.ckcoreTheme;
     final s = theme.spacing;
 
     return SingleChildScrollView(
@@ -20,52 +20,52 @@ class ButtonsScreen extends StatelessWidget {
             title: 'Variants',
             spacing: s,
             children: [
-              CkgocButton(
+              CKButton(
                 onPressed: _noop,
                 variant: ButtonVariant.primary,
                 child: const Text('Primary'),
               ),
-              CkgocButton(
+              CKButton(
                 onPressed: _noop,
                 variant: ButtonVariant.secondary,
                 child: const Text('Secondary'),
               ),
-              CkgocButton(
+              CKButton(
                 onPressed: _noop,
                 variant: ButtonVariant.outline,
                 child: const Text('Outline'),
               ),
-              CkgocButton(
+              CKButton(
                 onPressed: _noop,
                 variant: ButtonVariant.ghost,
                 child: const Text('Ghost'),
               ),
-              CkgocButton(
+              CKButton(
                 onPressed: _noop,
                 variant: ButtonVariant.accent,
                 child: const Text('Accent'),
               ),
-              CkgocButton(
+              CKButton(
                 onPressed: _noop,
                 variant: ButtonVariant.destructive,
                 child: const Text('Destructive'),
               ),
-              CkgocButton(
+              CKButton(
                 onPressed: _noop,
                 variant: ButtonVariant.success,
                 child: const Text('Success'),
               ),
-              CkgocButton(
+              CKButton(
                 onPressed: _noop,
                 variant: ButtonVariant.warning,
                 child: const Text('Warning'),
               ),
-              CkgocButton(
+              CKButton(
                 onPressed: _noop,
                 variant: ButtonVariant.info,
                 child: const Text('Info'),
               ),
-              CkgocButton(
+              CKButton(
                 onPressed: _noop,
                 variant: ButtonVariant.link,
                 child: const Text('Link'),
@@ -77,27 +77,27 @@ class ButtonsScreen extends StatelessWidget {
             title: 'Sizes',
             spacing: s,
             children: [
-              CkgocButton(
+              CKButton(
                 onPressed: _noop,
                 size: ButtonSize.xs,
                 child: const Text('XS  32dp'),
               ),
-              CkgocButton(
+              CKButton(
                 onPressed: _noop,
                 size: ButtonSize.sm,
                 child: const Text('SM  40dp'),
               ),
-              CkgocButton(
+              CKButton(
                 onPressed: _noop,
                 size: ButtonSize.md,
                 child: const Text('MD  48dp'),
               ),
-              CkgocButton(
+              CKButton(
                 onPressed: _noop,
                 size: ButtonSize.lg,
                 child: const Text('LG  56dp'),
               ),
-              CkgocButton(
+              CKButton(
                 onPressed: _noop,
                 size: ButtonSize.xl,
                 child: const Text('XL  64dp'),
@@ -109,13 +109,13 @@ class ButtonsScreen extends StatelessWidget {
             title: 'States',
             spacing: s,
             children: [
-              CkgocButton(onPressed: _noop, child: const Text('Default')),
-              CkgocButton(
+              CKButton(onPressed: _noop, child: const Text('Default')),
+              CKButton(
                 onPressed: _noop,
                 loading: true,
                 child: const Text('Loading'),
               ),
-              CkgocButton(
+              CKButton(
                 onPressed: _noop,
                 disabled: true,
                 child: const Text('Disabled'),
@@ -127,12 +127,12 @@ class ButtonsScreen extends StatelessWidget {
             title: 'Full width',
             spacing: s,
             children: [
-              CkgocButton(
+              CKButton(
                 onPressed: _noop,
                 isFullWidth: true,
                 child: const Text('Full Width Primary'),
               ),
-              CkgocButton(
+              CKButton(
                 onPressed: _noop,
                 isFullWidth: true,
                 variant: ButtonVariant.outline,
@@ -149,7 +149,7 @@ class ButtonsScreen extends StatelessWidget {
 class _Section extends StatelessWidget {
   final String title;
   final List<Widget> children;
-  final CkgocSpacing spacing;
+  final ckcoreSpacing spacing;
 
   const _Section({
     required this.title,
@@ -159,7 +159,7 @@ class _Section extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = context.ckgocTheme;
+    final theme = context.ckcoreTheme;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

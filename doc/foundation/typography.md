@@ -2,7 +2,7 @@
 
 ## Overview
 
-All text in the product uses styles from `CkgocTypography`.
+All text in the product uses styles from `ckcoreTypography`.
 Never use `TextStyle(fontSize: 16)` directly — always reference a token.
 
 ## Scale
@@ -29,11 +29,31 @@ Never use `TextStyle(fontSize: 16)` directly — always reference a token.
 
 ## Usage
 
+### Direct typography styles
+
 ```dart
 Text(
   'Welcome back',
-  style: context.ckgocTheme.typography.headingLg,
+  style: context.ckcoreTheme.typography.headingLg,
 )
+```
+
+### Semantic heading shortcuts
+
+Use `.h1` through `.h6` extensions for semantic HTML-style headings:
+
+```dart
+// Shorthand for semantic headings
+Text('Page Title').h1           // display2xl (32px, Bold)
+Text('Section').h2              // displayXl (28px, Bold)
+Text('Subsection').h3           // displayLg (24px, Bold)
+Text('Card Title').h4           // displayMd (20px, Bold)
+Text('Label').h5                // displaySm (18px, Medium)
+Text('Secondary').h6            // textXl (20px, Regular)
+
+// Combine with color extensions
+Text('Page Title').h1.primary    // h1 with primary color
+Text('Section').h2.bold         // h2 with bold emphasis
 ```
 
 ## Brand Fonts

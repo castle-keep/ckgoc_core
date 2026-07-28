@@ -1,9 +1,9 @@
 
 
-ckgoc_core — Company design system and UI components for Flutter
+ckcoreui — Company design system and UI components for Flutter
 ===============================================================
 
-ckgoc_core packages a multi-brand design system (CastleKeep and SkyGo) with
+ckcoreui packages a multi-brand design system (CastleKeep and SkyGo) with
 consistent design tokens, components, and full-screen templates. It's
 intended for apps that need a reusable, themeable UI foundation that follows
 company design guidelines.
@@ -25,7 +25,7 @@ Add the package from pub.dev to your application's `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  ckgoc_core: ^0.2.1
+  ckcoreui: ^0.2.1
 ```
 
 Then run:
@@ -38,7 +38,7 @@ Dependencies
 ------------
 This package depends on the Flutter SDK and a small set of runtime
 dependencies, including `flutter_svg` for SVG rendering and `lucide_icons` for
-icons. Consumers only need to add `ckgoc_core` to their `pubspec.yaml`; the
+icons. Consumers only need to add `ckcoreui` to their `pubspec.yaml`; the
 package will bring the required runtime dependencies.
 
 Logo asset naming
@@ -72,11 +72,11 @@ package. Examples:
 Image (PNG) from the package:
 
 ```dart
-import 'package:ckgoc_core/ckgoc_core.dart';
+import 'package:ckcoreui/ckcore_core.dart';
 
 Image.asset(
   BrandIcon.castlekeepName,
-  package: 'ckgoc_core',
+  package: 'ckcoreui',
   width: 160,
   fit: BoxFit.contain,
 );
@@ -85,24 +85,24 @@ Image.asset(
 SVG from the package (rendered by the package using `flutter_svg`):
 
 ```dart
-import 'package:ckgoc_core/ckgoc_core.dart';
+import 'package:ckcoreui/ckcore_core.dart';
 
 // The package will render SVG assets where appropriate; you can also use
 // SvgPicture.asset directly if you prefer.
-Widget svg = BrandIcon.brandLogoWidget(context, CkgocBrand.skyGo, size: 160);
+Widget svg = BrandIcon.brandLogoWidget(context, ckcoreBrand.skyGo, size: 160);
 ```
 
 Side-nav specific logo injection:
 
 ```dart
-CkgocSideNav(
+ckcoreSideNav(
   sections: sections,
   selectedIndex: selected,
   onItemSelected: onSelect,
   brandName: '',
   logo: Image.asset(
     BrandIcon.castlekeepSymbol,
-    package: 'ckgoc_core',
+    package: 'ckcoreui',
     width: 32,
     height: 32,
   ),
@@ -120,7 +120,7 @@ Next steps
 ----------
 - Remove non-image files from `assets/images/logos/` (e.g. `.DS_Store`, `.eps`) before publishing.
 - Optionally add `flutter_svg` to your app to render SVG variants directly.
-- Consider using `CkgocSideNav.logo` to inject a specific logo variant when you need precise control.
+- Consider using `ckcoreSideNav.logo` to inject a specific logo variant when you need precise control.
 If you want a higher-level API, we added `BrandIconWidget` that accepts `brand` + `variant` enums and handles raster/SVG selection and rendering.
 
 The script will rename files and directories under `assets/images/logos` to
@@ -129,12 +129,12 @@ git repository.
 
 Quick start
 -----------
-Wrap your app with `CkgocApp` to inject the design system:
+Wrap your app with `ckcoreApp` to inject the design system:
 
 ```dart
 void main() {
   runApp(
-    CkgocApp(
+    ckcoreApp(
       brand: CompanyBrand.skyGo,
       child: MaterialApp(home: MyHomePage()),
     ),
@@ -142,10 +142,10 @@ void main() {
 }
 ```
 
-Access tokens anywhere via `context.ckgocTheme`:
+Access tokens anywhere via `context.ckcoreTheme`:
 
 ```dart
-final theme = context.ckgocTheme;
+final theme = context.ckcoreTheme;
 final colors = theme.colors;
 final typography = theme.typography;
 ```
@@ -153,7 +153,7 @@ final typography = theme.typography;
 Brand configuration
 -------------------
 Select `CompanyBrand.castleKeep` or `CompanyBrand.skyGo` when creating
-`CkgocApp`. To add a new brand, create a brand folder under
+`ckcoreApp`. To add a new brand, create a brand folder under
 `lib/src/themes/brands/` and register it in the theme resolver.
 
 Brand scaffolding CLI
@@ -163,13 +163,13 @@ This repository includes a small CLI to scaffold a new brand and auto-register i
 Run from the project root:
 
 ```bash
-dart run bin/ckgoc.dart add brand "Acme"
+dart run bin/ckcoreui.dart add brand "Acme"
 ```
 
 Components and usage
 --------------------
-The library exposes themed components such as `CkgocButton`,
-`CkgocCard`, `CkgocDataTable`, `CkgocTextField`, and more. See the
+The library exposes themed components such as `ckcoreButton`,
+`ckcoreCard`, `ckcoreDataTable`, `ckcoreTextField`, and more. See the
 component examples in the `example/` application for usage patterns.
 
 More documentation

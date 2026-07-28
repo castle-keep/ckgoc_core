@@ -1,6 +1,6 @@
 {
-    "name": "ckgoc_docs_app",
-    "short_name": "ckgoc_docs_app",
+    "name": "ckcoreui_docs_app",
+    "short_name": "ckcoreui_docs_app",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 
-import 'package:ckgoc_core/src/foundation/foundation.dart';
-import 'package:ckgoc_core/src/themes/ckgoc_brand.dart';
-import 'package:ckgoc_core/src/themes/ckgoc_theme_data.dart';
-import 'package:ckgoc_core/src/themes/brands/skygo/skygo_colors.dart';
-import 'package:ckgoc_core/src/themes/brands/skygo/skygo_typography.dart';
+import 'package:ckcoreui/src/foundation/foundation.dart';
+import 'package:ckcoreui/src/themes/ckcore_brand.dart';
+import 'package:ckcoreui/src/themes/ckcore_theme_data.dart';
+import 'package:ckcoreui/src/themes/brands/skygo/skygo_colors.dart';
+import 'package:ckcoreui/src/themes/brands/skygo/skygo_typography.dart';
 
-typedef _P = CkgocPrimitiveColors;
+typedef _P = ckcorePrimitiveColors;
 typedef _C = SkyGoColors;
 
 final class SkyGoDarkTheme {
   SkyGoDarkTheme._();
 
-  static CkgocThemeData build() {
-    const colors = CkgocColors(
+  static CkcoreuiThemeData build() {
+    const colors = ckcoreColors(
       primary: _C.primaryOnDark,
       primaryHover: _C.primaryLight,
       primaryActive: Color(0xFF80C3FA),
@@ -80,18 +80,18 @@ final class SkyGoDarkTheme {
       onTagPro: _P.neutral0,
     );
 
-    return CkgocThemeData(
-      brand: CkgocBrand.skyGo,
+    return CkcoreuiThemeData(
+      brand: ckcoreBrand.skyGo,
       brightness: Brightness.dark,
       colors: colors,
       typography: SkyGoTypography.scale(defaultColor: _P.neutral100),
-      spacing: CkgocSpacing.defaults,
-      radius: CkgocRadius.defaults,
-      elevation: CkgocElevation.defaults,
-      shadows: CkgocShadows.dark(),
-      motion: CkgocMotion.defaults,
-      opacity: CkgocOpacity.defaults,
-      breakpoints: CkgocBreakpoints.defaults,
+      spacing: ckcoreSpacing.defaults,
+      radius: ckcoreRadius.defaults,
+      elevation: ckcoreElevation.defaults,
+      shadows: ckcoreShadows.dark(),
+      motion: ckcoreMotion.defaults,
+      opacity: ckcoreOpacity.defaults,
+      breakpoints: ckcoreBreakpoints.defaults,
     );
   }
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:ckgoc_core/src/components/components.dart';
-import 'package:ckgoc_core/src/themes/themes.dart';
+import 'package:ckcoreui/src/components/components.dart';
+import 'package:ckcoreui/src/themes/themes.dart';
 
 class DataRowWidget extends StatelessWidget {
   const DataRowWidget({
@@ -22,7 +22,7 @@ class DataRowWidget extends StatelessWidget {
   });
   final Map<String, dynamic> row;
   final String rowKey;
-  final List<CkgocTableColumn> columns;
+  final List<CKTableColumn> columns;
   final Map<String, double> widths;
   final bool hasSelection;
   final double selectionWidth;
@@ -37,7 +37,7 @@ class DataRowWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = context.ckgocTheme;
+    final theme = context.ckcoreTheme;
     final c = theme.colors;
     final s = theme.spacing;
     final o = theme.opacity;
@@ -74,7 +74,7 @@ class DataRowWidget extends StatelessWidget {
                   SizedBox(
                     width: selectionWidth,
                     child: Center(
-                      child: CkgocCheckbox(
+                      child: CKCheckbox(
                         value: isSelected,
                         onChanged: (_) => onTap(),
                       ),

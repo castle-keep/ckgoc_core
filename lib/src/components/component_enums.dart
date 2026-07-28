@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 
 // Button
 
-/// Variants for `CkgocButton` styling.
+/// Variants for `CKButton` styling.
 enum ButtonVariant {
   primary,
   secondary,
@@ -32,6 +32,7 @@ enum BadgeVariant {
   warning,
   error,
   info,
+  draft,
   live,
   newBadge,
   beta,
@@ -48,7 +49,7 @@ enum BadgeVariant {
 // Chip
 
 /// State for chips.
-enum ChipState { defaultState, selected, disabled, error }
+enum ChipState { defaultState, draft, selected, disabled, error }
 
 // Avatar
 
@@ -86,6 +87,16 @@ enum CardVariant { defaultCard, success, warning, error, info }
 /// Layout orientations for cards.
 enum CardLayout { vertical, horizontal }
 
+/// Alignment options for media and trailing elements in components.
+///
+/// - For `CardLayout.horizontal`, `top/center/bottom` affect vertical placement
+///   of the media/trailing; `stretch` will attempt to stretch along the
+///   cross-axis.
+/// - For `CardLayout.vertical`, `top/center/bottom` affect horizontal placement
+///   (interpreted as start/center/end) and `stretch` will attempt to stretch
+///   along the cross-axis.
+enum ContentAlignment { stretch, center, top, bottom }
+
 // Container
 
 /// Variants for container surfaces.
@@ -94,7 +105,7 @@ enum ContainerVariant { surface, muted, outlined }
 // Data Table
 
 /// Column data types used by the table component.
-enum CkgocColumnType { text, badge, avatarText, progress, custom }
+enum CKColumnType { text, badge, avatarText, progress, custom }
 
 /// Selection modes for tables.
 enum TableSelectionMode { none, single, multiple }
@@ -109,9 +120,9 @@ enum AlertVariant { info, success, warning, error }
 
 // Accordion
 
-/// Item model for `CkgocAccordion`.
-class CkgocAccordionItem {
-  const CkgocAccordionItem({required this.title, required this.content});
+/// Item model for `CKAccordion`.
+class CKAccordionItem {
+  const CKAccordionItem({required this.title, required this.content});
   final String title;
   final Widget content;
 }
@@ -122,11 +133,11 @@ class CkgocAccordionItem {
 enum StepStatus { completed, inProgress, pending }
 
 /// Orientation for the stepper widget.
-enum CkgocStepperOrientation { vertical, horizontal }
+enum CKStepperOrientation { vertical, horizontal }
 
 /// Small model representing a single step.
-class CkgocStep {
-  const CkgocStep({
+class CKStep {
+  const CKStep({
     required this.title,
     required this.status,
     this.icon,
@@ -141,11 +152,11 @@ class CkgocStep {
 // Timeline
 
 /// Orientation for timeline layouts.
-enum CkgocTimelineOrientation { vertical, horizontal }
+enum CKTimelineOrientation { vertical, horizontal }
 
-/// Event model for `CkgocTimeline`.
-class CkgocTimelineEvent {
-  const CkgocTimelineEvent({
+/// Event model for `CKTimeline`.
+class CKTimelineEvent {
+  const CKTimelineEvent({
     required this.title,
     this.timestamp,
     this.icon,
@@ -168,20 +179,16 @@ enum AppBarStyle { primary, surface, dark, transparent }
 enum TabVariant { line, pill, card }
 
 /// Model for a navigation item.
-class CkgocNavItem {
-  const CkgocNavItem({
-    required this.icon,
-    required this.label,
-    this.activeIcon,
-  });
+class CKNavItem {
+  const CKNavItem({required this.icon, required this.label, this.activeIcon});
   final IconData icon;
   final String label;
   final IconData? activeIcon;
 }
 
 /// Model for a tab entry.
-class CkgocTab {
-  const CkgocTab({
+class CKTab {
+  const CKTab({
     required this.label,
     required this.content,
     this.icon,
@@ -208,18 +215,18 @@ class BreadcrumbItem {
 enum SideNavStyle { surface, brand }
 
 /// Model for side navigation item.
-class CkgocSideNavItem {
-  const CkgocSideNavItem({required this.icon, required this.label, this.badge});
+class CKSideNavItem {
+  const CKSideNavItem({required this.icon, required this.label, this.badge});
   final IconData icon;
   final String label;
   final int? badge;
 }
 
 /// Section container for side navigation items.
-class CkgocSideNavSection {
-  const CkgocSideNavSection({required this.items, this.label});
+class CKSideNavSection {
+  const CKSideNavSection({required this.items, this.label});
   final String? label;
-  final List<CkgocSideNavItem> items;
+  final List<CKSideNavItem> items;
 }
 
 /// Variant selections for brand icon helpers.
@@ -231,8 +238,8 @@ enum BrandIconVariant { master, logo, name }
 // Menu
 
 /// Model for items in a menu.
-class CkgocMenuItem {
-  const CkgocMenuItem({
+class CKMenuItem {
+  const CKMenuItem({
     required this.label,
     this.icon,
     this.onTap,

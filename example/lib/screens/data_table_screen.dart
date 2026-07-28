@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ckgoc_core/ckgoc_core.dart';
+import 'package:ckcoreui/ckcore_core.dart';
 
 class DataTableScreen extends StatefulWidget {
   const DataTableScreen({super.key});
@@ -95,40 +95,40 @@ class _DataTableScreenState extends State<DataTableScreen> {
   }
 
   //  Shared base columns
-  List<CkgocTableColumn> get _baseColumns => [
-    const CkgocTableColumn(
+  List<CKTableColumn> get _baseColumns => [
+    const CKTableColumn(
       key: 'name',
       label: 'Name',
-      type: CkgocColumnType.avatarText,
+      type: CKColumnType.avatarText,
       sortable: true,
       flex: 2,
     ),
-    const CkgocTableColumn(key: 'email', label: 'Email', flex: 2),
-    CkgocTableColumn(
+    const CKTableColumn(key: 'email', label: 'Email', flex: 2),
+    CKTableColumn(
       key: 'role',
       label: 'Role',
       width: 110,
-      type: CkgocColumnType.badge,
+      type: CKColumnType.badge,
       badgeVariantBuilder: (v) => switch (v.toString()) {
         'Admin' => BadgeVariant.primary,
         'Editor' => BadgeVariant.info,
         _ => BadgeVariant.outline,
       },
     ),
-    CkgocTableColumn(
+    CKTableColumn(
       key: 'status',
       label: 'Status',
       width: 90,
       cellBuilder: (v, _) => _StatusText(status: v.toString()),
     ),
-    CkgocTableColumn(
+    CKTableColumn(
       key: 'actions',
       label: 'Actions',
       width: 100,
       textAlign: TextAlign.center,
       cellBuilder: (v, row) => Builder(
         builder: (ctx) {
-          final theme = ctx.ckgocTheme;
+          final theme = ctx.ckcoreTheme;
           final iconSize = theme.spacing.md;
           final btnSize = theme.spacing.xl; // 32dp
           return Row(
@@ -212,7 +212,7 @@ class _DataTableScreenState extends State<DataTableScreen> {
   //  Build
   @override
   Widget build(BuildContext context) {
-    final theme = context.ckgocTheme;
+    final theme = context.ckcoreTheme;
     final s = theme.spacing;
     final c = theme.colors;
     final t = theme.typography;
@@ -230,7 +230,7 @@ class _DataTableScreenState extends State<DataTableScreen> {
             style: t.textSm.copyWith(color: c.onSurfaceVariant),
           ),
           SizedBox(height: s.md),
-          CkgocDataTable(
+          CKDataTable(
             columns: _baseColumns,
             rows: _filterRows(_editableRows, _editableSearch),
             rowKey: 'id',
@@ -262,7 +262,7 @@ class _DataTableScreenState extends State<DataTableScreen> {
             style: t.textSm.copyWith(color: c.onSurfaceVariant),
           ),
           SizedBox(height: s.md),
-          CkgocDataTable(
+          CKDataTable(
             widthBehavior: TableWidthBehavior.compact,
             columns: _baseColumns,
             rows: _filterRows(_deletableRows, _deleteSearch),
@@ -314,7 +314,7 @@ class _DataTableScreenState extends State<DataTableScreen> {
             style: t.textSm.copyWith(color: c.onSurfaceVariant),
           ),
           SizedBox(height: s.md),
-          CkgocDataTable(
+          CKDataTable(
             columns: _baseColumns,
             rows: _filterRows(_seed, _multiSearch),
             rowKey: 'id',
@@ -348,7 +348,7 @@ class _DataTableScreenState extends State<DataTableScreen> {
             style: t.textSm.copyWith(color: c.onSurfaceVariant),
           ),
           SizedBox(height: s.md),
-          CkgocDataTable(
+          CKDataTable(
             columns: _baseColumns,
             rows: _filterRows(_pagedRows, _pagedSearch),
             rowKey: 'id',
@@ -389,7 +389,7 @@ class _StatusText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = context.ckgocTheme;
+    final theme = context.ckcoreTheme;
     final color = switch (status) {
       'Active' => theme.colors.success,
       'Pending' => theme.colors.warning,
@@ -417,7 +417,7 @@ class _DataPreview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = context.ckgocTheme;
+    final theme = context.ckcoreTheme;
     final c = theme.colors;
     final s = theme.spacing;
     final t = theme.typography;
@@ -505,7 +505,7 @@ class _SelectionPreview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = context.ckgocTheme;
+    final theme = context.ckcoreTheme;
     final c = theme.colors;
     final s = theme.spacing;
     final t = theme.typography;
@@ -572,7 +572,7 @@ class _SelectionPreview extends StatelessWidget {
 //  Section label
 class _SectionLabel extends StatelessWidget {
   final String text;
-  final CkgocThemeData theme;
+  final ckcoreThemeData theme;
   const _SectionLabel(this.text, this.theme);
 
   @override

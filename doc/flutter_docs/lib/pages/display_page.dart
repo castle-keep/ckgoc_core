@@ -1,8 +1,8 @@
-import 'package:ckgoc_core/ckgoc_core.dart';
+import 'package:ckcoreui/ckcore_core.dart';
 import 'package:flutter/material.dart';
 
-import 'package:ckgoc_docs_app/docs/doc_models.dart';
-import 'package:ckgoc_docs_app/docs/doc_widgets.dart';
+import 'package:ckcore_docs_app/docs/doc_models.dart';
+import 'package:ckcore_docs_app/docs/doc_widgets.dart';
 
 class DisplayPage extends StatelessWidget {
   const DisplayPage({super.key});
@@ -30,17 +30,17 @@ class DisplayPage extends StatelessWidget {
 
 ComponentDocData _accordionDoc() {
   const code = '''
-CkgocAccordion(
+CKAccordion(
   initiallyExpanded: 0,
   allowMultiple: false,
   items: const [
-    CkgocAccordionItem(title: 'First', content: Text('Content A')),
-    CkgocAccordionItem(title: 'Second', content: Text('Content B')),
+    CKAccordionItem(title: 'First', content: Text('Content A')),
+    CKAccordionItem(title: 'Second', content: Text('Content B')),
   ],
 )
 ''';
   return const ComponentDocData(
-    title: 'CkgocAccordion',
+    title: 'CKAccordion',
     summary:
         'Expandable content groups. Useful for FAQs, settings sections, and content disclosure patterns.',
     demo: _AccordionDemo(),
@@ -48,7 +48,7 @@ CkgocAccordion(
     params: [
       DocParam(
         name: 'items',
-        type: 'List<CkgocAccordionItem>',
+        type: 'List<CKAccordionItem>',
         description: 'Accordion sections to render.',
         requiredParam: true,
       ),
@@ -85,12 +85,12 @@ Wrap(
   runSpacing: 12,
   children: [
     for (final size in AvatarSize.values)
-      CkgocAvatar(initials: 'CK', size: size, status: AvatarStatus.online),
+      CKAvatar(initials: 'CK', size: size, status: AvatarStatus.online),
   ],
 )
 ''';
   return const ComponentDocData(
-    title: 'CkgocAvatar and CkgocAvatarGroup',
+    title: 'CKAvatar and CKAvatarGroup',
     summary:
         'Identity primitives for users, teams, assignees, and participants. The demo covers every AvatarSize and every AvatarStatus.',
     demo: _AvatarDemo(),
@@ -138,7 +138,7 @@ Wrap(
       DocFaq(
         question: 'How do I show several users together?',
         answer:
-            'Use CkgocAvatarGroup with a list of avatars and adjust maxVisible.',
+            'Use CKAvatarGroup with a list of avatars and adjust maxVisible.',
       ),
     ],
     notes: [
@@ -154,12 +154,12 @@ Wrap(
   runSpacing: 8,
   children: [
     for (final variant in BadgeVariant.values)
-      CkgocBadge(label: variant.name, variant: variant),
+      CKBadge(label: variant.name, variant: variant),
   ],
 )
 ''';
   return const ComponentDocData(
-    title: 'CkgocBadge',
+    title: 'CKBadge',
     summary:
         'Status, counters, and compact labeling. The live demo renders every BadgeVariant including presence badges.',
     demo: _BadgeDemo(),
@@ -209,17 +209,17 @@ Wrap(
 
 ComponentDocData _cardDoc() {
   const code = '''
-CkgocCard(
+CKCard(
   title: 'Quarterly report',
   subtitle: 'Updated 5 minutes ago',
   description: 'Revenue increased by 18% month over month.',
   variant: CardVariant.info,
   layout: CardLayout.vertical,
-  action: CkgocButton(onPressed: () {}, child: Text('Open')),
+  action: CKButton(onPressed: () {}, child: Text('Open')),
 )
 ''';
   return const ComponentDocData(
-    title: 'CkgocCard',
+    title: 'CKCard',
     summary:
         'Content surface for summaries, actions, and dashboard modules. The demo covers every CardVariant and both CardLayout values.',
     demo: _CardDemo(),
@@ -293,12 +293,12 @@ Wrap(
   spacing: 8,
   children: [
     for (final state in ChipState.values)
-      CkgocFilterChip(label: state.name, state: state),
+      CKFilterChip(label: state.name, state: state),
   ],
 )
 ''';
   return const ComponentDocData(
-    title: 'CkgocFilterChip and CkgocInputChip',
+    title: 'CKFilterChip and CKInputChip',
     summary:
         'Compact selection and token components. The demo covers every ChipState for both chip types.',
     demo: _ChipDemo(),
@@ -359,7 +359,7 @@ Wrap(
 
 ComponentDocData _containerDoc() {
   const code = '''
-CkgocContainer(
+CKContainer(
   variant: ContainerVariant.outlined,
   elevated: true,
   child: Padding(
@@ -369,7 +369,7 @@ CkgocContainer(
 )
 ''';
   return const ComponentDocData(
-    title: 'CkgocContainer',
+    title: 'CKContainer',
     summary:
         'Reusable themed surface wrapper. The demo renders every ContainerVariant with and without elevation.',
     demo: _ContainerDemo(),
@@ -422,14 +422,14 @@ ComponentDocData _dividerDoc() {
 Column(
   children: [
     Text('Above'),
-    CkgocDivider(),
+    CKDivider(),
     Text('Below'),
   ],
 )
 ''';
   return const ComponentDocData(
     comingSoon: true,
-    title: 'CkgocDivider',
+    title: 'CKDivider',
     summary:
         'Simple separator widget. The public API is intentionally small: horizontal or vertical via the direction parameter.',
     demo: _DividerDemo(),
@@ -459,7 +459,7 @@ Column(
 
 ComponentDocData _listTileDoc() {
   const code = '''
-CkgocListTile(
+CKListTile(
   leading: Icon(Icons.person),
   title: Text('Profile'),
   subtitle: Text('Manage your account'),
@@ -468,7 +468,7 @@ CkgocListTile(
 )
 ''';
   return const ComponentDocData(
-    title: 'CkgocListTile',
+    title: 'CKListTile',
     summary:
         'Simple list row wrapper for navigation or settings-style layouts.',
     demo: _ListTileDemo(),
@@ -518,17 +518,17 @@ CkgocListTile(
 
 ComponentDocData _stepperDoc() {
   const code = '''
-CkgocStepper(
-  orientation: CkgocStepperOrientation.horizontal,
+CKStepper(
+  orientation: CKStepperOrientation.horizontal,
   steps: const [
-    CkgocStep(title: 'Requested', status: StepStatus.completed),
-    CkgocStep(title: 'Approved', status: StepStatus.inProgress),
-    CkgocStep(title: 'Done', status: StepStatus.pending),
+    CKStep(title: 'Requested', status: StepStatus.completed),
+    CKStep(title: 'Approved', status: StepStatus.inProgress),
+    CKStep(title: 'Done', status: StepStatus.pending),
   ],
 )
 ''';
   return const ComponentDocData(
-    title: 'CkgocStepper',
+    title: 'CKStepper',
     summary:
         'Progress through discrete steps. The live demo covers every StepStatus and both stepper orientations.',
     demo: _StepperDemo(),
@@ -536,15 +536,15 @@ CkgocStepper(
     params: [
       DocParam(
         name: 'steps',
-        type: 'List<CkgocStep>',
+        type: 'List<CKStep>',
         description: 'Ordered steps to render.',
         requiredParam: true,
       ),
       DocParam(
         name: 'orientation',
-        type: 'CkgocStepperOrientation',
+        type: 'CKStepperOrientation',
         description: 'Vertical or horizontal layout.',
-        defaultValue: 'CkgocStepperOrientation.vertical',
+        defaultValue: 'CKStepperOrientation.vertical',
       ),
       DocParam(
         name: 'checkColor',
@@ -565,28 +565,28 @@ CkgocStepper(
       ),
       DocFaq(
         question: 'Can steps include custom icons?',
-        answer: 'Yes. Build each CkgocStep with the icon parameter.',
+        answer: 'Yes. Build each CKStep with the icon parameter.',
       ),
     ],
     notes: [
-      'Enum demo coverage: all StepStatus values and both CkgocStepperOrientation values are rendered.',
+      'Enum demo coverage: all StepStatus values and both CKStepperOrientation values are rendered.',
     ],
   );
 }
 
 ComponentDocData _timelineDoc() {
   const code = '''
-CkgocTimeline(
-  orientation: CkgocTimelineOrientation.vertical,
+CKTimeline(
+  orientation: CKTimelineOrientation.vertical,
   events: const [
-    CkgocTimelineEvent(title: 'Created', timestamp: '09:00', status: StepStatus.completed),
-    CkgocTimelineEvent(title: 'Reviewed', timestamp: '10:30', status: StepStatus.inProgress),
-    CkgocTimelineEvent(title: 'Published', timestamp: '11:45', status: StepStatus.pending),
+    CKTimelineEvent(title: 'Created', timestamp: '09:00', status: StepStatus.completed),
+    CKTimelineEvent(title: 'Reviewed', timestamp: '10:30', status: StepStatus.inProgress),
+    CKTimelineEvent(title: 'Published', timestamp: '11:45', status: StepStatus.pending),
   ],
 )
 ''';
   return const ComponentDocData(
-    title: 'CkgocTimeline',
+    title: 'CKTimeline',
     summary:
         'Chronological event display. The demo covers both orientations with timestamped events.',
     demo: _TimelineDemo(),
@@ -594,15 +594,15 @@ CkgocTimeline(
     params: [
       DocParam(
         name: 'events',
-        type: 'List<CkgocTimelineEvent>',
+        type: 'List<CKTimelineEvent>',
         description: 'Ordered timeline entries.',
         requiredParam: true,
       ),
       DocParam(
         name: 'orientation',
-        type: 'CkgocTimelineOrientation',
+        type: 'CKTimelineOrientation',
         description: 'Vertical or horizontal layout.',
-        defaultValue: 'CkgocTimelineOrientation.vertical',
+        defaultValue: 'CKTimelineOrientation.vertical',
       ),
       DocParam(
         name: 'lineColor',
@@ -623,11 +623,11 @@ CkgocTimeline(
       ),
       DocFaq(
         question: 'Can individual events change color?',
-        answer: 'Yes. Each CkgocTimelineEvent accepts a dotColor override.',
+        answer: 'Yes. Each CKTimelineEvent accepts a dotColor override.',
       ),
     ],
     notes: [
-      'Enum demo coverage: both CkgocTimelineOrientation values are rendered.',
+      'Enum demo coverage: both CKTimelineOrientation values are rendered.',
     ],
   );
 }
@@ -637,14 +637,14 @@ class _AccordionDemo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const CkgocAccordion(
+    return const CKAccordion(
       initiallyExpanded: 0,
       items: [
-        CkgocAccordionItem(
+        CKAccordionItem(
           title: 'Billing',
           content: Text('Invoices, payment methods, and statements.'),
         ),
-        CkgocAccordionItem(
+        CKAccordionItem(
           title: 'Security',
           content: Text('Passwords, sessions, and access control.'),
         ),
@@ -666,7 +666,7 @@ class _AvatarDemo extends StatelessWidget {
           runSpacing: 12,
           children: [
             for (final size in AvatarSize.values)
-              CkgocAvatar(
+              CKAvatar(
                 initials: size.name.substring(0, 1).toUpperCase(),
                 size: size,
                 status: AvatarStatus.online,
@@ -681,7 +681,7 @@ class _AvatarDemo extends StatelessWidget {
               Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  CkgocAvatar(initials: 'CK', status: status),
+                  CKAvatar(initials: 'CK', status: status),
                   const VSpace(height: 6),
                   Text(status.name),
                 ],
@@ -689,13 +689,13 @@ class _AvatarDemo extends StatelessWidget {
           ],
         ),
         const VSpace(height: 16),
-        const CkgocAvatarGroup(
+        const CKAvatarGroup(
           avatars: [
-            CkgocAvatar(initials: 'AL'),
-            CkgocAvatar(initials: 'BR'),
-            CkgocAvatar(initials: 'CK'),
-            CkgocAvatar(initials: 'DK'),
-            CkgocAvatar(initials: 'EZ'),
+            CKAvatar(initials: 'AL'),
+            CKAvatar(initials: 'BR'),
+            CKAvatar(initials: 'CK'),
+            CKAvatar(initials: 'DK'),
+            CKAvatar(initials: 'EZ'),
           ],
         ),
       ],
@@ -713,8 +713,8 @@ class _BadgeDemo extends StatelessWidget {
       runSpacing: 8,
       children: [
         for (final variant in BadgeVariant.values)
-          CkgocBadge(label: variant.name, variant: variant),
-        const CkgocBadge.count(count: 124),
+          CKBadge(label: variant.name, variant: variant),
+        const CKBadge.count(count: 124),
       ],
     );
   }
@@ -730,16 +730,16 @@ class _CardDemo extends StatelessWidget {
         for (final variant in CardVariant.values)
           Padding(
             padding: const EdgeInsets.only(bottom: 12),
-            child: CkgocCard(
+            child: CKCard(
               title: variant.name,
               subtitle: 'Status card',
               description: 'This card documents the ${variant.name} style.',
               variant: variant,
               trailing: const Icon(Icons.more_horiz),
-              action: CkgocButton(onPressed: () {}, child: const Text('Open')),
+              action: CKButton(onPressed: () {}, child: const Text('Open')),
             ),
           ),
-        const CkgocCard(
+        const CKCard(
           title: 'Horizontal layout',
           subtitle: 'CardLayout.horizontal',
           description: 'Useful when media and text should sit side by side.',
@@ -764,7 +764,7 @@ class _ChipDemo extends StatelessWidget {
           runSpacing: 8,
           children: [
             for (final state in ChipState.values)
-              CkgocFilterChip(
+              CKFilterChip(
                 label: state.name,
                 state: state,
                 selected: state == ChipState.selected,
@@ -778,7 +778,7 @@ class _ChipDemo extends StatelessWidget {
           runSpacing: 8,
           children: [
             for (final state in ChipState.values)
-              CkgocInputChip(
+              CKInputChip(
                 label: state.name,
                 state: state,
                 leading: const Icon(Icons.tag, size: 16),
@@ -803,7 +803,7 @@ class _ContainerDemo extends StatelessWidget {
         for (final variant in ContainerVariant.values)
           Container(
             width: 220,
-            child: CkgocContainer(
+            child: CKContainer(
               variant: variant,
               elevated: variant == ContainerVariant.surface,
               child: Padding(
@@ -826,7 +826,7 @@ class _DividerDemo extends StatelessWidget {
       children: [
         const Text('Above'),
         const VSpace(height: 8),
-        const CkgocDivider(),
+        const CKDivider(),
         const VSpace(height: 8),
         const Text('Below'),
         const VSpace(height: 16),
@@ -837,7 +837,7 @@ class _DividerDemo extends StatelessWidget {
             children: [
               Text('Left'),
               HSpace(width: 12),
-              CkgocDivider(direction: Axis.vertical),
+              CKDivider(direction: Axis.vertical),
               HSpace(width: 12),
               Text('Right'),
             ],
@@ -853,18 +853,18 @@ class _ListTileDemo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CkgocContainer(
+    return CKContainer(
       child: Column(
         children: [
-          CkgocListTile(
+          CKListTile(
             leading: const Icon(Icons.person_outline),
             title: const Text('Profile'),
             subtitle: const Text('Manage your account'),
             trailing: const Icon(Icons.chevron_right),
             onTap: () {},
           ),
-          const CkgocDivider(),
-          CkgocListTile(
+          const CKDivider(),
+          CKListTile(
             leading: const Icon(Icons.notifications_none),
             title: const Text('Notifications'),
             trailing: const Icon(Icons.chevron_right),
@@ -882,18 +882,18 @@ class _StepperDemo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const steps = [
-      CkgocStep(title: 'Requested', status: StepStatus.completed),
-      CkgocStep(title: 'Approved', status: StepStatus.inProgress),
-      CkgocStep(title: 'Finished', status: StepStatus.pending),
+      CKStep(title: 'Requested', status: StepStatus.completed),
+      CKStep(title: 'Approved', status: StepStatus.inProgress),
+      CKStep(title: 'Finished', status: StepStatus.pending),
     ];
     return const Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        CkgocStepper(steps: steps),
+        CKStepper(steps: steps),
         VSpace(height: 24),
-        CkgocStepper(
+        CKStepper(
           steps: steps,
-          orientation: CkgocStepperOrientation.horizontal,
+          orientation: CKStepperOrientation.horizontal,
         ),
       ],
     );
@@ -906,17 +906,17 @@ class _TimelineDemo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const events = [
-      CkgocTimelineEvent(
+      CKTimelineEvent(
         title: 'Created',
         timestamp: '09:00',
         status: StepStatus.completed,
       ),
-      CkgocTimelineEvent(
+      CKTimelineEvent(
         title: 'Reviewed',
         timestamp: '10:30',
         status: StepStatus.inProgress,
       ),
-      CkgocTimelineEvent(
+      CKTimelineEvent(
         title: 'Published',
         timestamp: '11:45',
         status: StepStatus.pending,
@@ -925,11 +925,11 @@ class _TimelineDemo extends StatelessWidget {
     return const Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        CkgocTimeline(events: events),
+        CKTimeline(events: events),
         VSpace(height: 24),
-        CkgocTimeline(
+        CKTimeline(
           events: events,
-          orientation: CkgocTimelineOrientation.horizontal,
+          orientation: CKTimelineOrientation.horizontal,
         ),
       ],
     );

@@ -5,12 +5,12 @@
 The color system is split into two layers:
 
 1. **Primitive colors** (`color_primitives.dart`) — raw swatches by name and step.
-2. **Semantic colors** (`CkgocColors`) — role-based aliases used by widgets.
+2. **Semantic colors** (`ckcoreColors`) — role-based aliases used by widgets.
 
 ## Accessing Colors
 
 ```dart
-final theme = context.ckgocTheme;
+final theme = context.ckcoreTheme;
 
 // Primary brand color
 theme.colors.primary
@@ -50,4 +50,4 @@ theme.colors.error
 ## Adding a New Brand Color
 
 1. Add primitives to `brands/<name>/<name>_colors.dart`
-2. Map primitives to `CkgocColors` roles in the brand theme builders
+2. Map primitives to `ckcoreColors` roles in the brand theme builders

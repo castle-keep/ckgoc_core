@@ -1,8 +1,8 @@
-import 'package:ckgoc_core/ckgoc_core.dart';
+import 'package:ckcoreui/ckcore_core.dart';
 import 'package:flutter/material.dart';
 
-import 'package:ckgoc_docs_app/docs/doc_models.dart';
-import 'package:ckgoc_docs_app/docs/doc_widgets.dart';
+import 'package:ckcore_docs_app/docs/doc_models.dart';
+import 'package:ckcore_docs_app/docs/doc_widgets.dart';
 
 class InputsPage extends StatelessWidget {
   const InputsPage({super.key});
@@ -30,12 +30,12 @@ class InputsPage extends StatelessWidget {
 }
 
 ComponentDocData _textFieldDoc() => const ComponentDocData(
-      title: 'CkgocTextField',
+      title: 'CKTextField',
       summary:
           'General-purpose text input with validation, leading and trailing widgets, focus styling, helper text, success state, and a borderless mode for inline editing.',
       demo: _TextFieldDocDemo(),
       code: '''
-CkgocTextField(
+CKTextField(
   label: 'Full name',
   hint: 'Enter your name',
   helperText: 'Shown below the field',
@@ -166,12 +166,12 @@ CkgocTextField(
     );
 
 ComponentDocData _passwordFieldDoc() => const ComponentDocData(
-      title: 'CkgocPasswordField',
+      title: 'CKPasswordField',
       summary:
-          'Password input built on top of CkgocTextField with a visibility toggle.',
+          'Password input built on top of CKTextField with a visibility toggle.',
       demo: _PasswordFieldDocDemo(),
       code: '''
-CkgocPasswordField(
+CKPasswordField(
   label: 'Password',
   hint: 'Enter password',
   helperText: 'Use at least 12 characters',
@@ -246,12 +246,12 @@ CkgocPasswordField(
     );
 
 ComponentDocData _searchFieldDoc() => const ComponentDocData(
-      title: 'CkgocSearchField',
+      title: 'CKSearchField',
       summary:
-          'Search wrapper around CkgocTextField with a built-in search icon and optional clear action.',
+          'Search wrapper around CKTextField with a built-in search icon and optional clear action.',
       demo: _SearchFieldDocDemo(),
       code: '''
-CkgocSearchField(
+CKSearchField(
   hint: 'Search users',
   onChanged: (query) {},
   onClear: () {},
@@ -310,12 +310,12 @@ CkgocSearchField(
     );
 
 ComponentDocData _checkboxDoc() => const ComponentDocData(
-      title: 'CkgocCheckbox',
+      title: 'CKCheckbox',
       summary:
           'Styled checkbox with optional label, tri-state support through bool?, and status coloring via SwitchVariant.',
       demo: _CheckboxDocDemo(),
       code: '''
-CkgocCheckbox(
+CKCheckbox(
   value: true,
   label: 'Accept terms',
   variant: SwitchVariant.success,
@@ -363,12 +363,12 @@ CkgocCheckbox(
     );
 
 ComponentDocData _radioDoc() => const ComponentDocData(
-      title: 'CkgocRadio<T>',
+      title: 'CKRadio<T>',
       summary:
           'Single-choice radio control with optional label and status coloring via SwitchVariant.',
       demo: _RadioDocDemo(),
       code: '''
-CkgocRadio<String>(
+CKRadio<String>(
   value: 'admin',
   groupValue: selectedRole,
   label: 'Admin',
@@ -417,12 +417,12 @@ CkgocRadio<String>(
     );
 
 ComponentDocData _switchDoc() => const ComponentDocData(
-      title: 'CkgocSwitch',
+      title: 'CKSwitch',
       summary:
           'Binary toggle switch with optional label, variant styling, and a direct color override.',
       demo: _SwitchDocDemo(),
       code: '''
-CkgocSwitch(
+CKSwitch(
   value: enabled,
   label: 'Enable notifications',
   variant: SwitchVariant.success,
@@ -474,12 +474,12 @@ CkgocSwitch(
     );
 
 ComponentDocData _dropdownDoc() => const ComponentDocData(
-      title: 'CkgocDropdown<T>',
+      title: 'CKDropdown<T>',
       summary:
-          'Single-selection dropdown that matches the styling and states of CkgocTextField. It uses a custom anchored overlay that opens below the field by default and flips above when below-space is insufficient.',
+          'Single-selection dropdown that matches the styling and states of CKTextField. It uses a custom anchored overlay that opens below the field by default and flips above when below-space is insufficient.',
       demo: _DropdownDocDemo(),
       code: '''
-CkgocDropdown<String>(
+CKDropdown<String>(
   label: 'Role',
   value: selectedRole,
   menuMaxHeight: 240,
@@ -558,12 +558,12 @@ CkgocDropdown<String>(
     );
 
 ComponentDocData _numberStepperDoc() => const ComponentDocData(
-      title: 'CkgocNumberStepper',
+      title: 'CKNumberStepper',
       summary:
-          'Numeric stepper input styled like CkgocTextField, with minus and plus controls around a centered value display.',
+          'Numeric stepper input styled like CKTextField, with minus and plus controls around a centered value display.',
       demo: _NumberStepperDocDemo(),
       code: '''
-CkgocNumberStepper(
+CKNumberStepper(
   label: 'Quantity',
   value: quantity,
   min: 1,
@@ -653,12 +653,12 @@ CkgocNumberStepper(
     );
 
 ComponentDocData _otpDoc() => const ComponentDocData(
-      title: 'CkgocOtpField',
+      title: 'CKOtpField',
       summary:
           'Fixed-length one-time-password input that captures keyboard input through an invisible text field and renders visual cells.',
       demo: _OtpDocDemo(),
       code: '''
-CkgocOtpField(
+CKOtpField(
   length: 6,
   autoFocus: true,
   onChanged: (value) {},
@@ -712,12 +712,12 @@ CkgocOtpField(
 
 ComponentDocData _datePickerDoc() => const ComponentDocData(
       comingSoon: true,
-      title: 'CkgocDatePicker',
+      title: 'CKDatePicker',
       summary:
           'Date picker API surface. The current package implementation is still a placeholder that returns an empty widget.',
       demo: _DatePickerDocDemo(),
       code: '''
-CkgocDatePicker(
+CKDatePicker(
   label: 'Start date',
   value: selectedDate,
   firstDate: DateTime(2020),
@@ -771,12 +771,12 @@ CkgocDatePicker(
 
 ComponentDocData _timePickerDoc() => const ComponentDocData(
       comingSoon: true,
-      title: 'CkgocTimePicker',
+      title: 'CKTimePicker',
       summary:
           'Time picker API surface. The package implementation currently returns an empty widget.',
       demo: _TimePickerDocDemo(),
       code: '''
-CkgocTimePicker(
+CKTimePicker(
   label: 'Meeting time',
   value: selectedTime,
   onChanged: (time) => setState(() => selectedTime = time),
@@ -830,7 +830,7 @@ class _TextFieldDocDemoState extends State<_TextFieldDocDemo> {
   Widget build(BuildContext context) {
     return Container(
       width: 420,
-      child: CkgocTextField(
+      child: CKTextField(
         controller: _controller,
         label: 'Full name',
         hint: 'Enter your name',
@@ -851,7 +851,7 @@ class _PasswordFieldDocDemo extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: 420,
-      child: const CkgocPasswordField(
+      child: const CKPasswordField(
         label: 'Password',
         helperText: 'Use 12+ characters',
       ),
@@ -873,7 +873,7 @@ class _SearchFieldDocDemoState extends State<_SearchFieldDocDemo> {
   Widget build(BuildContext context) {
     return Container(
       width: 420,
-      child: CkgocSearchField(
+      child: CKSearchField(
         controller: _controller,
         hint: 'Search users',
         onChanged: (_) => setState(() {}),
@@ -902,24 +902,24 @@ class _CheckboxDocDemoState extends State<_CheckboxDocDemo> {
       spacing: 16,
       runSpacing: 12,
       children: [
-        CkgocCheckbox(
+        CKCheckbox(
           value: terms,
           label: 'Default',
           onChanged: (v) => setState(() => terms = v),
         ),
-        CkgocCheckbox(
+        CKCheckbox(
           value: true,
           label: 'Success',
           variant: SwitchVariant.success,
           onChanged: (_) {},
         ),
-        CkgocCheckbox(
+        CKCheckbox(
           value: false,
           label: 'Error',
           variant: SwitchVariant.error,
           onChanged: (_) {},
         ),
-        const CkgocCheckbox(value: null, label: 'Indeterminate'),
+        const CKCheckbox(value: null, label: 'Indeterminate'),
       ],
     );
   }
@@ -941,20 +941,20 @@ class _RadioDocDemoState extends State<_RadioDocDemo> {
       spacing: 16,
       runSpacing: 12,
       children: [
-        CkgocRadio<String>(
+        CKRadio<String>(
           value: 'admin',
           groupValue: role,
           label: 'Admin',
           onChanged: (v) => setState(() => role = v),
         ),
-        CkgocRadio<String>(
+        CKRadio<String>(
           value: 'editor',
           groupValue: role,
           label: 'Editor',
           variant: SwitchVariant.success,
           onChanged: (v) => setState(() => role = v),
         ),
-        CkgocRadio<String>(
+        CKRadio<String>(
           value: 'viewer',
           groupValue: role,
           label: 'Viewer',
@@ -982,17 +982,17 @@ class _SwitchDocDemoState extends State<_SwitchDocDemo> {
       spacing: 16,
       runSpacing: 12,
       children: [
-        CkgocSwitch(
+        CKSwitch(
           value: enabled,
           label: 'Default',
           onChanged: (v) => setState(() => enabled = v),
         ),
-        const CkgocSwitch(
+        const CKSwitch(
           value: true,
           label: 'Success',
           variant: SwitchVariant.success,
         ),
-        const CkgocSwitch(
+        const CKSwitch(
           value: false,
           label: 'Error',
           variant: SwitchVariant.error,
@@ -1019,7 +1019,7 @@ class _DropdownDocDemoState extends State<_DropdownDocDemo> {
       children: [
         Text('Selected: ${_value ?? 'none'}'),
         VSpace(height: 12),
-        CkgocDropdown<String>(
+        CKDropdown<String>(
           label: 'Role',
           hint: 'Select role',
           value: _value,
@@ -1054,7 +1054,7 @@ class _NumberStepperDocDemoState extends State<_NumberStepperDocDemo> {
   Widget build(BuildContext context) {
     return SizedBox(
       width: 420,
-      child: CkgocNumberStepper(
+      child: CKNumberStepper(
         label: 'Quantity',
         value: _quantity,
         min: 1,
@@ -1071,7 +1071,7 @@ class _OtpDocDemo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CkgocOtpField(
+    return CKOtpField(
       autoFocus: false,
       onCompleted: (value) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -1092,7 +1092,7 @@ class _DatePickerDocDemo extends StatelessWidget {
       children: [
         Text('Current implementation returns an empty widget.'),
         VSpace(height: 12),
-        CkgocDatePicker(label: 'Start date'),
+        CKDatePicker(label: 'Start date'),
       ],
     );
   }
@@ -1108,7 +1108,7 @@ class _TimePickerDocDemo extends StatelessWidget {
       children: [
         Text('Current implementation returns an empty widget.'),
         VSpace(height: 12),
-        CkgocTimePicker(label: 'Meeting time'),
+        CKTimePicker(label: 'Meeting time'),
       ],
     );
   }

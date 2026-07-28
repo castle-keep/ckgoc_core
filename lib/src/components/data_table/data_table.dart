@@ -1,5 +1,5 @@
-export 'ckgoc_table_column.dart';
-export 'ckgoc_data_table.dart';
+export 'ckcore_table_column.dart';
+export 'ckcore_data_table.dart';
 export 'header.dart' show TableHeader;
 export 'column_header.dart' show ColumnHeaderRow, SortIcon;
 export 'row.dart' show DataRowWidget;

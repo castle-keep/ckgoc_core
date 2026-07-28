@@ -1,0 +1,551 @@
+import 'package:ckcoreui/src/components/data_table/ckcore_table_column.dart';
+import 'package:flutter/material.dart';
+
+import 'package:ckcoreui/src/themes/ckcore_theme.dart';
+import 'package:ckcoreui/src/components/component_enums.dart';
+import 'package:ckcoreui/src/components/data_table/header.dart';
+import 'package:ckcoreui/src/components/data_table/column_header.dart';
+import 'package:ckcoreui/src/components/data_table/utils.dart';
+import 'package:ckcoreui/src/components/data_table/row.dart';
+import 'package:ckcoreui/src/components/data_table/misc.dart';
+import 'package:ckcoreui/src/components/data_table/footer.dart';
+
+class CKDataTable extends StatefulWidget {
+  const CKDataTable({
+    required this.columns,
+    required this.rows,
+    this.rowKey = 'id',
+    this.title,
+    this.subtitle,
+    this.headerActions,
+    this.searchQuery,
+    this.searchHint,
+    this.onSearchChanged,
+    this.sortColumnKey,
+    this.sortAscending = true,
+    this.onSortChanged,
+    this.selectionMode = TableSelectionMode.none,
+    this.selectedKeys = const {},
+    this.onSelectionChanged,
+    this.totalCount = 0,
+    this.currentPage = 1,
+    this.pageSize = 10,
+    this.onPageChanged,
+    this.isLoading = false,
+    this.errorMessage,
+    this.emptyMessage,
+    this.emptyWidget,
+    this.footerRow,
+    this.striped = true,
+    this.headerFooterColor,
+    this.widthBehavior = TableWidthBehavior.stretch,
+    this.maxHeight,
+    this.onRowTap,
+    this.editableColumns,
+    this.onCellChanged,
+    super.key,
+  });
+  final List<CKTableColumn> columns;
+  final List<Map<String, dynamic>> rows;
+  final String rowKey;
+  final String? title;
+  final String? subtitle;
+  final List<Widget>? headerActions;
+  final String? searchQuery;
+  final String? searchHint;
+  final ValueChanged<String>? onSearchChanged;
+  final String? sortColumnKey;
+  final bool sortAscending;
+  final void Function(String columnKey, bool ascending)? onSortChanged;
+  final TableSelectionMode selectionMode;
+  final Set<dynamic> selectedKeys;
+  final ValueChanged<Set<dynamic>>? onSelectionChanged;
+  final int totalCount;
+  final int currentPage;
+  final int pageSize;
+  final ValueChanged<int>? onPageChanged;
+  final bool isLoading;
+  final String? errorMessage;
+  final String? emptyMessage;
+  final Widget? emptyWidget;
+  final Map<String, dynamic>? footerRow;
+  final bool striped;
+  final Color? headerFooterColor;
+  final TableWidthBehavior widthBehavior;
+  final double? maxHeight;
+  final void Function(Map<String, dynamic> row)? onRowTap;
+  final Set<String>? editableColumns;
+  final void Function(dynamic rowKey, String columnKey, dynamic newValue)?
+  onCellChanged;
+
+  @override
+  State<CKDataTable> createState() => _CompanyDataTableState();
+}
+
+class _CompanyDataTableState extends State<CKDataTable> {
+  dynamic _hoveredKey;
+  late final TextEditingController _searchController;
+  final Map<String, TextEditingController> _editControllers = {};
+  final ScrollController _hScrollController = ScrollController();
+  final ScrollController _vScrollController = ScrollController();
+
+  String? _internalSortColumnKey;
+  bool _internalSortAscending = true;
+  List<Map<String, dynamic>>? _sortedRows;
+  final Map<String, Set<dynamic>> _badgeFilters = {};
+
+  @override
+  void initState() {
+    super.initState();
+    _searchController = TextEditingController(text: widget.searchQuery ?? '');
+    _syncEditControllers();
+    _initBadgeFilters();
+
+    if (widget.onSortChanged == null) {
+      _internalSortColumnKey = widget.sortColumnKey;
+      _internalSortAscending = widget.sortAscending;
+      _applyInternalSort();
+    }
+  }
+
+  void _initBadgeFilters() {
+    _badgeFilters.clear();
+    for (final col in widget.columns) {
+      if (col.type == CKColumnType.badge) {
+        _badgeFilters[col.key] = {};
+      }
+    }
+  }
+
+  @override
+  void didUpdateWidget(CKDataTable oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.searchQuery != oldWidget.searchQuery &&
+        widget.searchQuery != _searchController.text) {
+      _searchController.text = widget.searchQuery ?? '';
+    }
+    if (widget.rows != oldWidget.rows ||
+        widget.editableColumns != oldWidget.editableColumns) {
+      _syncEditControllers();
+    }
+    if (widget.columns != oldWidget.columns) {
+      _initBadgeFilters();
+    }
+    // Keep internal sort state in sync when uncontrolled.
+    if (widget.onSortChanged == null) {
+      if (widget.sortColumnKey != oldWidget.sortColumnKey ||
+          widget.sortAscending != oldWidget.sortAscending ||
+          widget.rows != oldWidget.rows) {
+        _internalSortColumnKey = widget.sortColumnKey;
+        _internalSortAscending = widget.sortAscending;
+        _applyInternalSort();
+      }
+    } else {
+      // if parent takes control, drop internal cache
+      _sortedRows = null;
+    }
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    _hScrollController.dispose();
+    _vScrollController.dispose();
+    for (final ctrl in _editControllers.values) {
+      ctrl.dispose();
+    }
+    super.dispose();
+  }
+
+  void _syncEditControllers() {
+    final cols = widget.editableColumns;
+    if (cols == null || cols.isEmpty) {
+      for (final ctrl in _editControllers.values) {
+        ctrl.dispose();
+      }
+      _editControllers.clear();
+      return;
+    }
+    final activeKeys = <String>{};
+    for (final row in widget.rows) {
+      final rk = row[widget.rowKey];
+      for (final col in cols) {
+        final k = '${rk}_$col';
+        activeKeys.add(k);
+        _editControllers.putIfAbsent(
+          k,
+          () => TextEditingController(text: row[col]?.toString() ?? ''),
+        );
+      }
+    }
+    final stale = _editControllers.keys
+        .where((k) => !activeKeys.contains(k))
+        .toList();
+    for (final k in stale) {
+      _editControllers[k]!.dispose();
+      _editControllers.remove(k);
+    }
+  }
+
+  List<Map<String, dynamic>> get _displayRows => _applyBadgeFilters(
+    widget.onSortChanged != null ? widget.rows : (_sortedRows ?? widget.rows),
+  );
+
+  List<Map<String, dynamic>> _applyBadgeFilters(
+    List<Map<String, dynamic>> rows,
+  ) {
+    if (_badgeFilters.isEmpty) return rows;
+    return rows.where((row) {
+      for (final entry in _badgeFilters.entries) {
+        if (entry.value.isEmpty) continue;
+        final colKey = entry.key;
+        final col = widget.columns.firstWhere((c) => c.key == colKey);
+        final cellValue = row[colKey];
+        final variant =
+            col.badgeVariantBuilder?.call(cellValue) ??
+            BadgeVariant.defaultFill;
+        if (!entry.value.contains(variant)) return false;
+      }
+      return true;
+    }).toList();
+  }
+
+  Set<dynamic> _getBadgeVariantsForColumn(String colKey) {
+    final col = widget.columns.firstWhere((c) => c.key == colKey);
+    final variants = <dynamic>{};
+    for (final row in widget.rows) {
+      final cellValue = row[colKey];
+      final variant =
+          col.badgeVariantBuilder?.call(cellValue) ?? BadgeVariant.defaultFill;
+      variants.add(variant);
+    }
+    return variants;
+  }
+
+  void _applyInternalSort() {
+    final key = _internalSortColumnKey;
+    if (key == null) {
+      _sortedRows = List<Map<String, dynamic>>.from(widget.rows);
+      return;
+    }
+    _sortedRows = List<Map<String, dynamic>>.from(widget.rows);
+    _sortedRows!.sort((a, b) {
+      final va = a[key];
+      final vb = b[key];
+      if (va == null && vb == null) return 0;
+      if (va == null) return 1;
+      if (vb == null) return -1;
+      int cmp = 0;
+      if (va is num && vb is num) {
+        cmp = va.compareTo(vb);
+      } else if (va is DateTime && vb is DateTime) {
+        cmp = va.compareTo(vb);
+      } else {
+        cmp = va.toString().compareTo(vb.toString());
+      }
+      return _internalSortAscending ? cmp : -cmp;
+    });
+  }
+
+  List<CKTableColumn> get _visibleColumns =>
+      widget.columns.where((c) => !c.hidden).toList();
+
+  bool get _hasSelection => widget.selectionMode != TableSelectionMode.none;
+
+  bool get _allSelected =>
+      _displayRows.isNotEmpty &&
+      _displayRows.every((r) => widget.selectedKeys.contains(r[widget.rowKey]));
+
+  bool get _someSelected =>
+      _displayRows.any((r) => widget.selectedKeys.contains(r[widget.rowKey]));
+
+  void _toggleAll() {
+    if (widget.onSelectionChanged == null) return;
+    if (_allSelected) {
+      final next = Set<dynamic>.from(widget.selectedKeys)
+        ..removeAll(_displayRows.map((r) => r[widget.rowKey]));
+      widget.onSelectionChanged!(next);
+    } else {
+      final next = Set<dynamic>.from(widget.selectedKeys)
+        ..addAll(_displayRows.map((r) => r[widget.rowKey]));
+      widget.onSelectionChanged!(next);
+    }
+  }
+
+  void _toggleRow(dynamic key) {
+    if (widget.onSelectionChanged == null) return;
+    if (widget.selectionMode == TableSelectionMode.single) {
+      widget.onSelectionChanged!(
+        widget.selectedKeys.contains(key) ? {} : {key},
+      );
+      return;
+    }
+    final next = Set<dynamic>.from(widget.selectedKeys);
+    if (next.contains(key)) {
+      next.remove(key);
+    } else {
+      next.add(key);
+    }
+    widget.onSelectionChanged!(next);
+  }
+
+  void _handleSort(String key) {
+    if (widget.onSortChanged != null) {
+      if (widget.sortColumnKey == key) {
+        widget.onSortChanged!(key, !widget.sortAscending);
+      } else {
+        widget.onSortChanged!(key, true);
+      }
+      return;
+    }
+
+    // uncontrolled: sort internally
+    setState(() {
+      if (_internalSortColumnKey == key) {
+        _internalSortAscending = !_internalSortAscending;
+      } else {
+        _internalSortColumnKey = key;
+        _internalSortAscending = true;
+      }
+      _applyInternalSort();
+    });
+  }
+
+  void _handleBadgeFilterChanged(String colKey, Set<dynamic> selectedVariants) {
+    setState(() {
+      _badgeFilters[colKey] = selectedVariants;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = context.ckcoreTheme;
+    final c = theme.colors;
+    final s = theme.spacing;
+    final r = theme.radius;
+
+    // Build badge column filter data (keyed by column *key*, not label)
+    final badgeColumnData = <String, Set<dynamic>>{};
+    for (final col in widget.columns) {
+      if (col.type == CKColumnType.badge && !col.hidden) {
+        badgeColumnData[col.key] = _getBadgeVariantsForColumn(col.key);
+      }
+    }
+
+    return Container(
+      decoration: BoxDecoration(
+        color: c.surface,
+        borderRadius: BorderRadius.circular(r.lg),
+        border: Border.all(color: c.outlineVariant, width: s.xxs / 2),
+        boxShadow: theme.shadows.sm,
+      ),
+      clipBehavior: Clip.antiAlias,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (widget.title != null ||
+              widget.onSearchChanged != null ||
+              (widget.headerActions?.isNotEmpty ?? false) ||
+              badgeColumnData.isNotEmpty)
+            TableHeader(
+              title: widget.title,
+              subtitle: widget.subtitle,
+              searchController: _searchController,
+              searchHint: widget.searchHint,
+              onSearchChanged: widget.onSearchChanged,
+              actions: widget.headerActions,
+              backgroundColor: widget.headerFooterColor,
+              badgeColumns: badgeColumnData,
+              badgeFilters: _badgeFilters,
+              onBadgeFilterChanged: _handleBadgeFilterChanged,
+            ),
+          LayoutBuilder(
+            builder: (context, constraints) {
+              final isCompact =
+                  widget.widthBehavior == TableWidthBehavior.compact;
+              final widths = resolveTableWidths(
+                context: context,
+                columns: widget.columns,
+                available: constraints.maxWidth,
+                hasSelection: _hasSelection,
+                widthBehavior: widget.widthBehavior,
+              );
+              final tableWidth =
+                  widths.values.fold(0.0, (s, w) => s + w) +
+                  (_hasSelection ? s.x2l : 0);
+
+              final needsHScroll =
+                  isCompact || tableWidth > constraints.maxWidth;
+
+              Widget rowsBody = widget.isLoading
+                  ? SkeletonRows(
+                      columns: _visibleColumns,
+                      widths: widths,
+                      hasSelection: _hasSelection,
+                      selectionWidth: s.x2l,
+                      rowCount: widget.pageSize.clamp(3, 8),
+                      rowHeight: s.x2l,
+                    )
+                  : widget.errorMessage != null
+                  ? ErrorState(message: widget.errorMessage!)
+                  : _displayRows.isEmpty
+                  ? (widget.emptyWidget ??
+                        EmptyState(
+                          message:
+                              widget.emptyMessage ?? 'No records to display.',
+                        ))
+                  : Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        for (var i = 0; i < _displayRows.length; i++)
+                          DataRowWidget(
+                            row: _displayRows[i],
+                            rowKey: widget.rowKey,
+                            columns: _visibleColumns,
+                            widths: widths,
+                            hasSelection: _hasSelection,
+                            selectionWidth: s.x2l,
+                            isSelected: widget.selectedKeys.contains(
+                              _displayRows[i][widget.rowKey],
+                            ),
+                            isHovered:
+                                _hoveredKey == _displayRows[i][widget.rowKey],
+                            isStriped: widget.striped ? i.isOdd : false,
+                            rowHeight: s.x2l,
+                            onTap: () {
+                              _toggleRow(_displayRows[i][widget.rowKey]);
+                              widget.onRowTap?.call(_displayRows[i]);
+                            },
+                            onHoverChanged: (v) => setState(
+                              () => _hoveredKey = v
+                                  ? _displayRows[i][widget.rowKey]
+                                  : null,
+                            ),
+                            editControllers: widget.editableColumns == null
+                                ? const {}
+                                : {
+                                    for (final col in widget.editableColumns!)
+                                      if (_editControllers.containsKey(
+                                        '${_displayRows[i][widget.rowKey]}_$col',
+                                      ))
+                                        col:
+                                            _editControllers['${_displayRows[i][widget.rowKey]}_$col']!,
+                                  },
+                            onCellChanged: widget.onCellChanged == null
+                                ? null
+                                : (colKey, value) => widget.onCellChanged!(
+                                    _displayRows[i][widget.rowKey],
+                                    colKey,
+                                    value,
+                                  ),
+                          ),
+                        if (widget.footerRow != null) ...[
+                          Divider(
+                            height: s.xxs / 2,
+                            thickness: s.xxs / 2,
+                            color: c.outlineVariant,
+                          ),
+                          FooterTotalsRow(
+                            row: widget.footerRow!,
+                            columns: _visibleColumns,
+                            widths: widths,
+                            hasSelection: _hasSelection,
+                            selectionWidth: s.x2l,
+                            rowHeight: s.x2l,
+                          ),
+                        ],
+                      ],
+                    );
+
+              if (widget.maxHeight != null) {
+                rowsBody = SizedBox(
+                  height: widget.maxHeight,
+                  child: Scrollbar(
+                    controller: _vScrollController,
+                    thumbVisibility: true,
+                    child: SingleChildScrollView(
+                      controller: _vScrollController,
+                      scrollDirection: Axis.vertical,
+                      child: rowsBody,
+                    ),
+                  ),
+                );
+              }
+
+              Widget tableContent = Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  ColumnHeaderRow(
+                    columns: _visibleColumns,
+                    widths: widths,
+                    hasSelection: _hasSelection,
+                    selectionWidth: s.x2l,
+                    allSelected: _allSelected,
+                    someSelected: _someSelected,
+                    onToggleAll: _toggleAll,
+                    sortColumnKey: widget.onSortChanged != null
+                        ? widget.sortColumnKey
+                        : _internalSortColumnKey,
+                    sortAscending: widget.onSortChanged != null
+                        ? widget.sortAscending
+                        : _internalSortAscending,
+                    onSort: _handleSort,
+                    rowHeight: s.s40,
+                  ),
+                  Divider(
+                    height: s.xxs / 2,
+                    thickness: s.xxs / 2,
+                    color: c.outlineVariant,
+                  ),
+                  rowsBody,
+                ],
+              );
+
+              if (needsHScroll) {
+                tableContent = Scrollbar(
+                  controller: _hScrollController,
+                  thumbVisibility: true,
+                  child: SingleChildScrollView(
+                    controller: _hScrollController,
+                    scrollDirection: Axis.horizontal,
+                    child: SizedBox(
+                      width: isCompact
+                          ? tableWidth
+                          : tableWidth.clamp(
+                              constraints.maxWidth,
+                              double.infinity,
+                            ),
+                      child: tableContent,
+                    ),
+                  ),
+                );
+              }
+
+              return tableContent;
+            },
+          ),
+          Divider(
+            height: theme.spacing.xxs / 2,
+            thickness: theme.spacing.xxs / 2,
+            color: c.outlineVariant,
+          ),
+          TableFooter(
+            totalCount: widget.totalCount,
+            currentPage: widget.currentPage,
+            pageSize: widget.pageSize,
+            onPageChanged: widget.onPageChanged,
+            backgroundColor: widget.headerFooterColor,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// top-level wrapper keeps state; UI pieces live in separate files.
+
+/// Deprecated: Use [CKDataTable] instead.
+@Deprecated('Use CKDataTable instead')
+typedef ckcoredataTable = CKDataTable;

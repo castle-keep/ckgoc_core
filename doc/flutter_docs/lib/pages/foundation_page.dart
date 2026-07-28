@@ -1,15 +1,15 @@
-import 'package:ckgoc_core/ckgoc_core.dart';
+import 'package:ckcoreui/ckcore_core.dart';
 import 'package:flutter/material.dart';
 
-import 'package:ckgoc_docs_app/docs/doc_models.dart';
-import 'package:ckgoc_docs_app/docs/doc_widgets.dart';
+import 'package:ckcore_docs_app/docs/doc_models.dart';
+import 'package:ckcore_docs_app/docs/doc_widgets.dart';
 
 class FoundationPage extends StatelessWidget {
   const FoundationPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final theme = context.ckgocTheme;
+    final theme = context.ckcoreTheme;
     return DocsScaffold(
       title: 'Foundation Tokens',
       subtitle:
@@ -19,7 +19,7 @@ class FoundationPage extends StatelessWidget {
           data: ComponentDocData(
             title: 'foundation.dart exports',
             summary:
-                'The foundation barrel exports colors, typography, spacing, radius, elevation, shadows, motion, opacity, and breakpoints. These are read from context.ckgocTheme and used by every component in the package.',
+                'The foundation barrel exports colors, typography, spacing, radius, elevation, shadows, motion, opacity, and breakpoints. These are read from context.ckcoreTheme and used by every component in the package.',
             demo: Wrap(
               spacing: 12,
               runSpacing: 12,
@@ -52,7 +52,7 @@ class FoundationPage extends StatelessWidget {
               ],
             ),
             code: '''
-final theme = context.ckgocTheme;
+final theme = context.ckcoreTheme;
 final colors = theme.colors;
 final spacing = theme.spacing;
 final radius = theme.radius;
@@ -60,49 +60,49 @@ final radius = theme.radius;
             params: const [
               DocParam(
                 name: 'colors',
-                type: 'CkgocColors',
+                type: 'ckcoreColors',
                 description:
                     'Semantic color tokens for surfaces, text, states, and accents.',
               ),
               DocParam(
                 name: 'typography',
-                type: 'CkgocTypography',
+                type: 'ckcoreTypography',
                 description: 'Text styles for display, labels, and body copy.',
               ),
               DocParam(
                 name: 'spacing',
-                type: 'CkgocSpacing',
+                type: 'ckcoreSpacing',
                 description:
                     'Spacing scale used throughout layout and controls.',
               ),
               DocParam(
                 name: 'radius',
-                type: 'CkgocRadius',
+                type: 'ckcoreRadius',
                 description: 'Corner radii tokens.',
               ),
               DocParam(
                 name: 'elevation',
-                type: 'CkgocElevation',
+                type: 'ckcoreElevation',
                 description: 'Elevation depth tokens.',
               ),
               DocParam(
                 name: 'shadows',
-                type: 'CkgocShadows',
+                type: 'ckcoreShadows',
                 description: 'Box-shadow presets.',
               ),
               DocParam(
                 name: 'motion',
-                type: 'CkgocMotion',
+                type: 'ckcoreMotion',
                 description: 'Durations and curves.',
               ),
               DocParam(
                 name: 'opacity',
-                type: 'CkgocOpacity',
+                type: 'ckcoreOpacity',
                 description: 'Opacity scale for interaction states.',
               ),
               DocParam(
                 name: 'breakpoints',
-                type: 'CkgocBreakpoints',
+                type: 'ckcoreBreakpoints',
                 description: 'Responsive width thresholds.',
               ),
             ],
@@ -115,7 +115,7 @@ final radius = theme.radius;
               DocFaq(
                 question: 'Where do these tokens come from?',
                 answer:
-                    'They are assembled into CkgocThemeData by the brand theme resolver.',
+                    'They are assembled into ckcoreThemeData by the brand theme resolver.',
               ),
             ],
           ),
@@ -124,10 +124,10 @@ final radius = theme.radius;
           data: ComponentDocData(
             title: 'All theme colors',
             summary:
-                'Visual reference of every semantic color token exposed by CkgocColors.',
+                'Visual reference of every semantic color token exposed by ckcoreColors.',
             demo: _ColorSwatchGrid(),
             code: '''
-final colors = context.ckgocTheme.colors;
+final colors = context.ckcoreTheme.colors;
 // Inspect colors.primary, colors.surface, etc.
 ''',
             params: [],
@@ -138,14 +138,85 @@ final colors = context.ckgocTheme.colors;
           data: ComponentDocData(
             title: 'Typography samples',
             summary:
-                'Shows every text style from CkgocTypography with a sample line and metadata.',
+                'Shows every text style from ckcoreTypography with a sample line and metadata.',
             demo: _TypographySamples(),
             code: '''
-final t = context.ckgocTheme.typography;
+final t = context.ckcoreTheme.typography;
 // Use t.displayLg, t.textMd, t.labelSm etc.
 ''',
             params: [],
             faqs: [],
+          ),
+        ),
+        const DocSection(
+          data: ComponentDocData(
+            title: 'Semantic heading shortcuts',
+            summary:
+                'Use .h1 through .h6 extensions for semantic HTML-style headings with automatic typography scaling.',
+            demo: _HeadingShortcuts(),
+            code: '''
+// Semantic heading shortcuts (h1-h6) map to typography scale
+Text('Page Title').h1        // display2xl (32px, Bold)
+Text('Section').h2           // displayXl (28px, Bold)
+Text('Subsection').h3        // displayLg (24px, Bold)
+Text('Card Title').h4        // displayMd (20px, Bold)
+Text('Label').h5             // displaySm (18px, Medium)
+Text('Secondary').h6         // textXl (20px, Regular)
+''',
+            params: [],
+            faqs: [],
+          ),
+        ),
+        Card(
+          child: Padding(
+            padding: const EdgeInsets.all(12),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('Text extension examples',
+                    style: Theme.of(context).textTheme.titleSmall),
+                SizedBox(height: 8),
+                Builder(
+                  builder: (ctx) {
+                    final t = ctx.ckcoreTheme;
+                    return Text(
+                      'Bold primary',
+                      style: t.typography.textMd.copyWith(
+                        fontWeight: FontWeight.bold,
+                        color: t.colors.primary,
+                      ),
+                    );
+                  },
+                ),
+                SizedBox(height: 6),
+                Builder(
+                  builder: (ctx) {
+                    final t = ctx.ckcoreTheme;
+                    return Text(
+                      'Italic error',
+                      style: t.typography.textMd.copyWith(
+                        fontStyle: FontStyle.italic,
+                        color: t.colors.error,
+                      ),
+                    );
+                  },
+                ),
+                SizedBox(height: 6),
+                Builder(
+                  builder: (ctx) {
+                    final t = ctx.ckcoreTheme;
+                    return Text(
+                      'Code monospace on primary',
+                      style:
+                          t.typography.codeMd.copyWith(color: t.colors.primary),
+                    );
+                  },
+                ),
+                SizedBox(height: 6),
+                Text('Blockquote example: Use .blockQuote for semantic quoting.')
+                    .blockQuote,
+              ],
+            ),
           ),
         ),
       ],
@@ -180,13 +251,13 @@ class _TokenCard extends StatelessWidget {
   }
 }
 
-// Displays a grid of all semantic color tokens from CkgocColors.
+// Displays a grid of all semantic color tokens from ckcoreColors.
 class _ColorSwatchGrid extends StatelessWidget {
   const _ColorSwatchGrid();
 
   @override
   Widget build(BuildContext context) {
-    final theme = context.ckgocTheme;
+    final theme = context.ckcoreTheme;
     final colors = theme.colors;
 
     final items = <MapEntry<String, Color>>[
@@ -246,7 +317,7 @@ class _ColorSwatchGrid extends StatelessWidget {
       MapEntry('onTagPro', colors.onTagPro),
     ];
 
-    return CkgocContainer(
+    return CKContainer(
       elevated: true,
       child: Padding(
         padding: const EdgeInsets.all(12),
@@ -310,13 +381,13 @@ class _ColorSwatchGrid extends StatelessWidget {
   }
 }
 
-// Shows sample lines for every typography style in CkgocTypography.
+// Shows sample lines for every typography style in ckcoreTypography.
 class _TypographySamples extends StatelessWidget {
   const _TypographySamples();
 
   @override
   Widget build(BuildContext context) {
-    final theme = context.ckgocTheme;
+    final theme = context.ckcoreTheme;
     final t = theme.typography;
 
     final samples = <MapEntry<String, TextStyle>>[
@@ -337,7 +408,7 @@ class _TypographySamples extends StatelessWidget {
       MapEntry('codeMd', t.codeMd),
     ];
 
-    return CkgocContainer(
+    return CKContainer(
       elevated: true,
       child: Padding(
         padding: const EdgeInsets.all(12),
@@ -367,6 +438,52 @@ class _TypographySamples extends StatelessWidget {
                 ),
               ),
             ],
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+// Demonstrates semantic heading shortcuts (.h1 through .h6)
+class _HeadingShortcuts extends StatelessWidget {
+  const _HeadingShortcuts();
+
+  @override
+  Widget build(BuildContext context) {
+    return CKContainer(
+      elevated: true,
+      child: Padding(
+        padding: const EdgeInsets.all(12),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('Semantic Heading Shortcuts',
+                style: context.ckcoreTheme.typography.labelXl),
+            const VSpace(height: 12),
+            Text('Page Title').h1,
+            const VSpace(height: 8),
+            Text('Heading h1').primary,
+            const VSpace(height: 16),
+            Text('Section').h2,
+            const VSpace(height: 8),
+            Text('Heading h2').primary,
+            const VSpace(height: 16),
+            Text('Subsection').h3,
+            const VSpace(height: 8),
+            Text('Heading h3').primary,
+            const VSpace(height: 16),
+            Text('Card Title').h4,
+            const VSpace(height: 8),
+            Text('Heading h4').primary,
+            const VSpace(height: 16),
+            Text('Label').h5,
+            const VSpace(height: 8),
+            Text('Heading h5').primary,
+            const VSpace(height: 16),
+            Text('Secondary').h6,
+            const VSpace(height: 8),
+            Text('Heading h6').primary,
           ],
         ),
       ),

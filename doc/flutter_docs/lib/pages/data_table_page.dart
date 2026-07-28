@@ -1,8 +1,8 @@
-import 'package:ckgoc_core/ckgoc_core.dart';
+import 'package:ckcoreui/ckcore_core.dart';
 import 'package:flutter/material.dart';
 
-import 'package:ckgoc_docs_app/docs/doc_models.dart';
-import 'package:ckgoc_docs_app/docs/doc_widgets.dart';
+import 'package:ckcore_docs_app/docs/doc_models.dart';
+import 'package:ckcore_docs_app/docs/doc_widgets.dart';
 
 class DataTablePage extends StatelessWidget {
   const DataTablePage({super.key});
@@ -21,12 +21,12 @@ class DataTablePage extends StatelessWidget {
 }
 
 ComponentDocData _dataTableDoc() => const ComponentDocData(
-      title: 'CkgocDataTable',
+      title: 'CKDataTable',
       summary:
           'Feature-rich data table with search, sorting, selection modes, pagination, empty and loading states, footer rows, inline editing hooks, and row tap handlers.',
       demo: _DataTableDemo(),
       code: '''
-CkgocDataTable(
+CKDataTable(
   title: 'Users',
   subtitle: 'System access list',
   columns: columns,
@@ -40,7 +40,7 @@ CkgocDataTable(
       params: [
         DocParam(
           name: 'columns',
-          type: 'List<CkgocTableColumn>',
+          type: 'List<CKTableColumn>',
           description: 'Column definitions.',
           requiredParam: true,
         ),
@@ -225,17 +225,17 @@ class _DataTableDemoState extends State<_DataTableDemo> {
   Set<dynamic> selected = <dynamic>{};
   String query = '';
 
-  List<CkgocTableColumn> get columns => [
-        const CkgocTableColumn(
+  List<CKTableColumn> get columns => [
+        const CKTableColumn(
           key: 'name',
           label: 'Name',
-          type: CkgocColumnType.text,
+          type: CKColumnType.text,
           sortable: true,
         ),
-        CkgocTableColumn(
+        CKTableColumn(
           key: 'status',
           label: 'Status',
-          type: CkgocColumnType.badge,
+          type: CKColumnType.badge,
           badgeVariantBuilder: (value) => switch (value) {
             'active' => BadgeVariant.success,
             'pending' => BadgeVariant.warning,
@@ -243,20 +243,20 @@ class _DataTableDemoState extends State<_DataTableDemo> {
             _ => BadgeVariant.defaultFill,
           },
         ),
-        const CkgocTableColumn(
+        const CKTableColumn(
           key: 'completion',
           label: 'Completion',
-          type: CkgocColumnType.progress,
+          type: CKColumnType.progress,
         ),
-        const CkgocTableColumn(
+        const CKTableColumn(
           key: 'owner',
           label: 'Owner',
-          type: CkgocColumnType.avatarText,
+          type: CKColumnType.avatarText,
         ),
-        CkgocTableColumn(
+        CKTableColumn(
           key: 'custom',
           label: 'Custom',
-          type: CkgocColumnType.custom,
+          type: CKColumnType.custom,
           cellBuilder: (value, row) => Row(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -338,7 +338,7 @@ class _DataTableDemoState extends State<_DataTableDemo> {
           ],
         ),
         const VSpace(height: 16),
-        CkgocDataTable(
+        CKDataTable(
           title: 'Users',
           subtitle: 'System access list',
           columns: columns,

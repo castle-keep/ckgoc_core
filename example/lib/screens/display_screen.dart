@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ckgoc_core/ckgoc_core.dart';
+import 'package:ckcoreui/ckcore_core.dart';
 
 class DisplayScreen extends StatefulWidget {
   const DisplayScreen({super.key});
@@ -34,7 +34,7 @@ class _DisplayScreenState extends State<DisplayScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = context.ckgocTheme;
+    final theme = context.ckcoreTheme;
     final s = theme.spacing;
 
     return SingleChildScrollView(
@@ -49,13 +49,13 @@ class _DisplayScreenState extends State<DisplayScreen> {
             runSpacing: s.md,
             crossAxisAlignment: WrapCrossAlignment.center,
             children: const [
-              CkgocAvatar(initials: 'JD', size: AvatarSize.xs),
-              CkgocAvatar(initials: 'MS', size: AvatarSize.sm),
-              CkgocAvatar(initials: 'AB', size: AvatarSize.md),
-              CkgocAvatar(initials: 'RK', size: AvatarSize.lg),
-              CkgocAvatar(initials: 'TL', size: AvatarSize.xl),
-              CkgocAvatar(initials: 'PQ', size: AvatarSize.x2l),
-              CkgocAvatar(initials: 'WX', size: AvatarSize.x3l),
+              CKAvatar(initials: 'JD', size: AvatarSize.xs),
+              CKAvatar(initials: 'MS', size: AvatarSize.sm),
+              CKAvatar(initials: 'AB', size: AvatarSize.md),
+              CKAvatar(initials: 'RK', size: AvatarSize.lg),
+              CKAvatar(initials: 'TL', size: AvatarSize.xl),
+              CKAvatar(initials: 'PQ', size: AvatarSize.x2l),
+              CKAvatar(initials: 'WX', size: AvatarSize.x3l),
             ],
           ),
           SizedBox(height: s.lg),
@@ -66,22 +66,22 @@ class _DisplayScreenState extends State<DisplayScreen> {
             runSpacing: s.md,
             crossAxisAlignment: WrapCrossAlignment.center,
             children: const [
-              CkgocAvatar(
+              CKAvatar(
                 initials: 'JD',
                 size: AvatarSize.lg,
                 status: AvatarStatus.online,
               ),
-              CkgocAvatar(
+              CKAvatar(
                 initials: 'MS',
                 size: AvatarSize.lg,
                 status: AvatarStatus.away,
               ),
-              CkgocAvatar(
+              CKAvatar(
                 initials: 'AB',
                 size: AvatarSize.lg,
                 status: AvatarStatus.busy,
               ),
-              CkgocAvatar(
+              CKAvatar(
                 initials: 'RK',
                 size: AvatarSize.lg,
                 status: AvatarStatus.offline,
@@ -96,27 +96,27 @@ class _DisplayScreenState extends State<DisplayScreen> {
             runSpacing: s.md,
             crossAxisAlignment: WrapCrossAlignment.center,
             children: const [
-              CkgocAvatar(initials: 'JD', size: AvatarSize.sm, square: true),
-              CkgocAvatar(initials: 'MS', size: AvatarSize.md, square: true),
-              CkgocAvatar(initials: 'AB', size: AvatarSize.lg, square: true),
-              CkgocAvatar(initials: 'RK', size: AvatarSize.xl, square: true),
-              CkgocAvatar(initials: 'TL', size: AvatarSize.x2l, square: true),
+              CKAvatar(initials: 'JD', size: AvatarSize.sm, square: true),
+              CKAvatar(initials: 'MS', size: AvatarSize.md, square: true),
+              CKAvatar(initials: 'AB', size: AvatarSize.lg, square: true),
+              CKAvatar(initials: 'RK', size: AvatarSize.xl, square: true),
+              CKAvatar(initials: 'TL', size: AvatarSize.x2l, square: true),
             ],
           ),
           SizedBox(height: s.lg),
           _label('AVATAR — GROUP', theme),
           SizedBox(height: s.sm),
-          CkgocAvatarGroup(
+          CKAvatarGroup(
             size: AvatarSize.md,
             maxVisible: 4,
             avatars: const [
-              CkgocAvatar(initials: 'JD'),
-              CkgocAvatar(initials: 'AB'),
-              CkgocAvatar(initials: 'RK'),
-              CkgocAvatar(initials: 'TL'),
-              CkgocAvatar(initials: 'MS'),
-              CkgocAvatar(initials: 'PQ'),
-              CkgocAvatar(initials: 'WX'),
+              CKAvatar(initials: 'JD'),
+              CKAvatar(initials: 'AB'),
+              CKAvatar(initials: 'RK'),
+              CKAvatar(initials: 'TL'),
+              CKAvatar(initials: 'MS'),
+              CKAvatar(initials: 'PQ'),
+              CKAvatar(initials: 'WX'),
             ],
           ),
           SizedBox(height: s.xl),
@@ -126,18 +126,18 @@ class _DisplayScreenState extends State<DisplayScreen> {
             spacing: s.sm,
             runSpacing: s.sm,
             children: const [
-              CkgocBadge(label: 'Default', variant: BadgeVariant.defaultFill),
-              CkgocBadge(label: 'Primary', variant: BadgeVariant.primary),
-              CkgocBadge(label: 'Success', variant: BadgeVariant.success),
-              CkgocBadge(label: 'Warning', variant: BadgeVariant.warning),
-              CkgocBadge(label: 'Error', variant: BadgeVariant.error),
-              CkgocBadge(label: 'Info', variant: BadgeVariant.info),
-              CkgocBadge(label: 'NEW', variant: BadgeVariant.newBadge),
-              CkgocBadge(label: 'LIVE', variant: BadgeVariant.live),
-              CkgocBadge(label: 'Beta', variant: BadgeVariant.beta),
-              CkgocBadge(label: 'PRO', variant: BadgeVariant.pro),
-              CkgocBadge.count(count: 5),
-              CkgocBadge.count(count: 120),
+              CKBadge(label: 'Default', variant: BadgeVariant.defaultFill),
+              CKBadge(label: 'Primary', variant: BadgeVariant.primary),
+              CKBadge(label: 'Success', variant: BadgeVariant.success),
+              CKBadge(label: 'Warning', variant: BadgeVariant.warning),
+              CKBadge(label: 'Error', variant: BadgeVariant.error),
+              CKBadge(label: 'Info', variant: BadgeVariant.info),
+              CKBadge(label: 'NEW', variant: BadgeVariant.newBadge),
+              CKBadge(label: 'LIVE', variant: BadgeVariant.live),
+              CKBadge(label: 'Beta', variant: BadgeVariant.beta),
+              CKBadge(label: 'PRO', variant: BadgeVariant.pro),
+              CKBadge.count(count: 5),
+              CKBadge.count(count: 120),
             ],
           ),
           SizedBox(height: s.lg),
@@ -147,16 +147,16 @@ class _DisplayScreenState extends State<DisplayScreen> {
             spacing: s.sm,
             runSpacing: s.sm,
             children: const [
-              CkgocBadge(label: 'Online', variant: BadgeVariant.online),
-              CkgocBadge(label: 'Away', variant: BadgeVariant.away),
-              CkgocBadge(label: 'Busy', variant: BadgeVariant.busy),
-              CkgocBadge(label: 'Offline', variant: BadgeVariant.offline),
-              CkgocBadge(label: 'Outline', variant: BadgeVariant.outline),
-              CkgocBadge(
+              CKBadge(label: 'Online', variant: BadgeVariant.online),
+              CKBadge(label: 'Away', variant: BadgeVariant.away),
+              CKBadge(label: 'Busy', variant: BadgeVariant.busy),
+              CKBadge(label: 'Offline', variant: BadgeVariant.offline),
+              CKBadge(label: 'Outline', variant: BadgeVariant.outline),
+              CKBadge(
                 label: 'Success',
                 variant: BadgeVariant.outlineSuccess,
               ),
-              CkgocBadge(label: 'Error', variant: BadgeVariant.outlineError),
+              CKBadge(label: 'Error', variant: BadgeVariant.outlineError),
             ],
           ),
           SizedBox(height: s.xl),
@@ -167,7 +167,7 @@ class _DisplayScreenState extends State<DisplayScreen> {
             runSpacing: s.sm,
             children: ['All', 'Travel', 'Hotels', 'Food', 'Shopping', 'Tech']
                 .map(
-                  (label) => CkgocFilterChip(
+                  (label) => CKFilterChip(
                     label: label,
                     selected: _selectedFilters.contains(label),
                     onTap: () => _toggleFilter(label),
@@ -183,7 +183,7 @@ class _DisplayScreenState extends State<DisplayScreen> {
             runSpacing: s.sm,
             children: _inputChips
                 .map(
-                  (label) => CkgocInputChip(
+                  (label) => CKInputChip(
                     key: ValueKey(label),
                     label: label,
                     onRemove: () => _removeChip(label),
@@ -198,10 +198,10 @@ class _DisplayScreenState extends State<DisplayScreen> {
             spacing: s.sm,
             runSpacing: s.sm,
             children: const [
-              CkgocFilterChip(label: 'Default'),
-              CkgocFilterChip(label: 'Selected', selected: true),
-              CkgocFilterChip(label: 'Disabled', state: ChipState.disabled),
-              CkgocFilterChip(label: 'Error', state: ChipState.error),
+              CKFilterChip(label: 'Default'),
+              CKFilterChip(label: 'Selected', selected: true),
+              CKFilterChip(label: 'Disabled', state: ChipState.disabled),
+              CKFilterChip(label: 'Error', state: ChipState.error),
             ],
           ),
 
@@ -216,12 +216,12 @@ class _DisplayScreenState extends State<DisplayScreen> {
             children: [
               SizedBox(
                 width: 220,
-                child: CkgocCard(
+                child: CKCard(
                   title: 'Card Title',
                   subtitle: 'Subtitle · Category · Date',
                   description:
                       'Short description of the card content goes here.',
-                  action: CkgocButton(
+                  action: CKButton(
                     onPressed: () {},
                     size: ButtonSize.sm,
                     child: const Text('View'),
@@ -230,7 +230,7 @@ class _DisplayScreenState extends State<DisplayScreen> {
               ),
               SizedBox(
                 width: 220,
-                child: CkgocCard(
+                child: CKCard(
                   title: 'With Media',
                   subtitle: 'Category',
                   description: 'Card with a media block at the top.',
@@ -245,7 +245,7 @@ class _DisplayScreenState extends State<DisplayScreen> {
                       ),
                     ),
                   ),
-                  action: CkgocButton(
+                  action: CKButton(
                     onPressed: () {},
                     size: ButtonSize.sm,
                     child: const Text('View'),
@@ -254,7 +254,7 @@ class _DisplayScreenState extends State<DisplayScreen> {
               ),
               SizedBox(
                 width: 220,
-                child: CkgocCard(
+                child: CKCard(
                   title: 'Tappable Card',
                   subtitle: 'Interactive',
                   description: 'Tap anywhere on this card.',
@@ -263,7 +263,7 @@ class _DisplayScreenState extends State<DisplayScreen> {
               ),
               SizedBox(
                 width: 220,
-                child: CkgocCard(
+                child: CKCard(
                   title: 'Danger Zone',
                   subtitle: 'Caution',
                   variant: CardVariant.error,
@@ -272,7 +272,7 @@ class _DisplayScreenState extends State<DisplayScreen> {
               ),
               SizedBox(
                 width: 220,
-                child: CkgocCard(
+                child: CKCard(
                   title: 'Success Card',
                   subtitle: 'All good!',
                   variant: CardVariant.success,
@@ -281,7 +281,7 @@ class _DisplayScreenState extends State<DisplayScreen> {
               ),
               SizedBox(
                 width: 220,
-                child: CkgocCard(
+                child: CKCard(
                   title: 'Info Card',
                   subtitle: 'FYI',
                   variant: CardVariant.info,
@@ -296,7 +296,7 @@ class _DisplayScreenState extends State<DisplayScreen> {
           SizedBox(height: s.sm),
           SizedBox(
             width: 360,
-            child: CkgocCard(
+            child: CKCard(
               layout: CardLayout.horizontal,
               title: 'Product Name',
               subtitle: 'Category  ★★★★☆',
@@ -313,7 +313,7 @@ class _DisplayScreenState extends State<DisplayScreen> {
                   ),
                 ),
               ),
-              action: CkgocButton(
+              action: CKButton(
                 onPressed: () {},
                 size: ButtonSize.sm,
                 child: const Text('+ Add'),
@@ -331,7 +331,7 @@ class _DisplayScreenState extends State<DisplayScreen> {
             children: [
               SizedBox(
                 width: 220,
-                child: CkgocCard(
+                child: CKCard(
                   variant: CardVariant.success,
                   title: 'Success',
                   description: 'Contextual card message here.',
@@ -343,7 +343,7 @@ class _DisplayScreenState extends State<DisplayScreen> {
               ),
               SizedBox(
                 width: 220,
-                child: CkgocCard(
+                child: CKCard(
                   variant: CardVariant.warning,
                   title: 'Warning',
                   description: 'Contextual card message here.',
@@ -355,7 +355,7 @@ class _DisplayScreenState extends State<DisplayScreen> {
               ),
               SizedBox(
                 width: 220,
-                child: CkgocCard(
+                child: CKCard(
                   variant: CardVariant.error,
                   title: 'Error',
                   description: 'Contextual card message here.',
@@ -367,7 +367,7 @@ class _DisplayScreenState extends State<DisplayScreen> {
               ),
               SizedBox(
                 width: 220,
-                child: CkgocCard(
+                child: CKCard(
                   variant: CardVariant.info,
                   title: 'Info',
                   description: 'Contextual card message here.',
@@ -382,28 +382,28 @@ class _DisplayScreenState extends State<DisplayScreen> {
           SizedBox(height: s.xl),
           _label('ACCORDION', theme),
           SizedBox(height: s.sm),
-          CkgocAccordion(
+          CKAccordion(
             initiallyExpanded: 0,
             items: const [
-              CkgocAccordionItem(
+              CKAccordionItem(
                 title: 'What is Flutter?',
                 content: Text(
                   'Google\'s UI toolkit for natively compiled apps from a single codebase.',
                 ),
               ),
-              CkgocAccordionItem(
+              CKAccordionItem(
                 title: 'What is shadcn_flutter?',
                 content: Text(
                   'A Flutter port of the shadcn/ui component library.',
                 ),
               ),
-              CkgocAccordionItem(
+              CKAccordionItem(
                 title: 'Brand theming support?',
                 content: Text(
-                  'Yes — CkgocTheme resolves colors, typography, and spacing per brand.',
+                  'Yes — ckcoreTheme resolves colors, typography, and spacing per brand.',
                 ),
               ),
-              CkgocAccordionItem(
+              CKAccordionItem(
                 title: 'Accessibility?',
                 content: Text(
                   'All components use semantic labels and respect system text scale.',
@@ -414,47 +414,47 @@ class _DisplayScreenState extends State<DisplayScreen> {
           SizedBox(height: s.xl),
           _label('STEPPER — VERTICAL', theme),
           SizedBox(height: s.sm),
-          const CkgocStepper(
+          const CKStepper(
             steps: [
-              CkgocStep(title: 'Personal Info', status: StepStatus.completed),
-              CkgocStep(title: 'Contact', status: StepStatus.completed),
-              CkgocStep(title: 'Payment', status: StepStatus.inProgress),
-              CkgocStep(title: 'Review', status: StepStatus.pending),
+              CKStep(title: 'Personal Info', status: StepStatus.completed),
+              CKStep(title: 'Contact', status: StepStatus.completed),
+              CKStep(title: 'Payment', status: StepStatus.inProgress),
+              CKStep(title: 'Review', status: StepStatus.pending),
             ],
           ),
           SizedBox(height: s.xl),
           _label('STEPPER — HORIZONTAL', theme),
           SizedBox(height: s.sm),
-          const CkgocStepper(
-            orientation: CkgocStepperOrientation.horizontal,
+          const CKStepper(
+            orientation: CKStepperOrientation.horizontal,
             steps: [
-              CkgocStep(title: 'Personal Info', status: StepStatus.completed),
-              CkgocStep(title: 'Contact', status: StepStatus.completed),
-              CkgocStep(title: 'Payment', status: StepStatus.inProgress),
-              CkgocStep(title: 'Review', status: StepStatus.pending),
+              CKStep(title: 'Personal Info', status: StepStatus.completed),
+              CKStep(title: 'Contact', status: StepStatus.completed),
+              CKStep(title: 'Payment', status: StepStatus.inProgress),
+              CKStep(title: 'Review', status: StepStatus.pending),
             ],
           ),
           SizedBox(height: s.xl),
           _label('TIMELINE — VERTICAL', theme),
           SizedBox(height: s.sm),
-          const CkgocTimeline(
+          const CKTimeline(
             events: [
-              CkgocTimelineEvent(
+              CKTimelineEvent(
                 title: 'Order Shipped',
                 timestamp: 'Apr 7 · 2 Nov',
                 status: StepStatus.completed,
               ),
-              CkgocTimelineEvent(
+              CKTimelineEvent(
                 title: 'Payment OK',
                 timestamp: 'Apr 6 · 2:30 PM',
                 status: StepStatus.inProgress,
               ),
-              CkgocTimelineEvent(
+              CKTimelineEvent(
                 title: 'Order Placed',
                 timestamp: 'Apr 5 · 10:00 AM',
                 status: StepStatus.pending,
               ),
-              CkgocTimelineEvent(
+              CKTimelineEvent(
                 title: 'Delivery',
                 timestamp: 'Apr 9 (est)',
                 status: StepStatus.pending,
@@ -464,25 +464,25 @@ class _DisplayScreenState extends State<DisplayScreen> {
           SizedBox(height: s.xl),
           _label('TIMELINE — HORIZONTAL', theme),
           SizedBox(height: s.sm),
-          const CkgocTimeline(
-            orientation: CkgocTimelineOrientation.horizontal,
+          const CKTimeline(
+            orientation: CKTimelineOrientation.horizontal,
             events: [
-              CkgocTimelineEvent(
+              CKTimelineEvent(
                 title: 'Order Placed',
                 timestamp: 'Apr 5',
                 status: StepStatus.completed,
               ),
-              CkgocTimelineEvent(
+              CKTimelineEvent(
                 title: 'Payment OK',
                 timestamp: 'Apr 6',
                 status: StepStatus.inProgress,
               ),
-              CkgocTimelineEvent(
+              CKTimelineEvent(
                 title: 'Shipped',
                 timestamp: 'Apr 7',
                 status: StepStatus.pending,
               ),
-              CkgocTimelineEvent(
+              CKTimelineEvent(
                 title: 'Delivery',
                 timestamp: 'Apr 9',
                 status: StepStatus.pending,
@@ -492,7 +492,7 @@ class _DisplayScreenState extends State<DisplayScreen> {
           SizedBox(height: s.xl),
           _label('CONTAINER — SURFACE', theme),
           SizedBox(height: s.sm),
-          CkgocContainer(
+          CKContainer(
             child: Text(
               'Surface container with default padding.',
               style: theme.typography.textSm.copyWith(
@@ -503,7 +503,7 @@ class _DisplayScreenState extends State<DisplayScreen> {
           SizedBox(height: s.md),
           _label('CONTAINER — MUTED', theme),
           SizedBox(height: s.sm),
-          CkgocContainer(
+          CKContainer(
             variant: ContainerVariant.muted,
             child: Text(
               'Muted container using surfaceVariant background.',
@@ -515,7 +515,7 @@ class _DisplayScreenState extends State<DisplayScreen> {
           SizedBox(height: s.md),
           _label('CONTAINER — OUTLINED', theme),
           SizedBox(height: s.sm),
-          CkgocContainer(
+          CKContainer(
             variant: ContainerVariant.outlined,
             child: Text(
               'Outlined container with 1dp outline border.',
@@ -527,7 +527,7 @@ class _DisplayScreenState extends State<DisplayScreen> {
           SizedBox(height: s.md),
           _label('CONTAINER — ELEVATED', theme),
           SizedBox(height: s.sm),
-          CkgocContainer(
+          CKContainer(
             elevated: true,
             child: Text(
               'Elevated container with shadow.',
@@ -541,7 +541,7 @@ class _DisplayScreenState extends State<DisplayScreen> {
     );
   }
 
-  Widget _label(String text, CkgocThemeData theme) => Text(
+  Widget _label(String text, ckcoreThemeData theme) => Text(
     text,
     style: theme.typography.labelSm.copyWith(
       color: theme.colors.onSurfaceVariant,

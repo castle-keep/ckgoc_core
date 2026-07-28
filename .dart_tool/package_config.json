@@ -236,7 +236,7 @@
       "languageVersion": "3.8"
     },
     {
-      "name": "ckgoc_core",
+      "name": "ckcoreui",
       "rootUri": "../",
       "packageUri": "lib/",
       "languageVersion": "3.9"

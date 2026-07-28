@@ -1,10 +1,10 @@
 /// Themes barrel — exports all theme-related classes.
 library;
 
-export 'ckgoc_brand.dart';
-export 'ckgoc_theme.dart';
-export 'ckgoc_theme_data.dart';
-export 'ckgoc_theme_resolver.dart';
+export 'ckcore_brand.dart';
+export 'ckcore_theme.dart';
+export 'ckcore_theme_data.dart';
+export 'ckcore_theme_resolver.dart';
 
 // Brand implementations
 export 'brands/castlekeep/castlekeep_colors.dart';

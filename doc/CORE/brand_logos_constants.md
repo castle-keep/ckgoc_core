@@ -3,7 +3,7 @@ BrandIcon constants
 
 This file lists the `BrandIcon` constants exported by the package and the
 asset path each constant points to. Use these constants with `Image.asset`
-(PNG) or `SvgPicture.asset` (SVG) and pass `package: 'ckgoc_core'` when
+(PNG) or `SvgPicture.asset` (SVG) and pass `package: 'ckcoreui'` when
 loading from a consuming app.
 
 CastleKeep
@@ -56,11 +56,11 @@ Usage examples
 
 ```dart
 // PNG
-Image.asset(BrandIcon.castlekeepName, package: 'ckgoc_core');
+Image.asset(BrandIcon.castlekeepName, package: 'ckcoreui');
 
 // SVG (rendered by the package)
-BrandIcon.brandLogoWidget(context, CkgocBrand.skyGo, size: 40);
+BrandIcon.brandLogoWidget(context, ckcoreBrand.skyGo, size: 40);
 
 // Use the helper widget
-BrandIconWidget(brand: CkgocBrand.castleKeep, variant: BrandIconVariant.name);
+BrandIconWidget(brand: ckcoreBrand.castleKeep, variant: BrandIconVariant.name);
 ```

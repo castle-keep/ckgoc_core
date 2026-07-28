@@ -1,42 +1,56 @@
 import 'package:flutter/material.dart';
 
-import 'package:ckgoc_core/src/themes/ckgoc_theme.dart';
+import 'package:ckcoreui/src/themes/ckcore_theme.dart';
 
 class TableFooter extends StatelessWidget {
   const TableFooter({
-    required this.totalCount,
     required this.currentPage,
     required this.pageSize,
+    this.totalCount,
     this.onPageChanged,
+    this.showTotalCount = true,
+    this.backgroundColor,
     super.key,
-  });
-  final int totalCount;
+  }) : assert(
+         showTotalCount == false || totalCount != null,
+         'totalCount must be provided when showTotalCount is true',
+       );
+  final int? totalCount;
+  final bool showTotalCount;
   final int currentPage;
   final int pageSize;
   final ValueChanged<int>? onPageChanged;
+  final Color? backgroundColor;
 
-  int get _totalPages => pageSize > 0 ? (totalCount / pageSize).ceil() : 1;
+  int get _totalPages => (totalCount != null && pageSize > 0)
+      ? (totalCount! / pageSize).ceil()
+      : 1;
 
-  int get _firstItem => totalCount == 0 ? 0 : (currentPage - 1) * pageSize + 1;
+  int get _firstItem => (totalCount == null || totalCount == 0)
+      ? 0
+      : (currentPage - 1) * pageSize + 1;
 
-  int get _lastItem => (currentPage * pageSize).clamp(0, totalCount);
+  int get _lastItem =>
+      totalCount == null ? 0 : (currentPage * pageSize).clamp(0, totalCount!);
 
   @override
   Widget build(BuildContext context) {
-    final theme = context.ckgocTheme;
+    final theme = context.ckcoreTheme;
     final c = theme.colors;
     final s = theme.spacing;
     final t = theme.typography;
     final bp = theme.breakpoints;
 
-    final countText = Text(
-      totalCount == 0
-          ? 'No results'
-          : 'Showing $_firstItem–$_lastItem of $totalCount results',
-      style: t.textSm.copyWith(color: c.onSurfaceVariant),
-    );
+    final Text? countText = showTotalCount
+        ? Text(
+            (totalCount == 0)
+                ? 'No results'
+                : 'Showing $_firstItem–$_lastItem of $totalCount results',
+            style: t.textSm.copyWith(color: c.onSurfaceVariant),
+          )
+        : null;
 
-    final pagination = _totalPages > 1
+    final pagination = (totalCount != null && _totalPages > 1)
         ? PaginationWidget(
             currentPage: currentPage,
             totalPages: _totalPages,
@@ -49,14 +63,14 @@ class TableFooter extends StatelessWidget {
         final isNarrow = constraints.maxWidth < bp.md;
         if (isNarrow) {
           return Container(
-            color: c.surfaceVariant,
+            color: backgroundColor ?? c.surfaceVariant,
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: s.md, vertical: s.sm),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  countText,
+                  if (countText != null) countText,
                   if (pagination != null) ...[
                     SizedBox(height: s.sm),
                     Center(child: pagination),
@@ -68,14 +82,17 @@ class TableFooter extends StatelessWidget {
         }
 
         return Container(
-          color: c.surfaceVariant,
+          color: backgroundColor ?? c.surfaceVariant,
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: s.md, vertical: s.sm),
             child: Wrap(
               alignment: WrapAlignment.spaceBetween,
               runSpacing: s.sm,
               crossAxisAlignment: WrapCrossAlignment.center,
-              children: [countText, if (pagination != null) pagination],
+              children: [
+                if (countText != null) countText,
+                if (pagination != null) pagination,
+              ],
             ),
           ),
         );
@@ -114,7 +131,7 @@ class PaginationWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = context.ckgocTheme;
+    final theme = context.ckcoreTheme;
     final s = theme.spacing;
 
     return Row(
@@ -160,7 +177,7 @@ class PageNumberButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = context.ckgocTheme;
+    final theme = context.ckcoreTheme;
     final c = theme.colors;
     final s = theme.spacing;
     final r = theme.radius;
@@ -198,7 +215,7 @@ class PageButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = context.ckgocTheme;
+    final theme = context.ckcoreTheme;
     final c = theme.colors;
     final s = theme.spacing;
     final r = theme.radius;
@@ -230,7 +247,7 @@ class EllipsisWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = context.ckgocTheme;
+    final theme = context.ckcoreTheme;
     final s = theme.spacing;
 
     return SizedBox(

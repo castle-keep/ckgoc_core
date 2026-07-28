@@ -1,6 +1,6 @@
-import 'package:ckgoc_core/src/themes/ckgoc_theme.dart';
+import 'package:ckcoreui/src/themes/ckcore_theme.dart';
 import 'package:flutter/material.dart';
-import 'package:ckgoc_core/src/components/components.dart';
+import 'package:ckcoreui/src/components/components.dart';
 
 class FooterTotalsRow extends StatelessWidget {
   const FooterTotalsRow({
@@ -13,7 +13,7 @@ class FooterTotalsRow extends StatelessWidget {
     super.key,
   });
   final Map<String, dynamic> row;
-  final List<CkgocTableColumn> columns;
+  final List<CKTableColumn> columns;
   final Map<String, double> widths;
   final bool hasSelection;
   final double selectionWidth;
@@ -21,7 +21,7 @@ class FooterTotalsRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = context.ckgocTheme;
+    final theme = context.ckcoreTheme;
     final c = theme.colors;
     final s = theme.spacing;
     final t = theme.typography;
@@ -60,7 +60,7 @@ class SkeletonRows extends StatelessWidget {
     required this.rowHeight,
     super.key,
   });
-  final List<CkgocTableColumn> columns;
+  final List<CKTableColumn> columns;
   final Map<String, double> widths;
   final bool hasSelection;
   final double selectionWidth;
@@ -96,7 +96,7 @@ class SkeletonRow extends StatelessWidget {
     required this.opacity,
     super.key,
   });
-  final List<CkgocTableColumn> columns;
+  final List<CKTableColumn> columns;
   final Map<String, double> widths;
   final bool hasSelection;
   final double selectionWidth;
@@ -105,7 +105,7 @@ class SkeletonRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = context.ckgocTheme;
+    final theme = context.ckcoreTheme;
     final c = theme.colors;
     final s = theme.spacing;
 
@@ -157,7 +157,7 @@ class EmptyState extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = context.ckgocTheme;
+    final theme = context.ckcoreTheme;
     final c = theme.colors;
     final s = theme.spacing;
 
@@ -184,7 +184,7 @@ class ErrorState extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = context.ckgocTheme;
+    final theme = context.ckcoreTheme;
     final c = theme.colors;
     final s = theme.spacing;
 

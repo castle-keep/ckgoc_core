@@ -1,10 +1,10 @@
 {
   "roots": [
-    "ckgoc_core"
+    "ckcoreui"
   ],
   "packages": [
     {
-      "name": "ckgoc_core",
+      "name": "ckcoreui",
       "version": "0.2.1",
       "dependencies": [
         "flutter",

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ckgoc_core/ckgoc_core.dart';
+import 'package:ckcoreui/ckcore_core.dart';
 
 // Displays the active theme's design tokens — colors, spacing, typography.
 // Useful for verifying brand theme correctness at a glance.
@@ -8,7 +8,7 @@ class TokensScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = context.ckgocTheme;
+    final theme = context.ckcoreTheme;
     return SingleChildScrollView(
       padding: EdgeInsets.all(theme.spacing.lg),
       child: Column(
@@ -30,6 +30,46 @@ class TokensScreen extends StatelessWidget {
           Text('Spacing', style: theme.typography.displaySm),
           SizedBox(height: theme.spacing.md),
           _SpacingList(theme: theme),
+          SizedBox(height: theme.spacing.xl),
+          Card(
+            child: Padding(
+              padding: const EdgeInsets.all(12),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Text extension examples',
+                    style: theme.typography.labelLg,
+                  ),
+                  SizedBox(height: theme.spacing.sm),
+                  Text(
+                    'Bold primary',
+                    style: theme.typography.textMd.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: theme.colors.primary,
+                    ),
+                  ),
+                  SizedBox(height: theme.spacing.s12),
+                  Text(
+                    'Italic error',
+                    style: theme.typography.textMd.copyWith(
+                      fontStyle: FontStyle.italic,
+                      color: theme.colors.error,
+                    ),
+                  ),
+                  SizedBox(height: theme.spacing.s12),
+                  Text(
+                    'Code monospace on primary',
+                    style: theme.typography.codeMd.copyWith(
+                      color: theme.colors.primary,
+                    ),
+                  ),
+                  SizedBox(height: theme.spacing.s12),
+                  Text('Blockquote: semantic quoting').blockQuote,
+                ],
+              ),
+            ),
+          ),
         ],
       ),
     );
@@ -37,7 +77,7 @@ class TokensScreen extends StatelessWidget {
 }
 
 class _ColorGrid extends StatelessWidget {
-  final CkgocThemeData theme;
+  final ckcoreThemeData theme;
   const _ColorGrid({required this.theme});
 
   @override
@@ -93,7 +133,7 @@ class _ColorSwatch extends StatelessWidget {
 }
 
 class _TypographyList extends StatelessWidget {
-  final CkgocThemeData theme;
+  final ckcoreThemeData theme;
   const _TypographyList({required this.theme});
 
   @override
@@ -101,6 +141,7 @@ class _TypographyList extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        Text('Hello this is default'),
         Text('display-2xl  32sp Bold', style: theme.typography.display2xl),
         Text('display-xl   28sp Bold', style: theme.typography.displayXl),
         Text('display-lg   24sp Bold', style: theme.typography.displayLg),
@@ -137,7 +178,7 @@ class _TypographyList extends StatelessWidget {
 }
 
 class _SpacingList extends StatelessWidget {
-  final CkgocThemeData theme;
+  final ckcoreThemeData theme;
   const _SpacingList({required this.theme});
 
   @override

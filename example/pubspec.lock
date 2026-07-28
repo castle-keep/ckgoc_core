@@ -33,13 +33,13 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.4.0"
-  ckgoc_core:
+  ckcoreui:
     dependency: "direct main"
     description:
       path: ".."
       relative: true
     source: path
-    version: "0.2.0"
+    version: "0.2.1"
   clock:
     dependency: transitive
     description:

@@ -1,20 +1,24 @@
-import 'package:ckgoc_core/ckgoc_core.dart';
+import 'package:ckcoreui/ckcoreui.dart';
 import 'package:flutter/material.dart';
 
-import 'package:ckgoc_docs_app/pages/brand_icons_page.dart';
-import 'package:ckgoc_docs_app/pages/buttons_page.dart';
-import 'package:ckgoc_docs_app/pages/data_table_page.dart';
-import 'package:ckgoc_docs_app/pages/display_page.dart';
-import 'package:ckgoc_docs_app/pages/enums_page.dart';
-import 'package:ckgoc_docs_app/pages/feedback_page.dart';
-import 'package:ckgoc_docs_app/pages/inputs_page.dart';
-import 'package:ckgoc_docs_app/pages/navigation_page.dart';
-import 'package:ckgoc_docs_app/pages/overlays_page.dart';
-import 'package:ckgoc_docs_app/pages/overview_page.dart';
-import 'package:ckgoc_docs_app/pages/foundation_page.dart';
-import 'package:ckgoc_docs_app/pages/app_page.dart';
-import 'package:ckgoc_docs_app/pages/templates_page.dart';
-import 'package:ckgoc_docs_app/pages/themes_page.dart';
+import 'package:ckcore_docs_app/pages/brand_icons_page.dart';
+import 'package:ckcore_docs_app/pages/buttons_page.dart';
+import 'package:ckcore_docs_app/pages/data_table_page.dart';
+import 'package:ckcore_docs_app/pages/display_page.dart';
+import 'package:ckcore_docs_app/pages/enums_page.dart';
+import 'package:ckcore_docs_app/pages/feedback_page.dart';
+import 'package:ckcore_docs_app/pages/inputs_page.dart';
+import 'package:ckcore_docs_app/pages/navigation_page.dart';
+import 'package:ckcore_docs_app/pages/overlays_page.dart';
+import 'package:ckcore_docs_app/pages/overview_page.dart';
+import 'package:ckcore_docs_app/pages/foundation_page.dart';
+import 'package:ckcore_docs_app/pages/app_page.dart';
+import 'package:ckcore_docs_app/pages/screen_layout_page.dart';
+import 'package:ckcore_docs_app/pages/templates_page.dart';
+import 'package:ckcore_docs_app/pages/themes_page.dart';
+import 'package:ckcore_docs_app/pages/router_page.dart';
+
+import 'docs_navigation.dart';
 
 void main() {
   runApp(const DocsApp());
@@ -28,97 +32,98 @@ class DocsApp extends StatefulWidget {
 }
 
 class _DocsAppState extends State<DocsApp> {
-  CkgocBrand _brand = CkgocBrand.castleKeep;
+  ckcoreBrand _brand = ckcoreBrand.castleKeep;
   Brightness? _brightness = Brightness.light;
 
-  void _setBrand(CkgocBrand brand) => setState(() => _brand = brand);
-  void _setBrightness(Brightness? b) => setState(() => _brightness = b);
+  void _setBrand(ckcoreBrand brand) {
+    setState(() {
+      _brand = brand;
+    });
+  }
 
-  Widget _wrapPage(Widget child) {
-    return Stack(
-      children: [
-        Positioned.fill(child: child),
-        Positioned(
-          top: 12,
-          right: 12,
-          child: _ThemeSwitcher(
-            brand: _brand,
-            brightness: _brightness,
-            onBrandChanged: _setBrand,
-            onBrightnessChanged: _setBrightness,
-          ),
-        ),
-      ],
-    );
+  void _setBrightness(Brightness? brightness) {
+    setState(() {
+      _brightness = brightness;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return CkgocApp(
+    return CKApp(
       brand: _brand,
       brightness: _brightness,
-      child: MaterialApp(
-        title: 'Ckgoc Core Docs',
-        initialRoute: '/',
-        onGenerateRoute: (settings) {
-          late final Widget page;
-
-          switch (settings.name) {
-            case '/':
-              page = _wrapPage(const OverviewPage());
-              break;
-            case '/app':
-              page = _wrapPage(const AppPage());
-              break;
-            case '/foundation':
-              page = _wrapPage(const FoundationPage());
-              break;
-            case '/themes':
-              page = _wrapPage(const ThemesPage());
-              break;
-            case '/templates':
-              page = _wrapPage(const TemplatesPage());
-              break;
-            case '/buttons':
-              page = _wrapPage(const ButtonsPage());
-              break;
-            case '/display':
-              page = _wrapPage(const DisplayPage());
-              break;
-            case '/inputs':
-              page = _wrapPage(const InputsPage());
-              break;
-            case '/feedback':
-              page = _wrapPage(const FeedbackPage());
-              break;
-            case '/navigation':
-              page = _wrapPage(const NavigationPage());
-              break;
-            case '/overlays':
-              page = _wrapPage(const OverlaysPage());
-              break;
-            case '/data-table':
-              page = _wrapPage(const DataTablePage());
-              break;
-            case '/enums':
-              page = _wrapPage(const EnumsPage());
-              break;
-            case '/brand-icons':
-              page = _wrapPage(const BrandIconsPage());
-              break;
-            default:
-              page = _wrapPage(const OverviewPage());
-          }
-
-          return PageRouteBuilder(
-            settings: settings,
-            transitionDuration: Duration.zero,
-            reverseTransitionDuration: Duration.zero,
-            pageBuilder: (_, __, ___) => page,
+      home: ValueListenableBuilder<String>(
+        valueListenable: currentRoute,
+        builder: (context, route, _) {
+          return Stack(
+            children: [
+              _DocsPage(route: route),
+              Positioned(
+                top: 12,
+                right: 12,
+                child: _ThemeSwitcher(
+                  brand: _brand,
+                  brightness: _brightness,
+                  onBrandChanged: _setBrand,
+                  onBrightnessChanged: _setBrightness,
+                ),
+              ),
+            ],
           );
         },
       ),
+      title: 'ckcoreui Core Docs',
     );
+  }
+}
+
+class _DocsPage extends StatelessWidget {
+  const _DocsPage({
+    required this.route,
+  });
+
+  final String route;
+
+  Widget _page() {
+    switch (route) {
+      case '/buttons':
+        return const ButtonsPage();
+      case '/display':
+        return const DisplayPage();
+      case '/inputs':
+        return const InputsPage();
+      case '/feedback':
+        return const FeedbackPage();
+      case '/navigation':
+        return const NavigationPage();
+      case '/router':
+        return const RouterDocsPage();
+      case '/overlays':
+        return const OverlaysPage();
+      case '/data-table':
+        return const DataTablePage();
+      case '/enums':
+        return const EnumsPage();
+      case '/brand-icons':
+        return const BrandIconsPage();
+      case '/app':
+        return const AppPage();
+      case '/foundation':
+        return const FoundationPage();
+      case '/themes':
+        return const ThemesPage();
+      case '/templates':
+        return const TemplatesPage();
+      case '/screen-layout':
+        return const ScreenLayoutDemoPage();
+      default:
+        return const OverviewPage();
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return _page();
   }
 }
 
@@ -130,103 +135,70 @@ class _ThemeSwitcher extends StatelessWidget {
     required this.onBrightnessChanged,
   });
 
-  final CkgocBrand brand;
+  final ckcoreBrand brand;
   final Brightness? brightness;
-  final ValueChanged<CkgocBrand> onBrandChanged;
+
+  final ValueChanged<ckcoreBrand> onBrandChanged;
   final ValueChanged<Brightness?> onBrightnessChanged;
-
-  String get _brandLabel => switch (brand) {
-        CkgocBrand.castleKeep => 'CastleKeep',
-        CkgocBrand.skyGo => 'SkyGo',
-      };
-
-  String get _brightnessLabel => switch (brightness) {
-        Brightness.light => 'Light',
-        Brightness.dark => 'Dark',
-        null => 'System',
-      };
 
   @override
   Widget build(BuildContext context) {
-    final theme = context.ckgocTheme;
+    final theme = context.ckcoreTheme;
 
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        // Brand selector
-        CkgocMenu(
-          trigger: CkgocContainer(
+        CKMenu(
+          trigger: CKContainer(
             elevated: true,
             variant: ContainerVariant.outlined,
             padding: EdgeInsets.symmetric(
               horizontal: theme.spacing.sm,
               vertical: theme.spacing.xs,
             ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  _brandLabel,
-                  style: theme.typography.labelSm.copyWith(
-                    color: theme.colors.onSurface,
-                  ),
-                ),
-              ],
+            child: Text(
+              brand == ckcoreBrand.castleKeep ? 'CastleKeep' : 'SkyGo',
             ),
           ),
           items: [
-            CkgocMenuItem(
-              label: 'Brand: CastleKeep',
-              onTap: () => onBrandChanged(CkgocBrand.castleKeep),
+            CKMenuItem(
+              label: 'CastleKeep',
+              onTap: () => onBrandChanged(ckcoreBrand.castleKeep),
             ),
-            CkgocMenuItem(
-              label: 'Brand: SkyGo',
-              onTap: () => onBrandChanged(CkgocBrand.skyGo),
+            CKMenuItem(
+              label: 'SkyGo',
+              onTap: () => onBrandChanged(ckcoreBrand.skyGo),
             ),
           ],
         ),
-        SizedBox(width: theme.spacing.sm),
-        // Brightness selector
-        CkgocMenu(
-          trigger: CkgocContainer(
+        const SizedBox(width: 8),
+        CKMenu(
+          trigger: CKContainer(
             elevated: true,
             variant: ContainerVariant.outlined,
             padding: EdgeInsets.symmetric(
               horizontal: theme.spacing.sm,
               vertical: theme.spacing.xs,
             ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(
-                  Icons.sunny,
-                  size: theme.spacing.md,
-                  color: theme.colors.primary,
-                ),
-                SizedBox(width: theme.spacing.xs),
-                Text(
-                  _brightnessLabel,
-                  style: theme.typography.labelSm.copyWith(
-                    color: theme.colors.onSurface,
-                  ),
-                ),
-              ],
+            child: Text(
+              brightness == null
+                  ? 'System'
+                  : brightness == Brightness.dark
+                      ? 'Dark'
+                      : 'Light',
             ),
           ),
           items: [
-            CkgocMenuItem(
-              label: 'Follow system',
-              icon: Icons.monitor,
+            CKMenuItem(
+              label: 'System',
               onTap: () => onBrightnessChanged(null),
             ),
-            CkgocMenuItem(
-              label: 'Force light',
-              icon: Icons.sunny,
+            CKMenuItem(
+              label: 'Light',
               onTap: () => onBrightnessChanged(Brightness.light),
             ),
-            CkgocMenuItem(
-              label: 'Force dark',
-              icon: Icons.nightlight_round,
+            CKMenuItem(
+              label: 'Dark',
               onTap: () => onBrightnessChanged(Brightness.dark),
             ),
           ],

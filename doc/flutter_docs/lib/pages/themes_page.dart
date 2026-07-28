@@ -1,8 +1,8 @@
-import 'package:ckgoc_core/ckgoc_core.dart';
+import 'package:ckcoreui/ckcore_core.dart';
 import 'package:flutter/material.dart';
 
-import 'package:ckgoc_docs_app/docs/doc_models.dart';
-import 'package:ckgoc_docs_app/docs/doc_widgets.dart';
+import 'package:ckcore_docs_app/docs/doc_models.dart';
+import 'package:ckcore_docs_app/docs/doc_widgets.dart';
 
 class ThemesPage extends StatelessWidget {
   const ThemesPage({super.key});
@@ -18,31 +18,31 @@ class ThemesPage extends StatelessWidget {
           data: ComponentDocData(
             title: 'Theme access and resolution',
             summary:
-                'Theme files expose CkgocBrand, CkgocTheme, CkgocThemeData, and CkgocThemeResolver. In app code, the main public entry point is usually context.ckgocTheme via CkgocApp.',
+                'Theme files expose ckcoreBrand, ckcoreTheme, ckcoreThemeData, and ckcoreThemeResolver. In app code, the main public entry point is usually context.ckcoreTheme via ckcoreApp.',
             demo: _ThemesDemo(),
             code: '''
-final activeTheme = context.ckgocTheme;
-final resolved = CkgocThemeResolver.resolve(CkgocBrand.skyGo, Brightness.dark);
+final activeTheme = context.ckcoreTheme;
+final resolved = ckcoreThemeResolver.resolve(ckcoreBrand.skyGo, Brightness.dark);
 ''',
             params: [
               DocParam(
-                name: 'CkgocBrand',
+                name: 'ckcoreBrand',
                 type: 'enum',
                 description: 'Brand selector used for theme resolution.',
               ),
               DocParam(
-                name: 'CkgocTheme',
+                name: 'ckcoreTheme',
                 type: 'InheritedWidget surface',
-                description: 'Makes CkgocThemeData available in the tree.',
+                description: 'Makes ckcoreThemeData available in the tree.',
               ),
               DocParam(
-                name: 'CkgocThemeData',
+                name: 'ckcoreThemeData',
                 type: 'theme bundle',
                 description:
                     'Holds foundation token families for the active brand.',
               ),
               DocParam(
-                name: 'CkgocThemeResolver',
+                name: 'ckcoreThemeResolver',
                 type: 'resolver',
                 description:
                     'Maps brand + brightness to a concrete theme bundle.',
@@ -50,9 +50,9 @@ final resolved = CkgocThemeResolver.resolve(CkgocBrand.skyGo, Brightness.dark);
             ],
             faqs: [
               DocFaq(
-                question: 'When do I call CkgocThemeResolver directly?',
+                question: 'When do I call ckcoreThemeResolver directly?',
                 answer:
-                    'Mostly in tests, previews, or internal infrastructure. Typical app code just uses CkgocApp and context.ckgocTheme.',
+                    'Mostly in tests, previews, or internal infrastructure. Typical app code just uses ckcoreApp and context.ckcoreTheme.',
               ),
               DocFaq(
                 question: 'Where do the brand-specific theme files live?',
@@ -72,7 +72,7 @@ class _ThemesDemo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = context.ckgocTheme;
+    final theme = context.ckcoreTheme;
     return Wrap(
       spacing: 12,
       runSpacing: 12,

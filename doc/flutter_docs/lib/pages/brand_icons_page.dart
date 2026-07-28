@@ -1,8 +1,8 @@
-import 'package:ckgoc_core/ckgoc_core.dart';
+import 'package:ckcoreui/ckcore_core.dart';
 import 'package:flutter/material.dart';
 
-import 'package:ckgoc_docs_app/docs/doc_models.dart';
-import 'package:ckgoc_docs_app/docs/doc_widgets.dart';
+import 'package:ckcore_docs_app/docs/doc_models.dart';
+import 'package:ckcore_docs_app/docs/doc_widgets.dart';
 
 class BrandIconsPage extends StatelessWidget {
   const BrandIconsPage({super.key});
@@ -12,7 +12,7 @@ class BrandIconsPage extends StatelessWidget {
     return DocsScaffold(
       title: 'Brand Icons and Logos',
       subtitle:
-          'Documentation for lib/src/themes/brand_icon.dart and lib/src/themes/ckgoc_brand.dart. This page shows helper usage, all BrandIconVariant values, all brands, and every packaged asset constant defined in the current BrandIcon catalog.',
+          'Documentation for lib/src/themes/brand_icon.dart and lib/src/themes/ckcore_brand.dart. This page shows helper usage, all BrandIconVariant values, all brands, and every packaged asset constant defined in the current BrandIcon catalog.',
       children: [
         DocSection(data: _brandEnumDoc()),
         DocSection(data: _brandVariantHelperDoc()),
@@ -23,24 +23,24 @@ class BrandIconsPage extends StatelessWidget {
 }
 
 ComponentDocData _brandEnumDoc() => const ComponentDocData(
-      title: 'CkgocBrand',
+      title: 'ckcoreBrand',
       summary:
           'Theme brand selector. It controls theme tokens, colors, typography, and default logo helpers.',
       demo: _BrandEnumDemo(),
       code: '''
-for (final brand in CkgocBrand.values) {
+for (final brand in ckcoreBrand.values) {
   debugPrint(brand.displayName);
 }
 ''',
       params: [
         DocParam(
           name: 'castleKeep',
-          type: 'CkgocBrand',
+          type: 'ckcoreBrand',
           description: 'CastleKeep brand palette and assets.',
         ),
         DocParam(
           name: 'skyGo',
-          type: 'CkgocBrand',
+          type: 'ckcoreBrand',
           description: 'SkyGo brand palette and assets.',
         ),
       ],
@@ -61,12 +61,12 @@ for (final brand in CkgocBrand.values) {
 ComponentDocData _brandVariantHelperDoc() => const ComponentDocData(
       title: 'BrandIcon.brandLogoWidget and BrandIconVariant',
       summary:
-          'Primary helper for rendering packaged brand assets. The demo renders all BrandIconVariant values for every CkgocBrand.',
+          'Primary helper for rendering packaged brand assets. The demo renders all BrandIconVariant values for every ckcoreBrand.',
       demo: _BrandVariantHelperDemo(),
       code: '''
 BrandIcon.brandLogoWidget(
   context,
-  CkgocBrand.castleKeep,
+  ckcoreBrand.castleKeep,
   variant: BrandIconVariant.master,
   size: 64,
 )
@@ -80,7 +80,7 @@ BrandIcon.brandLogoWidget(
         ),
         DocParam(
           name: 'brand',
-          type: 'CkgocBrand',
+          type: 'ckcoreBrand',
           description: 'Brand whose asset set should be used.',
           requiredParam: true,
         ),
@@ -116,7 +116,7 @@ BrandIcon.brandLogoWidget(
         ),
       ],
       notes: [
-        'Enum demo coverage: all CkgocBrand values and all BrandIconVariant values are rendered.',
+        'Enum demo coverage: all ckcoreBrand values and all BrandIconVariant values are rendered.',
       ],
     );
 
@@ -170,7 +170,7 @@ class _BrandEnumDemo extends StatelessWidget {
       spacing: 16,
       runSpacing: 16,
       children: [
-        for (final brand in CkgocBrand.values)
+        for (final brand in ckcoreBrand.values)
           Chip(label: Text('${brand.name} → ${brand.displayName}')),
       ],
     );
@@ -185,7 +185,7 @@ class _BrandVariantHelperDemo extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        for (final brand in CkgocBrand.values) ...[
+        for (final brand in ckcoreBrand.values) ...[
           Text(
             brand.displayName,
             style: Theme.of(context).textTheme.titleMedium,

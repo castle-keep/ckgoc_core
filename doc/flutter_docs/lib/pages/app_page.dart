@@ -1,8 +1,8 @@
-import 'package:ckgoc_core/ckgoc_core.dart';
+import 'package:ckcoreui/ckcore_core.dart';
 import 'package:flutter/material.dart';
 
-import 'package:ckgoc_docs_app/docs/doc_models.dart';
-import 'package:ckgoc_docs_app/docs/doc_widgets.dart';
+import 'package:ckcore_docs_app/docs/doc_models.dart';
+import 'package:ckcore_docs_app/docs/doc_widgets.dart';
 
 class AppPage extends StatelessWidget {
   const AppPage({super.key});
@@ -11,17 +11,17 @@ class AppPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return const DocsScaffold(
       title: 'App Wrapper',
-      subtitle: 'Coverage for lib/src/app/ckgoc_app.dart.',
+      subtitle: 'Coverage for lib/src/app/ckcore_app.dart.',
       children: [
         DocSection(
           data: ComponentDocData(
-            title: 'CkgocApp',
+            title: 'ckcoreApp',
             summary:
-                'Root wrapper that injects a resolved CkgocThemeData into the subtree for the selected brand and brightness.',
+                'Root wrapper that injects a resolved ckcoreThemeData into the subtree for the selected brand and brightness.',
             demo: _AppDemo(),
             code: '''
-CkgocApp(
-  brand: CkgocBrand.castleKeep,
+ckcoreApp(
+  brand: ckcoreBrand.castleKeep,
   brightness: Brightness.light,
   child: MaterialApp(home: HomePage()),
 )
@@ -29,7 +29,7 @@ CkgocApp(
             params: [
               DocParam(
                 name: 'brand',
-                type: 'CkgocBrand',
+                type: 'ckcoreBrand',
                 description: 'Brand whose theme should be resolved.',
                 requiredParam: true,
               ),
@@ -49,12 +49,12 @@ CkgocApp(
             faqs: [
               DocFaq(
                 question:
-                    'Why use CkgocApp instead of accessing theme data manually?',
+                    'Why use ckcoreApp instead of accessing theme data manually?',
                 answer:
-                    'It centralizes brand + brightness resolution and provides a consistent way for all child widgets to read context.ckgocTheme.',
+                    'It centralizes brand + brightness resolution and provides a consistent way for all child widgets to read context.ckcoreTheme.',
               ),
               DocFaq(
-                question: 'Can I nest CkgocApp?',
+                question: 'Can I nest ckcoreApp?',
                 answer:
                     'Usually no. Treat it as the root injector for your app shell.',
               ),
@@ -75,7 +75,7 @@ class _AppDemo extends StatelessWidget {
       spacing: 12,
       runSpacing: 12,
       children: [
-        for (final brand in CkgocBrand.values)
+        for (final brand in ckcoreBrand.values)
           Chip(label: Text('brand: ${brand.displayName}')),
       ],
     );

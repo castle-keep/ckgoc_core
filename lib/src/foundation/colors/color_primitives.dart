@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-abstract final class CkgocPrimitiveColors {
+abstract final class ckcorePrimitiveColors {
   // Neutral (Core spec)
   static const Color neutral0 = Color(0xFFFFFFFF);
   static const Color neutral50 = Color(0xFFF8F9FA);

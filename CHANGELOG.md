@@ -1,8 +1,8 @@
 ## 0.2.1
 
 Added:
-- Flutter documentation app for browsing ckgoc_core components and usage examples.
-- `CkgocNumberStepper` input component and expanded `CkgocDropdown` support.
+- Flutter documentation app for browsing ckcoreui components and usage examples.
+- `ckcoreNumberStepper` input component and expanded `ckcoreDropdown` support.
 
 Changed:
 - Migrated icon usage from `lucide_icons` to `lucide_icons_flutter`.
@@ -11,7 +11,7 @@ Changed:
 ## 0.2.0
 
 Added:
-- Brand scaffolding CLI via `bin/ckgoc.dart` for generating brand configuration and setup artifacts.
+- Brand scaffolding CLI via `bin/ckcoreui.dart` for generating brand configuration and setup artifacts.
 - Data table sorting support, including updated table behavior and documentation.
 - Bundled Inter font assets and brand logo assets for CastleKeep and SkyGo.
 

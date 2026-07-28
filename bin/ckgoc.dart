@@ -31,7 +31,7 @@ String toDirName(String raw) =>
 
 void main(List<String> args) {
   if (args.length < 3 || args[0] != 'add' || args[1] != 'brand') {
-    print('Usage: dart run bin/ckgoc.dart add brand <BrandName>');
+    print('Usage: dart run bin/ckcoreui.dart add brand <BrandName>');
     exit(1);
   }
 
@@ -72,13 +72,13 @@ abstract final class ${pascal}Colors {
 
   if (!typographyFile.existsSync()) {
     typographyFile.writeAsStringSync('''import 'package:flutter/material.dart';
-import 'package:ckgoc_core/src/foundation/foundation.dart';
+  import 'package:ckcoreui/src/foundation/foundation.dart';
 
 abstract final class ${pascal}Typography {
   static const String? _fontFamily = null;
 
-  static CkgocTypography scale({required Color defaultColor}) =>
-      CkgocTypography(
+  static ckcoreTypography scale({required Color defaultColor}) =>
+      ckcoreTypography(
         display2xl: TextStyle(fontFamily: _fontFamily, fontSize: 32, fontWeight: FontWeight.w700, height: 40/32, color: defaultColor),
         displayXl: TextStyle(fontFamily: _fontFamily, fontSize: 28, fontWeight: FontWeight.w700, height: 36/28, color: defaultColor),
         displayLg: TextStyle(fontFamily: _fontFamily, fontSize: 24, fontWeight: FontWeight.w700, height: 32/24, color: defaultColor),
@@ -103,30 +103,30 @@ abstract final class ${pascal}Typography {
   if (!lightFile.existsSync()) {
     lightFile.writeAsStringSync('''import 'package:flutter/material.dart';
 
-import 'package:ckgoc_core/src/foundation/foundation.dart';
-import 'package:ckgoc_core/src/themes/ckgoc_brand.dart';
-import 'package:ckgoc_core/src/themes/ckgoc_theme_data.dart';
-import 'package:ckgoc_core/src/themes/brands/$dirName/${dirName}_colors.dart';
-import 'package:ckgoc_core/src/themes/brands/$dirName/${dirName}_typography.dart';
+  import 'package:ckcoreui/src/foundation/foundation.dart';
+  import 'package:ckcoreui/src/themes/ckcore_brand.dart';
+  import 'package:ckcoreui/src/themes/ckcore_theme_data.dart';
+  import 'package:ckcoreui/src/themes/brands/$dirName/${dirName}_colors.dart';
+  import 'package:ckcoreui/src/themes/brands/$dirName/${dirName}_typography.dart';
 
-typedef _P = CkgocPrimitiveColors;
+typedef _P = ckcorePrimitiveColors;
 typedef _C = ${pascal}Colors;
 
 final class ${pascal}LightTheme {
   ${pascal}LightTheme._();
 
-  static CkgocThemeData build() {
-    const colors = CkgocColors(
+  static ckcoreThemeData build() {
+    const colors = ckcoreColors(
       primary: _C.primary,
       primaryHover: _C.primaryLight,
       primaryActive: _C.primaryDark,
       primaryDisabled: _C.primaryDisabled,
       onPrimary: _C.accent,
 
-      secondary: _P.neutral700,
-      secondaryHover: _P.neutral800,
-      secondaryActive: _P.neutral900,
-      onSecondary: Color(0xFFFFFFFF),
+      secondary: _P.neutral100,
+      secondaryHover: _P.neutral200,
+      secondaryActive: _P.neutral300,
+      onSecondary: _P.neutral900,
 
       accent: _C.accent,
       onAccent: _P.neutral900,
@@ -183,18 +183,18 @@ final class ${pascal}LightTheme {
       onTagPro: _P.neutral0,
     );
 
-    return CkgocThemeData(
-      brand: CkgocBrand.$enumValue,
+    return ckcoreThemeData(
+      brand: ckcoreBrand.$enumValue,
       brightness: Brightness.light,
       colors: colors,
       typography: ${pascal}Typography.scale(defaultColor: _P.neutral950),
-      spacing: CkgocSpacing.defaults,
-      radius: CkgocRadius.defaults,
-      elevation: CkgocElevation.defaults,
-      shadows: CkgocShadows.light(),
-      motion: CkgocMotion.defaults,
-      opacity: CkgocOpacity.defaults,
-      breakpoints: CkgocBreakpoints.defaults,
+      spacing: ckcoreSpacing.defaults,
+      radius: ckcoreRadius.defaults,
+      elevation: ckcoreElevation.defaults,
+      shadows: ckcoreShadows.light(),
+      motion: ckcoreMotion.defaults,
+      opacity: ckcoreOpacity.defaults,
+      breakpoints: ckcoreBreakpoints.defaults,
     );
   }
 }
@@ -205,20 +205,20 @@ final class ${pascal}LightTheme {
   if (!darkFile.existsSync()) {
     darkFile.writeAsStringSync('''import 'package:flutter/material.dart';
 
-import 'package:ckgoc_core/src/foundation/foundation.dart';
-import 'package:ckgoc_core/src/themes/ckgoc_brand.dart';
-import 'package:ckgoc_core/src/themes/ckgoc_theme_data.dart';
-import 'package:ckgoc_core/src/themes/brands/$dirName/${dirName}_colors.dart';
-import 'package:ckgoc_core/src/themes/brands/$dirName/${dirName}_typography.dart';
+  import 'package:ckcoreui/src/foundation/foundation.dart';
+  import 'package:ckcoreui/src/themes/ckcore_brand.dart';
+  import 'package:ckcoreui/src/themes/ckcore_theme_data.dart';
+  import 'package:ckcoreui/src/themes/brands/$dirName/${dirName}_colors.dart';
+  import 'package:ckcoreui/src/themes/brands/$dirName/${dirName}_typography.dart';
 
-typedef _P = CkgocPrimitiveColors;
+typedef _P = ckcorePrimitiveColors;
 typedef _C = ${pascal}Colors;
 
 final class ${pascal}DarkTheme {
   ${pascal}DarkTheme._();
 
-  static CkgocThemeData build() {
-    const colors = CkgocColors(
+  static ckcoreThemeData build() {
+    const colors = ckcoreColors(
       primary: _C.primaryOnDark,
       primaryHover: _C.primaryLight,
       primaryActive: _C.primaryDark,
@@ -285,18 +285,18 @@ final class ${pascal}DarkTheme {
       onTagPro: _P.neutral0,
     );
 
-    return CkgocThemeData(
-      brand: CkgocBrand.$enumValue,
+    return ckcoreThemeData(
+      brand: ckcoreBrand.$enumValue,
       brightness: Brightness.dark,
       colors: colors,
       typography: ${pascal}Typography.scale(defaultColor: _P.neutral100),
-      spacing: CkgocSpacing.defaults,
-      radius: CkgocRadius.defaults,
-      elevation: CkgocElevation.defaults,
-      shadows: CkgocShadows.dark(),
-      motion: CkgocMotion.defaults,
-      opacity: CkgocOpacity.defaults,
-      breakpoints: CkgocBreakpoints.defaults,
+      spacing: ckcoreSpacing.defaults,
+      radius: ckcoreRadius.defaults,
+      elevation: ckcoreElevation.defaults,
+      shadows: ckcoreShadows.dark(),
+      motion: ckcoreMotion.defaults,
+      opacity: ckcoreOpacity.defaults,
+      breakpoints: ckcoreBreakpoints.defaults,
     );
   }
 }
@@ -304,22 +304,22 @@ final class ${pascal}DarkTheme {
     print('Created ${darkFile.path}');
   }
 
-  // 2) Update enum + extension in ckgoc_brand.dart
-  final brandFile = File('$themesDir/ckgoc_brand.dart');
+  // 2) Update enum + extension in ckcore_brand.dart
+  final brandFile = File('$themesDir/ckcore_brand.dart');
   if (!brandFile.existsSync()) {
-    print('Could not find ckgoc_brand.dart at $themesDir');
+    print('Could not find ckcore_brand.dart at $themesDir');
     exit(2);
   }
   var brandContent = brandFile.readAsStringSync();
 
-  final enumRegex = RegExp(r'enum CkgocBrand\s*{([\s\S]*?)}');
+  final enumRegex = RegExp(r'enum ckcoreBrand\s*{([\s\S]*?)}');
   final enumMatch = enumRegex.firstMatch(brandContent);
   if (enumMatch != null) {
     final inside = enumMatch.group(1)!;
     if (!inside.contains('\n  $enumValue')) {
       final newInside = inside.trimRight() + '\n\n  $enumValue,';
       brandContent = brandContent.replaceFirst(inside, newInside);
-      print('Inserted enum value $enumValue into ckgoc_brand.dart');
+      print('Inserted enum value $enumValue into ckcore_brand.dart');
     } else {
       print('Enum already contains $enumValue');
     }
@@ -332,8 +332,8 @@ final class ${pascal}DarkTheme {
   final switchMatch = switchRegex.firstMatch(brandContent);
   if (switchMatch != null) {
     final inside = switchMatch.group(1)!;
-    final caseLine = "    CkgocBrand.$enumValue => '$pascal',\n";
-    if (!inside.contains('CkgocBrand.$enumValue')) {
+    final caseLine = "    ckcoreBrand.$enumValue => '$pascal',\n";
+    if (!inside.contains('ckcoreBrand.$enumValue')) {
       final newInside = inside.trimRight() + '\n' + caseLine;
       brandContent = brandContent.replaceFirst(inside, newInside);
       print('Added displayName mapping for $enumValue');
@@ -345,28 +345,28 @@ final class ${pascal}DarkTheme {
   brandFile.writeAsStringSync(brandContent);
 
   // 3) Update theme resolver
-  final resolverFile = File('$themesDir/ckgoc_theme_resolver.dart');
+  final resolverFile = File('$themesDir/ckcore_theme_resolver.dart');
   if (!resolverFile.existsSync()) {
-    print('Could not find ckgoc_theme_resolver.dart at $themesDir');
+    print('Could not find ckcore_theme_resolver.dart at $themesDir');
     exit(3);
   }
   var resolverContent = resolverFile.readAsStringSync();
 
   final importLight =
-      "import 'package:ckgoc_core/src/themes/brands/$dirName/${dirName}_light_theme.dart';";
+      "import 'package:ckcoreui/src/themes/brands/$dirName/${dirName}_light_theme.dart';";
   final importDark =
-      "import 'package:ckgoc_core/src/themes/brands/$dirName/${dirName}_dark_theme.dart';";
+      "import 'package:ckcoreui/src/themes/brands/$dirName/${dirName}_dark_theme.dart';";
 
   if (!resolverContent.contains(importLight)) {
     // insert after existing brand imports block
     final insertPoint = resolverContent.indexOf(
-      "import 'package:ckgoc_core/src/themes/brands/",
+      "import 'package:ckcoreui/src/themes/brands/",
     );
     if (insertPoint != -1) {
       // append at end of brand imports area (just before comment or switch)
       // fallback: insert near other brand imports: after last import of brands
       final lastBrandImportIdx = resolverContent.lastIndexOf(
-        "import 'package:ckgoc_core/src/themes/brands/",
+        "import 'package:ckcoreui/src/themes/brands/",
       );
       final nl = '\n';
       final pos = resolverContent.indexOf('\n', lastBrandImportIdx);
@@ -390,9 +390,9 @@ final class ${pascal}DarkTheme {
 
   // Insert cases into switch
   final caseLight =
-      '      (CkgocBrand.$enumValue, Brightness.light) => ${pascal}LightTheme.build(),\n';
+      '      (ckcoreBrand.$enumValue, Brightness.light) => ${pascal}LightTheme.build(),\n';
   final caseDark =
-      '      (CkgocBrand.$enumValue, Brightness.dark) => ${pascal}DarkTheme.build(),\n';
+      '      (ckcoreBrand.$enumValue, Brightness.dark) => ${pascal}DarkTheme.build(),\n';
 
   final switchCasesRegex = RegExp(
     r'return switch \(\(brand, brightness\)\) \{([\s\S]*?)\};',
@@ -400,7 +400,7 @@ final class ${pascal}DarkTheme {
   final switchCasesMatch = switchCasesRegex.firstMatch(resolverContent);
   if (switchCasesMatch != null) {
     final casesInside = switchCasesMatch.group(1)!;
-    if (!casesInside.contains('CkgocBrand.$enumValue')) {
+    if (!casesInside.contains('ckcoreBrand.$enumValue')) {
       final newCases = casesInside.trimRight() + '\n' + caseLight + caseDark;
       resolverContent = resolverContent.replaceFirst(casesInside, newCases);
       print('Registered $pascal in resolver switch');
@@ -411,5 +411,5 @@ final class ${pascal}DarkTheme {
 
   resolverFile.writeAsStringSync(resolverContent);
 
-  print('Done. Run: dart run bin/ckgoc.dart add brand "$raw"');
+  print('Done. Run: dart run bin/ckcoreui.dart add brand "$raw"');
 }

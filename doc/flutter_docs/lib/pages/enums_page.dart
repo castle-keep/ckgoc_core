@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'package:ckgoc_docs_app/docs/doc_models.dart';
-import 'package:ckgoc_docs_app/docs/doc_widgets.dart';
+import 'package:ckcore_docs_app/docs/doc_models.dart';
+import 'package:ckcore_docs_app/docs/doc_widgets.dart';
 
 class EnumsPage extends StatelessWidget {
   const EnumsPage({super.key});
@@ -26,17 +26,17 @@ class EnumsPage extends StatelessWidget {
         EnumCasesCard(title: 'CardVariant', cases: _cardVariants),
         EnumCasesCard(title: 'CardLayout', cases: _cardLayouts),
         EnumCasesCard(title: 'ContainerVariant', cases: _containerVariants),
-        EnumCasesCard(title: 'CkgocColumnType', cases: _columnTypes),
+        EnumCasesCard(title: 'CKColumnType', cases: _columnTypes),
         EnumCasesCard(title: 'TableSelectionMode', cases: _selectionModes),
         EnumCasesCard(title: 'TableWidthBehavior', cases: _widthBehaviors),
         EnumCasesCard(title: 'AlertVariant', cases: _alertVariants),
         EnumCasesCard(title: 'StepStatus', cases: _stepStatuses),
         EnumCasesCard(
-          title: 'CkgocStepperOrientation',
+          title: 'CKStepperOrientation',
           cases: _stepperOrientations,
         ),
         EnumCasesCard(
-          title: 'CkgocTimelineOrientation',
+          title: 'CKTimelineOrientation',
           cases: _timelineOrientations,
         ),
         EnumCasesCard(title: 'AppBarStyle', cases: _appBarStyles),

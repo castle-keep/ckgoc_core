@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ckgoc_core/src/foundation/foundation.dart';
+import 'package:ckcoreui/src/foundation/foundation.dart';
 
 abstract final class CastleKeepTypography {
   // Inter via google_fonts for consistent typography.
@@ -18,8 +18,8 @@ abstract final class CastleKeepTypography {
     );
   }
 
-  static CkgocTypography scale({required Color defaultColor}) =>
-      CkgocTypography(
+  static ckcoreTypography scale({required Color defaultColor}) =>
+      ckcoreTypography(
         display2xl: _interStyle(
           size: 32,
           weight: FontWeight.w700,

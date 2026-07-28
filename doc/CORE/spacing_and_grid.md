@@ -1,8 +1,8 @@
-The spacing system uses the package `CkgocSpacing` tokens. The base
+The spacing system uses the package `ckcoreSpacing` tokens. The base
 unit is 4dp and the token names used in code are the canonical source of
 truth. Use these tokens in layout and components rather than raw numbers.
 
-## CkgocSpacing tokens
+## ckcoreSpacing tokens
 
 | Token | Value | Common Use |
 |---|---:|---|
@@ -22,9 +22,9 @@ truth. Use these tokens in layout and components rather than raw numbers.
 | `x4l` | 96dp | Hero section |
 | `x5l` | 128dp | Full-bleed |
 
-## Border radius (CkgocRadius)
+## Border radius (ckcoreRadius)
 
-Radius tokens are provided by `CkgocRadius`.
+Radius tokens are provided by `ckcoreRadius`.
 
 | Token | Value | Usage |
 |---|---:|---|
@@ -53,12 +53,12 @@ Radius tokens are provided by `CkgocRadius`.
 ## Flutter implementation (tokens)
 
 These tokens are defined in `lib/src/foundation/` — prefer reading them from
-`context.ckgocTheme.spacing` and `context.ckgocTheme.radius` in widgets.
+`context.ckcoreTheme.spacing` and `context.ckcoreTheme.radius` in widgets.
 
 ```dart
-final s = context.ckgocTheme.spacing;
+final s = context.ckcoreTheme.spacing;
 Padding(padding: EdgeInsets.all(s.md));
 
-final r = context.ckgocTheme.radius;
+final r = context.ckcoreTheme.radius;
 BorderRadius.circular(r.base);
 ```

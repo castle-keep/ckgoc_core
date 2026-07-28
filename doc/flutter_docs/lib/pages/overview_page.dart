@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:ckcoreui/ckcore_core.dart';
 
-import 'package:ckgoc_docs_app/docs/doc_widgets.dart';
+import 'package:ckcore_docs_app/docs/doc_widgets.dart';
 
 class OverviewPage extends StatelessWidget {
   const OverviewPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const DocsScaffold(
-      title: 'Ckgoc Core Documentation',
+    return DocsScaffold(
+      title: 'ckcoreui Core Documentation',
       subtitle:
           'Flutter docs app generated for every public component area under lib/src/components, plus enums and brand icon usage. Each page includes a live demo, copy-pasteable code, parameter explanations, and FAQs.',
       children: [
@@ -20,7 +21,7 @@ class OverviewPage extends StatelessWidget {
               children: [
                 Text('Coverage'),
                 VSpace(height: 12),
-                Text('• Buttons: CkgocButton, CkgocIconButton, CkgocFab'),
+                Text('• Buttons: CKButton, CKIconButton, CKFab'),
                 Text(
                   '• Display: Accordion, Avatar, AvatarGroup, Badge, Card, Filter/Input chips, Container, Divider, ListTile, Stepper, Timeline',
                 ),
@@ -35,12 +36,12 @@ class OverviewPage extends StatelessWidget {
                 ),
                 Text('• Overlays: Dialog, BottomSheet, Menu, Popover, Tooltip'),
                 Text(
-                  '• Data table: CkgocDataTable, CkgocTableColumn, selection and width enums',
+                  '• Data table: CKDataTable, CKTableColumn, selection and width enums',
                 ),
                 Text(
-                  '• Themes and assets: CkgocBrand, BrandIcon, BrandIconVariant, all packaged logo assets',
+                  '• Themes and assets: ckcoreBrand, BrandIcon, BrandIconVariant, all packaged logo assets',
                 ),
-                Text('• App wrapper: CkgocApp'),
+                Text('• App wrapper: ckcoreApp'),
                 Text(
                   '• Foundation tokens: colors, typography, spacing, radius, elevation, shadows, motion, opacity, breakpoints',
                 ),
@@ -53,6 +54,12 @@ class OverviewPage extends StatelessWidget {
               ],
             ),
           ),
+        ),
+        VSpace(height: 24),
+        Text('Text Extensions').blockQuote,
+        VSpace(height: 12),
+        const Text(
+          'Use extension methods for cleaner, more readable text styling throughout your app.',
         ),
       ],
     );

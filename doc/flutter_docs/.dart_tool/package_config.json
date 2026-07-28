@@ -20,7 +20,7 @@
       "languageVersion": "3.4"
     },
     {
-      "name": "ckgoc_core",
+      "name": "ckcoreui",
       "rootUri": "../../../",
       "packageUri": "lib/",
       "languageVersion": "3.9"
@@ -164,7 +164,7 @@
       "languageVersion": "3.8"
     },
     {
-      "name": "ckgoc_docs_app",
+      "name": "ckcore_docs_app",
       "rootUri": "../",
       "packageUri": "lib/",
       "languageVersion": "3.0"

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ckgoc_core/ckgoc_core.dart';
+import 'package:ckcoreui/ckcore_core.dart';
 
 class InputsScreen extends StatefulWidget {
   const InputsScreen({super.key});
@@ -41,7 +41,7 @@ class _InputsScreenState extends State<InputsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = context.ckgocTheme;
+    final theme = context.ckcoreTheme;
     final s = theme.spacing;
 
     return SingleChildScrollView(
@@ -57,11 +57,11 @@ class _InputsScreenState extends State<InputsScreen> {
             children: [
               SizedBox(
                 width: 200,
-                child: CkgocTextField(hint: 'Enter text...', label: 'Label'),
+                child: CKTextField(hint: 'Enter text...', label: 'Label'),
               ),
               SizedBox(
                 width: 200,
-                child: CkgocTextField(
+                child: CKTextField(
                   hint: 'Enter text...',
                   label: 'Label',
                   autoFocus: true,
@@ -69,11 +69,11 @@ class _InputsScreenState extends State<InputsScreen> {
               ),
               SizedBox(
                 width: 200,
-                child: CkgocTextField(controller: _filledCtrl, label: 'Label'),
+                child: CKTextField(controller: _filledCtrl, label: 'Label'),
               ),
               SizedBox(
                 width: 200,
-                child: CkgocTextField(
+                child: CKTextField(
                   hint: 'Search...',
                   leading: Icon(
                     LucideIcons.search,
@@ -84,21 +84,21 @@ class _InputsScreenState extends State<InputsScreen> {
               ),
               SizedBox(
                 width: 200,
-                child: CkgocTextField(
+                child: CKTextField(
                   hint: 'valid@mail.com',
                   successText: 'Email verified',
                 ),
               ),
               SizedBox(
                 width: 200,
-                child: CkgocTextField(
+                child: CKTextField(
                   hint: 'invalid-email',
                   errorText: 'Invalid format',
                 ),
               ),
               SizedBox(
                 width: 200,
-                child: CkgocTextField(
+                child: CKTextField(
                   hint: 'Cannot edit',
                   label: 'Label',
                   enabled: false,
@@ -106,7 +106,7 @@ class _InputsScreenState extends State<InputsScreen> {
               ),
               SizedBox(
                 width: 200,
-                child: CkgocDropdown<String>(
+                child: CKDropdown<String>(
                   label: 'Select option',
                   hint: 'Choose...',
                   value: _dropdownValue,
@@ -125,7 +125,7 @@ class _InputsScreenState extends State<InputsScreen> {
               ),
               SizedBox(
                 width: 200,
-                child: CkgocNumberStepper(
+                child: CKNumberStepper(
                   label: 'Quantity',
                   value: _quantity,
                   min: 1,
@@ -145,11 +145,11 @@ class _InputsScreenState extends State<InputsScreen> {
             children: [
               SizedBox(
                 width: 200,
-                child: CkgocTextField(hint: 'Enter message...', maxLines: 4),
+                child: CKTextField(hint: 'Enter message...', maxLines: 4),
               ),
               SizedBox(
                 width: 200,
-                child: CkgocTextField(
+                child: CKTextField(
                   hint: 'Focus state',
                   maxLines: 4,
                   autoFocus: true,
@@ -157,7 +157,7 @@ class _InputsScreenState extends State<InputsScreen> {
               ),
               SizedBox(
                 width: 200,
-                child: CkgocTextField(
+                child: CKTextField(
                   hint: 'Error textarea',
                   maxLines: 4,
                   errorText: 'Required',
@@ -165,7 +165,7 @@ class _InputsScreenState extends State<InputsScreen> {
               ),
               SizedBox(
                 width: 200,
-                child: CkgocTextField(
+                child: CKTextField(
                   hint: 'Disabled',
                   maxLines: 4,
                   enabled: false,
@@ -178,7 +178,7 @@ class _InputsScreenState extends State<InputsScreen> {
           SizedBox(height: s.sm),
           SizedBox(
             width: 320,
-            child: CkgocTextField(
+            child: CKTextField(
               label: 'Email address',
               hint: 'you@example.com',
               keyboardType: TextInputType.emailAddress,
@@ -199,7 +199,7 @@ class _InputsScreenState extends State<InputsScreen> {
           SizedBox(height: s.xl),
           _label('OTP INPUT', theme),
           SizedBox(height: s.sm),
-          CkgocOtpField(
+          CKOtpField(
             length: 6,
             autoFocus: false,
             onChanged: (v) => setState(() => _otpValue = v),
@@ -224,21 +224,21 @@ class _InputsScreenState extends State<InputsScreen> {
             children: [
               _switchDemo(
                 'OFF',
-                CkgocSwitch(
+                CKSwitch(
                   value: _off,
                   onChanged: (v) => setState(() => _off = v),
                 ),
               ),
               _switchDemo(
                 'ON',
-                CkgocSwitch(
+                CKSwitch(
                   value: _on,
                   onChanged: (v) => setState(() => _on = v),
                 ),
               ),
               _switchDemo(
                 'Success',
-                CkgocSwitch(
+                CKSwitch(
                   value: _success,
                   variant: SwitchVariant.success,
                   onChanged: (v) => setState(() => _success = v),
@@ -246,17 +246,17 @@ class _InputsScreenState extends State<InputsScreen> {
               ),
               _switchDemo(
                 'Error',
-                CkgocSwitch(
+                CKSwitch(
                   value: _error,
                   variant: SwitchVariant.error,
                   onChanged: (v) => setState(() => _error = v),
                 ),
               ),
-              _switchDemo('Disabled', const CkgocSwitch(value: false)),
-              _switchDemo('Dis. ON', CkgocSwitch(value: _disOn)),
+              _switchDemo('Disabled', const CKSwitch(value: false)),
+              _switchDemo('Dis. ON', CKSwitch(value: _disOn)),
               _switchDemo(
                 'CK',
-                CkgocSwitch(
+                CKSwitch(
                   value: _ck,
                   color: theme.colors.primary,
                   onChanged: (v) => setState(() => _ck = v),
@@ -274,29 +274,29 @@ class _InputsScreenState extends State<InputsScreen> {
             children: [
               _switchDemo(
                 'Unchecked',
-                CkgocCheckbox(
+                CKCheckbox(
                   value: _cbA,
                   onChanged: (v) => setState(() => _cbA = v ?? false),
                 ),
               ),
               _switchDemo(
                 'Checked',
-                CkgocCheckbox(
+                CKCheckbox(
                   value: _cbB,
                   onChanged: (v) => setState(() => _cbB = v ?? false),
                 ),
               ),
               _switchDemo(
                 'Intermediate',
-                CkgocCheckbox(
+                CKCheckbox(
                   value: _cbC,
                   onChanged: (v) => setState(() => _cbC = v),
                 ),
               ),
-              _switchDemo('Disabled', const CkgocCheckbox(value: false)),
+              _switchDemo('Disabled', const CKCheckbox(value: false)),
               _switchDemo(
                 'Error',
-                CkgocCheckbox(
+                CKCheckbox(
                   value: _cbError,
                   variant: SwitchVariant.error,
                   onChanged: (v) => setState(() => _cbError = v ?? false),
@@ -304,7 +304,7 @@ class _InputsScreenState extends State<InputsScreen> {
               ),
               _switchDemo(
                 'Success',
-                CkgocCheckbox(
+                CKCheckbox(
                   value: _cbSuccess,
                   variant: SwitchVariant.success,
                   onChanged: (v) => setState(() => _cbSuccess = v ?? false),
@@ -312,7 +312,7 @@ class _InputsScreenState extends State<InputsScreen> {
               ),
               _switchDemo(
                 'CK',
-                CkgocCheckbox(
+                CKCheckbox(
                   value: _cbCK,
                   onChanged: (v) => setState(() => _cbCK = v ?? false),
                 ),
@@ -329,7 +329,7 @@ class _InputsScreenState extends State<InputsScreen> {
             children: [
               _switchDemo(
                 'Unselected',
-                CkgocRadio<String>(
+                CKRadio<String>(
                   value: 'a',
                   groupValue: _radioGroup,
                   onChanged: (v) => setState(() => _radioGroup = v),
@@ -337,7 +337,7 @@ class _InputsScreenState extends State<InputsScreen> {
               ),
               _switchDemo(
                 'Selected',
-                CkgocRadio<String>(
+                CKRadio<String>(
                   value: 'b',
                   groupValue: _radioGroup,
                   onChanged: (v) => setState(() => _radioGroup = v),
@@ -345,11 +345,11 @@ class _InputsScreenState extends State<InputsScreen> {
               ),
               _switchDemo(
                 'Disabled',
-                const CkgocRadio<String>(value: 'c', groupValue: null),
+                const CKRadio<String>(value: 'c', groupValue: null),
               ),
               _switchDemo(
                 'Error',
-                CkgocRadio<String>(
+                CKRadio<String>(
                   value: 'd',
                   groupValue: _radioErrorGroup,
                   variant: SwitchVariant.error,
@@ -358,7 +358,7 @@ class _InputsScreenState extends State<InputsScreen> {
               ),
               _switchDemo(
                 'CK',
-                CkgocRadio<String>(
+                CKRadio<String>(
                   value: 'e',
                   groupValue: _radioCKGroup,
                   onChanged: (v) => setState(() => _radioCKGroup = v),
@@ -372,7 +372,7 @@ class _InputsScreenState extends State<InputsScreen> {
   }
 
   Widget _switchDemo(String label, Widget sw) {
-    final theme = context.ckgocTheme;
+    final theme = context.ckcoreTheme;
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -388,7 +388,7 @@ class _InputsScreenState extends State<InputsScreen> {
     );
   }
 
-  Widget _label(String text, CkgocThemeData theme) => Text(
+  Widget _label(String text, ckcoreThemeData theme) => Text(
     text,
     style: theme.typography.labelSm.copyWith(
       color: theme.colors.onSurfaceVariant,

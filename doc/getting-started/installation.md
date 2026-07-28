@@ -6,23 +6,23 @@ Add the released package from pub.dev to your app's `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  ckgoc_core: ^0.1.2
+  ckcoreui: ^0.1.2
 ```
 
 Or, while developing locally, point to a path:
 
 ```yaml
 dependencies:
-  ckgoc_core:
-    path: ../ckgoc_core
+  ckcoreui:
+    path: ../ckcoreui
 ```
 
 Quick add from the command line (recommended for pub.dev releases):
 
 ```bash
-flutter pub add ckgoc_core
+flutter pub add ckcoreui
 # or, with Dart CLI
-dart pub add ckgoc_core
+dart pub add ckcoreui
 ```
 
 Note: `flutter pub add`/`dart pub add` updates your `pubspec.yaml` and runs `pub get` automatically.
@@ -36,12 +36,12 @@ flutter pub get
 ## 3. Import
 
 ```dart
-import 'package:ckgoc_core/ckgoc_core.dart';
+import 'package:ckcoreui/ckcore_core.dart';
 ```
 
 ## Using packaged logos
 
-`ckgoc_core` exports `BrandIcon` constants which point to bundled logo
+`ckcoreui` exports `BrandIcon` constants which point to bundled logo
 assets. Consumers should load them using `Image.asset` for raster files or
 `SvgPicture.asset` (from `flutter_svg`) for SVG variants. Examples:
 
@@ -49,13 +49,13 @@ assets. Consumers should load them using `Image.asset` for raster files or
 // PNG from package
 Image.asset(
   BrandIcon.castlekeepName,
-  package: 'ckgoc_core',
+  package: 'ckcoreui',
   width: 160,
 );
 
 // SVG from package (rendered by the package using `flutter_svg`)
-Widget svg = BrandIcon.brandLogoWidget(context, CkgocBrand.skyGo, size: 160);
+Widget svg = BrandIcon.brandLogoWidget(context, ckcoreBrand.skyGo, size: 160);
 ```
 
-Tip: Use `CkgocSideNav.logo` to inject a custom logo widget into the
+Tip: Use `ckcoreSideNav.logo` to inject a custom logo widget into the
 side navigation instead of relying on the package default widget.

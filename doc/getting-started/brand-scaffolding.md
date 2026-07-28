@@ -8,8 +8,8 @@ The project includes a small Dart CLI to scaffold a new brand and auto-register 
 
 - Creates a new folder under `lib/src/themes/brands/<brand>/`.
 - Adds placeholder files: `<brand>_colors.dart`, `<brand>_typography.dart`, `<brand>_light_theme.dart`, `<brand>_dark_theme.dart`.
-- Updates the `CkgocBrand` enum in `lib/src/themes/ckgoc_brand.dart` and the `displayName` mapping.
-- Adds imports and switch cases to `lib/src/themes/ckgoc_theme_resolver.dart` to register the new brand's light/dark theme builders.
+- Updates the `ckcoreBrand` enum in `lib/src/themes/ckcore_brand.dart` and the `displayName` mapping.
+- Adds imports and switch cases to `lib/src/themes/ckcore_theme_resolver.dart` to register the new brand's light/dark theme builders.
 
 How to use
 ----------
@@ -17,7 +17,7 @@ How to use
 Run the command from the project root. For example to add a brand named "Acme":
 
 ```bash
-dart run bin/ckgoc.dart add brand "Acme"
+dart run bin/ckcoreui.dart add brand "Acme"
 ```
 
 Notes
@@ -32,9 +32,9 @@ To normalize existing logo files in the repo run the included script:
 Files touched
 ------------
 
-- [bin/ckgoc.dart](bin/ckgoc.dart)
-- [lib/src/themes/ckgoc_brand.dart](lib/src/themes/ckgoc_brand.dart)
-- [lib/src/themes/ckgoc_theme_resolver.dart](lib/src/themes/ckgoc_theme_resolver.dart)
+- [bin/ckcoreui.dart](bin/ckcoreui.dart)
+- [lib/src/themes/ckcore_brand.dart](lib/src/themes/ckcore_brand.dart)
+- [lib/src/themes/ckcore_theme_resolver.dart](lib/src/themes/ckcore_theme_resolver.dart)
 
 Logo asset naming
 -----------------
@@ -70,14 +70,14 @@ from the package. Example usage:
 // PNG
 Image.asset(
 	BrandIcon.castlekeepMaster,
-	package: 'ckgoc_core',
+	package: 'ckcoreui',
 	width: 120,
 );
 
 // SVG (use flutter_svg)
 SvgPicture.asset(
 	BrandIcon.skygoMasterSvg,
-	package: 'ckgoc_core',
+	package: 'ckcoreui',
 	width: 120,
 );
 ```
@@ -86,7 +86,7 @@ Rendering in package components
 -------------------------------
 The package provides `BrandIcon.brandLogoWidget(context, brand)` as a
 default renderer for the active brand. For precise control (choose master,
-name, or symbol variants), pass a widget to `CkgocSideNav.logo` or build
+name, or symbol variants), pass a widget to `ckcoreSideNav.logo` or build
 your own `Image.asset`/`SvgPicture.asset` using the `BrandIcon` paths.
 
 Next steps for maintainers

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:ckgoc_core/src/themes/ckgoc_brand.dart';
-import 'package:ckgoc_core/src/components/component_enums.dart';
+import 'package:ckcoreui/src/themes/ckcore_brand.dart';
+import 'package:ckcoreui/src/components/component_enums.dart';
 // theme imports not required in this file
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -85,7 +85,7 @@ class BrandIcon {
   /// typographic mark using the current theme.
   static Widget brandLogoWidget(
     BuildContext context,
-    CkgocBrand brand, {
+    ckcoreBrand brand, {
     double size = 40,
     BrandIconVariant variant = BrandIconVariant.master,
     String? assetPath,
@@ -99,7 +99,7 @@ class BrandIcon {
     // Pick the path based on brand + variant.
     String path;
     switch (brand) {
-      case CkgocBrand.castleKeep:
+      case ckcoreBrand.castleKeep:
         switch (variant) {
           case BrandIconVariant.master:
             path = castlekeepMaster;
@@ -112,7 +112,7 @@ class BrandIcon {
             break;
         }
         break;
-      case CkgocBrand.skyGo:
+      case ckcoreBrand.skyGo:
         switch (variant) {
           case BrandIconVariant.master:
             path = skygoMasterSvg;
@@ -134,7 +134,7 @@ class BrandIcon {
   ///
   /// For raster images (`.png`, `.jpg`) this uses `Image.asset`. For SVGs
   /// the package avoids pulling in `flutter_svg` as a dependency; consumers
-  /// should prefer `SvgPicture.asset(BrandIcon.someSvg, package: 'ckgoc_core')`
+  /// should prefer `SvgPicture.asset(BrandIcon.someSvg, package: 'ckcoreui')`
   /// when available. When `flutter_svg` is not used this method renders a
   /// lightweight placeholder for SVG assets.
   static Widget assetLogoWidget(
@@ -146,7 +146,7 @@ class BrandIcon {
     if (assetPath.toLowerCase().endsWith('.svg')) {
       return SvgPicture.asset(
         assetPath,
-        package: 'ckgoc_core',
+        package: 'ckcoreui',
         width: size,
         height: size,
         fit: BoxFit.contain,
@@ -156,7 +156,7 @@ class BrandIcon {
 
     return Image.asset(
       assetPath,
-      package: 'ckgoc_core',
+      package: 'ckcoreui',
       width: size,
       height: size,
       fit: BoxFit.contain,

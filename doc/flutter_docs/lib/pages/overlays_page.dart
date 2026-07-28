@@ -1,8 +1,8 @@
-import 'package:ckgoc_core/ckgoc_core.dart';
+import 'package:ckcoreui/ckcore_core.dart';
 import 'package:flutter/material.dart';
 
-import 'package:ckgoc_docs_app/docs/doc_models.dart';
-import 'package:ckgoc_docs_app/docs/doc_widgets.dart';
+import 'package:ckcore_docs_app/docs/doc_models.dart';
+import 'package:ckcore_docs_app/docs/doc_widgets.dart';
 
 class OverlaysPage extends StatelessWidget {
   const OverlaysPage({super.key});
@@ -24,19 +24,26 @@ class OverlaysPage extends StatelessWidget {
 }
 
 ComponentDocData _dialogDoc() => const ComponentDocData(
-      title: 'CkgocDialog',
+      title: 'CKDialog',
       summary:
           'Modal dialog with a standard constructor, a destructive constructor, and static helper methods for showing dialogs.',
       demo: _DialogDemo(),
       code: '''
-await CkgocDialog.showDestructive(
+// Destructive
+await CKDialog.showDestructive(
   context: context,
   title: 'Delete project?',
   content: Text('This action cannot be undone.'),
-  onConfirm: () {
-    Navigator.of(context).pop();
-  },
-)
+  onConfirm: () { Navigator.of(context).pop(); },
+);
+
+// Informational (text-only)
+await CKDialog.showInfoDialog(
+  context: context,
+  title: 'Info',
+  text: 'Operation completed successfully.',
+  confirmLabel: 'OK',
+);
 ''',
       params: [
         DocParam(
@@ -78,6 +85,28 @@ await CkgocDialog.showDestructive(
           description: 'Shows close affordance in default dialog.',
           defaultValue: 'true',
         ),
+        DocParam(
+          name: 'maxWidth',
+          type: 'double?',
+          description: 'Optional maximum width for the dialog in pixels.',
+        ),
+        DocParam(
+          name: 'maxHeight',
+          type: 'double?',
+          description: 'Optional maximum height for the dialog in pixels.',
+        ),
+        DocParam(
+          name: 'confirmWidget',
+          type: 'Widget?',
+          description:
+              'Optional custom widget for the confirm action (falls back to `confirmLabel`).',
+        ),
+        DocParam(
+          name: 'cancelWidget',
+          type: 'Widget?',
+          description:
+              'Optional custom widget for the cancel action (falls back to `cancelLabel`).',
+        ),
       ],
       faqs: [
         DocFaq(
@@ -94,12 +123,12 @@ await CkgocDialog.showDestructive(
     );
 
 ComponentDocData _bottomSheetDoc() => const ComponentDocData(
-      title: 'CkgocBottomSheet',
+      title: 'CKBottomSheet',
       summary:
           'Design-system bottom sheet with direct widget usage and a static show helper.',
       demo: _BottomSheetDemo(),
       code: '''
-await CkgocBottomSheet.show(
+await CKBottomSheet.show(
   context: context,
   title: 'Actions',
   children: [
@@ -147,24 +176,24 @@ await CkgocBottomSheet.show(
     );
 
 ComponentDocData _menuDoc() => const ComponentDocData(
-      title: 'CkgocMenu',
+      title: 'CKMenu',
       summary:
-          'Contextual dropdown menu anchored to a trigger widget and populated with CkgocMenuItem actions.',
+          'Contextual dropdown menu anchored to a trigger widget and populated with CKMenuItem actions.',
       demo: _MenuDemo(),
       code: '''
-CkgocMenu(
-  trigger: CkgocButton(
+CKMenu(
+  trigger: CKButton(
     variant: ButtonVariant.outline,
     onPressed: null,
     child: Text('Open menu'),
   ),
   items: [
-    CkgocMenuItem(
+    CKMenuItem(
       label: 'Refresh data',
       icon: LucideIcons.refreshCw,
       onTap: refreshDashboard,
     ),
-    CkgocMenuItem(
+    CKMenuItem(
       label: 'Delete view',
       icon: LucideIcons.trash2,
       destructive: true,
@@ -182,7 +211,7 @@ CkgocMenu(
         ),
         DocParam(
           name: 'items',
-          type: 'List<CkgocMenuItem>',
+          type: 'List<CKMenuItem>',
           description: 'Menu entries.',
           requiredParam: true,
         ),
@@ -191,28 +220,28 @@ CkgocMenu(
         DocFaq(
           question: 'How are actions handled?',
           answer:
-              'Each CkgocMenuItem accepts an optional onTap callback. The menu resolves the selected item and then invokes that callback.',
+              'Each CKMenuItem accepts an optional onTap callback. The menu resolves the selected item and then invokes that callback.',
         ),
         DocFaq(
           question: 'How should destructive items be represented?',
           answer:
-              'Use destructive: true on CkgocMenuItem so the row icon and label are styled with the error color.',
+              'Use destructive: true on CKMenuItem so the row icon and label are styled with the error color.',
         ),
       ],
       notes: [
-        'The trigger can be any widget because CkgocMenu wraps it with its own tap handler.',
+        'The trigger can be any widget because CKMenu wraps it with its own tap handler.',
         'Use concise labels because the popup width is driven by the item content.',
       ],
     );
 
 ComponentDocData _popoverDoc() => const ComponentDocData(
       comingSoon: true,
-      title: 'CkgocPopover',
+      title: 'CKPopover',
       summary:
           'Popover API surface for anchored floating content. The current package implementation is still a placeholder widget body.',
       demo: _PopoverDemo(),
       code: '''
-CkgocPopover(
+CKPopover(
   trigger: Icon(Icons.info_outline),
   content: Padding(
     padding: EdgeInsets.all(12),
@@ -253,12 +282,12 @@ CkgocPopover(
 
 ComponentDocData _tooltipDoc() => const ComponentDocData(
       comingSoon: true,
-      title: 'CkgocTooltip',
+      title: 'CKTooltip',
       summary:
           'Tooltip API surface for compact helper text. The current package implementation is still a placeholder widget body.',
       demo: _TooltipDemo(),
       code: '''
-CkgocTooltip(
+CKTooltip(
   message: 'More information',
   child: Icon(Icons.help_outline),
 )
@@ -302,22 +331,31 @@ class _DialogDemo extends StatelessWidget {
     return Wrap(
       spacing: 12,
       children: [
-        CkgocButton(
-          onPressed: () => CkgocDialog.show(
+        CKButton(
+          onPressed: () => CKDialog.show(
             context: context,
             title: 'Save changes?',
             content: const Text('This document has unsaved changes.'),
           ),
           child: const Text('Show default dialog'),
         ),
-        CkgocButton(
+        CKButton(
           variant: ButtonVariant.destructive,
-          onPressed: () => CkgocDialog.showDestructive(
+          onPressed: () => CKDialog.showDestructive(
             context: context,
             title: 'Delete item?',
             content: const Text('This action cannot be undone.'),
           ),
           child: const Text('Show destructive dialog'),
+        ),
+        CKButton(
+          onPressed: () => CKDialog.showInfoDialog(
+            context: context,
+            title: 'Info',
+            text: 'Operation completed successfully.',
+            confirmLabel: 'OK',
+          ),
+          child: const Text('Show info dialog'),
         ),
       ],
     );
@@ -329,8 +367,8 @@ class _BottomSheetDemo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CkgocButton(
-      onPressed: () => CkgocBottomSheet.show(
+    return CKButton(
+      onPressed: () => CKBottomSheet.show(
         context: context,
         title: 'Quick actions',
         children: const [
@@ -356,8 +394,8 @@ class _MenuDemo extends StatelessWidget {
           'Open the menu to test standard, coming-soon, and destructive actions.',
         ),
         const VSpace(height: 12),
-        CkgocMenu(
-          trigger: const CkgocContainer(
+        CKMenu(
+          trigger: const CKContainer(
             variant: ContainerVariant.outlined,
             padding: EdgeInsets.symmetric(horizontal: 14, vertical: 10),
             child: Row(
@@ -370,29 +408,29 @@ class _MenuDemo extends StatelessWidget {
             ),
           ),
           items: [
-            CkgocMenuItem(
+            CKMenuItem(
               label: 'Refresh data',
               icon: LucideIcons.refreshCw,
-              onTap: () => CkgocSnackbar.show(
+              onTap: () => CKSnackbar.show(
                 context,
                 'Refresh started.',
                 variant: ToastVariant.info,
               ),
             ),
-            CkgocMenuItem(
+            CKMenuItem(
               label: 'Export CSV (Coming soon)',
               icon: LucideIcons.download,
-              onTap: () => CkgocSnackbar.show(
+              onTap: () => CKSnackbar.show(
                 context,
                 'Export CSV is coming soon.',
                 variant: ToastVariant.warning,
               ),
             ),
-            CkgocMenuItem(
+            CKMenuItem(
               label: 'Delete view',
               icon: LucideIcons.trash2,
               destructive: true,
-              onTap: () => CkgocSnackbar.show(
+              onTap: () => CKSnackbar.show(
                 context,
                 'Delete view requires confirmation.',
                 variant: ToastVariant.error,
@@ -415,7 +453,7 @@ class _PopoverDemo extends StatelessWidget {
       children: [
         Text('Current implementation returns an empty widget.'),
         VSpace(height: 12),
-        CkgocPopover(
+        CKPopover(
           trigger: Icon(Icons.info_outline),
           content: Padding(
             padding: EdgeInsets.all(12),
@@ -437,7 +475,7 @@ class _TooltipDemo extends StatelessWidget {
       children: [
         Text('Current implementation returns an empty widget.'),
         VSpace(height: 12),
-        CkgocTooltip(
+        CKTooltip(
           message: 'More information',
           child: Icon(Icons.help_outline),
         ),

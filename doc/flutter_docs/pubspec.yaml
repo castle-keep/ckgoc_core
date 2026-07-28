@@ -1,5 +1,5 @@
-name: ckgoc_docs_app
-description: Flutter documentation app for ckgoc_core components
+name: ckcore_docs_app
+description: Flutter documentation app for ckcoreui components
 publish_to: none
 
 environment:
@@ -9,7 +9,7 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.2
-  ckgoc_core:
+  ckcoreui:
     path: ../..
 
 flutter:

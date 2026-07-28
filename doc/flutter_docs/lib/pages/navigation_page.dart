@@ -1,8 +1,8 @@
-import 'package:ckgoc_core/ckgoc_core.dart';
+import 'package:ckcoreui/ckcore_core.dart';
 import 'package:flutter/material.dart';
 
-import 'package:ckgoc_docs_app/docs/doc_models.dart';
-import 'package:ckgoc_docs_app/docs/doc_widgets.dart';
+import 'package:ckcore_docs_app/docs/doc_models.dart';
+import 'package:ckcore_docs_app/docs/doc_widgets.dart';
 
 class NavigationPage extends StatelessWidget {
   const NavigationPage({super.key});
@@ -27,12 +27,12 @@ class NavigationPage extends StatelessWidget {
 }
 
 ComponentDocData _appBarDoc() => const ComponentDocData(
-      title: 'CkgocAppBar',
+      title: 'CKAppBar',
       summary:
           'Design-system app bar with style variants, custom leading content, trailing actions, and optional large-title mode.',
       demo: _AppBarDemo(),
       code: '''
-CkgocAppBar(
+CKAppBar(
   title: Text('Dashboard'),
   leading: IconButton(icon: Icon(Icons.menu), onPressed: () {}),
   trailing: [IconButton(icon: Icon(Icons.search), onPressed: () {})],
@@ -86,23 +86,23 @@ CkgocAppBar(
     );
 
 ComponentDocData _tabsDoc() => const ComponentDocData(
-      title: 'CkgocTabs',
+      title: 'CKTabs',
       summary:
           'Tabs component supporting line, pill, and card variants with optional badges and icons.',
       demo: _TabsDemo(),
       code: '''
-CkgocTabs(
+CKTabs(
   variant: TabVariant.pill,
   tabs: const [
-    CkgocTab(label: 'Overview', content: Text('Overview content')),
-    CkgocTab(label: 'Billing', badge: 2, content: Text('Billing content')),
+    CKTab(label: 'Overview', content: Text('Overview content')),
+    CKTab(label: 'Billing', badge: 2, content: Text('Billing content')),
   ],
 )
 ''',
       params: [
         DocParam(
           name: 'tabs',
-          type: 'List<CkgocTab>',
+          type: 'List<CKTab>',
           description: 'Tab definitions and associated content.',
           requiredParam: true,
         ),
@@ -139,7 +139,7 @@ CkgocTabs(
         ),
         DocFaq(
           question: 'Can badges and icons be combined?',
-          answer: 'Yes. Each CkgocTab supports both icon and badge together.',
+          answer: 'Yes. Each CKTab supports both icon and badge together.',
         ),
       ],
       notes: [
@@ -148,19 +148,19 @@ CkgocTabs(
     );
 
 ComponentDocData _bottomNavigationDoc() => const ComponentDocData(
-      title: 'CkgocBottomNavigation',
+      title: 'CKBottomNavigation',
       summary:
           'Bottom navigation bar with optional central FAB cutout composition.',
       demo: _BottomNavigationDemo(),
       code: '''
-CkgocBottomNavigation(
+CKBottomNavigation(
   selectedIndex: 0,
   items: const [
-    CkgocNavItem(icon: Icons.home_outlined, label: 'Home'),
-    CkgocNavItem(icon: Icons.person_outline, label: 'Profile'),
+    CKNavItem(icon: Icons.home_outlined, label: 'Home'),
+    CKNavItem(icon: Icons.person_outline, label: 'Profile'),
   ],
   onDestinationSelected: (index) {},
-  fab: CkgocFab(icon: Icons.add, onPressed: () {}),
+  fab: CKFab(icon: Icons.add, onPressed: () {}),
 )
 ''',
       params: [
@@ -172,7 +172,7 @@ CkgocBottomNavigation(
         ),
         DocParam(
           name: 'items',
-          type: 'List<CkgocNavItem>',
+          type: 'List<CKNavItem>',
           description: 'Bottom navigation destinations.',
           requiredParam: true,
         ),
@@ -202,12 +202,12 @@ CkgocBottomNavigation(
 
 ComponentDocData _breadcrumbDoc() => const ComponentDocData(
       comingSoon: true,
-      title: 'CkgocBreadcrumb',
+      title: 'CKBreadcrumb',
       summary:
           'Breadcrumb API surface for hierarchical paths. The current package implementation is a placeholder widget body.',
       demo: _BreadcrumbDemo(),
       code: '''
-CkgocBreadcrumb(
+CKBreadcrumb(
   items: const [
     BreadcrumbItem(label: 'Home'),
     BreadcrumbItem(label: 'Projects'),
@@ -241,18 +241,18 @@ CkgocBreadcrumb(
     );
 
 ComponentDocData _drawerDoc() => const ComponentDocData(
-      title: 'CkgocDrawer',
+      title: 'CKDrawer',
       summary:
           'App drawer with branding, optional user email, and a selectable item list.',
       demo: _DrawerDemo(),
       code: '''
-CkgocDrawer(
+CKDrawer(
   appName: 'CastleKeep Admin',
   selectedIndex: 0,
   userEmail: 'ops@castlekeep.app',
   items: const [
-    CkgocDrawerItem(icon: Icons.dashboard_outlined, label: 'Dashboard'),
-    CkgocDrawerItem(icon: Icons.people_outline, label: 'Users'),
+    CKDrawerItem(icon: Icons.dashboard_outlined, label: 'Dashboard'),
+    CKDrawerItem(icon: Icons.people_outline, label: 'Users'),
   ],
   onItemSelected: (index) {},
 )
@@ -266,7 +266,7 @@ CkgocDrawer(
         ),
         DocParam(
           name: 'items',
-          type: 'List<CkgocDrawerItem>',
+          type: 'List<CKDrawerItem>',
           description: 'Drawer options.',
           requiredParam: true,
         ),
@@ -309,16 +309,16 @@ CkgocDrawer(
 
 ComponentDocData _navigationRailDoc() => const ComponentDocData(
       comingSoon: true,
-      title: 'CkgocNavigationRail',
+      title: 'CKNavigationRail',
       summary:
           'Navigation rail API surface for larger responsive shells. The current package implementation is a placeholder widget body.',
       demo: _NavigationRailDemo(),
       code: '''
-CkgocNavigationRail(
+CKNavigationRail(
   selectedIndex: 1,
   items: const [
-    CkgocNavItem(icon: Icons.home_outlined, label: 'Home'),
-    CkgocNavItem(icon: Icons.settings_outlined, label: 'Settings'),
+    CKNavItem(icon: Icons.home_outlined, label: 'Home'),
+    CKNavItem(icon: Icons.settings_outlined, label: 'Settings'),
   ],
   onDestinationSelected: (index) {},
 )
@@ -332,7 +332,7 @@ CkgocNavigationRail(
         ),
         DocParam(
           name: 'items',
-          type: 'List<CkgocNavItem>',
+          type: 'List<CKNavItem>',
           description: 'Rail destinations.',
           requiredParam: true,
         ),
@@ -360,19 +360,19 @@ CkgocNavigationRail(
     );
 
 ComponentDocData _sideNavDoc() => const ComponentDocData(
-      title: 'CkgocSideNav',
+      title: 'CKSideNav',
       summary:
           'Collapsible side navigation with grouped sections, badges, optional branding, and surface or brand styling.',
       demo: _SideNavDemo(),
       code: '''
-CkgocSideNav(
+CKSideNav(
   selectedIndex: 0,
   sections: const [
-    CkgocSideNavSection(
+    CKSideNavSection(
       label: 'Main',
       items: [
-        CkgocSideNavItem(icon: Icons.dashboard_outlined, label: 'Dashboard'),
-        CkgocSideNavItem(icon: Icons.people_outline, label: 'Users', badge: 12),
+        CKSideNavItem(icon: Icons.dashboard_outlined, label: 'Dashboard'),
+        CKSideNavItem(icon: Icons.people_outline, label: 'Users', badge: 12),
       ],
     ),
   ],
@@ -383,7 +383,7 @@ CkgocSideNav(
       params: [
         DocParam(
           name: 'sections',
-          type: 'List<CkgocSideNavSection>',
+          type: 'List<CKSideNavSection>',
           description: 'Labeled groups of navigation items.',
           requiredParam: true,
         ),
@@ -463,7 +463,7 @@ class _AppBarDemo extends StatelessWidget {
               decoration: BoxDecoration(
                 border: Border.all(color: Theme.of(context).dividerColor),
               ),
-              child: CkgocAppBar(
+              child: CKAppBar(
                 title: Text(style.name),
                 leading:
                     IconButton(icon: const Icon(Icons.menu), onPressed: () {}),
@@ -482,8 +482,8 @@ class _AppBarDemo extends StatelessWidget {
 class _TabsDemo extends StatelessWidget {
   const _TabsDemo();
 
-  List<CkgocTab> _tabs() => const [
-        CkgocTab(
+  List<CKTab> _tabs() => const [
+        CKTab(
           label: 'Overview',
           icon: Icons.dashboard_outlined,
           content: Padding(
@@ -491,7 +491,7 @@ class _TabsDemo extends StatelessWidget {
             child: Text('Overview content'),
           ),
         ),
-        CkgocTab(
+        CKTab(
           label: 'Billing',
           badge: 2,
           content: Padding(
@@ -499,7 +499,7 @@ class _TabsDemo extends StatelessWidget {
             child: Text('Billing content'),
           ),
         ),
-        CkgocTab(
+        CKTab(
           label: 'Settings',
           icon: Icons.settings_outlined,
           content: Padding(
@@ -516,7 +516,7 @@ class _TabsDemo extends StatelessWidget {
         for (final variant in TabVariant.values)
           Padding(
             padding: const EdgeInsets.only(bottom: 16),
-            child: CkgocTabs(tabs: _tabs(), variant: variant),
+            child: CKTabs(tabs: _tabs(), variant: variant),
           ),
       ],
     );
@@ -539,32 +539,32 @@ class _BottomNavigationDemoState extends State<_BottomNavigationDemo> {
       height: 120,
       child: Align(
         alignment: Alignment.bottomCenter,
-        child: CkgocBottomNavigation(
+        child: CKBottomNavigation(
           selectedIndex: selected,
           onDestinationSelected: (index) => setState(() => selected = index),
           items: const [
-            CkgocNavItem(
+            CKNavItem(
               icon: Icons.home_outlined,
               activeIcon: Icons.home,
               label: 'Home',
             ),
-            CkgocNavItem(
+            CKNavItem(
               icon: Icons.receipt_long_outlined,
               activeIcon: Icons.receipt_long,
               label: 'Billing',
             ),
-            CkgocNavItem(
+            CKNavItem(
               icon: Icons.person_outline,
               activeIcon: Icons.person,
               label: 'Profile',
             ),
-            CkgocNavItem(
+            CKNavItem(
               icon: Icons.settings_outlined,
               activeIcon: Icons.settings,
               label: 'Settings',
             ),
           ],
-          fab: CkgocFab(icon: Icons.add, onPressed: () {}),
+          fab: CKFab(icon: Icons.add, onPressed: () {}),
         ),
       ),
     );
@@ -581,7 +581,7 @@ class _BreadcrumbDemo extends StatelessWidget {
       children: [
         Text('Current implementation returns an empty widget.'),
         VSpace(height: 12),
-        CkgocBreadcrumb(
+        CKBreadcrumb(
           items: [
             BreadcrumbItem(label: 'Home'),
             BreadcrumbItem(label: 'Projects'),
@@ -601,15 +601,15 @@ class _DrawerDemo extends StatelessWidget {
     return Container(
       width: 320,
       height: 420,
-      child: CkgocDrawer(
+      child: CKDrawer(
         appName: 'CastleKeep Admin',
         userEmail: 'ops@castlekeep.app',
         selectedIndex: 1,
         onItemSelected: (_) {},
         items: const [
-          CkgocDrawerItem(icon: Icons.dashboard_outlined, label: 'Dashboard'),
-          CkgocDrawerItem(icon: Icons.people_outline, label: 'Users'),
-          CkgocDrawerItem(icon: Icons.settings_outlined, label: 'Settings'),
+          CKDrawerItem(icon: Icons.dashboard_outlined, label: 'Dashboard'),
+          CKDrawerItem(icon: Icons.people_outline, label: 'Users'),
+          CKDrawerItem(icon: Icons.settings_outlined, label: 'Settings'),
         ],
       ),
     );
@@ -626,11 +626,11 @@ class _NavigationRailDemo extends StatelessWidget {
       children: [
         Text('Current implementation returns an empty widget.'),
         VSpace(height: 12),
-        CkgocNavigationRail(
+        CKNavigationRail(
           selectedIndex: 1,
           items: [
-            CkgocNavItem(icon: Icons.home_outlined, label: 'Home'),
-            CkgocNavItem(icon: Icons.settings_outlined, label: 'Settings'),
+            CKNavItem(icon: Icons.home_outlined, label: 'Home'),
+            CKNavItem(icon: Icons.settings_outlined, label: 'Settings'),
           ],
         ),
       ],
@@ -649,26 +649,26 @@ class _SideNavDemoState extends State<_SideNavDemo> {
   int selectedIndex = 1;
   bool collapsed = false;
 
-  List<CkgocSideNavSection> get _sections => const [
-        CkgocSideNavSection(
+  List<CKSideNavSection> get _sections => const [
+        CKSideNavSection(
           label: 'Main',
           items: [
-            CkgocSideNavItem(
+            CKSideNavItem(
               icon: Icons.dashboard_outlined,
               label: 'Dashboard',
             ),
-            CkgocSideNavItem(
+            CKSideNavItem(
               icon: Icons.people_outline,
               label: 'Users',
               badge: 12,
             ),
           ],
         ),
-        CkgocSideNavSection(
+        CKSideNavSection(
           label: 'System',
           items: [
-            CkgocSideNavItem(icon: Icons.settings_outlined, label: 'Settings'),
-            CkgocSideNavItem(icon: Icons.shield_outlined, label: 'Security'),
+            CKSideNavItem(icon: Icons.settings_outlined, label: 'Settings'),
+            CKSideNavItem(icon: Icons.shield_outlined, label: 'Security'),
           ],
         ),
       ];
@@ -682,7 +682,7 @@ class _SideNavDemoState extends State<_SideNavDemo> {
         Container(
           width: 260,
           height: 420,
-          child: CkgocSideNav(
+          child: CKSideNav(
             sections: _sections,
             selectedIndex: selectedIndex,
             onItemSelected: (value) => setState(() => selectedIndex = value),
@@ -695,7 +695,7 @@ class _SideNavDemoState extends State<_SideNavDemo> {
         Container(
           width: collapsed ? 72 : 260,
           height: 420,
-          child: CkgocSideNav(
+          child: CKSideNav(
             sections: _sections,
             selectedIndex: selectedIndex,
             onItemSelected: (value) => setState(() => selectedIndex = value),

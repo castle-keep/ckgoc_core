@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ckgoc_core/ckgoc_core.dart';
+import 'package:ckcoreui/ckcore_core.dart';
 
 class NavigationScreen extends StatefulWidget {
   const NavigationScreen({super.key});
@@ -17,35 +17,35 @@ class _NavigationScreenState extends State<NavigationScreen> {
   int _bottomNavIndex = 0;
 
   static final _sections = [
-    CkgocSideNavSection(
+    CKSideNavSection(
       label: 'Main',
       items: [
-        CkgocSideNavItem(icon: LucideIcons.layoutDashboard, label: 'Dashboard'),
-        CkgocSideNavItem(icon: LucideIcons.barChart2, label: 'Analytics'),
-        CkgocSideNavItem(icon: LucideIcons.folderOpen, label: 'Projects'),
+        CKSideNavItem(icon: LucideIcons.layoutDashboard, label: 'Dashboard'),
+        CKSideNavItem(icon: LucideIcons.barChart2, label: 'Analytics'),
+        CKSideNavItem(icon: LucideIcons.folderOpen, label: 'Projects'),
       ],
     ),
-    CkgocSideNavSection(
+    CKSideNavSection(
       label: 'Sales Orders',
       items: [
-        CkgocSideNavItem(icon: LucideIcons.bike, label: 'Motorcyles', badge: 6),
-        CkgocSideNavItem(
+        CKSideNavItem(icon: LucideIcons.bike, label: 'Motorcyles', badge: 6),
+        CKSideNavItem(
           icon: LucideIcons.settings2,
           label: 'Spare Parts',
           badge: 2,
         ),
-        CkgocSideNavItem(icon: LucideIcons.clipboardList, label: 'Service'),
-        CkgocSideNavItem(icon: LucideIcons.shoppingCart, label: 'Sales'),
+        CKSideNavItem(icon: LucideIcons.clipboardList, label: 'Service'),
+        CKSideNavItem(icon: LucideIcons.shoppingCart, label: 'Sales'),
       ],
     ),
-    CkgocSideNavSection(
+    CKSideNavSection(
       label: 'Config',
-      items: [CkgocSideNavItem(icon: LucideIcons.settings, label: 'Settings')],
+      items: [CKSideNavItem(icon: LucideIcons.settings, label: 'Settings')],
     ),
   ];
 
   static String _activeLabel(int index) {
-    final flat = <CkgocSideNavItem>[];
+    final flat = <CKSideNavItem>[];
     for (final sec in _sections) {
       flat.addAll(sec.items);
     }
@@ -54,7 +54,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = context.ckgocTheme;
+    final theme = context.ckcoreTheme;
     final s = theme.spacing;
     final t = theme.typography;
     final c = theme.colors;
@@ -89,48 +89,45 @@ class _NavigationScreenState extends State<NavigationScreen> {
             height: 380,
             child: ClipRRect(
               borderRadius: BorderRadius.circular(theme.radius.lg),
-              child: DecoratedBox(
-                decoration: BoxDecoration(
-                  border: Border.all(color: c.outline),
-                  borderRadius: BorderRadius.circular(theme.radius.lg),
-                ),
-                child: Row(
-                  children: [
-                    CkgocSideNav(
-                      sections: _sections,
-                      selectedIndex: selected,
-                      onItemSelected: onSelect,
-                      collapsed: collapsed,
-                      onToggleCollapse: onToggle,
-                      brandName: brandName,
-                      version: '1.0',
-                      style: style,
-                    ),
-                    Expanded(
-                      child: Container(
-                        color: c.background,
-                        child: Center(
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Text(
-                                activeLabel,
-                                style: t.labelLg.copyWith(color: c.onSurface),
+              child: Row(
+                children: [
+                  CKSideNav(
+                    profileName: 'John Doe',
+                    profilePosition: 'Professional Procastinator',
+                    onLogout: () => debugPrint('Profile tapped'),
+                    sections: _sections,
+                    selectedIndex: selected,
+                    onItemSelected: onSelect,
+                    collapsed: collapsed,
+                    onToggleCollapse: onToggle,
+                    brandName: brandName,
+                    version: '1.0',
+                    style: style,
+                  ),
+                  Expanded(
+                    child: Container(
+                      color: c.background,
+                      child: Center(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              activeLabel,
+                              style: t.labelLg.copyWith(color: c.onSurface),
+                            ),
+                            SizedBox(height: s.xs),
+                            Text(
+                              'Page content',
+                              style: t.textSm.copyWith(
+                                color: c.onSurfaceVariant,
                               ),
-                              SizedBox(height: s.xs),
-                              Text(
-                                'Page content',
-                                style: t.textSm.copyWith(
-                                  color: c.onSurfaceVariant,
-                                ),
-                              ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ),
@@ -147,7 +144,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
             title: 'SIDE NAVIGATION — SURFACE',
             selected: _selectedSurface,
             collapsed: _collapsedSurface,
-            brandName: theme.brand == CkgocBrand.castleKeep
+            brandName: theme.brand == ckcoreBrand.castleKeep
                 ? 'CastleKeep'
                 : 'SkyGo',
             onSelect: (i) => setState(() => _selectedSurface = i),
@@ -162,7 +159,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
             onSelect: (i) => setState(() => _selectedBrand = i),
             onToggle: () => setState(() => _collapsedBrand = !_collapsedBrand),
             style: SideNavStyle.brand,
-            brandName: theme.brand == CkgocBrand.castleKeep
+            brandName: theme.brand == ckcoreBrand.castleKeep
                 ? 'CastleKeep'
                 : 'SkyGo',
           ),
@@ -176,7 +173,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
   }
 
   List<Widget> _tabSections(BuildContext context) {
-    final theme = context.ckgocTheme;
+    final theme = context.ckcoreTheme;
     final s = theme.spacing;
     final t = theme.typography;
     final c = theme.colors;
@@ -208,9 +205,9 @@ class _NavigationScreenState extends State<NavigationScreen> {
 
     return [
       sectionLabel('TABS — LINE'),
-      CkgocTabs(
+      CKTabs(
         tabs: [
-          CkgocTab(
+          CKTab(
             label: 'Overview',
             icon: LucideIcons.layoutDashboard,
             content: tabBody(
@@ -218,21 +215,21 @@ class _NavigationScreenState extends State<NavigationScreen> {
               'Summary of all activity and metrics.',
             ),
           ),
-          CkgocTab(
+          CKTab(
             label: 'Analytics',
             icon: LucideIcons.barChart2,
             content: tabBody('Analytics', 'Detailed analytics and reports.'),
           ),
-          CkgocTab(
+          CKTab(
             label: 'Reports',
             content: tabBody('Reports', 'Generated reports and exports.'),
           ),
-          CkgocTab(
+          CKTab(
             label: 'Settings',
             icon: LucideIcons.settings,
             content: tabBody('Settings', 'Configuration and preferences.'),
           ),
-          CkgocTab(
+          CKTab(
             label: 'Users',
             icon: LucideIcons.users,
             content: tabBody('Users', 'User management and permissions.'),
@@ -241,22 +238,22 @@ class _NavigationScreenState extends State<NavigationScreen> {
       ),
       SizedBox(height: s.xl),
       sectionLabel('TABS — PILL'),
-      CkgocTabs(
+      CKTabs(
         variant: TabVariant.pill,
         tabs: [
-          CkgocTab(
+          CKTab(
             label: 'All',
             content: tabBody('All', 'All items across every status.'),
           ),
-          CkgocTab(
+          CKTab(
             label: 'Active',
             content: tabBody('Active', 'Currently active items.'),
           ),
-          CkgocTab(
+          CKTab(
             label: 'Pending',
             content: tabBody('Pending', 'Items awaiting action.'),
           ),
-          CkgocTab(
+          CKTab(
             label: 'Resolved',
             content: tabBody('Resolved', 'Completed and resolved items.'),
           ),
@@ -264,30 +261,30 @@ class _NavigationScreenState extends State<NavigationScreen> {
       ),
       SizedBox(height: s.xl),
       sectionLabel('TABS — CARD'),
-      CkgocTabs(
+      CKTabs(
         variant: TabVariant.card,
         tabs: [
-          CkgocTab(
+          CKTab(
             label: 'Home',
             icon: LucideIcons.home,
             content: tabBody('Home', 'Your home workspace.'),
           ),
-          CkgocTab(
+          CKTab(
             label: 'Work',
             icon: LucideIcons.briefcase,
             content: tabBody('Work', 'Work-related items and tasks.'),
           ),
-          CkgocTab(
+          CKTab(
             label: 'Travel',
             icon: LucideIcons.map,
             content: tabBody('Travel', 'Travel plans and bookings.'),
           ),
-          CkgocTab(
+          CKTab(
             label: 'Health',
             icon: LucideIcons.heart,
             content: tabBody('Health', 'Health tracking and logs.'),
           ),
-          CkgocTab(
+          CKTab(
             label: 'Finance',
             icon: LucideIcons.creditCard,
             content: tabBody('Finance', 'Financial overview and budget.'),
@@ -296,35 +293,35 @@ class _NavigationScreenState extends State<NavigationScreen> {
       ),
       SizedBox(height: s.xl),
       sectionLabel('TABS — SCROLLABLE'),
-      CkgocTabs(
+      CKTabs(
         scrollable: true,
         tabs: [
-          CkgocTab(
+          CKTab(
             label: 'Overview',
             content: tabBody('Overview', 'Summary panel.'),
           ),
-          CkgocTab(
+          CKTab(
             label: 'Analytics',
             content: tabBody('Analytics', 'Analytics panel.'),
           ),
-          CkgocTab(
+          CKTab(
             label: 'Reports',
             content: tabBody('Reports', 'Reports panel.'),
           ),
-          CkgocTab(
+          CKTab(
             label: 'Settings',
             content: tabBody('Settings', 'Settings panel.'),
           ),
-          CkgocTab(label: 'Users', content: tabBody('Users', 'Users panel.')),
-          CkgocTab(
+          CKTab(label: 'Users', content: tabBody('Users', 'Users panel.')),
+          CKTab(
             label: 'Billing',
             content: tabBody('Billing', 'Billing and invoices.'),
           ),
-          CkgocTab(
+          CKTab(
             label: 'Integrations',
             content: tabBody('Integrations', 'Third-party integrations.'),
           ),
-          CkgocTab(
+          CKTab(
             label: 'Logs',
             content: tabBody('Logs', 'System and audit logs.'),
           ),
@@ -332,26 +329,23 @@ class _NavigationScreenState extends State<NavigationScreen> {
       ),
       SizedBox(height: s.xl),
       sectionLabel('TABS — WITH BADGES'),
-      CkgocTabs(
+      CKTabs(
         tabs: [
-          CkgocTab(
+          CKTab(
             label: 'Inbox',
             badge: 12,
             content: tabBody('Inbox', '12 unread messages in your inbox.'),
           ),
-          CkgocTab(
+          CKTab(
             label: 'Sent',
             content: tabBody('Sent', 'Messages you have sent.'),
           ),
-          CkgocTab(
+          CKTab(
             label: 'Drafts',
             badge: 3,
             content: tabBody('Drafts', '3 unsaved drafts.'),
           ),
-          CkgocTab(
-            label: 'Trash',
-            content: tabBody('Trash', 'Deleted messages.'),
-          ),
+          CKTab(label: 'Trash', content: tabBody('Trash', 'Deleted messages.')),
         ],
       ),
       SizedBox(height: s.xl),
@@ -359,7 +353,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
   }
 
   List<Widget> _appBarSections(BuildContext context) {
-    final theme = context.ckgocTheme;
+    final theme = context.ckcoreTheme;
     final s = theme.spacing;
     final t = theme.typography;
     final c = theme.colors;
@@ -376,7 +370,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
       ),
     );
 
-    Widget preview(String label, CkgocAppBar bar) => Column(
+    Widget preview(String label, CKAppBar bar) => Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -417,7 +411,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
       sLabel('APP BAR'),
       preview(
         'PRIMARY',
-        CkgocAppBar(
+        CKAppBar(
           style: AppBarStyle.primary,
           title: const Text('Overview'),
           leading: const Icon(LucideIcons.chevronLeft),
@@ -427,7 +421,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
       SizedBox(height: s.md),
       preview(
         'SURFACE',
-        CkgocAppBar(
+        CKAppBar(
           style: AppBarStyle.surface,
           title: const Text('Dashboard'),
           leading: const Icon(LucideIcons.chevronLeft),
@@ -437,7 +431,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
       SizedBox(height: s.md),
       preview(
         'DARK',
-        CkgocAppBar(
+        CKAppBar(
           style: AppBarStyle.dark,
           title: const Text('Settings'),
           leading: const Icon(LucideIcons.chevronLeft),
@@ -447,7 +441,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
       SizedBox(height: s.md),
       preview(
         'TRANSPARENT',
-        CkgocAppBar(
+        CKAppBar(
           style: AppBarStyle.transparent,
           trailing: [tIcon(LucideIcons.search)],
         ),
@@ -455,7 +449,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
       SizedBox(height: s.md),
       preview(
         'LARGE TITLE',
-        CkgocAppBar(
+        CKAppBar(
           style: AppBarStyle.surface,
           largeTitle: true,
           title: const Text('Page Title'),
@@ -467,7 +461,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
   }
 
   List<Widget> _bottomNavSections(BuildContext context) {
-    final theme = context.ckgocTheme;
+    final theme = context.ckcoreTheme;
     final s = theme.spacing;
     final t = theme.typography;
     final c = theme.colors;
@@ -486,13 +480,13 @@ class _NavigationScreenState extends State<NavigationScreen> {
     );
 
     final items = [
-      const CkgocNavItem(icon: LucideIcons.home, label: 'Home'),
-      const CkgocNavItem(icon: LucideIcons.search, label: 'Search'),
-      const CkgocNavItem(icon: LucideIcons.settings, label: 'Settings'),
-      const CkgocNavItem(icon: LucideIcons.user, label: 'Profile'),
+      const CKNavItem(icon: LucideIcons.home, label: 'Home'),
+      const CKNavItem(icon: LucideIcons.search, label: 'Search'),
+      const CKNavItem(icon: LucideIcons.settings, label: 'Settings'),
+      const CKNavItem(icon: LucideIcons.user, label: 'Profile'),
     ];
 
-    Widget navPreview(String label, CkgocBottomNavigation nav) => Column(
+    Widget navPreview(String label, CKBottomNavigation nav) => Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -528,7 +522,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
       sLabel('BOTTOM NAVIGATION'),
       navPreview(
         'STANDARD',
-        CkgocBottomNavigation(
+        CKBottomNavigation(
           selectedIndex: _bottomNavIndex,
           items: items,
           onDestinationSelected: (i) => setState(() => _bottomNavIndex = i),
@@ -537,7 +531,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
       SizedBox(height: s.md),
       navPreview(
         'WITH FAB',
-        CkgocBottomNavigation(
+        CKBottomNavigation(
           selectedIndex: _bottomNavIndex,
           items: items,
           onDestinationSelected: (i) => setState(() => _bottomNavIndex = i),

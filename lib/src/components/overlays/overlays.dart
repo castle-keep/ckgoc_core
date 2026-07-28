@@ -1,5 +1,5 @@
-export 'ckgoc_dialog.dart';
-export 'ckgoc_bottom_sheet.dart';
-export 'ckgoc_tooltip.dart';
-export 'ckgoc_popover.dart';
-export 'ckgoc_menu.dart';
+export 'ckcore_dialog.dart';
+export 'ckcore_bottom_sheet.dart';
+export 'ckcore_tooltip.dart';
+export 'ckcore_popover.dart';
+export 'ckcore_menu.dart';

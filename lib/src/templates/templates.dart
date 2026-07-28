@@ -1,6 +1,7 @@
 export 'auth/login_template.dart';
 export 'auth/register_template.dart';
 export 'auth/forgot_password_template.dart';
+export 'ckcore_screen_layout.dart';
 export 'crud/list_template.dart';
 export 'crud/create_template.dart';
 export 'crud/edit_template.dart';

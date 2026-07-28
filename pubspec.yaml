@@ -1,10 +1,10 @@
-name: ckgoc_core
+name: ckcoreui
 description: A Flutter design system package providing reusable UI components, design tokens, and multi-brand themes (CastleKeep & SkyGo).
 version: 0.2.1
 
-homepage: https://github.com/castle-keep/ckgoc_core
-repository: https://github.com/castle-keep/ckgoc_core
-documentation: https://castle-keep.github.io/ckgoc_core/
+homepage: https://github.com/castle-keep/ckcoreui
+repository: https://github.com/castle-keep/ckcoreui
+documentation: https://castle-keep.github.io/ckcoreui/
 
 platforms:
   android:

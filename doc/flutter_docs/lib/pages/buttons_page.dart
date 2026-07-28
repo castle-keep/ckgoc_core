@@ -1,8 +1,8 @@
-import 'package:ckgoc_core/ckgoc_core.dart';
+import 'package:ckcoreui/ckcore_core.dart';
 import 'package:flutter/material.dart';
 
-import 'package:ckgoc_docs_app/docs/doc_models.dart';
-import 'package:ckgoc_docs_app/docs/doc_widgets.dart';
+import 'package:ckcore_docs_app/docs/doc_models.dart';
+import 'package:ckcore_docs_app/docs/doc_widgets.dart';
 
 class ButtonsPage extends StatelessWidget {
   const ButtonsPage({super.key});
@@ -28,7 +28,7 @@ Wrap(
   runSpacing: 8,
   children: [
     for (final variant in ButtonVariant.values)
-      CkgocButton(
+      CKButton(
         variant: variant,
         size: ButtonSize.md,
         onPressed: () {},
@@ -39,7 +39,7 @@ Wrap(
 ''';
 
   return const ComponentDocData(
-    title: 'CkgocButton',
+    title: 'CKButton',
     summary:
         'Core action button. Use it for primary, secondary, outline, ghost, status, and link actions. This demo renders every ButtonVariant and every ButtonSize.',
     demo: _ButtonDemo(),
@@ -106,7 +106,7 @@ Wrap(
 
 ComponentDocData _iconButtonDoc() {
   const code = '''
-CkgocIconButton(
+CKIconButton(
   icon: Icons.settings,
   tooltip: 'Settings',
   onPressed: () {},
@@ -114,7 +114,7 @@ CkgocIconButton(
 ''';
 
   return const ComponentDocData(
-    title: 'CkgocIconButton',
+    title: 'CKIconButton',
     summary:
         'Compact icon-first action. Use it for toolbars, table actions, and app chrome.',
     demo: _IconButtonDemo(),
@@ -156,15 +156,15 @@ ComponentDocData _fabDoc() {
   const code = '''
 Column(
   children: [
-    CkgocFab(icon: Icons.add, onPressed: () {}),
+    CKFab(icon: Icons.add, onPressed: () {}),
     SizedBox(height: 12),
-    CkgocFab(icon: Icons.edit, label: 'Compose', onPressed: () {}),
+    CKFab(icon: Icons.edit, label: 'Compose', onPressed: () {}),
   ],
 )
 ''';
 
   return const ComponentDocData(
-    title: 'CkgocFab',
+    title: 'CKFab',
     summary:
         'Floating action button. Without a label it renders the classic circular FAB; with a label it renders the extended FAB.',
     demo: _FabDemo(),
@@ -216,7 +216,7 @@ class _ButtonDemo extends StatelessWidget {
           runSpacing: 8,
           children: [
             for (final variant in ButtonVariant.values)
-              CkgocButton(
+              CKButton(
                 variant: variant,
                 onPressed: () {},
                 child: Text(variant.name),
@@ -229,7 +229,7 @@ class _ButtonDemo extends StatelessWidget {
           runSpacing: 8,
           children: [
             for (final size in ButtonSize.values)
-              CkgocButton(
+              CKButton(
                 size: size,
                 onPressed: () {},
                 child: Text(size.name),
@@ -237,7 +237,7 @@ class _ButtonDemo extends StatelessWidget {
           ],
         ),
         const VSpace(height: 16),
-        const CkgocButton(
+        const CKButton(
           loading: true,
           child: Text('Saving'),
         ),
@@ -254,13 +254,13 @@ class _IconButtonDemo extends StatelessWidget {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        CkgocIconButton(
+        CKIconButton(
           icon: Icons.settings,
           tooltip: 'Settings',
           onPressed: () {},
         ),
         const HSpace(width: 12),
-        const CkgocIconButton(icon: Icons.lock, tooltip: 'Disabled'),
+        const CKIconButton(icon: Icons.lock, tooltip: 'Disabled'),
       ],
     );
   }
@@ -274,9 +274,9 @@ class _FabDemo extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        CkgocFab(icon: Icons.add, onPressed: () {}),
+        CKFab(icon: Icons.add, onPressed: () {}),
         const VSpace(height: 12),
-        CkgocFab(icon: Icons.edit, label: 'Compose', onPressed: () {}),
+        CKFab(icon: Icons.edit, label: 'Compose', onPressed: () {}),
       ],
     );
   }

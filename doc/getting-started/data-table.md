@@ -1,22 +1,22 @@
-# CkgocDataTable — Component Guide & Migration Plan
+# ckcoreDataTable — Component Guide & Migration Plan
 
 ## Overview
 
-`CkgocDataTable` is a fully-themed, stateless data table for the Company design system. It renders UI and emits callbacks only — it never owns repositories, makes network calls, or mutates data.
+`ckcoreDataTable` is a fully-themed, stateless data table for the Company design system. It renders UI and emits callbacks only — it never owns repositories, makes network calls, or mutates data.
 
 ---
 
 ## Quick Start
 
 ```dart
-CkgocDataTable(
+ckcoreDataTable(
   columns: [
-    const CkgocTableColumn(key: 'name', label: 'Name',
-        type: CkgocColumnType.avatarText, flex: 2, sortable: true),
-    const CkgocTableColumn(key: 'email', label: 'Email', flex: 2),
-    CkgocTableColumn(
+    const ckcoreTableColumn(key: 'name', label: 'Name',
+        type: ckcoreColumnType.avatarText, flex: 2, sortable: true),
+    const ckcoreTableColumn(key: 'email', label: 'Email', flex: 2),
+    ckcoreTableColumn(
       key: 'role', label: 'Role', width: 120,
-      type: CkgocColumnType.badge,
+      type: ckcoreColumnType.badge,
       badgeVariantBuilder: (v) => v == 'Admin'
           ? BadgeVariant.primary : BadgeVariant.outline,
     ),
@@ -45,13 +45,13 @@ CkgocDataTable(
 
 ## Setup
 
-- Add the package and import the component where you need it. If you're working in this repo, the component lives under `lib/src/components/data_table` and is exported from `lib/ckgoc_core.dart`.
-- Ensure your app provides a `CkgocThemeData` (example themes are in `lib/src/themes/brands`). The table uses `colors.surfaceVariant` for header/footer and `colors.background` for stripe backgrounds.
+- Add the package and import the component where you need it. If you're working in this repo, the component lives under `lib/src/components/data_table` and is exported from `lib/ckcoreui.dart`.
+- Ensure your app provides a `ckcoreThemeData` (example themes are in `lib/src/themes/brands`). The table uses `colors.surfaceVariant` for header/footer and `colors.background` for stripe backgrounds.
 
 Example import:
 
 ```dart
-import 'package:ckgoc_core/ckgoc_core.dart';
+import 'package:ckcoreui/ckcore_core.dart';
 ```
 
 Run the example app to see the table in action:
@@ -64,7 +64,7 @@ flutter run -d chrome -t example/lib/main.dart
 
 ## Getting started
 
-1. Define your `columns` using `CkgocTableColumn`. Mark sortable columns with `sortable: true`.
+1. Define your `columns` using `ckcoreTableColumn`. Mark sortable columns with `sortable: true`.
 2. Provide `rows` as a `List<Map<String, dynamic>>` and a `rowKey` that uniquely identifies each row.
 3. For server-driven paging/sorting, use the controlled pattern: pass `sortColumnKey`, `sortAscending`, and implement `onSortChanged`/`onPageChanged` to fetch sorted pages.
 4. For small client-side datasets, omit `onSortChanged` to use the internal sorting fallback.
@@ -75,7 +75,7 @@ flutter run -d chrome -t example/lib/main.dart
 
 ## Sorting
 
-CkgocDataTable renders a sort affordance in the header when a column is declared with `sortable: true` on `CkgocTableColumn`.
+ckcoreDataTable renders a sort affordance in the header when a column is declared with `sortable: true` on `ckcoreTableColumn`.
 
 - Controlled sorting (recommended for server-side paging): provide `sortColumnKey`, `sortAscending`, and `onSortChanged`. The table will call `onSortChanged(columnKey, ascending)` when the user taps a sortable header; your parent widget is responsible for sorting the `rows` and passing the new values back into the table props.
 
@@ -83,7 +83,7 @@ Example (controlled):
 
 ```dart
 // parent state: _sortKey, _sortAsc
-CkgocDataTable(
+ckcoreDataTable(
   columns: [...],
   rows: _rows,
   sortColumnKey: _sortKey,
@@ -98,10 +98,10 @@ CkgocDataTable(
 Example (uncontrolled):
 
 ```dart
-CkgocDataTable(
+ckcoreDataTable(
   columns: [
-    CkgocTableColumn(key: 'name', label: 'Name', sortable: true),
-    CkgocTableColumn(key: 'age', label: 'Age', sortable: true),
+    ckcoreTableColumn(key: 'name', label: 'Name', sortable: true),
+    ckcoreTableColumn(key: 'age', label: 'Age', sortable: true),
   ],
   rows: _localRows, // small in-memory dataset
   // omit onSortChanged -> table sorts internally when headers are tapped
@@ -112,9 +112,9 @@ Comparators: the internal comparator supports numbers and `DateTime`, and falls 
 
 ## Styling: header/footer and row stripes
 
-CkgocDataTable uses theme tokens for header/footer and striping so colors follow your brand theme:
+ckcoreDataTable uses theme tokens for header/footer and striping so colors follow your brand theme:
 
 - Header and footer background: `theme.colors.surfaceVariant` (we set this to neutral100 in the SkyGo light theme).
 - Row stripes: `theme.colors.background` (the light theme background is `#FAFAFA`).
 
-If you want different striping or header/footer colors, adjust your `CkgocThemeData` implementation for `colors.surfaceVariant` and `colors.background`.
+If you want different striping or header/footer colors, adjust your `ckcoreThemeData` implementation for `colors.surfaceVariant` and `colors.background`.

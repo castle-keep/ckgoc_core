@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ckgoc_core/ckgoc_core.dart';
+import 'package:ckcoreui/ckcore_core.dart';
 import 'buttons_screen.dart';
 import 'data_table_screen.dart';
 import 'display_screen.dart';
@@ -9,11 +9,12 @@ import 'navigation_screen.dart';
 import 'overlays_screen.dart';
 import 'templates_screen.dart';
 import 'tokens_screen.dart';
+import 'layout_example_screen.dart';
 
 class HomeScreen extends StatefulWidget {
-  final CkgocBrand currentBrand;
+  final ckcoreBrand currentBrand;
   final Brightness? currentBrightness;
-  final ValueChanged<CkgocBrand> onBrandChanged;
+  final ValueChanged<ckcoreBrand> onBrandChanged;
   final ValueChanged<Brightness?> onBrightnessChanged;
 
   const HomeScreen({
@@ -41,11 +42,12 @@ class _HomeScreenState extends State<HomeScreen> {
     const NavigationScreen(),
     const OverlaysScreen(),
     const TemplatesScreen(),
+    const LayoutExampleScreen(),
   ];
 
   @override
   Widget build(BuildContext context) {
-    final theme = context.ckgocTheme;
+    final theme = context.ckcoreTheme;
 
     return Scaffold(
       backgroundColor: theme.colors.background,
@@ -53,10 +55,10 @@ class _HomeScreenState extends State<HomeScreen> {
         title: const Text('Company UI Showcase'),
         actions: [
           // Brand switcher
-          DropdownButton<CkgocBrand>(
+          DropdownButton<ckcoreBrand>(
             value: widget.currentBrand,
             underline: const SizedBox.shrink(),
-            items: CkgocBrand.values
+            items: ckcoreBrand.values
                 .map(
                   (b) => DropdownMenuItem(value: b, child: Text(b.displayName)),
                 )
@@ -66,8 +68,8 @@ class _HomeScreenState extends State<HomeScreen> {
             },
           ),
           const SizedBox(width: 8),
-          // Brightness toggle using CkgocSwitch
-          CkgocSwitch(
+          // Brightness toggle using CKSwitch
+          CKSwitch(
             value: widget.currentBrightness == Brightness.dark,
             onChanged: (isDark) {
               widget.onBrightnessChanged(
@@ -125,6 +127,10 @@ class _HomeScreenState extends State<HomeScreen> {
               NavigationRailDestination(
                 icon: Icon(LucideIcons.layoutTemplate),
                 label: Text('Templates'),
+              ),
+              NavigationRailDestination(
+                icon: Icon(LucideIcons.grid),
+                label: Text('Layout'),
               ),
             ],
           ),

@@ -1,23 +1,219 @@
-// ignore_for_file: require_trailing_commas
-
+import 'package:ckcoreui/ckcoreui.dart';
 import 'package:flutter/material.dart';
-import 'package:ckgoc_core/ckgoc_core.dart';
 
-import 'package:ckgoc_docs_app/docs/doc_models.dart';
+import 'package:ckcore_docs_app/pages/brand_icons_page.dart';
+import 'package:ckcore_docs_app/pages/buttons_page.dart';
+import 'package:ckcore_docs_app/pages/data_table_page.dart';
+import 'package:ckcore_docs_app/pages/display_page.dart';
+import 'package:ckcore_docs_app/pages/enums_page.dart';
+import 'package:ckcore_docs_app/pages/feedback_page.dart';
+import 'package:ckcore_docs_app/pages/inputs_page.dart';
+import 'package:ckcore_docs_app/pages/navigation_page.dart';
+import 'package:ckcore_docs_app/pages/overlays_page.dart';
+import 'package:ckcore_docs_app/pages/overview_page.dart';
+import 'package:ckcore_docs_app/pages/foundation_page.dart';
+import 'package:ckcore_docs_app/pages/app_page.dart';
+import 'package:ckcore_docs_app/pages/screen_layout_page.dart';
+import 'package:ckcore_docs_app/pages/templates_page.dart';
+import 'package:ckcore_docs_app/pages/themes_page.dart';
+import 'package:ckcore_docs_app/pages/router_page.dart';
+import '../docs_navigation.dart';
 
-/// Small spacing helpers to avoid scattering `SizedBox` throughout views.
-class VSpace extends StatelessWidget {
-  const VSpace({this.height = 8, super.key});
-  final double height;
-  @override
-  Widget build(BuildContext context) => Container(height: height);
+void main() {
+  runApp(const DocsApp());
 }
 
-class HSpace extends StatelessWidget {
-  const HSpace({this.width = 8, super.key});
-  final double width;
+class DocsApp extends StatefulWidget {
+  const DocsApp({super.key});
+
   @override
-  Widget build(BuildContext context) => Container(width: width);
+  State<DocsApp> createState() => _DocsAppState();
+}
+
+class _DocsAppState extends State<DocsApp> {
+  ckcoreBrand _brand = ckcoreBrand.castleKeep;
+  Brightness? _brightness = Brightness.light;
+
+  Widget _pageForRoute(String route) {
+    switch (route) {
+      case '/':
+        return const OverviewPage();
+
+      case '/buttons':
+        return const ButtonsPage();
+
+      case '/display':
+        return const DisplayPage();
+
+      case '/inputs':
+        return const InputsPage();
+
+      case '/feedback':
+        return const FeedbackPage();
+
+      case '/navigation':
+        return const NavigationPage();
+
+      case '/router':
+        return const RouterDocsPage();
+
+      case '/overlays':
+        return const OverlaysPage();
+
+      case '/data-table':
+        return const DataTablePage();
+
+      case '/enums':
+        return const EnumsPage();
+
+      case '/brand-icons':
+        return const BrandIconsPage();
+
+      case '/app':
+        return const AppPage();
+
+      case '/foundation':
+        return const FoundationPage();
+
+      case '/themes':
+        return const ThemesPage();
+
+      case '/templates':
+        return const TemplatesPage();
+
+      case '/screen-layout':
+        return const ScreenLayoutDemoPage();
+
+      default:
+        return const OverviewPage();
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return CKApp(
+      brand: _brand,
+      brightness: _brightness,
+      home: ValueListenableBuilder<String>(
+        valueListenable: currentRoute,
+        builder: (context, route, _) {
+          return Stack(
+            children: [
+              _pageForRoute(route),
+              Positioned(
+                top: 12,
+                right: 12,
+                child: _ThemeSwitcher(
+                  brand: _brand,
+                  brightness: _brightness,
+                  onBrandChanged: (b) {
+                    setState(() {
+                      _brand = b;
+                    });
+                  },
+                  onBrightnessChanged: (b) {
+                    setState(() {
+                      _brightness = b;
+                    });
+                  },
+                ),
+              ),
+            ],
+          );
+        },
+      ),
+    );
+  }
+}
+
+class _ThemeSwitcher extends StatelessWidget {
+  const _ThemeSwitcher({
+    required this.brand,
+    required this.brightness,
+    required this.onBrandChanged,
+    required this.onBrightnessChanged,
+  });
+
+  final ckcoreBrand brand;
+  final Brightness? brightness;
+  final ValueChanged<ckcoreBrand> onBrandChanged;
+  final ValueChanged<Brightness?> onBrightnessChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = context.ckcoreTheme;
+
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        CKMenu(
+          trigger: CKContainer(
+            elevated: true,
+            variant: ContainerVariant.outlined,
+            padding: EdgeInsets.symmetric(
+              horizontal: theme.spacing.sm,
+              vertical: theme.spacing.xs,
+            ),
+            child: Text(
+              brand == ckcoreBrand.castleKeep ? 'CastleKeep' : 'SkyGo',
+            ),
+          ),
+          items: [
+            CKMenuItem(
+              label: 'CastleKeep',
+              onTap: () {
+                onBrandChanged(ckcoreBrand.castleKeep);
+              },
+            ),
+            CKMenuItem(
+              label: 'SkyGo',
+              onTap: () {
+                onBrandChanged(ckcoreBrand.skyGo);
+              },
+            ),
+          ],
+        ),
+        const SizedBox(width: 8),
+        CKMenu(
+          trigger: CKContainer(
+            elevated: true,
+            variant: ContainerVariant.outlined,
+            padding: EdgeInsets.symmetric(
+              horizontal: theme.spacing.sm,
+              vertical: theme.spacing.xs,
+            ),
+            child: Text(
+              brightness == null
+                  ? 'System'
+                  : brightness == Brightness.dark
+                      ? 'Dark'
+                      : 'Light',
+            ),
+          ),
+          items: [
+            CKMenuItem(
+              label: 'System',
+              onTap: () {
+                onBrightnessChanged(null);
+              },
+            ),
+            CKMenuItem(
+              label: 'Light',
+              onTap: () {
+                onBrightnessChanged(Brightness.light);
+              },
+            ),
+            CKMenuItem(
+              label: 'Dark',
+              onTap: () {
+                onBrightnessChanged(Brightness.dark);
+              },
+            ),
+          ],
+        ),
+      ],
+    );
+  }
 }
 
 class DocsScaffold extends StatelessWidget {
@@ -35,7 +231,7 @@ class DocsScaffold extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: CkgocTheme.of(context).colors.background,
+      backgroundColor: ckcoreTheme.of(context).colors.background,
       body: SafeArea(
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -51,12 +247,12 @@ class DocsScaffold extends StatelessWidget {
                 children: [
                   Text(
                     title,
-                    style: CkgocTheme.of(context).typography.displayLg,
+                    style: ckcoreTheme.of(context).typography.displayLg,
                   ),
                   const VSpace(height: 8),
                   Text(
                     subtitle,
-                    style: CkgocTheme.of(context).typography.textLg,
+                    style: ckcoreTheme.of(context).typography.textLg,
                   ),
                   const VSpace(height: 24),
                   ...children,
@@ -70,6 +266,21 @@ class DocsScaffold extends StatelessWidget {
   }
 }
 
+/// Small spacing helpers to avoid scattering `SizedBox` throughout views.
+class VSpace extends StatelessWidget {
+  const VSpace({this.height = 8, super.key});
+  final double height;
+  @override
+  Widget build(BuildContext context) => Container(height: height);
+}
+
+class HSpace extends StatelessWidget {
+  const HSpace({this.width = 8, super.key});
+  final double width;
+  @override
+  Widget build(BuildContext context) => Container(width: width);
+}
+
 class DocsNavigationRail extends StatelessWidget {
   const DocsNavigationRail({super.key});
 
@@ -80,6 +291,7 @@ class DocsNavigationRail extends StatelessWidget {
     (title: 'Inputs', route: '/inputs', icon: Icons.keyboard_outlined),
     (title: 'Feedback', route: '/feedback', icon: Icons.info_outline),
     (title: 'Navigation', route: '/navigation', icon: Icons.route_outlined),
+    (title: 'Router', route: '/router', icon: Icons.router_outlined),
     (title: 'Overlays', route: '/overlays', icon: Icons.layers_outlined),
     (
       title: 'Data Table',
@@ -92,31 +304,87 @@ class DocsNavigationRail extends StatelessWidget {
     (
       title: 'Foundation',
       route: '/foundation',
-      icon: Icons.foundation_outlined
+      icon: Icons.foundation_outlined,
     ),
     (title: 'Themes', route: '/themes', icon: Icons.palette_outlined),
     (title: 'Templates', route: '/templates', icon: Icons.dashboard_outlined),
+    (
+      title: 'Screen Layout',
+      route: '/screen-layout',
+      icon: Icons.view_sidebar_outlined,
+    ),
   ];
 
   @override
   Widget build(BuildContext context) {
-    final current = ModalRoute.of(context)?.settings.name ?? '/';
+    final current = currentRoute.value;
     final currentIndex = _items.indexWhere((item) => item.route == current);
 
-    return CkgocSideNav(
-      sections: [
-        CkgocSideNavSection(
-          label: 'Docs',
-          items: [
-            for (final item in _items)
-              CkgocSideNavItem(icon: item.icon, label: item.title),
-          ],
-        ),
-      ],
-      selectedIndex: currentIndex < 0 ? 0 : currentIndex,
-      onItemSelected: (index) =>
-          Navigator.of(context).pushReplacementNamed(_items[index].route),
-      brandName: 'Ckgoc Core Docs',
+    final theme = ckcoreTheme.of(context);
+
+    return Container(
+      color: theme.colors.surface,
+      padding: EdgeInsets.symmetric(vertical: theme.spacing.md),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: theme.spacing.md),
+            child: Text('Docs', style: theme.typography.labelMd),
+          ),
+          const SizedBox(height: 8),
+          Expanded(
+            child: ListView.builder(
+              padding: EdgeInsets.zero,
+              itemCount: _items.length,
+              itemBuilder: (context, index) {
+                final item = _items[index];
+                final selected = index == currentIndex;
+                return Material(
+                  color: selected
+                      ? theme.colors.surfaceElevated
+                      : Colors.transparent,
+                  child: InkWell(
+                    onTap: () {
+                      currentRoute.value = item.route;
+                    },
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(
+                        vertical: theme.spacing.sm,
+                        horizontal: theme.spacing.md,
+                      ),
+                      child: Row(
+                        children: [
+                          Icon(item.icon,
+                              size: 20,
+                              color: selected
+                                  ? theme.colors.primary
+                                  : theme.colors.onSurface),
+                          SizedBox(width: theme.spacing.md),
+                          Expanded(
+                            child: Text(
+                              item.title,
+                              style: selected
+                                  ? theme.typography.labelMd
+                                      .copyWith(color: theme.colors.primary)
+                                  : theme.typography.textMd,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(
+                horizontal: theme.spacing.md, vertical: theme.spacing.sm),
+            child: Text('ckcoreui Core Docs', style: theme.typography.textXs),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -124,16 +392,16 @@ class DocsNavigationRail extends StatelessWidget {
 class DocSection extends StatelessWidget {
   const DocSection({required this.data, super.key});
 
-  final ComponentDocData data;
+  final dynamic data;
 
   @override
   Widget build(BuildContext context) {
-    final theme = CkgocTheme.of(context);
+    final theme = ckcoreTheme.of(context);
     final coming = data.comingSoon;
 
     return Padding(
       padding: const EdgeInsets.only(bottom: 24),
-      child: CkgocContainer(
+      child: CKContainer(
         variant: coming ? ContainerVariant.surface : ContainerVariant.outlined,
         elevated: coming ? false : true,
         child: Column(
@@ -144,7 +412,7 @@ class DocSection extends StatelessWidget {
                 if (coming)
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: CkgocBadge(
+                    child: CKBadge(
                       label: 'Coming soon',
                       variant: BadgeVariant.live,
                     ),
@@ -172,7 +440,7 @@ class DocSection extends StatelessWidget {
             // Demo area is disabled and dimmed when comingSoon is true.
             IgnorePointer(
               ignoring: coming,
-              child: CkgocContainer(
+              child: CKContainer(
                 variant: ContainerVariant.outlined,
                 child: HeroMode(enabled: false, child: data.demo),
               ),
@@ -189,10 +457,10 @@ class DocSection extends StatelessWidget {
               const VSpace(height: 16),
               Text('FAQs', style: theme.typography.labelMd),
               const VSpace(height: 8),
-              CkgocAccordion(
+              CKAccordion(
                 items: [
                   for (final faq in data.faqs)
-                    CkgocAccordionItem(
+                    CKAccordionItem(
                       title: faq.question,
                       content: Align(
                           alignment: Alignment.centerLeft,
@@ -211,7 +479,7 @@ class DocSection extends StatelessWidget {
 class ParamTable extends StatelessWidget {
   const ParamTable({required this.params, super.key});
 
-  final List<DocParam> params;
+  final List<dynamic> params;
 
   @override
   Widget build(BuildContext context) {
@@ -223,7 +491,7 @@ class ParamTable extends StatelessWidget {
         3: FlexColumnWidth(1.2),
         4: FlexColumnWidth(3.3),
       },
-      border: TableBorder.all(color: CkgocTheme.of(context).colors.outline),
+      border: TableBorder.all(color: ckcoreTheme.of(context).colors.outline),
       children: [
         _row(context,
             const ['Name', 'Type', 'Required', 'Default', 'Description'],
@@ -243,11 +511,11 @@ class ParamTable extends StatelessWidget {
   TableRow _row(BuildContext context, List<String> values,
       {bool header = false}) {
     final style = header
-        ? CkgocTheme.of(context).typography.labelLg
-        : CkgocTheme.of(context).typography.textMd;
+        ? ckcoreTheme.of(context).typography.labelLg
+        : ckcoreTheme.of(context).typography.textMd;
     return TableRow(
       decoration: header
-          ? BoxDecoration(color: CkgocTheme.of(context).colors.surfaceVariant)
+          ? BoxDecoration(color: ckcoreTheme.of(context).colors.surfaceVariant)
           : null,
       children: values
           .map((value) => Padding(
@@ -265,14 +533,14 @@ class CodeBlock extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CkgocContainer(
+    return CKContainer(
       variant: ContainerVariant.muted,
       elevated: true,
       child: SizedBox(
         width: double.infinity,
         child: SelectableText(
           code,
-          style: CkgocTheme.of(context).typography.codeMd,
+          style: ckcoreTheme.of(context).typography.codeMd,
         ),
       ),
     );
@@ -283,18 +551,18 @@ class EnumCasesCard extends StatelessWidget {
   const EnumCasesCard({required this.title, required this.cases, super.key});
 
   final String title;
-  final List<EnumCaseDoc> cases;
+  final List<dynamic> cases;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 24),
-      child: CkgocContainer(
+      child: CKContainer(
         elevated: true,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(title, style: CkgocTheme.of(context).typography.labelLg),
+            Text(title, style: ckcoreTheme.of(context).typography.labelLg),
             const VSpace(height: 12),
             Wrap(
               spacing: 12,
@@ -302,18 +570,19 @@ class EnumCasesCard extends StatelessWidget {
               children: cases
                   .map((item) => SizedBox(
                         width: 240,
-                        child: CkgocContainer(
+                        child: CKContainer(
                           variant: ContainerVariant.outlined,
                           padding: const EdgeInsets.all(12),
                           child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(item.name,
-                                    style: CkgocTheme.of(context)
+                                Text(item?.name ?? '',
+                                    style: ckcoreTheme
+                                        .of(context)
                                         .typography
                                         .labelMd),
                                 const VSpace(height: 6),
-                                Text(item.description),
+                                Text(item?.description ?? ''),
                               ]),
                         ),
                       ))
