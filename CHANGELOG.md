@@ -1,3 +1,22 @@
+## 0.4.0
+
+### Added
+- Added `CKTooltip`.
+- Expanded theme customization options.
+- Added migration guide for upgrading from 0.3.x.
+
+### Changed
+- Improved accessibility and keyboard navigation.
+- Improved component documentation and examples.
+- Refined typography, spacing, and theme performance.
+- Standardized component APIs for consistency.
+
+### Fixed
+- Fixed overlay stability (`CKAlert`, `CKToast`, `CKDialog`).
+- Improved responsive data tables.
+- Fixed form validation edge cases.
+- Improved theme consistency across light and dark modes.
+
 ## 0.3.1
 
 Updated documentation

@@ -25,7 +25,7 @@ Add the package from pub.dev to your application's `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  ckcoreui: ^0.3.1  
+  ckcoreui: ^0.4.0  
 ```
 
 Then run:
