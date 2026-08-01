@@ -63,47 +63,56 @@ final radius = theme.radius;
                 type: 'ckcoreColors',
                 description:
                     'Semantic color tokens for surfaces, text, states, and accents.',
+                requiredParam: true,
               ),
               DocParam(
                 name: 'typography',
                 type: 'ckcoreTypography',
                 description: 'Text styles for display, labels, and body copy.',
+                requiredParam: true,
               ),
               DocParam(
                 name: 'spacing',
                 type: 'ckcoreSpacing',
                 description:
                     'Spacing scale used throughout layout and controls.',
+                requiredParam: true,
               ),
               DocParam(
                 name: 'radius',
                 type: 'ckcoreRadius',
                 description: 'Corner radii tokens.',
+                requiredParam: true,
               ),
               DocParam(
                 name: 'elevation',
                 type: 'ckcoreElevation',
                 description: 'Elevation depth tokens.',
+                requiredParam: true,
               ),
               DocParam(
                 name: 'shadows',
                 type: 'ckcoreShadows',
                 description: 'Box-shadow presets.',
+                requiredParam: true,
               ),
               DocParam(
                 name: 'motion',
                 type: 'ckcoreMotion',
                 description: 'Durations and curves.',
+                requiredParam: true,
               ),
               DocParam(
                 name: 'opacity',
                 type: 'ckcoreOpacity',
                 description: 'Opacity scale for interaction states.',
+                requiredParam: true,
               ),
               DocParam(
                 name: 'breakpoints',
                 type: 'ckcoreBreakpoints',
                 description: 'Responsive width thresholds.',
+                requiredParam: true,
               ),
             ],
             faqs: const [
@@ -120,103 +129,18 @@ final radius = theme.radius;
             ],
           ),
         ),
-        const DocSection(
+        DocSection(
           data: ComponentDocData(
+            faqs: [],
             title: 'All theme colors',
             summary:
                 'Visual reference of every semantic color token exposed by ckcoreColors.',
-            demo: _ColorSwatchGrid(),
+            demo: const _ColorSwatchGrid(),
             code: '''
 final colors = context.ckcoreTheme.colors;
 // Inspect colors.primary, colors.surface, etc.
 ''',
-            params: [],
-            faqs: [],
-          ),
-        ),
-        const DocSection(
-          data: ComponentDocData(
-            title: 'Typography samples',
-            summary:
-                'Shows every text style from ckcoreTypography with a sample line and metadata.',
-            demo: _TypographySamples(),
-            code: '''
-final t = context.ckcoreTheme.typography;
-// Use t.displayLg, t.textMd, t.labelSm etc.
-''',
-            params: [],
-            faqs: [],
-          ),
-        ),
-        const DocSection(
-          data: ComponentDocData(
-            title: 'Semantic heading shortcuts',
-            summary:
-                'Use .h1 through .h6 extensions for semantic HTML-style headings with automatic typography scaling.',
-            demo: _HeadingShortcuts(),
-            code: '''
-// Semantic heading shortcuts (h1-h6) map to typography scale
-Text('Page Title').h1        // display2xl (32px, Bold)
-Text('Section').h2           // displayXl (28px, Bold)
-Text('Subsection').h3        // displayLg (24px, Bold)
-Text('Card Title').h4        // displayMd (20px, Bold)
-Text('Label').h5             // displaySm (18px, Medium)
-Text('Secondary').h6         // textXl (20px, Regular)
-''',
-            params: [],
-            faqs: [],
-          ),
-        ),
-        Card(
-          child: Padding(
-            padding: const EdgeInsets.all(12),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text('Text extension examples',
-                    style: Theme.of(context).textTheme.titleSmall),
-                SizedBox(height: 8),
-                Builder(
-                  builder: (ctx) {
-                    final t = ctx.ckcoreTheme;
-                    return Text(
-                      'Bold primary',
-                      style: t.typography.textMd.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: t.colors.primary,
-                      ),
-                    );
-                  },
-                ),
-                SizedBox(height: 6),
-                Builder(
-                  builder: (ctx) {
-                    final t = ctx.ckcoreTheme;
-                    return Text(
-                      'Italic error',
-                      style: t.typography.textMd.copyWith(
-                        fontStyle: FontStyle.italic,
-                        color: t.colors.error,
-                      ),
-                    );
-                  },
-                ),
-                SizedBox(height: 6),
-                Builder(
-                  builder: (ctx) {
-                    final t = ctx.ckcoreTheme;
-                    return Text(
-                      'Code monospace on primary',
-                      style:
-                          t.typography.codeMd.copyWith(color: t.colors.primary),
-                    );
-                  },
-                ),
-                SizedBox(height: 6),
-                Text('Blockquote example: Use .blockQuote for semantic quoting.')
-                    .blockQuote,
-              ],
-            ),
+            params: const <DocParam>[],
           ),
         ),
       ],
@@ -374,116 +298,6 @@ class _ColorSwatchGrid extends StatelessWidget {
                 );
               }).toList(),
             ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-// Shows sample lines for every typography style in ckcoreTypography.
-class _TypographySamples extends StatelessWidget {
-  const _TypographySamples();
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = context.ckcoreTheme;
-    final t = theme.typography;
-
-    final samples = <MapEntry<String, TextStyle>>[
-      MapEntry('display2xl', t.display2xl),
-      MapEntry('displayXl', t.displayXl),
-      MapEntry('displayLg', t.displayLg),
-      MapEntry('displayMd', t.displayMd),
-      MapEntry('displaySm', t.displaySm),
-      MapEntry('textXl', t.textXl),
-      MapEntry('textLg', t.textLg),
-      MapEntry('textMd', t.textMd),
-      MapEntry('textSm', t.textSm),
-      MapEntry('textXs', t.textXs),
-      MapEntry('labelXl', t.labelXl),
-      MapEntry('labelLg', t.labelLg),
-      MapEntry('labelMd', t.labelMd),
-      MapEntry('labelSm', t.labelSm),
-      MapEntry('codeMd', t.codeMd),
-    ];
-
-    return CKContainer(
-      elevated: true,
-      child: Padding(
-        padding: const EdgeInsets.all(12),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('Typography', style: theme.typography.labelXl),
-            const VSpace(height: 12),
-            for (final s in samples) ...[
-              Padding(
-                padding: const EdgeInsets.only(bottom: 12),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(s.key, style: theme.typography.labelSm),
-                    const VSpace(height: 6),
-                    Text(
-                      'The quick brown fox jumps over the lazy dog',
-                      style: s.value,
-                    ),
-                    const VSpace(height: 6),
-                    Text(
-                      'fontSize: ${s.value.fontSize ?? '-'} • weight: ${s.value.fontWeight ?? '-'} • style: ${s.value.fontStyle ?? '-'}',
-                      style: theme.typography.textSm,
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-// Demonstrates semantic heading shortcuts (.h1 through .h6)
-class _HeadingShortcuts extends StatelessWidget {
-  const _HeadingShortcuts();
-
-  @override
-  Widget build(BuildContext context) {
-    return CKContainer(
-      elevated: true,
-      child: Padding(
-        padding: const EdgeInsets.all(12),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('Semantic Heading Shortcuts',
-                style: context.ckcoreTheme.typography.labelXl),
-            const VSpace(height: 12),
-            Text('Page Title').h1,
-            const VSpace(height: 8),
-            Text('Heading h1').primary,
-            const VSpace(height: 16),
-            Text('Section').h2,
-            const VSpace(height: 8),
-            Text('Heading h2').primary,
-            const VSpace(height: 16),
-            Text('Subsection').h3,
-            const VSpace(height: 8),
-            Text('Heading h3').primary,
-            const VSpace(height: 16),
-            Text('Card Title').h4,
-            const VSpace(height: 8),
-            Text('Heading h4').primary,
-            const VSpace(height: 16),
-            Text('Label').h5,
-            const VSpace(height: 8),
-            Text('Heading h5').primary,
-            const VSpace(height: 16),
-            Text('Secondary').h6,
-            const VSpace(height: 8),
-            Text('Heading h6').primary,
           ],
         ),
       ),

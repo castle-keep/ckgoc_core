@@ -103,6 +103,11 @@ Text('Hello').h1.primary // Heading with primary color
         const Text(
           'Use extension methods for cleaner, more readable text styling throughout your app.',
         ),
+        VSpace(height: 8),
+        SelectableText(
+          'Golden rule: apply modifier extensions (e.g. .bold, .italic, .lineThrough) before typography or color helpers because those return Widgets.\nExample: Text("Hi").bold.h1 (preferred)',
+          style: context.ckcoreTheme.typography.codeMd,
+        ),
       ],
     );
   }

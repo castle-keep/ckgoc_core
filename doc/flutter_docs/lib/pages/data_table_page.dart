@@ -43,19 +43,19 @@ CKDataTable(
           type: 'List<CKTableColumn>',
           description: 'Column definitions.',
           requiredParam: true,
-        ),
+          ),
         DocParam(
           name: 'rows',
           type: 'List<Map<String, dynamic>>',
           description: 'Row data.',
           requiredParam: true,
-        ),
+          ),
         DocParam(
           name: 'rowKey',
           type: 'String',
           description: 'Primary key field used for selection and edits.',
           defaultValue: 'id',
-        ),
+          ),
         DocParam(
           name: 'title',
           type: 'String?',
@@ -96,7 +96,7 @@ CKDataTable(
           type: 'bool',
           description: 'Controlled sort direction.',
           defaultValue: 'true',
-        ),
+          ),
         DocParam(
           name: 'onSortChanged',
           type: 'void Function(String, bool)?',
@@ -107,13 +107,13 @@ CKDataTable(
           type: 'TableSelectionMode',
           description: 'Selection behavior.',
           defaultValue: 'TableSelectionMode.none',
-        ),
+          ),
         DocParam(
           name: 'selectedKeys',
           type: 'Set<dynamic>',
           description: 'Controlled selected row keys.',
           defaultValue: 'const {}',
-        ),
+          ),
         DocParam(
           name: 'onSelectionChanged',
           type: 'ValueChanged<Set<dynamic>>?',
@@ -124,19 +124,19 @@ CKDataTable(
           type: 'int',
           description: 'Full dataset size for pagination.',
           defaultValue: '0',
-        ),
+          ),
         DocParam(
           name: 'currentPage',
           type: 'int',
           description: 'Current page number.',
           defaultValue: '1',
-        ),
+          ),
         DocParam(
           name: 'pageSize',
           type: 'int',
           description: 'Page size.',
           defaultValue: '10',
-        ),
+          ),
         DocParam(
           name: 'onPageChanged',
           type: 'ValueChanged<int>?',
@@ -147,7 +147,7 @@ CKDataTable(
           type: 'bool',
           description: 'Shows skeleton rows.',
           defaultValue: 'false',
-        ),
+          ),
         DocParam(
           name: 'errorMessage',
           type: 'String?',
@@ -173,7 +173,7 @@ CKDataTable(
           type: 'TableWidthBehavior',
           description: 'Stretch or compact width logic.',
           defaultValue: 'TableWidthBehavior.stretch',
-        ),
+          ),
         DocParam(
           name: 'maxHeight',
           type: 'double?',
@@ -191,8 +191,10 @@ CKDataTable(
         ),
         DocParam(
           name: 'onCellChanged',
-          type: 'void Function(dynamic, String, dynamic)?',
-          description: 'Inline edit commit callback.',
+          type:
+              'void Function(dynamic rowKey, String columnKey, dynamic newValue)?',
+          description:
+              'Inline edit commit callback. Signature: `(rowKey, columnKey, newValue)`.',
         ),
       ],
       faqs: [
@@ -209,6 +211,7 @@ CKDataTable(
       ],
       notes: [
         'Enum demo coverage: TableSelectionMode and TableWidthBehavior are both exercised in the live demo selector.',
+        'onCellChanged: When provided, receives `(rowKey, columnKey, newValue)` for the edited cell — useful for committing inline edits to external state.',
       ],
     );
 

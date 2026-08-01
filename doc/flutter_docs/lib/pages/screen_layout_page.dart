@@ -49,24 +49,25 @@ CKScreenLayout(
           type: 'Widget',
           description: 'Main content area.',
           requiredParam: true,
-        ),
+          ),
         DocParam(
           name: 'sections',
           type: 'List<CKSideNavSection>',
           description: 'Navigation sections.',
           requiredParam: true,
-        ),
+          ),
         DocParam(
           name: 'selectedIndex',
           type: 'int',
           description: 'Currently selected navigation item index.',
-          defaultValue: '0',
-        ),
+          requiredParam: true,
+          ),
         DocParam(
           name: 'onItemSelected',
           type: 'Function(int)?',
           description: 'Callback when nav item is tapped.',
-        ),
+          requiredParam: true,
+          ),
         DocParam(
           name: 'brandName',
           type: 'String?',
@@ -81,14 +82,14 @@ CKScreenLayout(
           name: 'sideNavStyle',
           type: 'SideNavStyle',
           description: 'Visual style: brand or neutral.',
-          defaultValue: 'SideNavStyle.neutral',
-        ),
+          defaultValue: 'SideNavStyle.surface',
+          ),
         DocParam(
           name: 'allowSideNavCollapse',
           type: 'bool',
           description: 'Allow collapsing side nav on desktop.',
-          defaultValue: 'false',
-        ),
+          defaultValue: 'true',
+          ),
       ],
       faqs: [
         DocFaq(
@@ -141,13 +142,11 @@ CKSideNavSection(
           name: 'label',
           type: 'String',
           description: 'Section title/label.',
-          requiredParam: true,
         ),
         DocParam(
           name: 'items',
           type: 'List<CKSideNavItem>',
           description: 'Navigation items in this section.',
-          requiredParam: true,
         ),
       ],
       faqs: [

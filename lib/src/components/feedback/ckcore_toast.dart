@@ -5,13 +5,40 @@ import 'package:ckcoreui/src/foundation/colors/color_primitives.dart';
 import 'package:ckcoreui/src/themes/ckcore_theme.dart';
 import 'package:ckcoreui/src/components/component_enums.dart';
 
+/// Toast notification component with semantic color variants.
+///
+/// The default appearance is neutral. Use named constructors for semantic variants:
+/// ```dart
+/// CKToast(message: 'Hello')                // neutral (default)
+/// CKToast.success(message: 'Done!')
+/// CKToast.error(message: 'Failed')
+/// CKToast.warning(message: 'Careful')
+/// CKToast.info(message: 'FYI')
+/// ```
 class CKToast extends StatelessWidget {
+  /// Default toast (neutral colors, recommended appearance).
   const CKToast({
     required this.message,
     this.variant = ToastVariant.defaultToast,
     this.onDismiss,
     super.key,
   });
+
+  /// Success toast variant (green).
+  const CKToast.success({required this.message, this.onDismiss, super.key})
+    : variant = ToastVariant.success;
+
+  /// Error toast variant (red).
+  const CKToast.error({required this.message, this.onDismiss, super.key})
+    : variant = ToastVariant.error;
+
+  /// Warning toast variant (orange).
+  const CKToast.warning({required this.message, this.onDismiss, super.key})
+    : variant = ToastVariant.warning;
+
+  /// Info toast variant (blue).
+  const CKToast.info({required this.message, this.onDismiss, super.key})
+    : variant = ToastVariant.info;
   final String message;
   final ToastVariant variant;
   final VoidCallback? onDismiss;

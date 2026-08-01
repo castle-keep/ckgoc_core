@@ -1,10 +1,13 @@
+import 'package:ckcoreui/src/components/components.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'dart:async';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import 'package:ckcoreui/src/themes/ckcore_theme.dart';
 
 /// Number stepper styled to match `CKTextField`.
-class CKNumberStepper extends StatelessWidget {
+class CKNumberStepper extends StatefulWidget {
   const CKNumberStepper({
     required this.value,
     this.onChanged,
@@ -34,27 +37,98 @@ class CKNumberStepper extends StatelessWidget {
   final bool enabled;
   final bool borderless;
 
+  @override
+  State<CKNumberStepper> createState() => _CKNumberStepperState();
+}
+
+class _CKNumberStepperState extends State<CKNumberStepper> {
+  late TextEditingController _controller;
+  bool _programmaticChange = false;
+  bool _showRangeError = false;
+  Timer? _errorTimer;
+
   bool get _canDecrement {
-    if (!enabled || onChanged == null) return false;
-    if (value == null) return true;
-    if (min == null) return true;
-    return value! - step >= min!;
+    if (!widget.enabled || widget.onChanged == null) return false;
+    if (widget.value == null) return true;
+    if (widget.min == null) return true;
+    return widget.value! - widget.step >= widget.min!;
   }
 
   bool get _canIncrement {
-    if (!enabled || onChanged == null) return false;
-    if (value == null) return true;
-    if (max == null) return true;
-    return value! + step <= max!;
+    if (!widget.enabled || widget.onChanged == null) return false;
+    if (widget.value == null) return true;
+    if (widget.max == null) return true;
+    return widget.value! + widget.step <= widget.max!;
   }
 
   void _updateValue(int delta) {
-    if (onChanged == null || !enabled) return;
-    final baseValue = value ?? min ?? 0;
+    if (widget.onChanged == null || !widget.enabled) return;
+    final baseValue = widget.value ?? widget.min ?? 0;
     var nextValue = baseValue + delta;
-    if (min != null && nextValue < min!) nextValue = min!;
-    if (max != null && nextValue > max!) nextValue = max!;
-    if (nextValue != value) onChanged!(nextValue);
+    if (widget.min != null && nextValue < widget.min!) nextValue = widget.min!;
+    if (widget.max != null && nextValue > widget.max!) nextValue = widget.max!;
+    if (nextValue != widget.value) widget.onChanged!(nextValue);
+  }
+
+  void _onControllerChanged() {
+    if (_programmaticChange) return;
+    final s = _controller.text;
+    final parsed = int.tryParse(s);
+    if (parsed == null) return;
+    var next = parsed;
+    var clamped = next;
+    if (widget.min != null && clamped < widget.min!) clamped = widget.min!;
+    if (widget.max != null && clamped > widget.max!) clamped = widget.max!;
+
+    if (clamped != next) {
+      final newText = clamped.toString();
+      setState(() {
+        _showRangeError = true;
+      });
+      _errorTimer?.cancel();
+      _errorTimer = Timer(const Duration(milliseconds: 700), () {
+        if (!mounted) return;
+        setState(() => _showRangeError = false);
+      });
+
+      _programmaticChange = true;
+      _controller.value = TextEditingValue(
+        text: newText,
+        selection: TextSelection.collapsed(offset: newText.length),
+      );
+      _programmaticChange = false;
+      next = clamped;
+    }
+
+    if (next != widget.value) widget.onChanged?.call(next);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = TextEditingController(
+      text: widget.value?.toString() ?? widget.hint ?? '',
+    );
+    _controller.addListener(_onControllerChanged);
+  }
+
+  @override
+  void didUpdateWidget(covariant CKNumberStepper oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    final newText = widget.value?.toString() ?? widget.hint ?? '';
+    if (newText != _controller.text) {
+      _programmaticChange = true;
+      _controller.text = newText;
+      _programmaticChange = false;
+    }
+  }
+
+  @override
+  void dispose() {
+    _errorTimer?.cancel();
+    _controller.removeListener(_onControllerChanged);
+    _controller.dispose();
+    super.dispose();
   }
 
   @override
@@ -65,8 +139,8 @@ class CKNumberStepper extends StatelessWidget {
     final spacing = theme.spacing;
     final typography = theme.typography;
 
-    final hasError = errorText != null;
-    final hasSuccess = successText != null && !hasError;
+    final hasError = widget.errorText != null;
+    final hasSuccess = widget.successText != null && !hasError;
 
     OutlineInputBorder border(Color color, {double width = 1}) =>
         OutlineInputBorder(
@@ -74,14 +148,14 @@ class CKNumberStepper extends StatelessWidget {
           borderRadius: BorderRadius.circular(radius.base),
         );
 
-    final decoration = borderless
+    final decoration = widget.borderless
         ? InputDecoration(
-            hintText: hint,
+            hintText: widget.hint,
             hintStyle: typography.textMd.copyWith(
               color: colors.onSurfaceVariant,
             ),
-            helperText: hasSuccess ? successText : helperText,
-            errorText: errorText,
+            helperText: hasSuccess ? widget.successText : widget.helperText,
+            errorText: widget.errorText,
             errorStyle: typography.textSm.copyWith(color: colors.error),
             filled: false,
             contentPadding: EdgeInsets.zero,
@@ -91,18 +165,18 @@ class CKNumberStepper extends StatelessWidget {
             disabledBorder: InputBorder.none,
           )
         : InputDecoration(
-            hintText: hint,
+            hintText: widget.hint,
             hintStyle: typography.textMd.copyWith(
               color: colors.onSurfaceVariant,
             ),
-            helperText: hasSuccess ? successText : helperText,
+            helperText: hasSuccess ? widget.successText : widget.helperText,
             helperStyle: typography.textSm.copyWith(
               color: hasSuccess ? colors.success : colors.onSurfaceVariant,
             ),
-            errorText: errorText,
+            errorText: widget.errorText,
             errorStyle: typography.textSm.copyWith(color: colors.error),
             filled: true,
-            fillColor: enabled ? colors.surface : colors.muted,
+            fillColor: widget.enabled ? colors.surface : colors.muted,
             contentPadding: EdgeInsets.symmetric(
               horizontal: spacing.s12,
               vertical: spacing.sm,
@@ -114,50 +188,75 @@ class CKNumberStepper extends StatelessWidget {
             disabledBorder: border(colors.outline),
           );
 
-    final dividerColor = borderless ? Colors.transparent : colors.outline;
-    final valueText = value?.toString() ?? hint ?? '-';
-    final valueColor = enabled
-        ? (value == null ? colors.onSurfaceVariant : colors.onSurface)
-        : colors.onSurfaceVariant;
+    final dividerColor = widget.borderless
+        ? Colors.transparent
+        : colors.outline;
 
-    final field = InputDecorator(
-      decoration: decoration,
-      isEmpty: value == null,
-      child: Row(
-        children: [
-          _StepperButton(
-            icon: LucideIcons.minus,
-            onTap: _canDecrement ? () => _updateValue(-step) : null,
-          ),
-          SizedBox(width: spacing.sm),
-          Container(width: 1, height: spacing.lg, color: dividerColor),
-          SizedBox(width: spacing.sm),
-          Expanded(
-            child: Text(
-              valueText,
-              textAlign: TextAlign.center,
-              style: typography.textMd.copyWith(color: valueColor),
+    final allowNegative = widget.min != null && widget.min! < 0;
+    final regex = allowNegative ? RegExp(r'^-?\d*$') : RegExp(r'^\d*$');
+    final numericFormatter = TextInputFormatter.withFunction((
+      oldValue,
+      newValue,
+    ) {
+      return regex.hasMatch(newValue.text) ? newValue : oldValue;
+    });
+
+    final field = AnimatedContainer(
+      duration: theme.motion.fast,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(radius.base),
+        boxShadow: _showRangeError
+            ? [
+                BoxShadow(
+                  color: colors.error.withValues(alpha: 0.2),
+                  spreadRadius: 3,
+                  blurRadius: 0,
+                ),
+              ]
+            : const [],
+      ),
+      child: InputDecorator(
+        decoration: decoration,
+        isEmpty: widget.value == null,
+        child: Row(
+          children: [
+            _StepperButton(
+              icon: LucideIcons.minus,
+              onTap: _canDecrement ? () => _updateValue(-widget.step) : null,
             ),
-          ),
-          SizedBox(width: spacing.sm),
-          Container(width: 1, height: spacing.lg, color: dividerColor),
-          SizedBox(width: spacing.sm),
-          _StepperButton(
-            icon: LucideIcons.plus,
-            onTap: _canIncrement ? () => _updateValue(step) : null,
-          ),
-        ],
+            SizedBox(width: spacing.sm),
+            Container(width: 1, height: spacing.lg, color: dividerColor),
+            SizedBox(width: spacing.sm),
+            Expanded(
+              child: CKTextField(
+                controller: _controller,
+                borderless: true,
+                keyboardType: TextInputType.number,
+                textAlign: TextAlign.center,
+                readOnly: !widget.enabled,
+                inputFormatters: [numericFormatter],
+              ),
+            ),
+            SizedBox(width: spacing.sm),
+            Container(width: 1, height: spacing.lg, color: dividerColor),
+            SizedBox(width: spacing.sm),
+            _StepperButton(
+              icon: LucideIcons.plus,
+              onTap: _canIncrement ? () => _updateValue(widget.step) : null,
+            ),
+          ],
+        ),
       ),
     );
 
-    if (label == null) return field;
+    if (widget.label == null) return field;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
         Text(
-          label!,
+          widget.label!,
           style: typography.labelMd.copyWith(color: colors.onSurface),
         ),
         SizedBox(height: spacing.xs),

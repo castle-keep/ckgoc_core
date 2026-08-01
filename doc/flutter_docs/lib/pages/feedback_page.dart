@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'package:ckcore_docs_app/docs/doc_models.dart';
 import 'package:ckcore_docs_app/docs/doc_widgets.dart';
+import '../docs/mappings.dart';
 
 class FeedbackPage extends StatelessWidget {
   const FeedbackPage({super.key});
@@ -33,11 +34,19 @@ ComponentDocData _alertDoc() => const ComponentDocData(
           'Inline message banner for info, success, warning, and error states.',
       demo: _AlertDemo(),
       code: '''
+// Default constructor for info (informational, default variant)
 CKAlert(
+  title: 'Information',
+  message: 'This is an informational message.',
+)
+
+// Named constructors for other variants
+CKAlert.success(
   title: 'Settings saved',
   message: 'Your preferences were updated successfully.',
-  variant: AlertVariant.success,
 )
+CKAlert.warning(...)
+CKAlert.error(...)
 ''',
       params: [
         DocParam(
@@ -45,7 +54,7 @@ CKAlert(
           type: 'String',
           description: 'Body message content.',
           requiredParam: true,
-        ),
+          ),
         DocParam(
           name: 'title',
           type: 'String?',
@@ -56,7 +65,7 @@ CKAlert(
           type: 'AlertVariant',
           description: 'Severity / meaning.',
           defaultValue: 'AlertVariant.info',
-        ),
+          ),
         DocParam(
           name: 'onDismiss',
           type: 'VoidCallback?',
@@ -85,11 +94,17 @@ ComponentDocData _loaderDoc() => const ComponentDocData(
           'Token-based loading indicators. The live demo renders every LoaderType value.',
       demo: _LoaderDemo(),
       code: '''
+// Default constructor for circular (most common loader type)
+CKLoader(size: 32)
+
+// Named constructors for other types
 Wrap(
   spacing: 16,
   children: [
-    for (final type in LoaderType.values)
-      CKLoader(type: type, size: 32),
+    CKLoader(size: 32),          // circular
+    CKLoader.ring(size: 32),
+    CKLoader.bar(size: 32),
+    CKLoader.dots(size: 32),
   ],
 )
 ''',
@@ -99,7 +114,7 @@ Wrap(
           type: 'LoaderType',
           description: 'Loader visual style.',
           defaultValue: 'LoaderType.circular',
-        ),
+          ),
         DocParam(
           name: 'color',
           type: 'Color?',
@@ -110,7 +125,7 @@ Wrap(
           type: 'double',
           description: 'Base visual size.',
           defaultValue: '40',
-        ),
+          ),
       ],
       faqs: [
         DocFaq(
@@ -135,55 +150,51 @@ ComponentDocData _progressDoc() => const ComponentDocData(
           'Determinate and indeterminate progress plus value selection. The demo renders every ProgressVariant and a live slider.',
       demo: _ProgressDemo(),
       code: '''
-CKProgressBar(
-  value: 64,
-  maxValue: 100,
-  variant: ProgressVariant.success,
-  showValue: true,
-)
-''',
+// Default constructor for primary (most common progress bar)
+CKProgressBar(value: 0.64, maxValue: 1.0, showValue: true)
+
+// Named constructors for semantic variants
+CKProgressBar.success(value: 1.0)
+CKProgressBar.warning(value: 0.75)
+CKProgressBar.error(value: 0.25)
+    ''',
       params: [
         DocParam(
           name: 'value',
           type: 'double?',
           description:
               'Current progress value. Null plus indeterminate variant yields animated mode.',
-        ),
+          ),
         DocParam(
           name: 'maxValue',
           type: 'double',
           description: 'Upper bound used for normalization.',
-          defaultValue: '1.0',
-        ),
+          ),
         DocParam(
           name: 'variant',
           type: 'ProgressVariant',
           description: 'Color and indeterminate behavior.',
-          defaultValue: 'ProgressVariant.primary',
-        ),
+          ),
         DocParam(
           name: 'showValue',
           type: 'bool',
           description: 'Displays numeric percentage for determinate progress.',
-          defaultValue: 'false',
-        ),
+          ),
         DocParam(
           name: 'onChanged',
           type: 'ValueChanged<double>',
           description: 'Slider-only callback.',
-        ),
+          ),
         DocParam(
           name: 'min',
           type: 'double',
           description: 'Slider-only minimum.',
-          defaultValue: '0.0',
-        ),
+          ),
         DocParam(
           name: 'max',
           type: 'double',
           description: 'Slider-only maximum.',
-          defaultValue: '100.0',
-        ),
+          ),
         DocParam(
           name: 'color',
           type: 'Color?',
@@ -222,25 +233,21 @@ CKSnackbar.show(
           name: 'context',
           type: 'BuildContext',
           description: 'Context used to resolve ScaffoldMessenger.',
-          requiredParam: true,
         ),
         DocParam(
           name: 'message',
           type: 'String',
           description: 'Displayed message.',
-          requiredParam: true,
         ),
         DocParam(
           name: 'variant',
           type: 'ToastVariant',
           description: 'Toast styling variant.',
-          defaultValue: 'ToastVariant.defaultToast',
         ),
         DocParam(
           name: 'duration',
           type: 'Duration',
           description: 'SnackBar visibility duration.',
-          defaultValue: 'Duration(seconds: 3)',
         ),
         DocParam(
           name: 'onDismiss',
@@ -267,25 +274,28 @@ ComponentDocData _toastDoc() => const ComponentDocData(
       summary: 'Transient toast surface used directly or as snackbar content.',
       demo: _ToastDemo(),
       code: '''
-CKToast(
-  message: 'Changes saved',
-  variant: ToastVariant.info,
-  onDismiss: () {},
-)
-''',
+    // Default constructor for neutral (default, most general use)
+    CKToast(message: 'Changes saved', onDismiss: () {})
+    
+    // Named constructors for semantic variants
+    CKToast.success(message: 'Saved!')
+    CKToast.error(message: 'Failed')
+    CKToast.warning(message: 'Caution')
+    CKToast.info(message: 'FYI')
+    ''',
       params: [
         DocParam(
           name: 'message',
           type: 'String',
           description: 'Toast body text.',
           requiredParam: true,
-        ),
+          ),
         DocParam(
           name: 'variant',
           type: 'ToastVariant',
           description: 'Toast styling variant.',
           defaultValue: 'ToastVariant.defaultToast',
-        ),
+          ),
         DocParam(
           name: 'onDismiss',
           type: 'VoidCallback?',
@@ -328,13 +338,13 @@ CKSkeleton(
           type: 'double',
           description: 'Skeleton width.',
           requiredParam: true,
-        ),
+          ),
         DocParam(
           name: 'height',
           type: 'double',
           description: 'Skeleton height.',
           requiredParam: true,
-        ),
+          ),
         DocParam(
           name: 'borderRadius',
           type: 'double?',
@@ -365,19 +375,20 @@ ComponentDocData _emptyStateDoc() => const ComponentDocData(
           'Empty state API surface for no-results and no-data scenarios. Current implementation is a placeholder widget body.',
       demo: _EmptyStateDemo(),
       code: '''
-CKEmptyState(
-  title: 'No projects yet',
-  description: 'Create your first project to get started.',
-  action: CKButton(onPressed: () {}, child: Text('Create project')),
-)
-''',
+    // Recommended: semantic named constructors
+    CKEmptyState(
+      title: 'No projects yet',
+      description: 'Create your first project to get started.',
+      action: CKButton(onPressed: () {}, child: Text('Create project')),
+    )
+    ''',
       params: [
         DocParam(
           name: 'title',
           type: 'String',
           description: 'Primary empty-state heading.',
           requiredParam: true,
-        ),
+          ),
         DocParam(
           name: 'description',
           type: 'String?',
@@ -439,7 +450,7 @@ CKLoadingState(
           type: 'LoaderType',
           description: 'Selects which loader visual is rendered.',
           defaultValue: 'LoaderType.circular',
-        ),
+          ),
       ],
       faqs: [
         DocFaq(
@@ -476,7 +487,7 @@ CKErrorState(
           type: 'String',
           description: 'Primary error heading.',
           requiredParam: true,
-        ),
+          ),
         DocParam(
           name: 'description',
           type: 'String?',
@@ -515,11 +526,24 @@ class _AlertDemo extends StatelessWidget {
         for (final variant in AlertVariant.values)
           Padding(
             padding: const EdgeInsets.only(bottom: 12),
-            child: CKAlert(
-              title: variant.name,
-              message: 'This alert demonstrates the ${variant.name} state.',
-              variant: variant,
-            ),
+            child: switch (variant) {
+              AlertVariant.info => CKAlert(
+                  title: variant.name,
+                  message:
+                      'This alert demonstrates the ${variant.name} state.'),
+              AlertVariant.success => CKAlert.success(
+                  title: variant.name,
+                  message:
+                      'This alert demonstrates the ${variant.name} state.'),
+              AlertVariant.warning => CKAlert.warning(
+                  title: variant.name,
+                  message:
+                      'This alert demonstrates the ${variant.name} state.'),
+              AlertVariant.error => CKAlert.error(
+                  title: variant.name,
+                  message:
+                      'This alert demonstrates the ${variant.name} state.'),
+            },
           ),
       ],
     );
@@ -539,7 +563,7 @@ class _LoaderDemo extends StatelessWidget {
           Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              CKLoader(type: type, size: 32),
+              loaderFor(type, size: 32),
               const SizedBox(height: 8),
               Text(type.name),
             ],
@@ -567,10 +591,10 @@ class _ProgressDemoState extends State<_ProgressDemo> {
         for (final variant in ProgressVariant.values)
           Padding(
             padding: const EdgeInsets.only(bottom: 12),
-            child: CKProgressBar(
+            child: progressBarFor(
+              variant,
               value: variant == ProgressVariant.indeterminate ? null : value,
               maxValue: 100,
-              variant: variant,
               showValue: variant != ProgressVariant.indeterminate,
             ),
           ),
@@ -620,10 +644,7 @@ class _ToastDemo extends StatelessWidget {
             padding: const EdgeInsets.only(bottom: 12),
             child: SizedBox(
               width: 420,
-              child: CKToast(
-                message: 'Toast variant: ${variant.name}',
-                variant: variant,
-              ),
+              child: toastFor(variant, 'Toast variant: ${variant.name}'),
             ),
           ),
       ],

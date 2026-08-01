@@ -4,13 +4,35 @@ import 'package:ckcoreui/src/themes/themes.dart';
 import 'package:ckcoreui/src/components/components.dart';
 import 'package:flutter/material.dart';
 
+/// Loader/spinner component with multiple animation styles.
+///
+/// The default is a circular spinner. Use named constructors for other animation types:
+/// ```dart
+/// CKLoader()                    // circular (default)
+/// CKLoader.ring()
+/// CKLoader.bar()
+/// CKLoader.dots()
+/// ```
 class CKLoader extends StatelessWidget {
+  /// Circular loader (default, most common animation type).
   const CKLoader({
     this.type = LoaderType.circular,
     this.color,
     this.size = 40,
     super.key,
   });
+
+  /// Ring loader variant (spinning ring).
+  const CKLoader.ring({this.color, this.size = 40, super.key})
+    : type = LoaderType.ring;
+
+  /// Bar loader variant (animated progress bar).
+  const CKLoader.bar({this.color, this.size = 40, super.key})
+    : type = LoaderType.bar;
+
+  /// Dots loader variant (bouncing dots).
+  const CKLoader.dots({this.color, this.size = 40, super.key})
+    : type = LoaderType.dots;
   final LoaderType type;
   final Color? color;
   final double size;

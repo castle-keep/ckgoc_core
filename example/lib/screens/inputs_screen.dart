@@ -129,7 +129,7 @@ class _InputsScreenState extends State<InputsScreen> {
                   label: 'Quantity',
                   value: _quantity,
                   min: 1,
-                  max: 10,
+                  max: 999,
                   helperText: 'Use - and + to adjust',
                   onChanged: (value) => setState(() => _quantity = value),
                 ),
@@ -231,10 +231,7 @@ class _InputsScreenState extends State<InputsScreen> {
               ),
               _switchDemo(
                 'ON',
-                CKSwitch(
-                  value: _on,
-                  onChanged: (v) => setState(() => _on = v),
-                ),
+                CKSwitch(value: _on, onChanged: (v) => setState(() => _on = v)),
               ),
               _switchDemo(
                 'Success',

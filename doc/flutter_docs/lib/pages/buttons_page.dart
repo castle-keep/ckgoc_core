@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'package:ckcore_docs_app/docs/doc_models.dart';
 import 'package:ckcore_docs_app/docs/doc_widgets.dart';
+import '../docs/mappings.dart';
 
 class ButtonsPage extends StatelessWidget {
   const ButtonsPage({super.key});
@@ -23,19 +24,13 @@ class ButtonsPage extends StatelessWidget {
 
 ComponentDocData _buttonDoc() {
   const code = '''
-Wrap(
-  spacing: 8,
-  runSpacing: 8,
-  children: [
-    for (final variant in ButtonVariant.values)
-      CKButton(
-        variant: variant,
-        size: ButtonSize.md,
-        onPressed: () {},
-        child: Text(variant.name),
-      ),
-  ],
-)
+// Default constructor for primary (recommended appearance)
+CKButton(onPressed: () {}, child: Text('Primary'))
+
+// Named constructors for other variants
+CKButton.secondary(onPressed: () {}, child: Text('Secondary'))
+CKButton.outline(onPressed: () {}, child: Text('Outline'))
+CKButton.ghost(onPressed: () {}, child: Text('Ghost'))
 ''';
 
   return const ComponentDocData(
@@ -100,6 +95,10 @@ Wrap(
     ],
     notes: [
       'Enum demo coverage: all ButtonVariant values and all ButtonSize values are rendered in the live demo.',
+      'Named constructors: CKButton.secondary, CKButton.outline, CKButton.ghost, CKButton.accent, CKButton.destructive, CKButton.success, CKButton.warning, CKButton.info, CKButton.link.',
+      'Accessibility: Provide descriptive `child` text for non-text children or wrap with `Semantics`. Pass `tooltip` for icon-only buttons; focus rings are handled by the component.',
+      'See also: CKIconButton (compact icon actions), CKFab (floating actions).',
+      'Implementation status: CKButton and CKFab are implemented; ensure examples use the correct named constructors and include `onPressed` when demonstrating enabled state.',
     ],
   );
 }
@@ -216,11 +215,8 @@ class _ButtonDemo extends StatelessWidget {
           runSpacing: 8,
           children: [
             for (final variant in ButtonVariant.values)
-              CKButton(
-                variant: variant,
-                onPressed: () {},
-                child: Text(variant.name),
-              ),
+              buttonForVariant(variant,
+                  onPressed: () {}, child: Text(variant.name)),
           ],
         ),
         const VSpace(height: 16),

@@ -3,8 +3,16 @@ import 'package:ckcoreui/src/themes/ckcore_theme.dart';
 import 'package:ckcoreui/src/components/component_enums.dart';
 
 /// Generic surface container that applies design-system background, borders,
-/// and padding according to `ContainerVariant`.
+/// and padding. The default appearance uses the surface background.
+///
+/// Use named constructors for alternative variants:
+/// ```dart
+/// CKContainer(child: ...)              // surface (default)
+/// CKContainer.muted(child: ...)        // muted background
+/// CKContainer.outlined(child: ...)     // with border
+/// ```
 class CKContainer extends StatelessWidget {
+  /// Surface container (default, neutral appearance with surface color).
   const CKContainer({
     required this.child,
     this.variant = ContainerVariant.surface,
@@ -12,6 +20,22 @@ class CKContainer extends StatelessWidget {
     this.elevated = false,
     super.key,
   });
+
+  /// Muted variant container (muted/variant surface color).
+  const CKContainer.muted({
+    required this.child,
+    this.padding,
+    this.elevated = false,
+    super.key,
+  }) : variant = ContainerVariant.muted;
+
+  /// Outlined variant container (surface with border).
+  const CKContainer.outlined({
+    required this.child,
+    this.padding,
+    this.elevated = false,
+    super.key,
+  }) : variant = ContainerVariant.outlined;
   final Widget child;
   final ContainerVariant variant;
   final EdgeInsetsGeometry? padding;

@@ -32,6 +32,27 @@ extension TextStyleExtensions on Text {
     );
   }
 
+  // Internal: recreate this Text with fewer repeated constructor args.
+  Text _recreateText({String? newData, TextStyle? newStyle}) {
+    return Text(
+      newData ?? data ?? '',
+      key: key,
+      style: newStyle ?? style,
+      strutStyle: strutStyle,
+      textAlign: textAlign,
+      textDirection: textDirection,
+      locale: locale,
+      softWrap: softWrap,
+      overflow: overflow,
+      textScaleFactor: textScaleFactor,
+      maxLines: maxLines,
+      semanticsLabel: semanticsLabel,
+      textWidthBasis: textWidthBasis,
+      textHeightBehavior: textHeightBehavior,
+      selectionColor: selectionColor,
+    );
+  }
+
   // Typography Styles - Returns Widget to access theme context
   Widget _withTypography(TextStyle Function(CkcoreuiThemeData) getStyle) {
     return Builder(
@@ -112,260 +133,70 @@ extension TextStyleExtensions on Text {
 
   /// Applies h6 style (textXl - 20px, Regular)
   Widget get h6 => _withTypography((theme) => theme.typography.textXl);
-
   // Text Modifiers
-  Text get bold => Text(
-    data ?? '',
-    key: key,
-    style: (style ?? const TextStyle()).copyWith(fontWeight: FontWeight.bold),
-    strutStyle: strutStyle,
-    textAlign: textAlign,
-    textDirection: textDirection,
-    locale: locale,
-    softWrap: softWrap,
-    overflow: overflow,
-    textScaleFactor: textScaleFactor,
-    maxLines: maxLines,
-    semanticsLabel: semanticsLabel,
-    textWidthBasis: textWidthBasis,
-    textHeightBehavior: textHeightBehavior,
-    selectionColor: selectionColor,
+  // NOTE: Modifiers (like `.bold`, `.italic`, `.lineThrough`) should be
+  // applied before typography or color helpers because those return
+  // a `Widget` (e.g. use `Text('Hi').bold.h1`, not `Text('Hi').h1.bold`).
+  Text get bold => _recreateText(
+    newStyle: (style ?? const TextStyle()).copyWith(
+      fontWeight: FontWeight.bold,
+    ),
   );
 
-  Text get italic => Text(
-    data ?? '',
-    key: key,
-    style: (style ?? const TextStyle()).copyWith(fontStyle: FontStyle.italic),
-    strutStyle: strutStyle,
-    textAlign: textAlign,
-    textDirection: textDirection,
-    locale: locale,
-    softWrap: softWrap,
-    overflow: overflow,
-    textScaleFactor: textScaleFactor,
-    maxLines: maxLines,
-    semanticsLabel: semanticsLabel,
-    textWidthBasis: textWidthBasis,
-    textHeightBehavior: textHeightBehavior,
-    selectionColor: selectionColor,
+  Text get italic => _recreateText(
+    newStyle: (style ?? const TextStyle()).copyWith(
+      fontStyle: FontStyle.italic,
+    ),
   );
 
-  Text get underline => Text(
-    data ?? '',
-    key: key,
-    style: (style ?? const TextStyle()).copyWith(
+  Text get underline => _recreateText(
+    newStyle: (style ?? const TextStyle()).copyWith(
       decoration: TextDecoration.underline,
     ),
-    strutStyle: strutStyle,
-    textAlign: textAlign,
-    textDirection: textDirection,
-    locale: locale,
-    softWrap: softWrap,
-    overflow: overflow,
-    textScaleFactor: textScaleFactor,
-    maxLines: maxLines,
-    semanticsLabel: semanticsLabel,
-    textWidthBasis: textWidthBasis,
-    textHeightBehavior: textHeightBehavior,
-    selectionColor: selectionColor,
   );
 
-  Text get strikethrough => Text(
-    data ?? '',
-    key: key,
-    style: (style ?? const TextStyle()).copyWith(
+  Text get lineThrough => _recreateText(
+    newStyle: (style ?? const TextStyle()).copyWith(
       decoration: TextDecoration.lineThrough,
     ),
-    strutStyle: strutStyle,
-    textAlign: textAlign,
-    textDirection: textDirection,
-    locale: locale,
-    softWrap: softWrap,
-    overflow: overflow,
-    textScaleFactor: textScaleFactor,
-    maxLines: maxLines,
-    semanticsLabel: semanticsLabel,
-    textWidthBasis: textWidthBasis,
-    textHeightBehavior: textHeightBehavior,
-    selectionColor: selectionColor,
   );
 
-  Text get uppercase => Text(
-    (data ?? '').toUpperCase(),
-    key: key,
-    style: style,
-    strutStyle: strutStyle,
-    textAlign: textAlign,
-    textDirection: textDirection,
-    locale: locale,
-    softWrap: softWrap,
-    overflow: overflow,
-    textScaleFactor: textScaleFactor,
-    maxLines: maxLines,
-    semanticsLabel: semanticsLabel,
-    textWidthBasis: textWidthBasis,
-    textHeightBehavior: textHeightBehavior,
-    selectionColor: selectionColor,
+  Text get regular => _recreateText(
+    newStyle: (style ?? const TextStyle()).copyWith(
+      fontWeight: FontWeight.w400,
+    ),
   );
 
-  Text get lowercase => Text(
-    (data ?? '').toLowerCase(),
-    key: key,
-    style: style,
-    strutStyle: strutStyle,
-    textAlign: textAlign,
-    textDirection: textDirection,
-    locale: locale,
-    softWrap: softWrap,
-    overflow: overflow,
-    textScaleFactor: textScaleFactor,
-    maxLines: maxLines,
-    semanticsLabel: semanticsLabel,
-    textWidthBasis: textWidthBasis,
-    textHeightBehavior: textHeightBehavior,
-    selectionColor: selectionColor,
+  Text get medium => _recreateText(
+    newStyle: (style ?? const TextStyle()).copyWith(
+      fontWeight: FontWeight.w500,
+    ),
   );
+
+  Text get semibold => _recreateText(
+    newStyle: (style ?? const TextStyle()).copyWith(
+      fontWeight: FontWeight.w600,
+    ),
+  );
+
+  Text get uppercase => _recreateText(newData: (data ?? '').toUpperCase());
+
+  Text get lowercase => _recreateText(newData: (data ?? '').toLowerCase());
 
   // Color Styles - Returns Widget to access theme context
   Widget _withColor(Color Function(CkcoreuiThemeData) getColor) {
-    return Builder(
-      builder: (context) {
-        final color = getColor(context.ckcoreTheme);
-        return Text(
-          data ?? '',
-          key: key,
-          style: (style ?? const TextStyle()).copyWith(color: color),
-          strutStyle: strutStyle,
-          textAlign: textAlign,
-          textDirection: textDirection,
-          locale: locale,
-          softWrap: softWrap,
-          overflow: overflow,
-          textScaleFactor: textScaleFactor,
-          maxLines: maxLines,
-          semanticsLabel: semanticsLabel,
-          textWidthBasis: textWidthBasis,
-          textHeightBehavior: textHeightBehavior,
-          selectionColor: selectionColor,
-        );
-      },
-    );
+    return _withTypography((theme) => TextStyle(color: getColor(theme)));
   }
 
-  // Primary Colors
+  // Public semantic color helpers (kept intentionally small).
   Widget get primary => _withColor((theme) => theme.colors.primary);
-
-  Widget get primaryHover => _withColor((theme) => theme.colors.primaryHover);
-
-  Widget get primaryActive => _withColor((theme) => theme.colors.primaryActive);
-
-  Widget get primaryDisabled =>
-      _withColor((theme) => theme.colors.primaryDisabled);
-
-  Widget get onPrimary => _withColor((theme) => theme.colors.onPrimary);
-
-  // Secondary Colors
   Widget get secondary => _withColor((theme) => theme.colors.secondary);
-
-  Widget get secondaryHover =>
-      _withColor((theme) => theme.colors.secondaryHover);
-
-  Widget get secondaryActive =>
-      _withColor((theme) => theme.colors.secondaryActive);
-
-  Widget get onSecondary => _withColor((theme) => theme.colors.onSecondary);
-
-  // Accent Colors
-  Widget get accent => _withColor((theme) => theme.colors.accent);
-
-  Widget get onAccent => _withColor((theme) => theme.colors.onAccent);
-
-  // Surface Colors
-  Widget get surface => _withColor((theme) => theme.colors.surface);
-
-  Widget get surfaceVariant =>
-      _withColor((theme) => theme.colors.surfaceVariant);
-
-  Widget get surfaceElevated =>
-      _withColor((theme) => theme.colors.surfaceElevated);
-
-  Widget get inverseSurface =>
-      _withColor((theme) => theme.colors.inverseSurface);
-
-  Widget get onSurface => _withColor((theme) => theme.colors.onSurface);
-
-  Widget get onSurfaceVariant =>
-      _withColor((theme) => theme.colors.onSurfaceVariant);
-
-  Widget get onInverseSurface =>
-      _withColor((theme) => theme.colors.onInverseSurface);
-
-  // Background Colors
-  Widget get background => _withColor((theme) => theme.colors.background);
-
-  Widget get onBackground => _withColor((theme) => theme.colors.onBackground);
-
-  // Semantic Colors - Error
-  Widget get error => _withColor((theme) => theme.colors.error);
-
-  Widget get errorContainer =>
-      _withColor((theme) => theme.colors.errorContainer);
-
-  Widget get onError => _withColor((theme) => theme.colors.onError);
-
-  Widget get onErrorContainer =>
-      _withColor((theme) => theme.colors.onErrorContainer);
-
-  // Semantic Colors - Success
   Widget get success => _withColor((theme) => theme.colors.success);
-
-  Widget get successContainer =>
-      _withColor((theme) => theme.colors.successContainer);
-
-  Widget get onSuccess => _withColor((theme) => theme.colors.onSuccess);
-
-  Widget get onSuccessContainer =>
-      _withColor((theme) => theme.colors.onSuccessContainer);
-
-  // Semantic Colors - Warning
   Widget get warning => _withColor((theme) => theme.colors.warning);
-
-  Widget get warningContainer =>
-      _withColor((theme) => theme.colors.warningContainer);
-
-  Widget get onWarning => _withColor((theme) => theme.colors.onWarning);
-
-  Widget get onWarningContainer =>
-      _withColor((theme) => theme.colors.onWarningContainer);
-
-  // Semantic Colors - Info
+  Widget get error => _withColor((theme) => theme.colors.error);
   Widget get info => _withColor((theme) => theme.colors.info);
-
-  Widget get infoContainer => _withColor((theme) => theme.colors.infoContainer);
-
-  Widget get onInfo => _withColor((theme) => theme.colors.onInfo);
-
-  Widget get onInfoContainer =>
-      _withColor((theme) => theme.colors.onInfoContainer);
-
-  // Additional Colors
+  Widget get surface => _withColor((theme) => theme.colors.surface);
+  Widget get onSurface => _withColor((theme) => theme.colors.onSurface);
   Widget get outline => _withColor((theme) => theme.colors.outline);
-
-  Widget get outlineVariant =>
-      _withColor((theme) => theme.colors.outlineVariant);
-
-  Widget get neutral => _withColor((theme) => theme.colors.neutral);
-
-  Widget get neutralVariant =>
-      _withColor((theme) => theme.colors.neutralVariant);
-
   Widget get muted => _withColor((theme) => theme.colors.muted);
-
-  Widget get onMuted => _withColor((theme) => theme.colors.onMuted);
-
-  Widget get shadow => _withColor((theme) => theme.colors.shadow);
-
-  Widget get scrim => _withColor((theme) => theme.colors.scrim);
-
-  Widget get ring => _withColor((theme) => theme.colors.ring);
 }

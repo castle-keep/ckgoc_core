@@ -163,7 +163,7 @@ This repository includes a small CLI to scaffold a new brand and auto-register i
 Run from the project root:
 
 ```bash
-dart run bin/ckcoreui.dart add brand "Acme"
+dart run bin/ckgoc.dart add brand "Acme"
 ```
 
 Components and usage

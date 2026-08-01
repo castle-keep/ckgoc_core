@@ -130,7 +130,7 @@ class CKAccordionItem {
 // Stepper
 
 /// Status for a step in a stepper.
-enum StepStatus { completed, inProgress, pending }
+enum StepStatus { completed, inProgress, pending, rejected }
 
 /// Orientation for the stepper widget.
 enum CKStepperOrientation { vertical, horizontal }

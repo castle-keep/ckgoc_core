@@ -34,7 +34,16 @@ Widget _tabLabel(CKTab tab, Color fg, CkcoreuiThemeData theme) {
 }
 
 /// Tabs component supporting line, pill and card variants.
+///
+/// The default style is line (underline indicator). Use named constructors
+/// for alternative styles:
+/// ```dart
+/// CKTabs(tabs: [...])              // line (default)
+/// CKTabs.pill(tabs: [...])         // pill style
+/// CKTabs.card(tabs: [...])         // card style
+/// ```
 class CKTabs extends StatefulWidget {
+  /// Line variant tabs (default, underline indicator).
   const CKTabs({
     required this.tabs,
     this.variant = TabVariant.line,
@@ -43,6 +52,24 @@ class CKTabs extends StatefulWidget {
     this.onTabChanged,
     super.key,
   });
+
+  /// Pill variant tabs (rounded pill style).
+  const CKTabs.pill({
+    required this.tabs,
+    this.scrollable = false,
+    this.initialIndex = 0,
+    this.onTabChanged,
+    super.key,
+  }) : variant = TabVariant.pill;
+
+  /// Card variant tabs (card-like style).
+  const CKTabs.card({
+    required this.tabs,
+    this.scrollable = false,
+    this.initialIndex = 0,
+    this.onTabChanged,
+    super.key,
+  }) : variant = TabVariant.card;
   final List<CKTab> tabs;
   final TabVariant variant;
   final bool scrollable;

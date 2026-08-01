@@ -102,6 +102,7 @@ class _VerticalTimeline extends StatelessWidget {
                     children: [
                       // compute dot color based on status or explicit override
                       _buildDot(
+                        context,
                         events[i],
                         _timelineDotColor(
                           event: events[i],
@@ -166,13 +167,31 @@ class _VerticalTimeline extends StatelessWidget {
   }
 
   Widget _buildDot(
+    BuildContext context,
     CKTimelineEvent event,
     Color defaultColor,
     double size,
     double border,
   ) {
-    if (event.icon != null) return event.icon!;
-    final color = event.dotColor ?? defaultColor;
+    final theme = context.ckcoreTheme;
+    final colors = theme.colors;
+
+    // If caller provided a custom icon widget, size and center it to the
+    // expected dot size so it never overflows or gets clipped awkwardly.
+    if (event.icon != null) {
+      return SizedBox(
+        width: size,
+        height: size,
+        child: Center(child: event.icon),
+      );
+    }
+
+    // Determine color, honoring explicit dotColor first, then status-based
+    // defaults. Rejected events show the theme's `error` color.
+    final color =
+        event.dotColor ??
+        (event.status == StepStatus.rejected ? colors.error : defaultColor);
+
     return Container(
       width: size,
       height: size,
@@ -184,6 +203,10 @@ class _VerticalTimeline extends StatelessWidget {
       child: event.status == StepStatus.completed
           ? Center(
               child: Icon(Icons.check, size: size * 0.75, color: Colors.white),
+            )
+          : event.status == StepStatus.rejected
+          ? Center(
+              child: Icon(Icons.close, size: size * 0.75, color: Colors.white),
             )
           : null,
     );
@@ -238,6 +261,7 @@ class _HorizontalTimeline extends StatelessWidget {
                     else
                       const Expanded(child: SizedBox()),
                     _buildDot(
+                      context,
                       events[i],
                       _timelineDotColor(
                         event: events[i],
@@ -285,9 +309,26 @@ class _HorizontalTimeline extends StatelessWidget {
     );
   }
 
-  Widget _buildDot(CKTimelineEvent event, Color defaultColor, double size) {
-    if (event.icon != null) return event.icon!;
-    final color = event.dotColor ?? defaultColor;
+  Widget _buildDot(
+    BuildContext context,
+    CKTimelineEvent event,
+    Color defaultColor,
+    double size,
+  ) {
+    final theme = context.ckcoreTheme;
+    final colors = theme.colors;
+
+    if (event.icon != null) {
+      return SizedBox(
+        width: size,
+        height: size,
+        child: Center(child: event.icon),
+      );
+    }
+
+    final color =
+        event.dotColor ??
+        (event.status == StepStatus.rejected ? colors.error : defaultColor);
     return Container(
       width: size,
       height: size,
@@ -295,6 +336,10 @@ class _HorizontalTimeline extends StatelessWidget {
       child: event.status == StepStatus.completed
           ? Center(
               child: Icon(Icons.check, size: size * 0.75, color: Colors.white),
+            )
+          : event.status == StepStatus.rejected
+          ? Center(
+              child: Icon(Icons.close, size: size * 0.75, color: Colors.white),
             )
           : null,
     );

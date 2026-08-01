@@ -2,7 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:ckcoreui/src/themes/ckcore_theme.dart';
 import 'package:ckcoreui/src/components/component_enums.dart';
 
+/// Progress bar component with semantic color variants.
+///
+/// The default appearance is primary. Use named constructors for semantic variants:
+/// ```dart
+/// CKProgressBar(value: 0.5)              // primary (default)
+/// CKProgressBar.success(value: 1.0)      // success
+/// CKProgressBar.warning(value: 0.75)     // warning
+/// CKProgressBar.error(value: 0.25)       // error
+/// ```
 class CKProgressBar extends StatelessWidget {
+  /// Primary progress bar (default, recommended appearance).
   const CKProgressBar({
     this.value,
     this.maxValue = 1.0,
@@ -10,6 +20,38 @@ class CKProgressBar extends StatelessWidget {
     this.showValue = false,
     super.key,
   });
+
+  /// Success progress bar variant (green).
+  const CKProgressBar.success({
+    this.value,
+    this.maxValue = 1.0,
+    this.showValue = false,
+    super.key,
+  }) : variant = ProgressVariant.success;
+
+  /// Warning progress bar variant (orange).
+  const CKProgressBar.warning({
+    this.value,
+    this.maxValue = 1.0,
+    this.showValue = false,
+    super.key,
+  }) : variant = ProgressVariant.warning;
+
+  /// Error progress bar variant (red).
+  const CKProgressBar.error({
+    this.value,
+    this.maxValue = 1.0,
+    this.showValue = false,
+    super.key,
+  }) : variant = ProgressVariant.error;
+
+  /// Indeterminate progress bar (animated, no value).
+  const CKProgressBar.indeterminate({
+    this.maxValue = 1.0,
+    this.showValue = false,
+    super.key,
+  }) : variant = ProgressVariant.indeterminate,
+       value = null;
   final double? value;
   final double maxValue;
   final ProgressVariant variant;

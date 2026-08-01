@@ -52,8 +52,7 @@ class _OverlaysScreenState extends State<OverlaysScreen> {
             spacing: s.sm,
             runSpacing: s.sm,
             children: [
-              CKButton(
-                variant: ButtonVariant.outline,
+              CKButton.outline(
                 onPressed: () => CKDialog.show(
                   context: context,
                   title: 'Dialog Title',
@@ -66,8 +65,7 @@ class _OverlaysScreenState extends State<OverlaysScreen> {
                 ),
                 child: const Text('Default Dialog'),
               ),
-              CKButton(
-                variant: ButtonVariant.outline,
+              CKButton.outline(
                 onPressed: () => CKDialog.show(
                   context: context,
                   title: 'Custom Content',
@@ -76,10 +74,7 @@ class _OverlaysScreenState extends State<OverlaysScreen> {
                     children: [
                       const Text('This dialog has custom content.'),
                       SizedBox(height: s.md),
-                      CKBadge(
-                        label: 'New Feature',
-                        variant: BadgeVariant.success,
-                      ),
+                      CKBadge.success(label: 'New Feature'),
                     ],
                   ),
                   confirmLabel: 'OK',
@@ -88,8 +83,7 @@ class _OverlaysScreenState extends State<OverlaysScreen> {
                 ),
                 child: const Text('Custom Content Dialog'),
               ),
-              CKButton(
-                variant: ButtonVariant.destructive,
+              CKButton.destructive(
                 onPressed: () => CKDialog.showDestructive(
                   context: context,
                   title: 'Delete Item',
@@ -102,8 +96,7 @@ class _OverlaysScreenState extends State<OverlaysScreen> {
                 ),
                 child: const Text('Destructive Dialog'),
               ),
-              CKButton(
-                variant: ButtonVariant.outline,
+              CKButton.outline(
                 onPressed: () => CKDialog.showInfoDialog(
                   context: context,
                   title: 'Info',
@@ -116,8 +109,7 @@ class _OverlaysScreenState extends State<OverlaysScreen> {
           ),
           SizedBox(height: s.xl),
           _label('BOTTOM SHEET', theme),
-          CKButton(
-            variant: ButtonVariant.outline,
+          CKButton.outline(
             onPressed: () => CKBottomSheet.show(
               context: context,
               title: 'Share Options',
@@ -136,8 +128,7 @@ class _OverlaysScreenState extends State<OverlaysScreen> {
           SizedBox(height: s.xl),
           _label('MENU', theme),
           CKMenu(
-            trigger: CKButton(
-              variant: ButtonVariant.outline,
+            trigger: CKButton.outline(
               onPressed: null,
               child: const Text('Open Menu'),
             ),

@@ -51,7 +51,7 @@ await CKDialog.showInfoDialog(
           type: 'Widget',
           description: 'Main dialog body.',
           requiredParam: true,
-        ),
+          ),
         DocParam(
           name: 'title',
           type: 'String?',
@@ -62,13 +62,13 @@ await CKDialog.showInfoDialog(
           type: 'String',
           description: 'Confirm button text.',
           defaultValue: 'Confirm',
-        ),
+          ),
         DocParam(
           name: 'cancelLabel',
           type: 'String',
           description: 'Cancel button text.',
           defaultValue: 'Cancel',
-        ),
+          ),
         DocParam(
           name: 'onConfirm',
           type: 'VoidCallback?',
@@ -84,7 +84,7 @@ await CKDialog.showInfoDialog(
           type: 'bool',
           description: 'Shows close affordance in default dialog.',
           defaultValue: 'true',
-        ),
+          ),
         DocParam(
           name: 'maxWidth',
           type: 'double?',
@@ -143,7 +143,7 @@ await CKBottomSheet.show(
           type: 'List<Widget>',
           description: 'Bottom sheet content widgets.',
           requiredParam: true,
-        ),
+          ),
         DocParam(
           name: 'title',
           type: 'String?',
@@ -158,7 +158,6 @@ await CKBottomSheet.show(
           name: 'isDismissible',
           type: 'bool',
           description: 'Helper-only flag controlling barrier dismissal.',
-          defaultValue: 'true',
         ),
       ],
       faqs: [
@@ -181,40 +180,28 @@ ComponentDocData _menuDoc() => const ComponentDocData(
           'Contextual dropdown menu anchored to a trigger widget and populated with CKMenuItem actions.',
       demo: _MenuDemo(),
       code: '''
-CKMenu(
-  trigger: CKButton(
-    variant: ButtonVariant.outline,
-    onPressed: null,
-    child: Text('Open menu'),
-  ),
-  items: [
-    CKMenuItem(
-      label: 'Refresh data',
-      icon: LucideIcons.refreshCw,
-      onTap: refreshDashboard,
-    ),
-    CKMenuItem(
-      label: 'Delete view',
-      icon: LucideIcons.trash2,
-      destructive: true,
-      onTap: confirmDelete,
-    ),
-  ],
-)
-''',
+    // Recommended: semantic named constructors
+    CKMenu(
+      trigger: CKButton.outline(onPressed: null, child: Text('Open menu')),
+      items: [
+        CKMenuItem(label: 'Refresh data', icon: LucideIcons.refreshCw, onTap: refreshDashboard),
+        CKMenuItem(label: 'Delete view', icon: LucideIcons.trash2, destructive: true, onTap: confirmDelete),
+      ],
+    )
+    ''',
       params: [
         DocParam(
           name: 'trigger',
           type: 'Widget',
           description: 'Anchor widget that opens the menu.',
           requiredParam: true,
-        ),
+          ),
         DocParam(
           name: 'items',
           type: 'List<CKMenuItem>',
           description: 'Menu entries.',
           requiredParam: true,
-        ),
+          ),
       ],
       faqs: [
         DocFaq(
@@ -255,13 +242,13 @@ CKPopover(
           type: 'Widget',
           description: 'Anchor widget.',
           requiredParam: true,
-        ),
+          ),
         DocParam(
           name: 'content',
           type: 'Widget',
           description: 'Floating content.',
           requiredParam: true,
-        ),
+          ),
       ],
       faqs: [
         DocFaq(
@@ -298,13 +285,13 @@ CKTooltip(
           type: 'String',
           description: 'Tooltip text.',
           requiredParam: true,
-        ),
+          ),
         DocParam(
           name: 'child',
           type: 'Widget',
           description: 'Tooltip anchor.',
           requiredParam: true,
-        ),
+          ),
       ],
       faqs: [
         DocFaq(
@@ -339,8 +326,7 @@ class _DialogDemo extends StatelessWidget {
           ),
           child: const Text('Show default dialog'),
         ),
-        CKButton(
-          variant: ButtonVariant.destructive,
+        CKButton.destructive(
           onPressed: () => CKDialog.showDestructive(
             context: context,
             title: 'Delete item?',

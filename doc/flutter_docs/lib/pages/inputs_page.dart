@@ -109,19 +109,19 @@ CKTextField(
           type: 'bool',
           description: 'Disables interaction when false.',
           defaultValue: 'true',
-        ),
+          ),
         DocParam(
           name: 'readOnly',
           type: 'bool',
           description: 'Prevents text edits while allowing focus.',
           defaultValue: 'false',
-        ),
+          ),
         DocParam(
           name: 'maxLines',
           type: 'int?',
           description: 'Number of lines for non-obscured text.',
           defaultValue: '1',
-        ),
+          ),
         DocParam(
           name: 'keyboardType',
           type: 'TextInputType?',
@@ -132,7 +132,7 @@ CKTextField(
           type: 'bool',
           description: 'Masks text input.',
           defaultValue: 'false',
-        ),
+          ),
         DocParam(
           name: 'textInputAction',
           type: 'TextInputAction?',
@@ -143,13 +143,13 @@ CKTextField(
           type: 'bool',
           description: 'Requests focus after build.',
           defaultValue: 'false',
-        ),
+          ),
         DocParam(
           name: 'borderless',
           type: 'bool',
           description: 'Removes filled and outline styles for inline contexts.',
           defaultValue: 'false',
-        ),
+          ),
       ],
       faqs: [
         DocFaq(
@@ -162,6 +162,12 @@ CKTextField(
           answer:
               'It is intended for inline table cells or embedded editing surfaces where a regular field border would clash with surrounding UI.',
         ),
+      ],
+      notes: [
+        'Behavior: `obscureText: true` forces a single-line field (maxLines = 1).',
+        'Validation: `validator` runs during `onChanged` and updates the inline error state; pass `errorText` to force an external error.',
+        'Accessibility: Provide clear `label` text and ensure non-text `leading`/`trailing` widgets expose semantics.',
+        'See also: CKPasswordField (password-specific behavior), CKSearchField (search wrapper).',
       ],
     );
 
@@ -220,7 +226,7 @@ CKPasswordField(
           type: 'bool',
           description: 'Disables interaction when false.',
           defaultValue: 'true',
-        ),
+          ),
         DocParam(
           name: 'textInputAction',
           type: 'TextInputAction?',
@@ -231,7 +237,7 @@ CKPasswordField(
           type: 'bool',
           description: 'Requests focus on mount.',
           defaultValue: 'false',
-        ),
+          ),
       ],
       faqs: [
         DocFaq(
@@ -242,6 +248,10 @@ CKPasswordField(
           question: 'Can I still show an external error from the backend?',
           answer: 'Yes. Pass errorText and the field will render it directly.',
         ),
+      ],
+      notes: [
+        'Visibility: The field owns a visibility toggle; do not manage `obscureText` externally.',
+        'Accessibility: The toggle is visual; wrap with `Semantics` if you require a custom accessibility hint.',
       ],
     );
 
@@ -288,13 +298,13 @@ CKSearchField(
           type: 'bool',
           description: 'Disables the field when false.',
           defaultValue: 'true',
-        ),
+          ),
         DocParam(
           name: 'autoFocus',
           type: 'bool',
           description: 'Focuses on mount.',
           defaultValue: 'false',
-        ),
+          ),
       ],
       faqs: [
         DocFaq(
@@ -306,6 +316,10 @@ CKSearchField(
           question: 'Can I use it outside table headers?',
           answer: 'Yes. It is a generic search control.',
         ),
+      ],
+      notes: [
+        'onClear: `onClear` is a user callback; the component does not clear your external controller automatically. Follow the demo pattern to reset controller state.',
+        'Accessibility: Provide meaningful `hint` and ensure screen readers can identify the field purpose.',
       ],
     );
 
@@ -328,7 +342,7 @@ CKCheckbox(
           type: 'bool?',
           description: 'Current value. Null renders the indeterminate state.',
           requiredParam: true,
-        ),
+          ),
         DocParam(
           name: 'onChanged',
           type: 'ValueChanged<bool?>?',
@@ -359,6 +373,7 @@ CKCheckbox(
       ],
       notes: [
         'Enum demo coverage: both SwitchVariant values are rendered in the live demo.',
+        'Accessibility: Tapping the label toggles the control; provide descriptive `label` text. Use `onChanged: null` to present a disabled state.',
       ],
     );
 
@@ -380,7 +395,6 @@ CKRadio<String>(
           name: 'value',
           type: 'T',
           description: 'Choice value represented by this radio.',
-          requiredParam: true,
         ),
         DocParam(
           name: 'groupValue',
@@ -414,6 +428,9 @@ CKRadio<String>(
           answer: 'Yes. Set onChanged to null.',
         ),
       ],
+      notes: [
+        'Accessibility: Radios are grouped by shared `groupValue` semantics; ensure labels are unique and descriptive for screen reader users.',
+      ],
     );
 
 ComponentDocData _switchDoc() => const ComponentDocData(
@@ -422,12 +439,20 @@ ComponentDocData _switchDoc() => const ComponentDocData(
           'Binary toggle switch with optional label, variant styling, and a direct color override.',
       demo: _SwitchDocDemo(),
       code: '''
+// Default constructor for neutral (no variant coloring)
 CKSwitch(
   value: enabled,
   label: 'Enable notifications',
-  variant: SwitchVariant.success,
   onChanged: (value) => setState(() => enabled = value),
 )
+
+// Named constructors for semantic variants
+CKSwitch.success(
+  value: enabled,
+  label: 'Approved',
+  onChanged: (value) => setState(() => enabled = value),
+)
+CKSwitch.error(...)
 ''',
       params: [
         DocParam(
@@ -435,7 +460,7 @@ CKSwitch(
           type: 'bool',
           description: 'Current switch state.',
           requiredParam: true,
-        ),
+          ),
         DocParam(
           name: 'onChanged',
           type: 'ValueChanged<bool>?',
@@ -470,6 +495,7 @@ CKSwitch(
       ],
       notes: [
         'Enum demo coverage: both SwitchVariant values are rendered in the live demo.',
+        'Accessibility: Use `onChanged: null` to disable the switch. If `color` is provided it overrides the active track color.',
       ],
     );
 
@@ -495,7 +521,6 @@ CKDropdown<String>(
           name: 'items',
           type: 'List<DropdownMenuItem<T>>',
           description: 'Selectable menu items.',
-          requiredParam: true,
         ),
         DocParam(
           name: 'value',
@@ -532,14 +557,12 @@ CKDropdown<String>(
           name: 'menuMaxHeight',
           type: 'double',
           description: 'Maximum overlay height before the menu scrolls.',
-          defaultValue: '400',
         ),
         DocParam(
           name: 'menuMinHeight',
           type: 'double',
           description:
               'Minimum preferred space below the field before the menu flips above.',
-          defaultValue: '144',
         ),
       ],
       faqs: [
@@ -554,6 +577,11 @@ CKDropdown<String>(
           answer:
               'It opens below by default, shrinks to available space, and flips above when the space below is smaller than the configured minimum.',
         ),
+      ],
+      notes: [
+        'Overlay behavior: `menuMaxHeight` defaults to 400 and `menuMinHeight` defaults to 144. The overlay chooses above/below placement based on available space and these thresholds.',
+        'Accessibility: The overlay should receive keyboard focus when opened; ensure your app moves focus accordingly for keyboard users.',
+        'See also: CKTextField (shared field styling).',
       ],
     );
 
@@ -578,7 +606,7 @@ CKNumberStepper(
           type: 'int?',
           description: 'Current numeric value displayed by the control.',
           requiredParam: true,
-        ),
+          ),
         DocParam(
           name: 'onChanged',
           type: 'ValueChanged<int>?',
@@ -624,19 +652,19 @@ CKNumberStepper(
           type: 'int',
           description: 'Increment and decrement amount.',
           defaultValue: '1',
-        ),
+          ),
         DocParam(
           name: 'enabled',
           type: 'bool',
           description: 'Disables the control when false.',
           defaultValue: 'true',
-        ),
+          ),
         DocParam(
           name: 'borderless',
           type: 'bool',
           description: 'Removes filled and outline styles for inline layouts.',
           defaultValue: 'false',
-        ),
+          ),
       ],
       faqs: [
         DocFaq(
@@ -649,6 +677,11 @@ CKNumberStepper(
           answer:
               'The control clamps the next value and disables the corresponding action when the boundary is reached.',
         ),
+      ],
+      notes: [
+        'Behavior: Typed values are clamped to `min`/`max`. When clamping occurs a transient range error visual is shown (~700ms).',
+        'Edge case: Negative digit entry is only allowed when `min` is provided and `min < 0` (the input formatter restricts characters otherwise).',
+        'Accessibility: Stepper controls are sized to tokenized tap targets; use clear `label` text for screen readers.',
       ],
     );
 
@@ -673,7 +706,7 @@ CKOtpField(
           type: 'int',
           description: 'Number of OTP cells.',
           defaultValue: '6',
-        ),
+          ),
         DocParam(
           name: 'onChanged',
           type: 'ValueChanged<String>?',
@@ -689,13 +722,13 @@ CKOtpField(
           type: 'bool',
           description: 'Requests focus after first frame.',
           defaultValue: 'false',
-        ),
+          ),
         DocParam(
           name: 'enabled',
           type: 'bool',
           description: 'Disables input when false.',
           defaultValue: 'true',
-        ),
+          ),
       ],
       faqs: [
         DocFaq(
@@ -707,6 +740,10 @@ CKOtpField(
           question: 'When does onCompleted fire?',
           answer: 'As soon as the input length equals the configured length.',
         ),
+      ],
+      notes: [
+        'Paste behavior: Pasted digits populate cells immediately; non-digit characters are ignored by the input formatter.',
+        'Accessibility: Visual cells indicate focus state — add semantic hints if your UX requires explicit screen reader feedback.',
       ],
     );
 
@@ -987,16 +1024,8 @@ class _SwitchDocDemoState extends State<_SwitchDocDemo> {
           label: 'Default',
           onChanged: (v) => setState(() => enabled = v),
         ),
-        const CKSwitch(
-          value: true,
-          label: 'Success',
-          variant: SwitchVariant.success,
-        ),
-        const CKSwitch(
-          value: false,
-          label: 'Error',
-          variant: SwitchVariant.error,
-        ),
+        const CKSwitch.success(value: true, label: 'Success'),
+        const CKSwitch.error(value: false, label: 'Error'),
       ],
     );
   }

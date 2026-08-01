@@ -20,51 +20,18 @@ class ButtonsScreen extends StatelessWidget {
             title: 'Variants',
             spacing: s,
             children: [
-              CKButton(
+              CKButton(onPressed: _noop, child: const Text('Primary')),
+              CKButton(onPressed: _noop, child: const Text('Secondary')),
+              CKButton.outline(onPressed: _noop, child: const Text('Outline')),
+              CKButton.ghost(onPressed: _noop, child: const Text('Ghost')),
+              CKButton.accent(onPressed: _noop, child: const Text('Accent')),
+              CKButton.destructive(
                 onPressed: _noop,
-                variant: ButtonVariant.primary,
-                child: const Text('Primary'),
-              ),
-              CKButton(
-                onPressed: _noop,
-                variant: ButtonVariant.secondary,
-                child: const Text('Secondary'),
-              ),
-              CKButton(
-                onPressed: _noop,
-                variant: ButtonVariant.outline,
-                child: const Text('Outline'),
-              ),
-              CKButton(
-                onPressed: _noop,
-                variant: ButtonVariant.ghost,
-                child: const Text('Ghost'),
-              ),
-              CKButton(
-                onPressed: _noop,
-                variant: ButtonVariant.accent,
-                child: const Text('Accent'),
-              ),
-              CKButton(
-                onPressed: _noop,
-                variant: ButtonVariant.destructive,
                 child: const Text('Destructive'),
               ),
-              CKButton(
-                onPressed: _noop,
-                variant: ButtonVariant.success,
-                child: const Text('Success'),
-              ),
-              CKButton(
-                onPressed: _noop,
-                variant: ButtonVariant.warning,
-                child: const Text('Warning'),
-              ),
-              CKButton(
-                onPressed: _noop,
-                variant: ButtonVariant.info,
-                child: const Text('Info'),
-              ),
+              CKButton.success(onPressed: _noop, child: const Text('Success')),
+              CKButton.warning(onPressed: _noop, child: const Text('Warning')),
+              CKButton.info(onPressed: _noop, child: const Text('Info')),
               CKButton(
                 onPressed: _noop,
                 variant: ButtonVariant.link,
@@ -132,10 +99,9 @@ class ButtonsScreen extends StatelessWidget {
                 isFullWidth: true,
                 child: const Text('Full Width Primary'),
               ),
-              CKButton(
+              CKButton.outline(
                 onPressed: _noop,
                 isFullWidth: true,
-                variant: ButtonVariant.outline,
                 child: const Text('Full Width Outline'),
               ),
             ],

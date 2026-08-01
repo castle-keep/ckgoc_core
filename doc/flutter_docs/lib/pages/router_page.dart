@@ -13,6 +13,7 @@ class RouterDocsPage extends StatelessWidget {
       subtitle:
           'Coverage for lib/src/app/ckcore_app.dart and Navigator 2.0 routing.',
       children: [
+        DocSection(data: _cKAppDoc()),
         DocSection(data: _cKAppRouterDoc()),
       ],
     );
@@ -41,19 +42,16 @@ CKApp.router(
           name: 'brand',
           type: 'ckcoreBrand',
           description: 'Brand theme (castleKeep or skygo).',
-          requiredParam: true,
         ),
         DocParam(
           name: 'routerConfig',
           type: 'RouterConfig<Object>',
           description: 'Navigator 2.0 routing configuration.',
-          requiredParam: true,
         ),
         DocParam(
           name: 'brightness',
           type: 'Brightness?',
           description: 'Light or dark theme brightness.',
-          defaultValue: 'null (auto-detect from system)',
         ),
         DocParam(
           name: 'title',
@@ -64,7 +62,6 @@ CKApp.router(
           name: 'debugShowCheckedModeBanner',
           type: 'bool',
           description: 'Show debug banner in development.',
-          defaultValue: 'true',
         ),
       ],
       faqs: [
@@ -93,6 +90,102 @@ CKApp.router(
         'Router maintains theme context across all routes.',
         'Deep linking requires configuring RouteInformationParser.',
         'See example/ app for a complete routing setup.',
+      ],
+    );
+
+ComponentDocData _cKAppDoc() => ComponentDocData(
+      title: 'CKApp',
+      summary:
+          'High-level Material app wrapper that resolves design-system themes from a brand and forwards common MaterialApp parameters.',
+      demo: _RouterLiveDemo(),
+      code: '''
+CKApp(
+  brand: ckcoreBrand.castleKeep,
+  home: HomePage(),
+  title: 'My App',
+)
+
+// Delegate constructor (Navigator 2.0 with explicit delegate + parser)
+CKApp.delegate(
+  brand: ckcoreBrand.castleKeep,
+  routerDelegate: myRouterDelegate,
+  routeInformationParser: myRouteInformationParser,
+  themeMode: ThemeMode.system,
+)
+''',
+      params: [
+        DocParam(
+          name: 'brand',
+          type: 'ckcoreBrand',
+          description:
+              'Required design-system brand to use for theme resolution.',
+          requiredParam: true,
+        ),
+        DocParam(
+          name: 'brightness',
+          type: 'Brightness?',
+          description:
+              'Optional override for theme brightness; when null follows `themeMode` or system.',
+        ),
+        DocParam(
+          name: 'themeMode',
+          type: 'ThemeMode',
+          description:
+              'Controls light/dark theme switching when `brightness` is not provided.',
+          defaultValue: 'ThemeMode.system',
+        ),
+        DocParam(
+          name: 'home',
+          type: 'Widget?',
+          description: 'The widget for the default route of the app.',
+        ),
+        DocParam(
+          name: 'routes',
+          type: 'Map<String, WidgetBuilder>',
+          description: 'Optional Navigator 1.0 route table.',
+          defaultValue: 'const <String',
+        ),
+        DocParam(
+          name: 'navigatorObservers',
+          type: 'List<NavigatorObserver>',
+          description: 'Observers forwarded to the underlying MaterialApp.',
+          defaultValue: 'const <NavigatorObserver>[]',
+        ),
+        DocParam(
+          name: 'routerDelegate',
+          type: 'RouterDelegate<Object>?',
+          description:
+              'RouterDelegate used by `CKApp.delegate`. Required when using `CKApp.delegate` (Navigator 2.0 delegate-based constructor).',
+        ),
+        DocParam(
+          name: 'routeInformationParser',
+          type: 'RouteInformationParser<Object>?',
+          description:
+              'RouteInformationParser used by `CKApp.delegate`. Required when using `CKApp.delegate`.',
+        ),
+        DocParam(
+          name: 'routeInformationProvider',
+          type: 'RouteInformationProvider?',
+          description:
+              'Optional RouteInformationProvider for delegate-based routing (defaults to PlatformRouteInformationProvider).',
+        ),
+      ],
+      faqs: [
+        DocFaq(
+          question: 'How does CKApp provide theme tokens to widgets?',
+          answer:
+              'CKApp resolves `CkcoreuiThemeData` for light and dark and wraps the app with an inherited `ckcoreTheme` so widgets access tokens via `context.ckcoreTheme` or helper extensions.',
+        ),
+        DocFaq(
+          question: 'Can I still pass custom ThemeData?',
+          answer:
+              'Yes. Pass `theme`/`darkTheme` to override the generated material themes.',
+        ),
+      ],
+      notes: [
+        'Constructors: CKApp (default), CKApp.router(routerConfig), CKApp.delegate(routerDelegate, routeInformationParser).',
+        'CKApp.delegate: requires `routerDelegate` and `routeInformationParser` (and a `themeMode`) when used — these fields are specific to the delegate constructor.',
+        'CKApp.router delegates to Navigator 2.0 while still providing the brand-based theme resolution.',
       ],
     );
 

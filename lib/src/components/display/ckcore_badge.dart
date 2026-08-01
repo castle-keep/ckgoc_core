@@ -2,21 +2,167 @@ import 'package:flutter/material.dart';
 import 'package:ckcoreui/src/themes/ckcore_theme.dart';
 import 'package:ckcoreui/src/components/component_enums.dart';
 
+/// Badge component for displaying labels, counts, and status indicators.
+///
+/// The default appearance is primary. Use named constructors for semantic variants:
+/// ```dart
+/// CKBadge(label: 'Featured')              // primary (default)
+/// CKBadge.success(label: 'Approved')
+/// CKBadge.warning(label: 'Pending')
+/// CKBadge.error(label: 'Failed')
+/// CKBadge.count(count: 5)
+/// ```
 class CKBadge extends StatelessWidget {
+  /// Primary badge (default, recommended appearance).
   const CKBadge({
     required this.label,
-    this.variant = BadgeVariant.defaultFill,
+    this.variant = BadgeVariant.primary,
     this.count,
     this.maxCount = 99,
     super.key,
   });
 
+  /// Success badge variant (positive, approved).
+  const CKBadge.success({
+    required this.label,
+    this.count,
+    this.maxCount = 99,
+    super.key,
+  }) : variant = BadgeVariant.success;
+
+  /// Warning badge variant (caution, pending).
+  const CKBadge.warning({
+    required this.label,
+    this.count,
+    this.maxCount = 99,
+    super.key,
+  }) : variant = BadgeVariant.warning;
+
+  /// Error badge variant (critical, failed).
+  const CKBadge.error({
+    required this.label,
+    this.count,
+    this.maxCount = 99,
+    super.key,
+  }) : variant = BadgeVariant.error;
+
+  /// Info badge variant (informational).
+  const CKBadge.info({
+    required this.label,
+    this.count,
+    this.maxCount = 99,
+    super.key,
+  }) : variant = BadgeVariant.info;
+
+  /// Draft badge variant (work in progress).
+  const CKBadge.draft({
+    required this.label,
+    this.count,
+    this.maxCount = 99,
+    super.key,
+  }) : variant = BadgeVariant.draft;
+
+  /// Live badge variant (currently active).
+  const CKBadge.live({
+    required this.label,
+    this.count,
+    this.maxCount = 99,
+    super.key,
+  }) : variant = BadgeVariant.live;
+
+  /// New badge variant (new feature/item).
+  const CKBadge.newBadge({
+    required this.label,
+    this.count,
+    this.maxCount = 99,
+    super.key,
+  }) : variant = BadgeVariant.newBadge;
+
+  /// Beta badge variant (beta program).
+  const CKBadge.beta({
+    required this.label,
+    this.count,
+    this.maxCount = 99,
+    super.key,
+  }) : variant = BadgeVariant.beta;
+
+  /// Pro badge variant (premium feature).
+  const CKBadge.pro({
+    required this.label,
+    this.count,
+    this.maxCount = 99,
+    super.key,
+  }) : variant = BadgeVariant.pro;
+
+  /// Outline badge variant (bordered, minimal).
+  const CKBadge.outline({
+    required this.label,
+    this.count,
+    this.maxCount = 99,
+    super.key,
+  }) : variant = BadgeVariant.outline;
+
+  /// Outline success badge variant.
+  const CKBadge.outlineSuccess({
+    required this.label,
+    this.count,
+    this.maxCount = 99,
+    super.key,
+  }) : variant = BadgeVariant.outlineSuccess;
+
+  /// Outline error badge variant.
+  const CKBadge.outlineError({
+    required this.label,
+    this.count,
+    this.maxCount = 99,
+    super.key,
+  }) : variant = BadgeVariant.outlineError;
+
+  /// Online status badge.
+  const CKBadge.online({
+    required this.label,
+    this.count,
+    this.maxCount = 99,
+    super.key,
+  }) : variant = BadgeVariant.online;
+
+  /// Away status badge.
+  const CKBadge.away({
+    required this.label,
+    this.count,
+    this.maxCount = 99,
+    super.key,
+  }) : variant = BadgeVariant.away;
+
+  /// Busy status badge.
+  const CKBadge.busy({
+    required this.label,
+    this.count,
+    this.maxCount = 99,
+    super.key,
+  }) : variant = BadgeVariant.busy;
+
+  /// Offline status badge.
+  const CKBadge.offline({
+    required this.label,
+    this.count,
+    this.maxCount = 99,
+    super.key,
+  }) : variant = BadgeVariant.offline;
+
+  /// Count badge variant (error color, numeric display).
+  ///
+  /// Example:
+  /// ```dart
+  /// CKBadge.count(count: 5, maxCount: 99)
+  /// ```
   const CKBadge.count({
     required this.count,
     this.maxCount = 99,
     this.variant = BadgeVariant.error,
     super.key,
   }) : label = '';
+
   final String label;
   final BadgeVariant variant;
   final int? count;

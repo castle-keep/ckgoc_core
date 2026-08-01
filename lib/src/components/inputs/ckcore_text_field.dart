@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import 'package:ckcoreui/src/themes/ckcore_theme.dart';
@@ -18,6 +19,8 @@ class CKTextField extends StatefulWidget {
     this.onChanged,
     this.onEditingComplete,
     this.validator,
+    this.textAlign,
+    this.inputFormatters,
     this.enabled = true,
     this.readOnly = false,
     this.maxLines = 1,
@@ -42,6 +45,8 @@ class CKTextField extends StatefulWidget {
   final String? Function(String?)? validator;
   final bool enabled;
   final bool readOnly;
+  final TextAlign? textAlign;
+  final List<TextInputFormatter>? inputFormatters;
   final int? maxLines;
   final TextInputType? keyboardType;
   final bool obscureText;
@@ -204,13 +209,15 @@ class _CompanyTextFieldState extends State<CKTextField> {
         duration: theme.motion.fast,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(radius.base),
-          boxShadow: _isFocused
+          boxShadow: _isFocused && !widget.borderless
               ? [BoxShadow(color: ringColor, spreadRadius: 3, blurRadius: 0)]
               : const [],
         ),
         child: TextField(
           controller: widget.controller,
           focusNode: _focusNode,
+          textAlign: widget.textAlign ?? TextAlign.start,
+          inputFormatters: widget.inputFormatters,
           decoration: decoration,
           onChanged: _handleChange,
           onEditingComplete: widget.onEditingComplete,

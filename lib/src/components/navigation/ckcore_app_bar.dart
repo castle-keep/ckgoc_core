@@ -6,8 +6,17 @@ import 'package:ckcoreui/src/components/component_enums.dart';
 
 /// App bar used across the design system.
 ///
-/// Provides consistent spacing, typography and colors for app headers.
+/// The default appearance uses the surface background. Provides consistent spacing,
+/// typography and colors for app headers.
+///
+/// Use named constructors for alternative styles:
+/// ```dart
+/// CKAppBar(title: Text('Home'))          // surface (default)
+/// CKAppBar.primary(title: Text('Home'))  // brand color
+/// CKAppBar.dark(title: Text('Home'))     // dark background
+/// ```
 class CKAppBar extends StatelessWidget implements PreferredSizeWidget {
+  /// Surface style app bar (default, neutral appearance).
   const CKAppBar({
     this.title,
     this.leading,
@@ -16,6 +25,42 @@ class CKAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.largeTitle = false,
     super.key,
   });
+
+  /// Primary style app bar (brand color background).
+  const CKAppBar.primary({
+    this.title,
+    this.leading,
+    this.trailing = const [],
+    this.largeTitle = false,
+    super.key,
+  }) : style = AppBarStyle.primary;
+
+  /// Surface style app bar (surface color background).
+  const CKAppBar.surface({
+    this.title,
+    this.leading,
+    this.trailing = const [],
+    this.largeTitle = false,
+    super.key,
+  }) : style = AppBarStyle.surface;
+
+  /// Dark style app bar (dark background).
+  const CKAppBar.dark({
+    this.title,
+    this.leading,
+    this.trailing = const [],
+    this.largeTitle = false,
+    super.key,
+  }) : style = AppBarStyle.dark;
+
+  /// Transparent style app bar (no background).
+  const CKAppBar.transparent({
+    this.title,
+    this.leading,
+    this.trailing = const [],
+    this.largeTitle = false,
+    super.key,
+  }) : style = AppBarStyle.transparent;
   final Widget? title;
   final Widget? leading;
   final List<Widget> trailing;

@@ -64,18 +64,29 @@ Widget _buildCircle(
 
   final isCompleted = step.status == StepStatus.completed;
   final isInProgress = step.status == StepStatus.inProgress;
+  final isRejected = step.status == StepStatus.rejected;
   final isPending = step.status == StepStatus.pending;
 
   final bgColor = isCompleted
       ? stepColor
       : isInProgress
       ? colors.surface
+      : isRejected
+      ? colors.surface
       : colors.surfaceVariant;
-  final borderColor = isPending ? colors.outlineVariant : stepColor;
+
+  final borderColor = isPending
+      ? colors.outlineVariant
+      : isRejected
+      ? (step.color ?? colors.error)
+      : stepColor;
+
   final fgColor = isCompleted
       ? (checkColor ?? colors.onPrimary)
       : isInProgress
       ? stepColor
+      : isRejected
+      ? (checkColor ?? colors.error)
       : muted;
 
   Widget inner;
@@ -83,6 +94,8 @@ Widget _buildCircle(
     inner = step.icon!;
   } else if (isCompleted) {
     inner = Icon(LucideIcons.check, size: spacing.md, color: fgColor);
+  } else if (isRejected) {
+    inner = Icon(LucideIcons.x, size: spacing.md, color: fgColor);
   } else {
     inner = Text(
       '${index + 1}',
@@ -109,6 +122,7 @@ String _statusLabel(StepStatus status) => switch (status) {
   StepStatus.completed => 'Completed',
   StepStatus.inProgress => 'In Progress',
   StepStatus.pending => 'Pending',
+  StepStatus.rejected => 'Rejected',
 };
 
 class _VerticalStepper extends StatelessWidget {

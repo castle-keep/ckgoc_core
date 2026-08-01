@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'package:ckcore_docs_app/docs/doc_models.dart';
 import 'package:ckcore_docs_app/docs/doc_widgets.dart';
+import '../docs/mappings.dart';
 
 class NavigationPage extends StatelessWidget {
   const NavigationPage({super.key});
@@ -26,18 +27,22 @@ class NavigationPage extends StatelessWidget {
   }
 }
 
-ComponentDocData _appBarDoc() => const ComponentDocData(
+ComponentDocData _appBarDoc() => ComponentDocData(
       title: 'CKAppBar',
       summary:
           'Design-system app bar with style variants, custom leading content, trailing actions, and optional large-title mode.',
       demo: _AppBarDemo(),
       code: '''
+// Default constructor for surface (neutral, recommended)
 CKAppBar(
   title: Text('Dashboard'),
   leading: IconButton(icon: Icon(Icons.menu), onPressed: () {}),
   trailing: [IconButton(icon: Icon(Icons.search), onPressed: () {})],
-  style: AppBarStyle.primary,
 )
+
+// Named constructors for other styles
+CKAppBar.primary(...)  // Brand color background
+CKAppBar.dark(...)     // Dark background
 ''',
       params: [
         DocParam(
@@ -55,19 +60,19 @@ CKAppBar(
           type: 'List<Widget>',
           description: 'Trailing actions list.',
           defaultValue: 'const []',
-        ),
+          ),
         DocParam(
           name: 'style',
           type: 'AppBarStyle',
           description: 'Visual app bar style.',
           defaultValue: 'AppBarStyle.surface',
-        ),
+          ),
         DocParam(
           name: 'largeTitle',
           type: 'bool',
           description: 'Uses a taller layout and larger title typography.',
           defaultValue: 'false',
-        ),
+          ),
       ],
       faqs: [
         DocFaq(
@@ -91,13 +96,17 @@ ComponentDocData _tabsDoc() => const ComponentDocData(
           'Tabs component supporting line, pill, and card variants with optional badges and icons.',
       demo: _TabsDemo(),
       code: '''
+// Default constructor for line (underline indicator, most common)
 CKTabs(
-  variant: TabVariant.pill,
   tabs: const [
     CKTab(label: 'Overview', content: Text('Overview content')),
     CKTab(label: 'Billing', badge: 2, content: Text('Billing content')),
   ],
 )
+
+// Named constructors for other styles
+CKTabs.pill(tabs: [...])   // Pill style
+CKTabs.card(tabs: [...])   // Card style
 ''',
       params: [
         DocParam(
@@ -105,26 +114,26 @@ CKTabs(
           type: 'List<CKTab>',
           description: 'Tab definitions and associated content.',
           requiredParam: true,
-        ),
+          ),
         DocParam(
           name: 'variant',
           type: 'TabVariant',
           description: 'Tabs bar style.',
           defaultValue: 'TabVariant.line',
-        ),
+          ),
         DocParam(
           name: 'scrollable',
           type: 'bool',
           description:
               'Allows horizontal scrolling instead of stretching tabs.',
           defaultValue: 'false',
-        ),
+          ),
         DocParam(
           name: 'initialIndex',
           type: 'int',
           description: 'Initially selected tab index.',
           defaultValue: '0',
-        ),
+          ),
         DocParam(
           name: 'onTabChanged',
           type: 'ValueChanged<int>?',
@@ -169,13 +178,13 @@ CKBottomNavigation(
           type: 'int',
           description: 'Current selected destination index.',
           requiredParam: true,
-        ),
+          ),
         DocParam(
           name: 'items',
           type: 'List<CKNavItem>',
           description: 'Bottom navigation destinations.',
           requiredParam: true,
-        ),
+          ),
         DocParam(
           name: 'onDestinationSelected',
           type: 'ValueChanged<int>?',
@@ -221,7 +230,7 @@ CKBreadcrumb(
           type: 'List<BreadcrumbItem>',
           description: 'Ordered breadcrumb path entries.',
           requiredParam: true,
-        ),
+          ),
       ],
       faqs: [
         DocFaq(
@@ -263,25 +272,25 @@ CKDrawer(
           type: 'String',
           description: 'Drawer brand or app name.',
           requiredParam: true,
-        ),
+          ),
         DocParam(
           name: 'items',
           type: 'List<CKDrawerItem>',
           description: 'Drawer options.',
           requiredParam: true,
-        ),
+          ),
         DocParam(
           name: 'selectedIndex',
           type: 'int',
           description: 'Current selected item index.',
           requiredParam: true,
-        ),
+          ),
         DocParam(
           name: 'onItemSelected',
           type: 'ValueChanged<int>',
           description: 'Item selection callback.',
           requiredParam: true,
-        ),
+          ),
         DocParam(
           name: 'userEmail',
           type: 'String?',
@@ -329,13 +338,13 @@ CKNavigationRail(
           type: 'int',
           description: 'Current selected index.',
           requiredParam: true,
-        ),
+          ),
         DocParam(
           name: 'items',
           type: 'List<CKNavItem>',
           description: 'Rail destinations.',
           requiredParam: true,
-        ),
+          ),
         DocParam(
           name: 'onDestinationSelected',
           type: 'ValueChanged<int>?',
@@ -386,25 +395,25 @@ CKSideNav(
           type: 'List<CKSideNavSection>',
           description: 'Labeled groups of navigation items.',
           requiredParam: true,
-        ),
+          ),
         DocParam(
           name: 'selectedIndex',
           type: 'int',
           description: 'Absolute selected item index across all sections.',
           requiredParam: true,
-        ),
+          ),
         DocParam(
           name: 'onItemSelected',
           type: 'ValueChanged<int>',
           description: 'Item selection callback.',
           requiredParam: true,
-        ),
+          ),
         DocParam(
           name: 'collapsed',
           type: 'bool',
           description: 'Collapsed icon-only mode.',
           defaultValue: 'false',
-        ),
+          ),
         DocParam(
           name: 'onToggleCollapse',
           type: 'VoidCallback?',
@@ -430,7 +439,7 @@ CKSideNav(
           type: 'SideNavStyle',
           description: 'Surface or brand appearance.',
           defaultValue: 'SideNavStyle.surface',
-        ),
+          ),
       ],
       faqs: [
         DocFaq(
@@ -463,15 +472,44 @@ class _AppBarDemo extends StatelessWidget {
               decoration: BoxDecoration(
                 border: Border.all(color: Theme.of(context).dividerColor),
               ),
-              child: CKAppBar(
-                title: Text(style.name),
-                leading:
-                    IconButton(icon: const Icon(Icons.menu), onPressed: () {}),
-                trailing: [
-                  IconButton(icon: const Icon(Icons.search), onPressed: () {}),
-                ],
-                style: style,
-              ),
+              child: switch (style) {
+                AppBarStyle.primary => CKAppBar.primary(
+                    title: Text(style.name),
+                    leading: IconButton(
+                        icon: const Icon(Icons.menu), onPressed: () {}),
+                    trailing: [
+                      IconButton(
+                          icon: const Icon(Icons.search), onPressed: () {})
+                    ],
+                  ),
+                AppBarStyle.surface => CKAppBar.surface(
+                    title: Text(style.name),
+                    leading: IconButton(
+                        icon: const Icon(Icons.menu), onPressed: () {}),
+                    trailing: [
+                      IconButton(
+                          icon: const Icon(Icons.search), onPressed: () {})
+                    ],
+                  ),
+                AppBarStyle.dark => CKAppBar.dark(
+                    title: Text(style.name),
+                    leading: IconButton(
+                        icon: const Icon(Icons.menu), onPressed: () {}),
+                    trailing: [
+                      IconButton(
+                          icon: const Icon(Icons.search), onPressed: () {})
+                    ],
+                  ),
+                AppBarStyle.transparent => CKAppBar.transparent(
+                    title: Text(style.name),
+                    leading: IconButton(
+                        icon: const Icon(Icons.menu), onPressed: () {}),
+                    trailing: [
+                      IconButton(
+                          icon: const Icon(Icons.search), onPressed: () {})
+                    ],
+                  ),
+              },
             ),
           ),
       ],
@@ -516,7 +554,7 @@ class _TabsDemo extends StatelessWidget {
         for (final variant in TabVariant.values)
           Padding(
             padding: const EdgeInsets.only(bottom: 16),
-            child: CKTabs(tabs: _tabs(), variant: variant),
+            child: tabsForVariant(variant, tabs: _tabs()),
           ),
       ],
     );

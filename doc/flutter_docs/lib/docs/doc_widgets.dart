@@ -147,9 +147,8 @@ class _ThemeSwitcher extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         CKMenu(
-          trigger: CKContainer(
+          trigger: CKContainer.outlined(
             elevated: true,
-            variant: ContainerVariant.outlined,
             padding: EdgeInsets.symmetric(
               horizontal: theme.spacing.sm,
               vertical: theme.spacing.xs,
@@ -175,9 +174,8 @@ class _ThemeSwitcher extends StatelessWidget {
         ),
         const SizedBox(width: 8),
         CKMenu(
-          trigger: CKContainer(
+          trigger: CKContainer.outlined(
             elevated: true,
-            variant: ContainerVariant.outlined,
             padding: EdgeInsets.symmetric(
               horizontal: theme.spacing.sm,
               vertical: theme.spacing.xs,
@@ -401,77 +399,145 @@ class DocSection extends StatelessWidget {
 
     return Padding(
       padding: const EdgeInsets.only(bottom: 24),
-      child: CKContainer(
-        variant: coming ? ContainerVariant.surface : ContainerVariant.outlined,
-        elevated: coming ? false : true,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                if (coming)
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: CKBadge(
-                      label: 'Coming soon',
-                      variant: BadgeVariant.live,
+      child: coming
+          ? CKContainer(
+              elevated: false,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      if (coming)
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: CKBadge(
+                            label: 'Coming soon',
+                            variant: BadgeVariant.live,
+                          ),
+                        ),
+                      Text(data.title, style: theme.typography.labelLg),
+                    ],
+                  ),
+                  const VSpace(height: 8),
+                  Text(data.summary, style: theme.typography.textSm),
+                  if (data.notes.isNotEmpty) ...[
+                    const VSpace(height: 12),
+                    ...data.notes.map(
+                      (note) => Padding(
+                        padding: const EdgeInsets.only(bottom: 6),
+                        child: Text(
+                          '• $note',
+                          style: theme.typography.textXs,
+                        ),
+                      ),
+                    ),
+                  ],
+                  const VSpace(height: 16),
+                  Text('Live demo', style: theme.typography.labelMd),
+                  const VSpace(height: 8),
+                  // Demo area is disabled and dimmed when comingSoon is true.
+                  IgnorePointer(
+                    ignoring: coming,
+                    child: CKContainer.outlined(
+                      child: HeroMode(enabled: false, child: data.demo),
                     ),
                   ),
-                Text(data.title, style: theme.typography.labelLg),
-              ],
-            ),
-            const VSpace(height: 8),
-            Text(data.summary, style: theme.typography.textSm),
-            if (data.notes.isNotEmpty) ...[
-              const VSpace(height: 12),
-              ...data.notes.map(
-                (note) => Padding(
-                  padding: const EdgeInsets.only(bottom: 6),
-                  child: Text(
-                    '• $note',
-                    style: theme.typography.textXs,
-                  ),
-                ),
-              ),
-            ],
-            const VSpace(height: 16),
-            Text('Live demo', style: theme.typography.labelMd),
-            const VSpace(height: 8),
-            // Demo area is disabled and dimmed when comingSoon is true.
-            IgnorePointer(
-              ignoring: coming,
-              child: CKContainer(
-                variant: ContainerVariant.outlined,
-                child: HeroMode(enabled: false, child: data.demo),
-              ),
-            ),
-            const VSpace(height: 16),
-            Text('Usage code', style: theme.typography.labelMd),
-            const VSpace(height: 8),
-            CodeBlock(code: data.code),
-            const VSpace(height: 16),
-            Text('Parameters', style: theme.typography.labelMd),
-            const VSpace(height: 8),
-            ParamTable(params: data.params),
-            if (data.faqs.isNotEmpty) ...[
-              const VSpace(height: 16),
-              Text('FAQs', style: theme.typography.labelMd),
-              const VSpace(height: 8),
-              CKAccordion(
-                items: [
-                  for (final faq in data.faqs)
-                    CKAccordionItem(
-                      title: faq.question,
-                      content: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(faq.answer)),
+                  const VSpace(height: 16),
+                  Text('Usage code', style: theme.typography.labelMd),
+                  const VSpace(height: 8),
+                  CodeBlock(code: data.code),
+                  const VSpace(height: 16),
+                  Text('Parameters', style: theme.typography.labelMd),
+                  const VSpace(height: 8),
+                  ParamTable(params: data.params),
+                  if (data.faqs.isNotEmpty) ...[
+                    const VSpace(height: 16),
+                    Text('FAQs', style: theme.typography.labelMd),
+                    const VSpace(height: 8),
+                    CKAccordion(
+                      items: [
+                        for (final faq in data.faqs)
+                          CKAccordionItem(
+                            title: faq.question,
+                            content: Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text(faq.answer)),
+                          ),
+                      ],
                     ),
+                  ],
+                ],
+              ))
+          : CKContainer.outlined(
+              elevated: true,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      if (coming)
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: CKBadge(
+                            label: 'Coming soon',
+                            variant: BadgeVariant.live,
+                          ),
+                        ),
+                      Text(data.title, style: theme.typography.labelLg),
+                    ],
+                  ),
+                  const VSpace(height: 8),
+                  Text(data.summary, style: theme.typography.textSm),
+                  if (data.notes.isNotEmpty) ...[
+                    const VSpace(height: 12),
+                    ...data.notes.map(
+                      (note) => Padding(
+                        padding: const EdgeInsets.only(bottom: 6),
+                        child: Text(
+                          '• $note',
+                          style: theme.typography.textXs,
+                        ),
+                      ),
+                    ),
+                  ],
+                  const VSpace(height: 16),
+                  Text('Live demo', style: theme.typography.labelMd),
+                  const VSpace(height: 8),
+                  // Demo area is disabled and dimmed when comingSoon is true.
+                  IgnorePointer(
+                    ignoring: coming,
+                    child: CKContainer(
+                      variant: ContainerVariant.outlined,
+                      child: HeroMode(enabled: false, child: data.demo),
+                    ),
+                  ),
+                  const VSpace(height: 16),
+                  Text('Usage code', style: theme.typography.labelMd),
+                  const VSpace(height: 8),
+                  CodeBlock(code: data.code),
+                  const VSpace(height: 16),
+                  Text('Parameters', style: theme.typography.labelMd),
+                  const VSpace(height: 8),
+                  ParamTable(params: data.params),
+                  if (data.faqs.isNotEmpty) ...[
+                    const VSpace(height: 16),
+                    Text('FAQs', style: theme.typography.labelMd),
+                    const VSpace(height: 8),
+                    CKAccordion(
+                      items: [
+                        for (final faq in data.faqs)
+                          CKAccordionItem(
+                            title: faq.question,
+                            content: Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text(faq.answer)),
+                          ),
+                      ],
+                    ),
+                  ],
                 ],
               ),
-            ],
-          ],
-        ),
-      ),
+            ),
     );
   }
 }
@@ -485,23 +551,23 @@ class ParamTable extends StatelessWidget {
   Widget build(BuildContext context) {
     return Table(
       columnWidths: const {
-        0: FlexColumnWidth(1.4),
-        1: FlexColumnWidth(1.2),
-        2: FlexColumnWidth(0.9),
-        3: FlexColumnWidth(1.2),
-        4: FlexColumnWidth(3.3),
+        0: FlexColumnWidth(1.4), // Name
+        1: FlexColumnWidth(0.8), // Required
+        2: FlexColumnWidth(1.0), // Default
+        3: FlexColumnWidth(1.2), // Type/Signature
+        4: FlexColumnWidth(3.3), // Description
       },
       border: TableBorder.all(color: ckcoreTheme.of(context).colors.outline),
       children: [
         _row(context,
-            const ['Name', 'Type', 'Required', 'Default', 'Description'],
+            const ['Name', 'Required', 'Default', 'Type', 'Description'],
             header: true),
         for (final param in params)
           _row(context, [
             param.name,
-            param.type,
             param.requiredParam ? 'Yes' : 'No',
             param.defaultValue ?? '—',
+            param.type,
             param.description
           ]),
       ],
@@ -534,6 +600,7 @@ class CodeBlock extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CKContainer(
+      // use named constructor for muted surface
       variant: ContainerVariant.muted,
       elevated: true,
       child: SizedBox(

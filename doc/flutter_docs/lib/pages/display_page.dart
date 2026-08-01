@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'package:ckcore_docs_app/docs/doc_models.dart';
 import 'package:ckcore_docs_app/docs/doc_widgets.dart';
+import '../docs/mappings.dart';
 
 class DisplayPage extends StatelessWidget {
   const DisplayPage({super.key});
@@ -50,7 +51,6 @@ CKAccordion(
         name: 'items',
         type: 'List<CKAccordionItem>',
         description: 'Accordion sections to render.',
-        requiredParam: true,
       ),
       DocParam(
         name: 'initiallyExpanded',
@@ -61,7 +61,6 @@ CKAccordion(
         name: 'allowMultiple',
         type: 'bool',
         description: 'Allows multiple panels to stay open.',
-        defaultValue: 'false',
       ),
     ],
     faqs: [
@@ -110,7 +109,6 @@ Wrap(
         name: 'size',
         type: 'AvatarSize',
         description: 'Token-based avatar size.',
-        defaultValue: 'AvatarSize.md',
       ),
       DocParam(
         name: 'status',
@@ -126,7 +124,6 @@ Wrap(
         name: 'square',
         type: 'bool',
         description: 'Renders a rounded square instead of a circle.',
-        defaultValue: 'false',
       ),
     ],
     faqs: [
@@ -149,14 +146,12 @@ Wrap(
 
 ComponentDocData _badgeDoc() {
   const code = '''
-Wrap(
-  spacing: 8,
-  runSpacing: 8,
-  children: [
-    for (final variant in BadgeVariant.values)
-      CKBadge(label: variant.name, variant: variant),
-  ],
-)
+// Default constructor for primary badge
+CKBadge(label: 'New')
+
+// Named constructors for other variants
+CKBadge.success(label: 'Approved')
+CKBadge.count(count: 7)
 ''';
   return const ComponentDocData(
     title: 'CKBadge',
@@ -175,12 +170,13 @@ Wrap(
         name: 'variant',
         type: 'BadgeVariant',
         description: 'Visual badge style.',
-        defaultValue: 'BadgeVariant.defaultFill',
+        defaultValue: 'BadgeVariant.error',
       ),
       DocParam(
         name: 'count',
         type: 'int?',
         description: 'Optional numeric count displayed with the label.',
+        requiredParam: true,
       ),
       DocParam(
         name: 'maxCount',
@@ -203,20 +199,27 @@ Wrap(
     ],
     notes: [
       'Enum demo coverage: all BadgeVariant values are rendered.',
+      'Named constructors: CKBadge.success, CKBadge.error, CKBadge.count, CKBadge.outline, CKBadge.online/offline presence variants.',
+      'Accessibility: Prefer succinct `label` text; use presence variants with explicit semantics when conveying availability.',
+      'See also: CKAvatar for presence displays and CKCard for labeled status surfaces.',
     ],
   );
 }
 
 ComponentDocData _cardDoc() {
   const code = '''
+// Default constructor for neutral/default card
 CKCard(
   title: 'Quarterly report',
   subtitle: 'Updated 5 minutes ago',
   description: 'Revenue increased by 18% month over month.',
-  variant: CardVariant.info,
-  layout: CardLayout.vertical,
   action: CKButton(onPressed: () {}, child: Text('Open')),
 )
+
+// Named constructors for semantic variants
+CKCard.success(...)
+CKCard.warning(...)
+CKCard.error(...)
 ''';
   return const ComponentDocData(
     title: 'CKCard',
@@ -229,7 +232,6 @@ CKCard(
         name: 'title',
         type: 'String',
         description: 'Main card heading.',
-        requiredParam: true,
       ),
       DocParam(
         name: 'subtitle',
@@ -256,13 +258,11 @@ CKCard(
         name: 'layout',
         type: 'CardLayout',
         description: 'Vertical or horizontal arrangement.',
-        defaultValue: 'CardLayout.vertical',
       ),
       DocParam(
         name: 'variant',
         type: 'CardVariant',
         description: 'Surface meaning and styling.',
-        defaultValue: 'CardVariant.defaultCard',
       ),
       DocParam(
         name: 'onTap',
@@ -283,6 +283,9 @@ CKCard(
     ],
     notes: [
       'Enum demo coverage: all CardVariant values plus horizontal and vertical layouts are rendered.',
+      'Named constructors: CKCard.success, CKCard.warning, CKCard.error, CKCard.info.',
+      'Accessibility: When using `onTap` ensure the card content provides a clear, accessible label; prefer including an explicit action button for important primary actions.',
+      'See also: CKContainer for simple surface wrapping.',
     ],
   );
 }
@@ -308,13 +311,11 @@ Wrap(
         name: 'label',
         type: 'String',
         description: 'Visible chip text.',
-        requiredParam: true,
       ),
       DocParam(
         name: 'selected',
         type: 'bool',
         description: 'Filter-chip selection state.',
-        defaultValue: 'false',
       ),
       DocParam(
         name: 'onTap',
@@ -325,7 +326,6 @@ Wrap(
         name: 'state',
         type: 'ChipState',
         description: 'Shared state enum for filter and input chips.',
-        defaultValue: 'ChipState.defaultState',
       ),
       DocParam(
         name: 'onRemove',
@@ -359,14 +359,18 @@ Wrap(
 
 ComponentDocData _containerDoc() {
   const code = '''
+// Default constructor for surface container
 CKContainer(
-  variant: ContainerVariant.outlined,
   elevated: true,
   child: Padding(
     padding: EdgeInsets.all(16),
     child: Text('Contained content'),
   ),
 )
+
+// Named constructors for other variants
+CKContainer.outlined(...)
+CKContainer.muted(...)
 ''';
   return const ComponentDocData(
     title: 'CKContainer',
@@ -413,6 +417,8 @@ CKContainer(
     ],
     notes: [
       'Enum demo coverage: all ContainerVariant values are rendered.',
+      'Named constructors/variants: CKContainer.outlined, CKContainer.muted, CKContainer (surface).',
+      'Accessibility: Containers are visual wrappers only; ensure interactive children expose semantics and focus behavior.',
     ],
   );
 }
@@ -453,6 +459,10 @@ Column(
         answer:
             'Not through the current public API. Keep this component for consistent token-based separators.',
       ),
+    ],
+    notes: [
+      'Implementation status: placeholder in the package source (returns SizedBox.shrink()).',
+      'When implemented: the public API will remain intentionally small; thickness and color will follow design tokens.',
     ],
   );
 }
@@ -513,6 +523,10 @@ CKListTile(
         answer: 'Yes. It is a Widget, so it can be any custom composition.',
       ),
     ],
+    notes: [
+      'Implementation status: placeholder in the package source. The API is intentionally small to match design tokens; rendering will be implemented to match spacing conventions.',
+      'Accessibility: When implemented, ensure `title` and `subtitle` provide meaningful text; wrap non-text content with `Semantics` as needed.',
+    ],
   );
 }
 
@@ -538,13 +552,11 @@ CKStepper(
         name: 'steps',
         type: 'List<CKStep>',
         description: 'Ordered steps to render.',
-        requiredParam: true,
       ),
       DocParam(
         name: 'orientation',
         type: 'CKStepperOrientation',
         description: 'Vertical or horizontal layout.',
-        defaultValue: 'CKStepperOrientation.vertical',
       ),
       DocParam(
         name: 'checkColor',
@@ -596,13 +608,11 @@ CKTimeline(
         name: 'events',
         type: 'List<CKTimelineEvent>',
         description: 'Ordered timeline entries.',
-        requiredParam: true,
       ),
       DocParam(
         name: 'orientation',
         type: 'CKTimelineOrientation',
         description: 'Vertical or horizontal layout.',
-        defaultValue: 'CKTimelineOrientation.vertical',
       ),
       DocParam(
         name: 'lineColor',
@@ -713,7 +723,7 @@ class _BadgeDemo extends StatelessWidget {
       runSpacing: 8,
       children: [
         for (final variant in BadgeVariant.values)
-          CKBadge(label: variant.name, variant: variant),
+          badgeForVariant(variant, variant.name),
         const CKBadge.count(count: 124),
       ],
     );
@@ -730,12 +740,11 @@ class _CardDemo extends StatelessWidget {
         for (final variant in CardVariant.values)
           Padding(
             padding: const EdgeInsets.only(bottom: 12),
-            child: CKCard(
+            child: cardForVariant(
+              variant,
               title: variant.name,
               subtitle: 'Status card',
               description: 'This card documents the ${variant.name} style.',
-              variant: variant,
-              trailing: const Icon(Icons.more_horiz),
               action: CKButton(onPressed: () {}, child: const Text('Open')),
             ),
           ),
@@ -803,13 +812,11 @@ class _ContainerDemo extends StatelessWidget {
         for (final variant in ContainerVariant.values)
           Container(
             width: 220,
-            child: CKContainer(
-              variant: variant,
+            child: containerForVariant(
+              variant,
               elevated: variant == ContainerVariant.surface,
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: Text('variant: ${variant.name}'),
-              ),
+              padding: const EdgeInsets.all(16),
+              child: Text('variant: ${variant.name}'),
             ),
           ),
       ],

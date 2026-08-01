@@ -2,21 +2,21 @@
 
 ## Overview
 
-`ckcoreDataTable` is a fully-themed, stateless data table for the Company design system. It renders UI and emits callbacks only — it never owns repositories, makes network calls, or mutates data.
+`CKDataTable` is a fully-themed, stateless data table for the Company design system. It renders UI and emits callbacks only — it never owns repositories, makes network calls, or mutates data.
 
 ---
 
 ## Quick Start
 
 ```dart
-ckcoreDataTable(
+CKDataTable(
   columns: [
-    const ckcoreTableColumn(key: 'name', label: 'Name',
-        type: ckcoreColumnType.avatarText, flex: 2, sortable: true),
-    const ckcoreTableColumn(key: 'email', label: 'Email', flex: 2),
-    ckcoreTableColumn(
+    const CKTableColumn(key: 'name', label: 'Name',
+        type: CKColumnType.avatarText, flex: 2, sortable: true),
+    const CKTableColumn(key: 'email', label: 'Email', flex: 2),
+    CKTableColumn(
       key: 'role', label: 'Role', width: 120,
-      type: ckcoreColumnType.badge,
+      type: CKColumnType.badge,
       badgeVariantBuilder: (v) => v == 'Admin'
           ? BadgeVariant.primary : BadgeVariant.outline,
     ),
@@ -64,7 +64,7 @@ flutter run -d chrome -t example/lib/main.dart
 
 ## Getting started
 
-1. Define your `columns` using `ckcoreTableColumn`. Mark sortable columns with `sortable: true`.
+1. Define your `columns` using `CKTableColumn`. Mark sortable columns with `sortable: true`.
 2. Provide `rows` as a `List<Map<String, dynamic>>` and a `rowKey` that uniquely identifies each row.
 3. For server-driven paging/sorting, use the controlled pattern: pass `sortColumnKey`, `sortAscending`, and implement `onSortChanged`/`onPageChanged` to fetch sorted pages.
 4. For small client-side datasets, omit `onSortChanged` to use the internal sorting fallback.
@@ -75,7 +75,7 @@ flutter run -d chrome -t example/lib/main.dart
 
 ## Sorting
 
-ckcoreDataTable renders a sort affordance in the header when a column is declared with `sortable: true` on `ckcoreTableColumn`.
+CKDataTable renders a sort affordance in the header when a column is declared with `sortable: true` on `CKTableColumn`.
 
 - Controlled sorting (recommended for server-side paging): provide `sortColumnKey`, `sortAscending`, and `onSortChanged`. The table will call `onSortChanged(columnKey, ascending)` when the user taps a sortable header; your parent widget is responsible for sorting the `rows` and passing the new values back into the table props.
 

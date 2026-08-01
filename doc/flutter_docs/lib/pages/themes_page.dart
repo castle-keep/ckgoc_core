@@ -18,9 +18,19 @@ class ThemesPage extends StatelessWidget {
           data: ComponentDocData(
             title: 'Theme access and resolution',
             summary:
-                'Theme files expose ckcoreBrand, ckcoreTheme, ckcoreThemeData, and ckcoreThemeResolver. In app code, the main public entry point is usually context.ckcoreTheme via ckcoreApp.',
+                'Access design tokens via context extensions (context.ckColors, context.ckSpacing) or static accessors (CKColors.of(context)). Theme resolution is handled automatically by ckcoreTheme, ckcoreThemeData, and ckcoreThemeResolver.',
             demo: _ThemesDemo(),
             code: '''
+// New ergonomic patterns (recommended):
+Container(color: context.ckColors.primary)
+SizedBox(width: context.ckSpacing.md)
+Text('Hello', style: context.ckTypography.textMd)
+
+// Or explicit static accessors:
+CKColors.of(context).primary
+CKSpacing.of(context).md
+
+// Legacy pattern still works:
 final activeTheme = context.ckcoreTheme;
 final resolved = ckcoreThemeResolver.resolve(ckcoreBrand.skyGo, Brightness.dark);
 ''',
@@ -72,14 +82,50 @@ class _ThemesDemo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = context.ckcoreTheme;
-    return Wrap(
-      spacing: 12,
-      runSpacing: 12,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Chip(label: Text('brand: ${theme.brand.displayName}')),
-        Chip(label: Text('primary: ${theme.colors.primary}')),
-        Chip(label: Text('surface: ${theme.colors.surface}')),
+        Wrap(
+          spacing: context.ckSpacing.md,
+          runSpacing: context.ckSpacing.md,
+          children: [
+            Chip(
+                label: Text('brand: ${context.ckcoreTheme.brand.displayName}')),
+            Chip(label: Text('primary: ${context.ckColors.primary}')),
+            Chip(label: Text('surface: ${context.ckColors.surface}')),
+            Chip(label: Text('spacing.md: ${context.ckSpacing.md}px')),
+          ],
+        ),
+        SizedBox(height: context.ckSpacing.lg),
+        Container(
+          padding: EdgeInsets.all(context.ckSpacing.md),
+          decoration: BoxDecoration(
+            color: context.ckColors.surfaceVariant,
+            borderRadius: BorderRadius.circular(context.ckRadius.md),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Using new ergonomic patterns:',
+                style: context.ckTypography.labelMd,
+              ),
+              SizedBox(height: context.ckSpacing.sm),
+              Text(
+                'context.ckColors.primary',
+                style: context.ckTypography.textSm,
+              ),
+              Text(
+                'context.ckSpacing.md',
+                style: context.ckTypography.textSm,
+              ),
+              Text(
+                'context.ckTypography.labelMd',
+                style: context.ckTypography.textSm,
+              ),
+            ],
+          ),
+        ),
       ],
     );
   }

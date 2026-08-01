@@ -2,8 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:ckcoreui/src/themes/ckcore_theme.dart';
 import 'package:ckcoreui/src/components/component_enums.dart';
 
-/// Switch control with label support and variant coloring.
+/// Switch control with label support and optional variant coloring.
+///
+/// The default appearance is neutral. Use named constructors for semantic variants:
+/// ```dart
+/// CKSwitch(value: true, onChanged: (v) {})    // neutral (default)
+/// CKSwitch.success(value: true, onChanged: (v) {})  // green
+/// CKSwitch.error(value: false, onChanged: (v) {})   // red
+/// ```
 class CKSwitch extends StatelessWidget {
+  /// Neutral switch (default, standard appearance).
   const CKSwitch({
     required this.value,
     this.onChanged,
@@ -12,6 +20,24 @@ class CKSwitch extends StatelessWidget {
     this.color,
     super.key,
   });
+
+  /// Success variant switch (green when enabled).
+  const CKSwitch.success({
+    required this.value,
+    this.onChanged,
+    this.label,
+    this.color,
+    super.key,
+  }) : variant = SwitchVariant.success;
+
+  /// Error variant switch (red when enabled).
+  const CKSwitch.error({
+    required this.value,
+    this.onChanged,
+    this.label,
+    this.color,
+    super.key,
+  }) : variant = SwitchVariant.error;
   final bool value;
   final ValueChanged<bool>? onChanged;
   final String? label;

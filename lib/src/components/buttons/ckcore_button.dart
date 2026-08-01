@@ -6,8 +6,19 @@ import 'package:ckcoreui/src/components/component_enums.dart';
 
 /// Button widget that follows the design system tokens and variants.
 ///
-/// Supports `variant`, `size`, loading state, disabled state and full-width mode.
+/// The default appearance is primary (filled, high emphasis). Use named constructors
+/// for semantic alternatives:
+/// ```dart
+/// CKButton(onPressed: () {}, child: Text('Save'))              // primary (default)
+/// CKButton.secondary(onPressed: () {}, child: Text('Cancel'))  // secondary
+/// CKButton.outline(onPressed: () {}, child: Text('Learn'))     // outline
+/// CKButton.destructive(onPressed: () {}, child: Text('Delete')) // danger
+/// ```
+///
+/// Supports `size`, loading state, disabled state and full-width mode.
 class CKButton extends StatelessWidget {
+  /// Primary button (default, recommended appearance).
+  /// Filled with high visual emphasis for primary actions.
   const CKButton({
     this.variant = ButtonVariant.primary,
     this.size = ButtonSize.md,
@@ -18,6 +29,106 @@ class CKButton extends StatelessWidget {
     this.isFullWidth = false,
     super.key,
   });
+
+  /// Secondary button variant (filled, lower emphasis than primary).
+  const CKButton.secondary({
+    this.size = ButtonSize.md,
+    this.onPressed,
+    this.child,
+    this.loading = false,
+    this.disabled = false,
+    this.isFullWidth = false,
+    super.key,
+  }) : variant = ButtonVariant.secondary;
+
+  /// Outline button variant (bordered, lower emphasis).
+  const CKButton.outline({
+    this.size = ButtonSize.md,
+    this.onPressed,
+    this.child,
+    this.loading = false,
+    this.disabled = false,
+    this.isFullWidth = false,
+    super.key,
+  }) : variant = ButtonVariant.outline;
+
+  /// Ghost button variant (minimal, text-only).
+  const CKButton.ghost({
+    this.size = ButtonSize.md,
+    this.onPressed,
+    this.child,
+    this.loading = false,
+    this.disabled = false,
+    this.isFullWidth = false,
+    super.key,
+  }) : variant = ButtonVariant.ghost;
+
+  /// Accent button variant (accent color, high emphasis).
+  const CKButton.accent({
+    this.size = ButtonSize.md,
+    this.onPressed,
+    this.child,
+    this.loading = false,
+    this.disabled = false,
+    this.isFullWidth = false,
+    super.key,
+  }) : variant = ButtonVariant.accent;
+
+  /// Destructive button variant (error color, for dangerous actions).
+  const CKButton.destructive({
+    this.size = ButtonSize.md,
+    this.onPressed,
+    this.child,
+    this.loading = false,
+    this.disabled = false,
+    this.isFullWidth = false,
+    super.key,
+  }) : variant = ButtonVariant.destructive;
+
+  /// Success button variant (success color, for positive actions).
+  const CKButton.success({
+    this.size = ButtonSize.md,
+    this.onPressed,
+    this.child,
+    this.loading = false,
+    this.disabled = false,
+    this.isFullWidth = false,
+    super.key,
+  }) : variant = ButtonVariant.success;
+
+  /// Warning button variant (warning color, for cautionary actions).
+  const CKButton.warning({
+    this.size = ButtonSize.md,
+    this.onPressed,
+    this.child,
+    this.loading = false,
+    this.disabled = false,
+    this.isFullWidth = false,
+    super.key,
+  }) : variant = ButtonVariant.warning;
+
+  /// Info button variant (info color, for informational actions).
+  const CKButton.info({
+    this.size = ButtonSize.md,
+    this.onPressed,
+    this.child,
+    this.loading = false,
+    this.disabled = false,
+    this.isFullWidth = false,
+    super.key,
+  }) : variant = ButtonVariant.info;
+
+  /// Link button variant (text-only with underline, lowest emphasis).
+  const CKButton.link({
+    this.size = ButtonSize.md,
+    this.onPressed,
+    this.child,
+    this.loading = false,
+    this.disabled = false,
+    this.isFullWidth = false,
+    super.key,
+  }) : variant = ButtonVariant.link;
+
   final ButtonVariant variant;
   final ButtonSize size;
   final VoidCallback? onPressed;

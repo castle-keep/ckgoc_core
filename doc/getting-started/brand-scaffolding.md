@@ -17,7 +17,7 @@ How to use
 Run the command from the project root. For example to add a brand named "Acme":
 
 ```bash
-dart run bin/ckcoreui.dart add brand "Acme"
+dart run bin/ckgoc.dart add brand "Acme"
 ```
 
 Notes
@@ -32,7 +32,7 @@ To normalize existing logo files in the repo run the included script:
 Files touched
 ------------
 
-- [bin/ckcoreui.dart](bin/ckcoreui.dart)
+- [bin/ckgoc.dart](bin/ckgoc.dart)
 - [lib/src/themes/ckcore_brand.dart](lib/src/themes/ckcore_brand.dart)
 - [lib/src/themes/ckcore_theme_resolver.dart](lib/src/themes/ckcore_theme_resolver.dart)
 

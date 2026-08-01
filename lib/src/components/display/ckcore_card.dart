@@ -4,7 +4,17 @@ import 'package:ckcoreui/src/themes/ckcore_theme.dart';
 import 'package:ckcoreui/src/components/component_enums.dart';
 
 /// Card component with optional media, action and variant styling.
+///
+/// The default appearance is neutral. Use named constructors for semantic variants:
+/// ```dart
+/// CKCard(title: 'Report')                  // neutral (default)
+/// CKCard.success(title: 'Complete!')
+/// CKCard.warning(title: 'Needs Review')
+/// CKCard.error(title: 'Failed')
+/// CKCard.info(title: 'Information')
+/// ```
 class CKCard extends StatelessWidget {
+  /// Default card (neutral background, recommended appearance).
   const CKCard({
     required this.title,
     this.subtitle,
@@ -20,6 +30,71 @@ class CKCard extends StatelessWidget {
     this.onTap,
     super.key,
   });
+
+  /// Success card variant (green tinted, for positive messages).
+  const CKCard.success({
+    required this.title,
+    this.subtitle,
+    this.description,
+    this.media,
+    this.action,
+    this.trailing,
+    this.mediaAlignment = ContentAlignment.center,
+    this.trailingAlignment = ContentAlignment.center,
+    this.elevated = false,
+    this.layout = CardLayout.vertical,
+    this.onTap,
+    super.key,
+  }) : variant = CardVariant.success;
+
+  /// Warning card variant (orange tinted, for cautionary messages).
+  const CKCard.warning({
+    required this.title,
+    this.subtitle,
+    this.description,
+    this.media,
+    this.action,
+    this.trailing,
+    this.mediaAlignment = ContentAlignment.center,
+    this.trailingAlignment = ContentAlignment.center,
+    this.elevated = false,
+    this.layout = CardLayout.vertical,
+    this.onTap,
+    super.key,
+  }) : variant = CardVariant.warning;
+
+  /// Error card variant (red tinted, for error messages).
+  const CKCard.error({
+    required this.title,
+    this.subtitle,
+    this.description,
+    this.media,
+    this.action,
+    this.trailing,
+    this.mediaAlignment = ContentAlignment.center,
+    this.trailingAlignment = ContentAlignment.center,
+    this.elevated = false,
+    this.layout = CardLayout.vertical,
+    this.onTap,
+    super.key,
+  }) : variant = CardVariant.error;
+
+  /// Info card variant (blue tinted, for informational messages).
+  const CKCard.info({
+    required this.title,
+    this.subtitle,
+    this.description,
+    this.media,
+    this.action,
+    this.trailing,
+    this.mediaAlignment = ContentAlignment.center,
+    this.trailingAlignment = ContentAlignment.center,
+    this.elevated = false,
+    this.layout = CardLayout.vertical,
+    this.onTap,
+    super.key,
+  }) : variant = CardVariant.info;
+
   final String title;
   final String? subtitle;
   final String? description;

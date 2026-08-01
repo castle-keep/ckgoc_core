@@ -76,25 +76,21 @@ BrandIcon.brandLogoWidget(
           name: 'context',
           type: 'BuildContext',
           description: 'Used for theme-aware resolution.',
-          requiredParam: true,
         ),
         DocParam(
           name: 'brand',
           type: 'ckcoreBrand',
           description: 'Brand whose asset set should be used.',
-          requiredParam: true,
         ),
         DocParam(
           name: 'size',
           type: 'double',
           description: 'Requested width and height.',
-          defaultValue: '40',
         ),
         DocParam(
           name: 'variant',
           type: 'BrandIconVariant',
           description: 'master, logo, or name asset family.',
-          defaultValue: 'BrandIconVariant.master',
         ),
         DocParam(
           name: 'assetPath',
@@ -137,13 +133,11 @@ BrandIcon.assetLogoWidget(
           name: 'assetPath',
           type: 'String',
           description: 'Concrete packaged asset path constant from BrandIcon.',
-          requiredParam: true,
         ),
         DocParam(
           name: 'size',
           type: 'double',
           description: 'Requested display size.',
-          defaultValue: '40',
         ),
       ],
       faqs: [

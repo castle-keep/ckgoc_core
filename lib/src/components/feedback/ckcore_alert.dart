@@ -4,7 +4,18 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:ckcoreui/src/themes/ckcore_theme.dart';
 import 'package:ckcoreui/src/components/component_enums.dart';
 
+/// Alert component for displaying messages with semantic color variants.
+///
+/// The default appearance is info (blue, informational). Use named constructors
+/// for other semantic variants:
+/// ```dart
+/// CKAlert(message: 'Please review')              // info (default)
+/// CKAlert.success(message: 'Saved!')
+/// CKAlert.warning(message: 'Double-check this')
+/// CKAlert.error(message: 'Something went wrong')
+/// ```
 class CKAlert extends StatelessWidget {
+  /// Info alert (default, informational appearance).
   const CKAlert({
     required this.message,
     this.title,
@@ -12,6 +23,30 @@ class CKAlert extends StatelessWidget {
     this.onDismiss,
     super.key,
   });
+
+  /// Success alert variant (green, positive).
+  const CKAlert.success({
+    required this.message,
+    this.title,
+    this.onDismiss,
+    super.key,
+  }) : variant = AlertVariant.success;
+
+  /// Warning alert variant (orange, caution).
+  const CKAlert.warning({
+    required this.message,
+    this.title,
+    this.onDismiss,
+    super.key,
+  }) : variant = AlertVariant.warning;
+
+  /// Error alert variant (red, critical).
+  const CKAlert.error({
+    required this.message,
+    this.title,
+    this.onDismiss,
+    super.key,
+  }) : variant = AlertVariant.error;
   final String message;
   final String? title;
   final AlertVariant variant;

@@ -31,7 +31,7 @@ String toDirName(String raw) =>
 
 void main(List<String> args) {
   if (args.length < 3 || args[0] != 'add' || args[1] != 'brand') {
-    print('Usage: dart run bin/ckcoreui.dart add brand <BrandName>');
+    print('Usage: dart run bin/ckgoc.dart add brand <BrandName>');
     exit(1);
   }
 
@@ -411,5 +411,5 @@ final class ${pascal}DarkTheme {
 
   resolverFile.writeAsStringSync(resolverContent);
 
-  print('Done. Run: dart run bin/ckcoreui.dart add brand "$raw"');
+  print('Done. Run: dart run bin/ckgoc.dart add brand "$raw"');
 }

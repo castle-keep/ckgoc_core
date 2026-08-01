@@ -64,10 +64,12 @@ This creates a left-bordered, italicized text container using the design system'
 
 The package exposes a set of small, chainable text extension helpers for common typographic and semantic needs. Use them directly on `Text` widgets, for example: `Text('Hello').bold.primary`.
 
-- Text modifiers: `.bold`, `.italic`, `.underline`, `.strikethrough`, `.uppercase`, `.lowercase`
-- Semantic heading shortcuts: `.h1`, `.h2`, `.h3`, `.h4`, `.h5`, `.h6` (maps to `display2xl`, `displayXl`, `displayLg`, `displayMd`, `displaySm`, `textXl`)
-- Typography styles: `.display2xl`, `.displayXl`, `.displayLg`, `.displayMd`, `.displaySm`, `.textXl`, `.textLg`, `.textMd`, `.textSm`, `.textXs`, `.labelXl`, `.labelLg`, `.labelMd`, `.labelSm`, `.codeMd`
-- Semantic & color helpers: `.primary`, `.primaryHover`, `.primaryActive`, `.primaryDisabled`, `.onPrimary`, `.secondary`, `.secondaryHover`, `.secondaryActive`, `.onSecondary`, `.accent`, `.onAccent`, `.background`, `.onBackground`, `.surface`, `.surfaceVariant`, `.onSurface`, `.onSurfaceVariant`, `.inverseSurface`, `.onInverseSurface`, `.outline`, `.outlineVariant`, `.error`, `.errorContainer`, `.onError`, `.onErrorContainer`, `.success`, `.successContainer`, `.onSuccess`, `.onSuccessContainer`, `.warning`, `.warningContainer`, `.onWarning`, `.onWarningContainer`, `.info`, `.infoContainer`, `.onInfo`, `.onInfoContainer`, `.neutral`, `.neutralVariant`, `.muted`, `.onMuted`, `.shadow`, `.scrim`, `.ring`
+ - Text modifiers: `.bold`, `.regular`, `.medium`, `.semibold`, `.italic`, `.underline`, `.lineThrough`, `.uppercase`, `.lowercase`
+ - Semantic heading shortcuts: `.h1`, `.h2`, `.h3`, `.h4`, `.h5`, `.h6` (maps to `display2xl`, `displayXl`, `displayLg`, `displayMd`, `displaySm`, `textXl`)
+ - Typography styles: `.display2xl`, `.displayXl`, `.displayLg`, `.displayMd`, `.displaySm`, `.textXl`, `.textLg`, `.textMd`, `.textSm`, `.textXs`, `.labelXl`, `.labelLg`, `.labelMd`, `.labelSm`, `.codeMd`
+ - Semantic & color helpers (public): `.primary`, `.secondary`, `.success`, `.warning`, `.error`, `.info`, `.surface`, `.onSurface`, `.outline`, `.muted`
+
+**Golden rule — modifier order**: Apply modifiers (e.g. `.bold`, `.italic`, `.lineThrough`) before typography or color helpers because those return a `Widget`. Example: `Text('Hi').bold.h1` (preferred).
 
 Example usages:
 
