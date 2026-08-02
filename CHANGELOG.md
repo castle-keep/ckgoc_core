@@ -1,3 +1,14 @@
+## 0.4.1
+
+### Changed
+- Improved Material theme injection for better visual consistency.
+- Updated Material widget theming for Checkbox, Radio, Switch, TextField, Dialog, ProgressIndicator, Slider, and related components.
+- Added Material widget examples alongside CKCoreUI components for easier comparison in the documentation.
+
+### Fixed
+- Fixed inconsistent default colors in Material widgets.
+- Improved InputDecorationTheme defaults for outlined text fields.
+
 ## 0.4.0
 
 ### Added
