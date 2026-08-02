@@ -16,6 +16,7 @@ class _DisplayScreenState extends State<DisplayScreen> {
     'Figma',
     'Design',
     'Mobile',
+    'Material Filter Chip',
   ];
 
   void _toggleFilter(String label) {
@@ -42,6 +43,17 @@ class _DisplayScreenState extends State<DisplayScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          _label('MATERIAL AVATAR', theme),
+          SizedBox(height: s.sm),
+          CircleAvatar(
+            backgroundColor: theme.colors.primary,
+            child: Text(
+              'JD',
+              style: theme.typography.displaySm.copyWith(
+                color: theme.colors.onPrimary,
+              ),
+            ),
+          ),
           _label('AVATAR — SIZES', theme),
           SizedBox(height: s.sm),
           Wrap(
@@ -126,8 +138,8 @@ class _DisplayScreenState extends State<DisplayScreen> {
             spacing: s.sm,
             runSpacing: s.sm,
             children: const [
+              Badge(label: Text('Material')),
               CKBadge(label: 'Default'),
-              CKBadge(label: 'Primary'),
               CKBadge.success(label: 'Success'),
               CKBadge.warning(label: 'Warning'),
               CKBadge.error(label: 'Error'),
@@ -158,6 +170,13 @@ class _DisplayScreenState extends State<DisplayScreen> {
           ),
           SizedBox(height: s.xl),
           _label('FILTER CHIPS', theme),
+          SizedBox(height: s.sm),
+          FilterChip(
+            label: Text('Material Filter Chip'),
+            selected: false,
+            onSelected: (bool selected) =>
+                _toggleFilter('Material Filter Chip'),
+          ),
           SizedBox(height: s.sm),
           Wrap(
             spacing: s.sm,
@@ -206,6 +225,13 @@ class _DisplayScreenState extends State<DisplayScreen> {
 
           //  Cards
           _label('CARDS — VERTICAL', theme),
+          SizedBox(height: s.sm),
+          Card(
+            child: Padding(
+              padding: EdgeInsets.all(s.sm),
+              child: Text('Material Card'),
+            ),
+          ),
           SizedBox(height: s.sm),
           Wrap(
             spacing: s.md,

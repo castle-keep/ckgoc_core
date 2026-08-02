@@ -355,6 +355,9 @@ class _CKAppState extends State<CKApp> {
   ThemeData _materialFrom(CkcoreuiThemeData ck) {
     final c = ck.colors;
     final t = ck.typography;
+    final r = ck.radius;
+    final s = ck.spacing;
+    final o = ck.opacity;
 
     // Create text theme using all ckcoreui typography tokens
     final customTextTheme = TextTheme(
@@ -426,6 +429,33 @@ class _CKAppState extends State<CKApp> {
       inputDecorationTheme: InputDecorationTheme(
         labelStyle: t.labelMd.copyWith(color: c.onSurface),
         hintStyle: t.textMd.copyWith(color: c.onSurface.withValues(alpha: 0.6)),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(r.base),
+          borderSide: BorderSide(color: c.outline),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(r.base),
+          borderSide: BorderSide(color: c.outline),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(r.base),
+          borderSide: BorderSide(color: c.primary, width: 2),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(r.base),
+          borderSide: BorderSide(color: c.error),
+        ),
+        focusedErrorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(r.base),
+          borderSide: BorderSide(color: c.error, width: 2),
+        ),
+        disabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(r.base),
+          borderSide: BorderSide(color: c.outlineVariant),
+        ),
+        filled: true,
+        fillColor: c.surface,
+        contentPadding: EdgeInsets.symmetric(horizontal: s.md, vertical: s.sm),
       ),
       // Button themes derived from CKButton styles so Material buttons
       // visually match CKButton across the app.
@@ -489,34 +519,94 @@ class _CKAppState extends State<CKApp> {
       ),
       dialogTheme: DialogThemeData(
         backgroundColor: c.surface,
-        titleTextStyle: t.labelLg.copyWith(color: c.onSurface),
-        contentTextStyle: t.textMd.copyWith(color: c.onSurface),
+        surfaceTintColor: Colors.transparent,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(ck.radius.lg),
+          borderRadius: BorderRadius.circular(r.lg),
         ),
+        titleTextStyle: t.displaySm.copyWith(color: c.onSurface),
+        contentTextStyle: t.textSm.copyWith(color: c.onSurfaceVariant),
       ),
       checkboxTheme: CheckboxThemeData(
         fillColor: MaterialStateProperty.resolveWith((states) {
-          if (states.contains(MaterialState.selected)) return c.primary;
-          return c.onSurface;
+          if (states.contains(MaterialState.selected)) {
+            return c.primary;
+          }
+          return Colors.transparent;
         }),
+        checkColor: MaterialStatePropertyAll(c.onPrimary),
+        side: BorderSide(color: c.outline),
+      ),
+      badgeTheme: BadgeThemeData(
+        backgroundColor: c.primary,
+        textColor: c.onPrimary,
+        textStyle: t.labelSm,
+        padding: EdgeInsets.symmetric(horizontal: s.sm, vertical: s.xxs),
+        largeSize: 20,
+        smallSize: s.sm,
+        alignment: AlignmentDirectional.topEnd,
       ),
       radioTheme: RadioThemeData(
         fillColor: MaterialStateProperty.resolveWith((states) {
-          if (states.contains(MaterialState.selected)) return c.primary;
-          return c.onSurface;
+          if (states.contains(MaterialState.selected)) {
+            return c.primary;
+          }
+          return c.outline;
         }),
+      ),
+      progressIndicatorTheme: ProgressIndicatorThemeData(
+        color: c.primary,
+        linearTrackColor: c.surfaceVariant,
+        borderRadius: BorderRadius.circular(r.full),
+        linearMinHeight: s.sm,
+      ),
+      chipTheme: ChipThemeData(
+        backgroundColor: Colors.transparent,
+        selectedColor: c.primary,
+        disabledColor: c.surfaceVariant,
+        secondarySelectedColor: c.primary,
+
+        labelStyle: t.labelMd.copyWith(color: c.onSurface),
+        secondaryLabelStyle: t.labelMd.copyWith(color: c.onPrimary),
+
+        side: BorderSide(color: c.outline),
+
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(r.full),
+        ),
+
+        padding: EdgeInsets.symmetric(horizontal: s.s12, vertical: s.xs),
+
+        showCheckmark: true,
+        checkmarkColor: c.onPrimary,
+
+        selectedShadowColor: Colors.transparent,
+        shadowColor: Colors.transparent,
+        surfaceTintColor: Colors.transparent,
       ),
       switchTheme: SwitchThemeData(
         trackColor: MaterialStateProperty.resolveWith((states) {
-          if (states.contains(MaterialState.selected))
+          if (states.contains(MaterialState.selected)) {
             return c.primary.withValues(alpha: 0.5);
-          return c.onSurface.withValues(alpha: 0.2);
+          }
+          return c.onSurface.withValues(alpha: 0.12);
         }),
+
         thumbColor: MaterialStateProperty.resolveWith((states) {
-          if (states.contains(MaterialState.selected)) return c.primary;
+          if (states.contains(MaterialState.selected)) {
+            return c.primary;
+          }
           return c.surface;
         }),
+      ),
+      sliderTheme: SliderThemeData(
+        activeTrackColor: c.primary,
+        inactiveTrackColor: c.surfaceVariant,
+        thumbColor: c.primary,
+        overlayColor: c.primary.withValues(alpha: o.subtle),
+        valueIndicatorColor: c.primary,
+        valueIndicatorTextStyle: t.textSm.copyWith(color: c.onPrimary),
+        showValueIndicator: ShowValueIndicator.onlyForDiscrete,
+        trackHeight: s.xs,
       ),
       popupMenuTheme: PopupMenuThemeData(
         color: c.surface,

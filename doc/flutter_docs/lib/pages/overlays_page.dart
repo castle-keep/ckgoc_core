@@ -38,10 +38,10 @@ await CKDialog.showDestructive(
 );
 
 // Informational (text-only)
-await CKDialog.showInfoDialog(
+await CKDialog.show(
   context: context,
   title: 'Info',
-  text: 'Operation completed successfully.',
+  content: Text('Operation completed successfully.'),
   confirmLabel: 'OK',
 );
 ''',
@@ -51,7 +51,7 @@ await CKDialog.showInfoDialog(
           type: 'Widget',
           description: 'Main dialog body.',
           requiredParam: true,
-          ),
+        ),
         DocParam(
           name: 'title',
           type: 'String?',
@@ -62,13 +62,13 @@ await CKDialog.showInfoDialog(
           type: 'String',
           description: 'Confirm button text.',
           defaultValue: 'Confirm',
-          ),
+        ),
         DocParam(
           name: 'cancelLabel',
           type: 'String',
           description: 'Cancel button text.',
           defaultValue: 'Cancel',
-          ),
+        ),
         DocParam(
           name: 'onConfirm',
           type: 'VoidCallback?',
@@ -84,7 +84,7 @@ await CKDialog.showInfoDialog(
           type: 'bool',
           description: 'Shows close affordance in default dialog.',
           defaultValue: 'true',
-          ),
+        ),
         DocParam(
           name: 'maxWidth',
           type: 'double?',
@@ -143,7 +143,7 @@ await CKBottomSheet.show(
           type: 'List<Widget>',
           description: 'Bottom sheet content widgets.',
           requiredParam: true,
-          ),
+        ),
         DocParam(
           name: 'title',
           type: 'String?',
@@ -195,13 +195,13 @@ ComponentDocData _menuDoc() => const ComponentDocData(
           type: 'Widget',
           description: 'Anchor widget that opens the menu.',
           requiredParam: true,
-          ),
+        ),
         DocParam(
           name: 'items',
           type: 'List<CKMenuItem>',
           description: 'Menu entries.',
           requiredParam: true,
-          ),
+        ),
       ],
       faqs: [
         DocFaq(
@@ -242,13 +242,13 @@ CKPopover(
           type: 'Widget',
           description: 'Anchor widget.',
           requiredParam: true,
-          ),
+        ),
         DocParam(
           name: 'content',
           type: 'Widget',
           description: 'Floating content.',
           requiredParam: true,
-          ),
+        ),
       ],
       faqs: [
         DocFaq(
@@ -285,13 +285,13 @@ CKTooltip(
           type: 'String',
           description: 'Tooltip text.',
           requiredParam: true,
-          ),
+        ),
         DocParam(
           name: 'child',
           type: 'Widget',
           description: 'Tooltip anchor.',
           requiredParam: true,
-          ),
+        ),
       ],
       faqs: [
         DocFaq(
@@ -335,10 +335,10 @@ class _DialogDemo extends StatelessWidget {
           child: const Text('Show destructive dialog'),
         ),
         CKButton(
-          onPressed: () => CKDialog.showInfoDialog(
+          onPressed: () => CKDialog.show(
             context: context,
             title: 'Info',
-            text: 'Operation completed successfully.',
+            content: const Text('Operation completed successfully.'),
             confirmLabel: 'OK',
           ),
           child: const Text('Show info dialog'),

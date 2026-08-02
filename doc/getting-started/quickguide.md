@@ -588,10 +588,10 @@ Wraps `showDialog` for brand-consistent dialogs. Provide `title`, `content`, `ac
 There is a convenience helper for simple text-only informational dialogs:
 
 ```dart
-await CKDialog.showInfoDialog(
+await CKDialog.show(
   context: context,
   title: 'Info',
-  text: 'Operation completed successfully.',
+  content: Text('Operation completed successfully.'),
   confirmLabel: 'OK',
 );
 ```

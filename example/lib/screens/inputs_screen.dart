@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:ckcoreui/ckcore_core.dart';
 
@@ -55,6 +57,15 @@ class _InputsScreenState extends State<InputsScreen> {
             spacing: s.md,
             runSpacing: s.md,
             children: [
+              SizedBox(
+                width: 200,
+                child: TextFormField(
+                  decoration: InputDecoration(
+                    hintText: 'Enter text...',
+                    labelText: 'Material TextField',
+                  ),
+                ),
+              ),
               SizedBox(
                 width: 200,
                 child: CKTextField(hint: 'Enter text...', label: 'Label'),
@@ -270,6 +281,13 @@ class _InputsScreenState extends State<InputsScreen> {
             crossAxisAlignment: WrapCrossAlignment.center,
             children: [
               _switchDemo(
+                'Material Checkbox',
+                Checkbox(
+                  value: _cbA,
+                  onChanged: (v) => setState(() => _cbA = v ?? false),
+                ),
+              ),
+              _switchDemo(
                 'Unchecked',
                 CKCheckbox(
                   value: _cbA,
@@ -324,6 +342,14 @@ class _InputsScreenState extends State<InputsScreen> {
             runSpacing: s.md,
             crossAxisAlignment: WrapCrossAlignment.center,
             children: [
+              _switchDemo(
+                'Material Radio',
+                Radio<String>(
+                  value: 'a',
+                  groupValue: _radioGroup,
+                  onChanged: (v) => setState(() => _radioGroup = v),
+                ),
+              ),
               _switchDemo(
                 'Unselected',
                 CKRadio<String>(

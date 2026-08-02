@@ -34,8 +34,12 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
 
   final Set<AlertVariant> _dismissedAlerts = {};
 
-  void _showSnackbar(BuildContext ctx, ToastVariant variant, String message) {
-    CKSnackbar.show(ctx, message, variant: variant);
+  void _showSnackbar(BuildContext ctx, ToastVariant? variant, String message) {
+    variant != null
+        ? CKSnackbar.show(ctx, message, variant: variant)
+        : ScaffoldMessenger.of(
+            ctx,
+          ).showSnackBar(SnackBar(content: Text(message)));
   }
 
   Widget _label(String text, ckcoreThemeData theme) => Text(
@@ -95,6 +99,13 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
             spacing: s.sm,
             runSpacing: s.sm,
             children: [
+              CKButton(
+                size: ButtonSize.sm,
+                variant: ButtonVariant.primary,
+                onPressed: () =>
+                    _showSnackbar(context, null, 'This is a material snackbar'),
+                child: const Text('Material Snackbar'),
+              ),
               CKButton(
                 size: ButtonSize.sm,
                 variant: ButtonVariant.secondary,
@@ -169,6 +180,28 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
             ],
           ),
           SizedBox(height: s.md),
+          Padding(
+            padding: EdgeInsets.only(bottom: s.sm),
+            child: Row(
+              children: [
+                SizedBox(
+                  width: 100,
+                  child: Text(
+                    'Material Default',
+                    style: theme.typography.textSm.copyWith(
+                      color: theme.colors.onSurfaceVariant,
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: LinearProgressIndicator(
+                    value: 0.6, // 60%
+                  ),
+                ),
+              ],
+            ),
+          ),
+          SizedBox(height: s.sm),
           ...progressVariants.map(
             (entry) => Padding(
               padding: EdgeInsets.only(bottom: s.sm),
@@ -216,6 +249,20 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
             ],
           ),
           SizedBox(height: s.sm),
+          Text(
+            'Material Slider',
+            style: theme.typography.textSm.copyWith(
+              color: theme.colors.onSurfaceVariant,
+            ),
+          ),
+          Slider(
+            value: _sliderValue,
+            min: 0,
+            max: 100,
+            onChanged: (v) => setState(() => _sliderValue = v),
+            label: _sliderValue.round().toString(),
+          ),
+          SizedBox(height: s.sm),
           CKSlider(
             value: _sliderValue,
             min: 0,
@@ -233,6 +280,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
             spacing: s.xl,
             runSpacing: s.xl,
             children: [
+              _loaderTile(null, 'Material', theme),
               _loaderTile(LoaderType.circular, 'Circular', theme),
               _loaderTile(LoaderType.bar, 'Bar', theme),
               _loaderTile(LoaderType.dots, 'Dots', theme),
@@ -262,18 +310,9 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
             runSpacing: s.md,
             children: [
               CKLoader(type: LoaderType.circular),
-              CKLoader(
-                type: LoaderType.circular,
-                color: theme.colors.success,
-              ),
-              CKLoader(
-                type: LoaderType.circular,
-                color: theme.colors.warning,
-              ),
-              CKLoader(
-                type: LoaderType.circular,
-                color: theme.colors.error,
-              ),
+              CKLoader(type: LoaderType.circular, color: theme.colors.success),
+              CKLoader(type: LoaderType.circular, color: theme.colors.warning),
+              CKLoader(type: LoaderType.circular, color: theme.colors.error),
               CKLoader(type: LoaderType.circular, color: theme.colors.info),
             ],
           ),
@@ -284,7 +323,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
     );
   }
 
-  Widget _loaderTile(LoaderType type, String label, ckcoreThemeData theme) {
+  Widget _loaderTile(LoaderType? type, String label, ckcoreThemeData theme) {
     final s = theme.spacing;
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -292,7 +331,11 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
         SizedBox(
           width: 72,
           height: 72,
-          child: Center(child: CKLoader(type: type)),
+          child: Center(
+            child: type != null
+                ? CKLoader(type: type)
+                : CircularProgressIndicator(),
+          ),
         ),
         SizedBox(height: s.xs),
         Text(

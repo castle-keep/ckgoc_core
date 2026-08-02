@@ -53,6 +53,28 @@ class _OverlaysScreenState extends State<OverlaysScreen> {
             runSpacing: s.sm,
             children: [
               CKButton.outline(
+                onPressed: () => showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    title: const Text('Dialog Title'),
+                    content: const Text(
+                      'This is the dialog body content. Confirm that you want to proceed with this action.',
+                    ),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.of(context).pop(),
+                        child: const Text('Cancel'),
+                      ),
+                      TextButton(
+                        onPressed: () => Navigator.of(context).pop(),
+                        child: const Text('Confirm'),
+                      ),
+                    ],
+                  ),
+                ),
+                child: const Text('Material Dialog'),
+              ),
+              CKButton.outline(
                 onPressed: () => CKDialog.show(
                   context: context,
                   title: 'Dialog Title',
@@ -97,10 +119,10 @@ class _OverlaysScreenState extends State<OverlaysScreen> {
                 child: const Text('Destructive Dialog'),
               ),
               CKButton.outline(
-                onPressed: () => CKDialog.showInfoDialog(
+                onPressed: () => CKDialog.show(
                   context: context,
                   title: 'Info',
-                  text: 'Operation completed successfully.',
+                  content: const Text('Operation completed successfully.'),
                   confirmLabel: 'OK',
                 ),
                 child: const Text('Info Dialog'),

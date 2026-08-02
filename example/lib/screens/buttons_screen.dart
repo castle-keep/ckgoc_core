@@ -20,6 +20,14 @@ class ButtonsScreen extends StatelessWidget {
             title: 'Variants',
             spacing: s,
             children: [
+              ElevatedButton(
+                onPressed: _noop,
+                child: const Text('Material Elevated Button'),
+              ),
+              OutlinedButton(
+                onPressed: _noop,
+                child: const Text('Material Outlined Button'),
+              ),
               CKButton(onPressed: _noop, child: const Text('Primary')),
               CKButton(onPressed: _noop, child: const Text('Secondary')),
               CKButton.outline(onPressed: _noop, child: const Text('Outline')),
