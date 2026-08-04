@@ -2,6 +2,7 @@ import 'package:ckcoreui/src/themes/themes.dart';
 import 'package:ckcoreui/src/components/components.dart';
 import 'package:flutter/material.dart';
 
+//TODO: this is a working progress
 class CKLoadingState extends StatelessWidget {
   const CKLoadingState({
     this.message,

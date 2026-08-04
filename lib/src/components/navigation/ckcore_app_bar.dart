@@ -6,34 +6,24 @@ import 'package:ckcoreui/src/components/component_enums.dart';
 
 /// App bar used across the design system.
 ///
-/// The default appearance uses the surface background. Provides consistent spacing,
+/// The default appearance uses the primary (brand) background. Provides consistent spacing,
 /// typography and colors for app headers.
 ///
 /// Use named constructors for alternative styles:
 /// ```dart
-/// CKAppBar(title: Text('Home'))          // surface (default)
-/// CKAppBar.primary(title: Text('Home'))  // brand color
+/// CKAppBar(title: Text('Home'))          // primary (default)
 /// CKAppBar.dark(title: Text('Home'))     // dark background
 /// ```
 class CKAppBar extends StatelessWidget implements PreferredSizeWidget {
-  /// Surface style app bar (default, neutral appearance).
+  /// Primary style app bar (default, brand appearance).
   const CKAppBar({
     this.title,
     this.leading,
     this.trailing = const [],
-    this.style = AppBarStyle.surface,
+    this.style = AppBarStyle.primary,
     this.largeTitle = false,
     super.key,
   });
-
-  /// Primary style app bar (brand color background).
-  const CKAppBar.primary({
-    this.title,
-    this.leading,
-    this.trailing = const [],
-    this.largeTitle = false,
-    super.key,
-  }) : style = AppBarStyle.primary;
 
   /// Surface style app bar (surface color background).
   const CKAppBar.surface({

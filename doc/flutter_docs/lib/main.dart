@@ -17,6 +17,7 @@ import 'package:ckcore_docs_app/pages/screen_layout_page.dart';
 import 'package:ckcore_docs_app/pages/templates_page.dart';
 import 'package:ckcore_docs_app/pages/themes_page.dart';
 import 'package:ckcore_docs_app/pages/router_page.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'docs_navigation.dart';
 
@@ -148,6 +149,24 @@ class _ThemeSwitcher extends StatelessWidget {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
+        CKIconButton(
+            icon: Icons.folder,
+            onPressed: () async {
+              final url = Uri.parse('https://pub.dev/packages/ckcoreui');
+
+              await launchUrl(url);
+            },
+            tooltip: 'Flutter Package'),
+        CKIconButton(
+            icon: Icons.code,
+            onPressed: () async {
+              final url =
+                  Uri.parse('https://github.com/castle-keep/ckgoc_core');
+
+              await launchUrl(url);
+            },
+            tooltip: 'Github repo'),
+        SizedBox(width: 12),
         CKMenu(
           trigger: CKContainer(
             elevated: true,

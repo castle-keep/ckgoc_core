@@ -109,19 +109,19 @@ CKTextField(
           type: 'bool',
           description: 'Disables interaction when false.',
           defaultValue: 'true',
-          ),
+        ),
         DocParam(
           name: 'readOnly',
           type: 'bool',
           description: 'Prevents text edits while allowing focus.',
           defaultValue: 'false',
-          ),
+        ),
         DocParam(
           name: 'maxLines',
           type: 'int?',
           description: 'Number of lines for non-obscured text.',
           defaultValue: '1',
-          ),
+        ),
         DocParam(
           name: 'keyboardType',
           type: 'TextInputType?',
@@ -132,7 +132,7 @@ CKTextField(
           type: 'bool',
           description: 'Masks text input.',
           defaultValue: 'false',
-          ),
+        ),
         DocParam(
           name: 'textInputAction',
           type: 'TextInputAction?',
@@ -143,13 +143,13 @@ CKTextField(
           type: 'bool',
           description: 'Requests focus after build.',
           defaultValue: 'false',
-          ),
+        ),
         DocParam(
           name: 'borderless',
           type: 'bool',
           description: 'Removes filled and outline styles for inline contexts.',
           defaultValue: 'false',
-          ),
+        ),
       ],
       faqs: [
         DocFaq(
@@ -226,7 +226,7 @@ CKPasswordField(
           type: 'bool',
           description: 'Disables interaction when false.',
           defaultValue: 'true',
-          ),
+        ),
         DocParam(
           name: 'textInputAction',
           type: 'TextInputAction?',
@@ -237,7 +237,7 @@ CKPasswordField(
           type: 'bool',
           description: 'Requests focus on mount.',
           defaultValue: 'false',
-          ),
+        ),
       ],
       faqs: [
         DocFaq(
@@ -298,13 +298,13 @@ CKSearchField(
           type: 'bool',
           description: 'Disables the field when false.',
           defaultValue: 'true',
-          ),
+        ),
         DocParam(
           name: 'autoFocus',
           type: 'bool',
           description: 'Focuses on mount.',
           defaultValue: 'false',
-          ),
+        ),
       ],
       faqs: [
         DocFaq(
@@ -342,7 +342,7 @@ CKCheckbox(
           type: 'bool?',
           description: 'Current value. Null renders the indeterminate state.',
           requiredParam: true,
-          ),
+        ),
         DocParam(
           name: 'onChanged',
           type: 'ValueChanged<bool?>?',
@@ -372,6 +372,7 @@ CKCheckbox(
         ),
       ],
       notes: [
+        'Roadmap: The package is gradually moving toward a more consistent API. Some variant/type parameters may become internal or be replaced by named constructors in a future major release as the design system matures. Existing APIs remain supported for backward compatibility.',
         'Enum demo coverage: both SwitchVariant values are rendered in the live demo.',
         'Accessibility: Tapping the label toggles the control; provide descriptive `label` text. Use `onChanged: null` to present a disabled state.',
       ],
@@ -429,6 +430,7 @@ CKRadio<String>(
         ),
       ],
       notes: [
+        'Roadmap: The package is gradually moving toward a more consistent API. Some variant/type parameters may become internal or be replaced by named constructors in a future major release as the design system matures. Existing APIs remain supported for backward compatibility.',
         'Accessibility: Radios are grouped by shared `groupValue` semantics; ensure labels are unique and descriptive for screen reader users.',
       ],
     );
@@ -460,7 +462,7 @@ CKSwitch.error(...)
           type: 'bool',
           description: 'Current switch state.',
           requiredParam: true,
-          ),
+        ),
         DocParam(
           name: 'onChanged',
           type: 'ValueChanged<bool>?',
@@ -494,15 +496,16 @@ CKSwitch.error(...)
         ),
       ],
       notes: [
-        'Enum demo coverage: both SwitchVariant values are rendered in the live demo.',
+        'Roadmap: The package is gradually moving toward a more consistent API. Some variant/type parameters may become internal or be replaced by named constructors in a future major release as the design system matures. Existing APIs remain supported for backward compatibility.',
         'Accessibility: Use `onChanged: null` to disable the switch. If `color` is provided it overrides the active track color.',
+        'Enum demo coverage: both SwitchVariant values are rendered in the live demo.',
       ],
     );
 
 ComponentDocData _dropdownDoc() => const ComponentDocData(
       title: 'CKDropdown<T>',
       summary:
-          'Single-selection dropdown that matches the styling and states of CKTextField. It uses a custom anchored overlay that opens below the field by default and flips above when below-space is insufficient.',
+          'Single-selection dropdown that matches the styling and states of CKTextField. It uses a custom anchored overlay that opens below the field by default and flips above when below-space is insufficient. Supports inline validation.',
       demo: _DropdownDocDemo(),
       code: '''
 CKDropdown<String>(
@@ -513,6 +516,7 @@ CKDropdown<String>(
     DropdownMenuItem(value: 'admin', child: Text('Admin')),
     DropdownMenuItem(value: 'editor', child: Text('Editor')),
   ],
+  validator: (v) => v == null ? 'Please select a role' : null,
   onChanged: (value) => setState(() => selectedRole = value),
 )
 ''',
@@ -546,12 +550,18 @@ CKDropdown<String>(
         DocParam(
           name: 'errorText',
           type: 'String?',
-          description: 'External error text.',
+          description: 'External error text; takes precedence over validator.',
         ),
         DocParam(
           name: 'successText',
           type: 'String?',
           description: 'Optional success state helper text.',
+        ),
+        DocParam(
+          name: 'validator',
+          type: 'String? Function(T?)?',
+          description:
+              'Inline validation function. Runs after first selection (dirty state).',
         ),
         DocParam(
           name: 'menuMaxHeight',
@@ -572,6 +582,11 @@ CKDropdown<String>(
               'Provide `value` and `onChanged` to control selection externally.',
         ),
         DocFaq(
+          question: 'How does validation work?',
+          answer:
+              'The `validator` function runs after the user makes their first selection (when dirty). Return null for valid, or an error string to show below the field. Explicit `errorText` overrides validator results.',
+        ),
+        DocFaq(
           question:
               'How does the overlay decide whether to open above or below?',
           answer:
@@ -580,6 +595,7 @@ CKDropdown<String>(
       ],
       notes: [
         'Overlay behavior: `menuMaxHeight` defaults to 400 and `menuMinHeight` defaults to 144. The overlay chooses above/below placement based on available space and these thresholds.',
+        'Validation: The `validator` runs only after the user makes a selection, following the same pattern as CKTextField.',
         'Accessibility: The overlay should receive keyboard focus when opened; ensure your app moves focus accordingly for keyboard users.',
         'See also: CKTextField (shared field styling).',
       ],
@@ -606,7 +622,7 @@ CKNumberStepper(
           type: 'int?',
           description: 'Current numeric value displayed by the control.',
           requiredParam: true,
-          ),
+        ),
         DocParam(
           name: 'onChanged',
           type: 'ValueChanged<int>?',
@@ -652,19 +668,19 @@ CKNumberStepper(
           type: 'int',
           description: 'Increment and decrement amount.',
           defaultValue: '1',
-          ),
+        ),
         DocParam(
           name: 'enabled',
           type: 'bool',
           description: 'Disables the control when false.',
           defaultValue: 'true',
-          ),
+        ),
         DocParam(
           name: 'borderless',
           type: 'bool',
           description: 'Removes filled and outline styles for inline layouts.',
           defaultValue: 'false',
-          ),
+        ),
       ],
       faqs: [
         DocFaq(
@@ -706,7 +722,7 @@ CKOtpField(
           type: 'int',
           description: 'Number of OTP cells.',
           defaultValue: '6',
-          ),
+        ),
         DocParam(
           name: 'onChanged',
           type: 'ValueChanged<String>?',
@@ -722,13 +738,13 @@ CKOtpField(
           type: 'bool',
           description: 'Requests focus after first frame.',
           defaultValue: 'false',
-          ),
+        ),
         DocParam(
           name: 'enabled',
           type: 'bool',
           description: 'Disables input when false.',
           defaultValue: 'true',
-          ),
+        ),
       ],
       faqs: [
         DocFaq(
@@ -984,18 +1000,16 @@ class _RadioDocDemoState extends State<_RadioDocDemo> {
           label: 'Admin',
           onChanged: (v) => setState(() => role = v),
         ),
-        CKRadio<String>(
+        CKRadio.success(
           value: 'editor',
           groupValue: role,
           label: 'Editor',
-          variant: SwitchVariant.success,
           onChanged: (v) => setState(() => role = v),
         ),
-        CKRadio<String>(
+        CKRadio.error(
           value: 'viewer',
           groupValue: role,
           label: 'Viewer',
-          variant: SwitchVariant.error,
           onChanged: (v) => setState(() => role = v),
         ),
       ],

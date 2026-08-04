@@ -22,6 +22,7 @@ class CKDropdown<T> extends StatefulWidget {
     this.borderless = false,
     this.menuMaxHeight = 400,
     this.menuMinHeight = 144,
+    this.validator,
     super.key,
   });
 
@@ -39,6 +40,7 @@ class CKDropdown<T> extends StatefulWidget {
   final bool borderless;
   final double menuMaxHeight;
   final double menuMinHeight;
+  final String? Function(T?)? validator;
 
   @override
   State<CKDropdown<T>> createState() => _CKDropdownState<T>();
@@ -54,6 +56,7 @@ class _CKDropdownState<T> extends State<CKDropdown<T>> {
   double _menuHeight = 0;
   double _fieldWidth = 0;
   double _fieldHeight = 0;
+  bool _isDirty = false;
 
   List<DropdownMenuItem<T>> get _items =>
       widget.items ?? <DropdownMenuItem<T>>[];
@@ -75,6 +78,12 @@ class _CKDropdownState<T> extends State<CKDropdown<T>> {
   void dispose() {
     _removeOverlay();
     super.dispose();
+  }
+
+  String? _getValidationError() {
+    if (widget.errorText != null) return widget.errorText;
+    if (!_isDirty || widget.validator == null) return null;
+    return widget.validator?.call(widget.value);
   }
 
   void _toggleMenu() {
@@ -209,6 +218,7 @@ class _CKDropdownState<T> extends State<CKDropdown<T>> {
                     return InkWell(
                       onTap: isEnabled
                           ? () {
+                              setState(() => _isDirty = true);
                               widget.onChanged?.call(item.value);
                               _closeMenu();
                             }
@@ -249,7 +259,8 @@ class _CKDropdownState<T> extends State<CKDropdown<T>> {
     final spacing = theme.spacing;
     final typography = theme.typography;
 
-    final hasError = widget.errorText != null;
+    final validationError = _getValidationError();
+    final hasError = validationError != null;
     final hasSuccess = widget.successText != null && !hasError;
 
     OutlineInputBorder border(Color color, {double width = 1}) =>
@@ -273,7 +284,7 @@ class _CKDropdownState<T> extends State<CKDropdown<T>> {
     final decoration = widget.borderless
         ? InputDecoration(
             helperText: hasSuccess ? widget.successText : widget.helperText,
-            errorText: widget.errorText,
+            errorText: validationError,
             errorStyle: typography.textSm.copyWith(color: colors.error),
             filled: false,
             contentPadding: EdgeInsets.zero,
@@ -287,7 +298,7 @@ class _CKDropdownState<T> extends State<CKDropdown<T>> {
             helperStyle: typography.textSm.copyWith(
               color: hasSuccess ? colors.success : colors.onSurfaceVariant,
             ),
-            errorText: widget.errorText,
+            errorText: validationError,
             errorStyle: typography.textSm.copyWith(color: colors.error),
             filled: true,
             fillColor: widget.enabled ? colors.surface : colors.muted,

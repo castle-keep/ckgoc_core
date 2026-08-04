@@ -214,6 +214,7 @@ CKButton(
   onPressed: () {},
   child: Text('Save Changes'),
 )
+
 ```
 
 ### CKIconButton
@@ -284,6 +285,8 @@ CKTextField(
 ### CKCheckbox / CKRadio / CKSwitch
 - Standard form controls with `value`, `onChanged`, and an optional `label` or custom child. Use theme tokens for spacing and colors.
 
+Named constructors available for `CKRadio`: `CKRadio.success(...)` and `CKRadio.error(...)` for convenience when rendering status-colored radios.
+
 ### CKDropdown<T>
 Select input.
 
@@ -292,10 +295,11 @@ Params (high-level)
 - `items` (List<DropdownMenuItem<T>>): options.
 - `onChanged` (ValueChanged<T?>?): selection callback.
 - `hint` / `label` / `helperText` / `errorText` / `successText` — text-field style props.
+- `validator` (String? Function(T?)?): synchronous validator; runs after first change (when dirty).
 - `menuMaxHeight` (double): max overlay height before internal scrolling. Default: `400`.
 - `menuMinHeight` (double): preferred minimum space below the field before the menu flips above. Default: `144`.
 
-Example
+Example (basic)
 ```dart
 CKDropdown<String>(
   label: 'Role',
@@ -310,9 +314,24 @@ CKDropdown<String>(
 )
 ```
 
+Example (with validation)
+```dart
+CKDropdown<String>(
+  label: 'Role',
+  value: selectedRole,
+  items: const [
+    DropdownMenuItem(value: 'admin', child: Text('Admin')),
+    DropdownMenuItem(value: 'editor', child: Text('Editor')),
+  ],
+  validator: (v) => v == null ? 'Please select a role' : null,
+  onChanged: (v) => setState(() => selectedRole = v),
+)
+```
+
 Notes
--- The dropdown follows the same visual tokens as `CKTextField` (filled background, outline, focus ring).
+- The dropdown follows the same visual tokens as `CKTextField` (filled background, outline, focus ring).
 - The menu is a custom anchored overlay rendered below the field when possible and above it when the available height below is smaller than the minimum threshold.
+- `validator` runs only after the user makes a selection (dirty state). Explicit `errorText` takes precedence over `validator` result.
 - Use `helperText`, `errorText`, or `successText` to show contextual messages below the control.
 
 ### CKNumberStepper
@@ -402,6 +421,7 @@ CKBadge.count(count: 7)                         // count badge
 CKBadge.count(count: 99, maxCount: 99)          // with max
 ```
 
+
 Params:
 - `label` (String?): Badge text.
 - `count` (int?): Display count instead of label (with `.count()`).
@@ -441,6 +461,7 @@ Params:
 - `padding` (EdgeInsetsGeometry?): Override default padding.
 - `elevated` (bool): Add shadow. Default: false.
 
+
 ### CKAccordion
 - Accepts `items` (title + content) and optional `initiallyOpen` flags. See `component_enums` for `CKAccordionItem` shape.
 
@@ -460,6 +481,7 @@ CKProgressBar.warning(value: 0.75)
 CKProgressBar.error(value: 0.25)
 CKProgressBar.indeterminate()                   // Animated, no value
 ```
+
 
 Params:
 - `value` (double?): Progress 0.0–1.0. Null for indeterminate.
@@ -519,7 +541,6 @@ Use `CKSnackbar.show()` to display toasts in a scaffold context.
 
 ### CKEmptyState / CKErrorState / CKLoadingState
 - Standardized full-card states. Provide `title`, `subtitle`, `action` and optional illustration widget.
-
 ---
 
 ## Navigation
@@ -529,7 +550,7 @@ App bar with semantic style variants and tokenized styling.
 
 **Use semantic named constructors:**
 ```dart
-CKAppBar.primary(title: Text('Home'))
+CKAppBar(title: Text('Home'))               // primary (default)
 CKAppBar.surface(title: Text('Home'))
 CKAppBar.dark(title: Text('Home'))
 CKAppBar.transparent(title: Text('Home'))
@@ -557,6 +578,7 @@ Params:
 - `scrollable` (bool): Allow horizontal scroll. Default: false.
 - `onTabChanged` (ValueChanged<int>?): Selection callback.
 
+
 ### CKSwitch
 Toggle switch with optional semantic variants.
 
@@ -572,8 +594,14 @@ Params:
 - `label` (String?): Optional label.
 - `color` (Color?): Override color.
 
+
 ### CKBottomNavigation, CKNavigationRail, CKSideNav, CKDrawer
 - Navigation primitives accept a list of destinations and callbacks for selection.
+
+Note: `CKSideNav` now supports key-based selection. Provide `itemKey` on
+`CKSideNavItem` and use `selectedKey` / `onItemSelectedKey` for stable,
+non-positional selection. The old `selectedIndex` / `onItemSelected` remain
+supported but are deprecated and will be removed in a future release.
 
 ### CKBreadcrumb
 - Accepts `items` (label + onTap) and separators.

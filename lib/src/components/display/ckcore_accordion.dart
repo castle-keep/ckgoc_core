@@ -1,3 +1,5 @@
+import 'package:ckcoreui/src/components/display/ckcore_container.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:ckcoreui/src/themes/ckcore_theme.dart';
 import 'package:ckcoreui/src/components/component_enums.dart';
@@ -42,30 +44,21 @@ class _CompanyAccordionState extends State<CKAccordion> {
   @override
   Widget build(BuildContext context) {
     final theme = context.ckcoreTheme;
-    final colors = theme.colors;
     final radius = theme.radius;
 
-    return Container(
-      decoration: BoxDecoration(
-        color: colors.surface,
-        borderRadius: BorderRadius.circular(radius.lg),
-        border: Border.all(color: colors.outlineVariant),
-      ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(radius.lg),
-        child: Column(
-          children: [
-            for (int i = 0; i < widget.items.length; i++) ...[
-              if (i > 0)
-                Divider(height: 1, thickness: 1, color: colors.outlineVariant),
-              _AccordionTile(
-                item: widget.items[i],
-                isExpanded: _expanded.contains(i),
-                onTap: () => _toggle(i),
-              ),
-            ],
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(radius.lg),
+      child: Column(
+        children: [
+          for (int i = 0; i < widget.items.length; i++) ...[
+            if (i > 0) SizedBox(height: context.ckcoreTheme.spacing.xs),
+            _AccordionTile(
+              item: widget.items[i],
+              isExpanded: _expanded.contains(i),
+              onTap: () => _toggle(i),
+            ),
           ],
-        ),
+        ],
       ),
     );
   }
@@ -89,64 +82,70 @@ class _AccordionTile extends StatelessWidget {
     final typography = theme.typography;
     final motion = theme.motion;
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        InkWell(
-          onTap: onTap,
-          child: Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: spacing.md,
-              vertical: spacing.s12,
-            ),
-            child: Row(
-              children: [
-                SizedBox(
-                  width: spacing.md,
-                  child: Text(
-                    isExpanded ? '\u2022' : '\u2013',
-                    style: TextStyle(
-                      fontSize: spacing.md,
-                      fontWeight: FontWeight.bold,
+    return CKContainer.outlined(
+      padding: EdgeInsets.zero,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          InkWell(
+            onTap: onTap,
+            child: Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: spacing.md,
+                vertical: spacing.s12,
+              ),
+              child: Row(
+                children: [
+                  SizedBox(
+                    width: spacing.md,
+                    child: Icon(
+                      isExpanded
+                          ? LucideIcons.chevronDown
+                          : LucideIcons.chevronRight,
+                      size: spacing.md,
                       color: isExpanded
                           ? colors.primary
                           : colors.onSurfaceVariant,
                     ),
                   ),
-                ),
-                SizedBox(width: spacing.xs),
-                Expanded(
-                  child: Text(
-                    item.title,
-                    style: typography.labelMd.copyWith(
-                      color: isExpanded ? colors.primary : colors.onSurface,
+                  SizedBox(width: spacing.xs),
+                  Expanded(
+                    child: Text(
+                      item.title,
+                      style: typography.labelMd.copyWith(
+                        color: isExpanded ? colors.primary : colors.onSurface,
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
-        ),
-        AnimatedSize(
-          duration: motion.fast,
-          curve: motion.decelerate,
-          child: isExpanded
-              ? Padding(
-                  padding: EdgeInsets.only(
-                    left: spacing.xl + spacing.xs,
-                    right: spacing.md,
-                    bottom: spacing.md,
-                  ),
-                  child: DefaultTextStyle(
-                    style: typography.textSm.copyWith(
-                      color: colors.onSurfaceVariant,
-                    ),
-                    child: item.content,
-                  ),
-                )
-              : const SizedBox.shrink(),
-        ),
-      ],
+
+          AnimatedSize(
+            duration: motion.fast,
+            curve: motion.decelerate,
+            child: isExpanded
+                ? Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Divider(height: 1, color: colors.outlineVariant),
+                      SizedBox(height: spacing.xs),
+                      Padding(
+                        padding: EdgeInsets.all(spacing.md),
+                        child: DefaultTextStyle(
+                          style: typography.textSm.copyWith(
+                            color: colors.onSurfaceVariant,
+                          ),
+                          child: item.content,
+                        ),
+                      ),
+                    ],
+                  )
+                : const SizedBox.shrink(),
+          ),
+        ],
+      ),
     );
   }
 }

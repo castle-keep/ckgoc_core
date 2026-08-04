@@ -122,8 +122,6 @@ class CKCard extends StatelessWidget {
     final shadows = theme.shadows;
     final opacity = theme.opacity;
 
-    final isTinted = variant != CardVariant.defaultCard;
-
     final (bgColor, fgColor, accentColor, variantIcon) = switch (variant) {
       CardVariant.success => (
         colors.successContainer,
@@ -163,60 +161,60 @@ class CKCard extends StatelessWidget {
       border: Border.all(color: colors.outlineVariant),
       // Apply small shadow when explicitly elevated or when not using a
       // tinted variant (matches CKContainer's `elevated` behavior).
-      boxShadow: (elevated || !isTinted) ? shadows.sm : null,
+      boxShadow: elevated ? shadows.sm : null,
     );
 
-    Widget content = Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisSize: MainAxisSize.min,
+    Widget content = Row(
+      crossAxisAlignment: switch (trailingAlignment) {
+        ContentAlignment.top => CrossAxisAlignment.start,
+        ContentAlignment.center => CrossAxisAlignment.center,
+        ContentAlignment.bottom => CrossAxisAlignment.end,
+        ContentAlignment.stretch => CrossAxisAlignment.stretch,
+      },
       children: [
-        // Title row
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            if (variantIcon != null) ...[
-              Icon(variantIcon, size: spacing.md, color: accentColor),
-              SizedBox(width: spacing.xs),
-            ],
-            Expanded(
-              child: Text(
-                title,
-                style: typography.labelLg.copyWith(color: fgColor),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  if (variantIcon != null) ...[
+                    Icon(variantIcon, size: spacing.md, color: accentColor),
+                    SizedBox(width: spacing.xs),
+                  ],
+                  Expanded(
+                    child: Text(
+                      title,
+                      style: typography.labelLg.copyWith(color: fgColor),
+                    ),
+                  ),
+                ],
               ),
-            ),
-            if (trailing != null) ...[
-              SizedBox(width: spacing.xs),
-              Align(
-                alignment: switch (trailingAlignment) {
-                  ContentAlignment.top => Alignment.topCenter,
-                  ContentAlignment.center => Alignment.center,
-                  ContentAlignment.bottom => Alignment.bottomCenter,
-                  ContentAlignment.stretch => Alignment.center,
-                },
-                child: trailing!,
-              ),
+              if (subtitle != null) ...[
+                SizedBox(height: spacing.xxs),
+                Text(
+                  subtitle!,
+                  style: typography.textSm.copyWith(
+                    color: fgColor.withValues(alpha: opacity.muted),
+                  ),
+                ),
+              ],
+              if (description != null) ...[
+                SizedBox(height: spacing.xs),
+                Text(
+                  description!,
+                  style: typography.textSm.copyWith(
+                    color: fgColor.withValues(alpha: 0.85),
+                  ),
+                ),
+              ],
+              if (action != null) ...[SizedBox(height: spacing.sm), action!],
             ],
-          ],
+          ),
         ),
-        if (subtitle != null) ...[
-          SizedBox(height: spacing.xxs),
-          Text(
-            subtitle!,
-            style: typography.textSm.copyWith(
-              color: fgColor.withValues(alpha: opacity.muted),
-            ),
-          ),
-        ],
-        if (description != null) ...[
-          SizedBox(height: spacing.xs),
-          Text(
-            description!,
-            style: typography.textSm.copyWith(
-              color: fgColor.withValues(alpha: 0.85),
-            ),
-          ),
-        ],
-        if (action != null) ...[SizedBox(height: spacing.sm), action!],
+        if (trailing != null) ...[SizedBox(width: spacing.sm), trailing!],
       ],
     );
 

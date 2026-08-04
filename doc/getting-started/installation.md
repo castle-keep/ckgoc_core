@@ -6,7 +6,7 @@ Add the released package from pub.dev to your app's `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  ckcoreui: ^0.1.2
+  ckcoreui: ^0.4.2
 ```
 
 Or, while developing locally, point to a path:
@@ -37,6 +37,25 @@ flutter pub get
 
 ```dart
 import 'package:ckcoreui/ckcore_core.dart';
+```
+
+## Router & Delegate (brief)
+
+If your app uses Navigator 2.0, `CKApp` supports `router` and `delegate` constructors. See `doc/getting-started/setup.md` for expanded examples.
+
+```dart
+// Router-based (RouterConfig or GoRouter)
+CKApp.router(
+  brand: ckcoreBrand.castleKeep,
+  routerConfig: myRouterConfig,
+)
+
+// Delegate-based (explicit RouterDelegate + RouteInformationParser)
+CKApp.delegate(
+  brand: ckcoreBrand.castleKeep,
+  routerDelegate: myRouterDelegate,
+  routeInformationParser: myRouteInformationParser,
+)
 ```
 
 ## Using packaged logos

@@ -17,6 +17,37 @@ class ButtonsScreen extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _Section(
+            title: 'FAB',
+            spacing: s,
+            children: [
+              CKFab(onPressed: _noop, icon: Icons.add),
+              CKFab(
+                icon: Icons.heart_broken,
+                label: 'Broken',
+                onPressed: _noop,
+              ),
+            ],
+          ),
+          SizedBox(height: s.xl),
+          _Section(
+            title: 'Icon Buttons',
+            spacing: s,
+            children: [
+              CKIconButton(onPressed: _noop, icon: Icons.add),
+              CKIconButton(
+                icon: Icons.sunny,
+                onPressed: _noop,
+                tooltip: 'Sunny',
+              ),
+              CKIconButton(
+                icon: Icons.disabled_by_default,
+                onPressed: null,
+                tooltip: 'Disabled',
+              ),
+            ],
+          ),
+          SizedBox(height: s.xl),
+          _Section(
             title: 'Variants',
             spacing: s,
             children: [
@@ -95,6 +126,7 @@ class ButtonsScreen extends StatelessWidget {
                 disabled: true,
                 child: const Text('Disabled'),
               ),
+              CKButton(onPressed: null, child: const Text('OnPressed Null')),
             ],
           ),
           SizedBox(height: s.xl),

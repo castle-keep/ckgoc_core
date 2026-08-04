@@ -41,7 +41,7 @@ CKAppBar(
 )
 
 // Named constructors for other styles
-CKAppBar.primary(...)  // Brand color background
+// Primary is the default: use `CKAppBar()` for brand background
 CKAppBar.dark(...)     // Dark background
 ''',
       params: [
@@ -152,6 +152,7 @@ CKTabs.card(tabs: [...])   // Card style
         ),
       ],
       notes: [
+        'Roadmap: The package is gradually moving toward a more consistent API. Some variant/type parameters may become internal or be replaced by named constructors in a future major release as the design system matures. Existing APIs remain supported for backward compatibility.',
         'Enum demo coverage: all TabVariant values are rendered.',
       ],
     );
@@ -685,6 +686,7 @@ class _SideNavDemo extends StatefulWidget {
 
 class _SideNavDemoState extends State<_SideNavDemo> {
   int selectedIndex = 1;
+  Object? selectedKey = 'users';
   bool collapsed = false;
 
   List<CKSideNavSection> get _sections => const [
@@ -694,11 +696,13 @@ class _SideNavDemoState extends State<_SideNavDemo> {
             CKSideNavItem(
               icon: Icons.dashboard_outlined,
               label: 'Dashboard',
+              itemKey: 'dashboard',
             ),
             CKSideNavItem(
               icon: Icons.people_outline,
               label: 'Users',
               badge: 12,
+              itemKey: 'users',
             ),
           ],
         ),
@@ -710,6 +714,18 @@ class _SideNavDemoState extends State<_SideNavDemo> {
           ],
         ),
       ];
+
+  int? _indexForKey(Object? key) {
+    if (key == null) return null;
+    int idx = 0;
+    for (final sec in _sections) {
+      for (final item in sec.items) {
+        if (item.itemKey == key) return idx;
+        idx++;
+      }
+    }
+    return null;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -723,6 +739,13 @@ class _SideNavDemoState extends State<_SideNavDemo> {
           child: CKSideNav(
             sections: _sections,
             selectedIndex: selectedIndex,
+            selectedKey: selectedKey,
+            onItemSelectedKey: (k) {
+              setState(() {
+                selectedKey = k;
+                selectedIndex = _indexForKey(k) ?? selectedIndex;
+              });
+            },
             onItemSelected: (value) => setState(() => selectedIndex = value),
             collapsed: false,
             brandName: 'CastleKeep',

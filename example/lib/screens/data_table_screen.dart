@@ -96,12 +96,25 @@ class _DataTableScreenState extends State<DataTableScreen> {
 
   //  Shared base columns
   List<CKTableColumn> get _baseColumns => [
-    const CKTableColumn(
+    CKTableColumn(
       key: 'name',
       label: 'Name',
       type: CKColumnType.avatarText,
       sortable: true,
-      flex: 2,
+      width: 300,
+      cellBuilder: (value, _) => Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(value.toString()),
+          Expanded(
+            child: Text(
+              'Subtitle for $value',
+              style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+            ),
+          ),
+        ],
+      ),
     ),
     const CKTableColumn(key: 'email', label: 'Email', flex: 2),
     CKTableColumn(
@@ -263,9 +276,17 @@ class _DataTableScreenState extends State<DataTableScreen> {
           ),
           SizedBox(height: s.md),
           CKDataTable(
+            key: ValueKey('deletable_${_deletableRows.length}_$_deleteSearch'),
             widthBehavior: TableWidthBehavior.compact,
             columns: _baseColumns,
-            rows: _filterRows(_deletableRows, _deleteSearch),
+            // Pass a fresh copy of the rows to ensure the table sees the
+            // updated list identity after mutations (delete/revert). Some
+            // internal caches rely on list identity and may not update if
+            // the same list instance is reused.
+            rows: _filterRows(
+              _deletableRows,
+              _deleteSearch,
+            ).map((r) => Map<String, dynamic>.from(r)).toList(),
             rowKey: 'id',
             title: 'Users',
             subtitle: '${_deletableRows.length} records',

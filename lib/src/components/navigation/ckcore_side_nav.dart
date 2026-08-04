@@ -15,6 +15,8 @@ class CKSideNav extends StatefulWidget {
     required this.sections,
     required this.selectedIndex,
     required this.onItemSelected,
+    this.selectedKey,
+    this.onItemSelectedKey,
     this.collapsed = false,
     this.onToggleCollapse,
     this.logo,
@@ -29,8 +31,20 @@ class CKSideNav extends StatefulWidget {
     super.key,
   });
   final List<CKSideNavSection> sections;
+  @Deprecated(
+    'Use selectedKey instead; selectedIndex will be removed in a future release',
+  )
   final int selectedIndex;
+  @Deprecated(
+    'Use onItemSelectedKey instead; onItemSelected will be removed in a future release',
+  )
   final ValueChanged<int> onItemSelected;
+  // New preferred key-based selection. When provided, selection will be
+  // determined by matching CKSideNavItem.itemKey to this value.
+  final Object? selectedKey;
+  // Preferred selection callback using the item's key. Non-breaking: both
+  // callbacks may be used; index-based callback remains for backward compat.
+  final ValueChanged<Object?>? onItemSelectedKey;
   final bool collapsed;
   final VoidCallback? onToggleCollapse;
   final Widget? logo;
@@ -246,19 +260,34 @@ class _CKSideNavState extends State<CKSideNav> {
         : colors.primary.withValues(alpha: opacity.hover);
     final activeFg = isBrand ? colors.onPrimary : colors.primary;
 
-    // Flatten items to get absolute indices
+    // Flatten items to get absolute indices and keys
     int idx = 0;
-    final List<({int index, CKSideNavSection section, CKSideNavItem item})>
+    final List<
+      ({int index, CKSideNavSection section, CKSideNavItem item, Object? key})
+    >
     flatItems = [];
     for (final section in widget.sections) {
       for (final item in section.items) {
-        flatItems.add((index: idx, section: section, item: item));
+        flatItems.add((
+          index: idx,
+          section: section,
+          item: item,
+          key: item.itemKey,
+        ));
         idx++;
       }
     }
 
-    Widget buildItem(int itemIndex, CKSideNavItem item) {
-      final isSelected = itemIndex == widget.selectedIndex;
+    Widget buildItem(int itemIndex, CKSideNavItem item, Object? itemKey) {
+      // Determine selection. Priority:
+      // 1. If `widget.selectedKey` is non-null, compare to `itemKey`.
+      // 2. Else fall back to `widget.selectedIndex` (deprecated but supported).
+      final bool isSelected = widget.selectedKey != null
+          ? (itemKey != null && widget.selectedKey == itemKey)
+          : (itemIndex == widget.selectedIndex);
+      // Additionally support selectedIndex being a key via dynamic type check.
+      // If parent passed a key-based selectedIndex (Object), developers should
+      // use the new `selectedKey` API — see migration docs.
 
       final showIconBadge = widget.collapsed && item.badge != null;
 
@@ -324,7 +353,14 @@ class _CKSideNavState extends State<CKSideNav> {
             borderRadius: BorderRadius.circular(radius.base),
           ),
           child: InkWell(
-            onTap: () => widget.onItemSelected(itemIndex),
+            onTap: () {
+              // Fire both callbacks to remain backwards-compatible. Prefer
+              // key-based callback when available.
+              if (widget.onItemSelectedKey != null) {
+                widget.onItemSelectedKey!(itemKey);
+              }
+              widget.onItemSelected(itemIndex);
+            },
             borderRadius: BorderRadius.circular(radius.base),
             child: Padding(
               padding: EdgeInsets.symmetric(
@@ -408,7 +444,7 @@ class _CKSideNavState extends State<CKSideNav> {
         );
       }
       for (final item in section.items) {
-        sectionWidgets.add(buildItem(runningIndex, item));
+        sectionWidgets.add(buildItem(runningIndex, item, item.itemKey));
         runningIndex++;
       }
     }

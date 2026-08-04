@@ -29,7 +29,7 @@ class _InputsScreenState extends State<InputsScreen> {
   String? _radioGroup = 'b';
   String? _radioErrorGroup;
   String? _radioCKGroup = 'e';
-  String? _dropdownValue = 'a';
+  String? _dropdownValue;
   int _quantity = 1;
 
   final _filledCtrl = TextEditingController(text: 'Maria Santos');
@@ -121,6 +121,10 @@ class _InputsScreenState extends State<InputsScreen> {
                   label: 'Select option',
                   hint: 'Choose...',
                   value: _dropdownValue,
+                  errorText: _dropdownValue == null
+                      ? 'Please select an option'
+                      : null,
+
                   menuMaxHeight: 180,
                   items: const [
                     DropdownMenuItem(value: 'a', child: Text('Option A')),
@@ -134,6 +138,59 @@ class _InputsScreenState extends State<InputsScreen> {
                   onChanged: (value) => setState(() => _dropdownValue = value),
                 ),
               ),
+
+              SizedBox(
+                width: 200,
+                child: CKDropdown<String>(
+                  label: 'Success state',
+                  hint: 'Saved',
+                  value: _dropdownValue,
+                  successText: _dropdownValue != null
+                      ? 'Selection saved'
+                      : null,
+                  items: const [
+                    DropdownMenuItem(value: 'a', child: Text('Option A')),
+                    DropdownMenuItem(value: 'b', child: Text('Option B')),
+                    DropdownMenuItem(value: 'c', child: Text('Option C')),
+                  ],
+                  onChanged: (value) => setState(() => _dropdownValue = value),
+                ),
+              ),
+
+              SizedBox(
+                width: 200,
+                child: CKDropdown<String>(
+                  label: 'Disabled',
+                  hint: 'Disabled',
+                  value: null,
+                  enabled: false,
+                  items: const [
+                    DropdownMenuItem(value: 'a', child: Text('Option A')),
+                    DropdownMenuItem(value: 'b', child: Text('Option B')),
+                  ],
+                ),
+              ),
+
+              SizedBox(
+                width: 200,
+                child: CKDropdown<String>(
+                  label: 'onChanged demo',
+                  hint: 'Choose...',
+                  value: _dropdownValue,
+                  items: const [
+                    DropdownMenuItem(value: 'a', child: Text('Option A')),
+                    DropdownMenuItem(value: 'b', child: Text('Option B')),
+                    DropdownMenuItem(value: 'c', child: Text('Option C')),
+                  ],
+                  onChanged: (value) {
+                    setState(() => _dropdownValue = value);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Selected: ${value ?? ''}')),
+                    );
+                  },
+                ),
+              ),
+
               SizedBox(
                 width: 200,
                 child: CKNumberStepper(

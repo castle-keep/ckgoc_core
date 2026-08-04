@@ -278,36 +278,18 @@ class _DisplayScreenState extends State<DisplayScreen> {
               SizedBox(
                 width: 220,
                 child: CKCard(
+                  media: BrandIcon.assetLogoWidget(
+                    context,
+                    BrandIcon.castlekeepMaster,
+                    size: 80,
+                  ),
+                  mediaAlignment: ContentAlignment.center,
+                  trailing: Icon(Icons.more_vert),
+                  trailingAlignment: ContentAlignment.bottom,
                   title: 'Tappable Card',
                   subtitle: 'Interactive',
                   description: 'Tap anywhere on this card.',
                   onTap: () {},
-                ),
-              ),
-              SizedBox(
-                width: 220,
-                child: CKCard(
-                  title: 'Danger Zone',
-                  subtitle: 'Caution',
-                  variant: CardVariant.error,
-                  onTap: () {},
-                ),
-              ),
-              SizedBox(
-                width: 220,
-                child: CKCard(
-                  title: 'Success Card',
-                  subtitle: 'All good!',
-                  variant: CardVariant.success,
-                  onTap: () {},
-                ),
-              ),
-              SizedBox(
-                width: 220,
-                child: CKCard(
-                  title: 'Info Card',
-                  subtitle: 'FYI',
-                  variant: CardVariant.info,
                 ),
               ),
             ],
@@ -320,22 +302,17 @@ class _DisplayScreenState extends State<DisplayScreen> {
           SizedBox(
             width: 360,
             child: CKCard(
+              elevated: true,
               layout: CardLayout.horizontal,
               title: 'Product Name',
               subtitle: 'Category  ★★★★☆',
-              description: '₱1,299',
-              media: Container(
-                width: 90,
-                height: 90,
-                color: theme.colors.surfaceVariant,
-                child: Center(
-                  child: Icon(
-                    Icons.image_outlined,
-                    size: 36,
-                    color: theme.colors.onSurfaceVariant,
-                  ),
-                ),
+              description: 'media alignment: top, trailing alignment: center',
+              media: BrandIcon.assetLogoWidget(
+                context,
+                BrandIcon.skygoLogo1,
+                size: 80,
               ),
+              mediaAlignment: ContentAlignment.top,
               action: CKButton(
                 onPressed: () {},
                 size: ButtonSize.sm,
@@ -446,6 +423,27 @@ class _DisplayScreenState extends State<DisplayScreen> {
             ],
           ),
           SizedBox(height: s.xl),
+          _label('STEPPER overriden ', theme),
+          SizedBox(height: s.sm),
+          const CKStepper(
+            lineColor:
+                Colors.green, //only overrides the color that is still pending
+            steps: [
+              CKStep(
+                title: 'Custom Color',
+                status: StepStatus.completed,
+                icon: Icon(
+                  Icons.heart_broken,
+                  color: Colors.white,
+                ), //overrides the icon of the completed step
+                color: Colors.pink, //overrides the color of the completed step
+              ),
+              CKStep(title: 'Contact', status: StepStatus.completed),
+              CKStep(title: 'Payment', status: StepStatus.inProgress),
+              CKStep(title: 'Review', status: StepStatus.pending),
+            ],
+          ),
+          SizedBox(height: s.xl),
           _label('STEPPER — HORIZONTAL', theme),
           SizedBox(height: s.sm),
           const CKStepper(
@@ -471,6 +469,48 @@ class _DisplayScreenState extends State<DisplayScreen> {
                 title: 'Payment OK',
                 timestamp: 'Apr 6 · 2:30 PM',
                 status: StepStatus.inProgress,
+              ),
+              CKTimelineEvent(
+                title: 'Order Placed',
+                timestamp: 'Apr 5 · 10:00 AM',
+                status: StepStatus.pending,
+              ),
+              CKTimelineEvent(
+                title: 'Delivery',
+                timestamp: 'Apr 9 (est)',
+                status: StepStatus.pending,
+              ),
+            ],
+          ),
+          SizedBox(height: s.xl),
+          _label('TIMELINE — Overriden', theme),
+          SizedBox(height: s.sm),
+          const CKTimeline(
+            orientation: CKTimelineOrientation.horizontal,
+            dotColor: Colors.purple,
+            lineColor: Colors.yellow,
+            events: [
+              CKTimelineEvent(
+                title: 'Order Shipped',
+                timestamp: 'Apr 7 · 2 Nov',
+                status: StepStatus.completed,
+                dotColor:
+                    Colors.purple, //overrides the color of the completed step
+                icon: Icon(
+                  Icons.local_shipping,
+                  color: Colors.red,
+                ), //overrides the icon of the completed step
+              ),
+              CKTimelineEvent(
+                title: 'Payment OK',
+                timestamp: 'Apr 6 · 2:30 PM',
+                status: StepStatus.inProgress,
+                dotColor:
+                    Colors.red, //overrides the color of the inProgress step
+                icon: Icon(
+                  LucideIcons.dollarSign,
+                  color: Colors.green,
+                ), //overrides the icon of the inProgress step
               ),
               CKTimelineEvent(
                 title: 'Order Placed',

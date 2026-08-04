@@ -15,32 +15,65 @@ class _NavigationScreenState extends State<NavigationScreen> {
   int _selectedBrand = 0;
   bool _collapsedBrand = false;
   int _bottomNavIndex = 0;
+  Object? _selectedKeyExample = 'dashboard';
 
   static final _sections = [
     CKSideNavSection(
       label: 'Main',
       items: [
-        CKSideNavItem(icon: LucideIcons.layoutDashboard, label: 'Dashboard'),
-        CKSideNavItem(icon: LucideIcons.barChart2, label: 'Analytics'),
-        CKSideNavItem(icon: LucideIcons.folderOpen, label: 'Projects'),
+        CKSideNavItem(
+          icon: LucideIcons.layoutDashboard,
+          label: 'Dashboard',
+          itemKey: 'dashboard',
+        ),
+        CKSideNavItem(
+          icon: LucideIcons.barChart2,
+          label: 'Analytics',
+          itemKey: 'analytics',
+        ),
+        CKSideNavItem(
+          icon: LucideIcons.folderOpen,
+          label: 'Projects',
+          itemKey: 'projects',
+        ),
       ],
     ),
     CKSideNavSection(
       label: 'Sales Orders',
       items: [
-        CKSideNavItem(icon: LucideIcons.bike, label: 'Motorcyles', badge: 6),
+        CKSideNavItem(
+          icon: LucideIcons.bike,
+          label: 'Motorcyles',
+          badge: 6,
+          itemKey: 'motorcycles',
+        ),
         CKSideNavItem(
           icon: LucideIcons.settings2,
           label: 'Spare Parts',
           badge: 2,
+          itemKey: 'spare_parts',
         ),
-        CKSideNavItem(icon: LucideIcons.clipboardList, label: 'Service'),
-        CKSideNavItem(icon: LucideIcons.shoppingCart, label: 'Sales'),
+        CKSideNavItem(
+          icon: LucideIcons.clipboardList,
+          label: 'Service',
+          itemKey: 'service',
+        ),
+        CKSideNavItem(
+          icon: LucideIcons.shoppingCart,
+          label: 'Sales',
+          itemKey: 'sales',
+        ),
       ],
     ),
     CKSideNavSection(
       label: 'Config',
-      items: [CKSideNavItem(icon: LucideIcons.settings, label: 'Settings')],
+      items: [
+        CKSideNavItem(
+          icon: LucideIcons.settings,
+          label: 'Settings',
+          itemKey: 'settings',
+        ),
+      ],
     ),
   ];
 
@@ -50,6 +83,28 @@ class _NavigationScreenState extends State<NavigationScreen> {
       flat.addAll(sec.items);
     }
     return flat[index].label;
+  }
+
+  String _activeLabelForKey(Object? key) {
+    if (key == null) return '';
+    for (final sec in _sections) {
+      for (final item in sec.items) {
+        if (item.itemKey == key) return item.label;
+      }
+    }
+    return '';
+  }
+
+  int? _indexForKey(Object? key) {
+    if (key == null) return null;
+    int idx = 0;
+    for (final sec in _sections) {
+      for (final item in sec.items) {
+        if (item.itemKey == key) return idx;
+        idx++;
+      }
+    }
+    return null;
   }
 
   @override
@@ -135,6 +190,73 @@ class _NavigationScreenState extends State<NavigationScreen> {
       );
     }
 
+    Widget navDemoKey({
+      required String title,
+      required Object? selectedKey,
+      required bool collapsed,
+      required ValueChanged<Object?> onSelectKey,
+      required VoidCallback onToggle,
+      SideNavStyle style = SideNavStyle.surface,
+      String? brandName,
+    }) {
+      final activeLabel = _activeLabelForKey(selectedKey);
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          label(title),
+          SizedBox(
+            height: 380,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(theme.radius.lg),
+              child: Row(
+                children: [
+                  CKSideNav(
+                    // profileName: 'John Doe',
+                    // profilePosition: 'Professional Procastinator',
+                    // onLogout: () => debugPrint('Profile tapped'),
+                    sections: _sections,
+                    selectedIndex: _indexForKey(selectedKey) ?? 0,
+                    selectedKey: selectedKey,
+                    onItemSelectedKey: onSelectKey,
+                    onItemSelected: (i) {},
+                    collapsed: collapsed,
+                    onToggleCollapse: onToggle,
+                    brandName: brandName,
+                    version: '1.0',
+                    style: style,
+                  ),
+                  Expanded(
+                    child: Container(
+                      color: c.background,
+                      child: Center(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              activeLabel,
+                              style: t.labelLg.copyWith(color: c.onSurface),
+                            ),
+                            SizedBox(height: s.xs),
+                            Text(
+                              'Page content',
+                              style: t.textSm.copyWith(
+                                color: c.onSurfaceVariant,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      );
+    }
+
     return SingleChildScrollView(
       padding: EdgeInsets.all(s.lg),
       child: Column(
@@ -159,6 +281,18 @@ class _NavigationScreenState extends State<NavigationScreen> {
             onSelect: (i) => setState(() => _selectedBrand = i),
             onToggle: () => setState(() => _collapsedBrand = !_collapsedBrand),
             style: SideNavStyle.brand,
+            brandName: theme.brand == ckcoreBrand.castleKeep
+                ? 'CastleKeep'
+                : 'SkyGo',
+          ),
+          SizedBox(height: s.xl),
+          navDemoKey(
+            title: 'SIDE NAVIGATION — KEY-BASED',
+            selectedKey: _selectedKeyExample,
+            collapsed: false,
+            onSelectKey: (k) => setState(() => _selectedKeyExample = k),
+            onToggle: () {},
+            style: SideNavStyle.surface,
             brandName: theme.brand == ckcoreBrand.castleKeep
                 ? 'CastleKeep'
                 : 'SkyGo',

@@ -12,6 +12,24 @@ class CKRadio<T> extends StatelessWidget {
     this.variant,
     super.key,
   });
+
+  /// Success variant radio.
+  const CKRadio.success({
+    required this.value,
+    this.groupValue,
+    this.onChanged,
+    this.label,
+    super.key,
+  }) : variant = SwitchVariant.success;
+
+  /// Error variant radio.
+  const CKRadio.error({
+    required this.value,
+    this.groupValue,
+    this.onChanged,
+    this.label,
+    super.key,
+  }) : variant = SwitchVariant.error;
   final T value;
   final T? groupValue;
   final ValueChanged<T?>? onChanged;

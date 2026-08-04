@@ -42,165 +42,187 @@ class _OverlaysScreenState extends State<OverlaysScreen> {
     final c = theme.colors;
     final r = theme.radius;
 
-    return SingleChildScrollView(
-      padding: EdgeInsets.all(s.lg),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _label('DIALOGS', theme),
-          Wrap(
-            spacing: s.sm,
-            runSpacing: s.sm,
-            children: [
-              CKButton.outline(
-                onPressed: () => showDialog(
-                  context: context,
-                  builder: (context) => AlertDialog(
-                    title: const Text('Dialog Title'),
+    return Scaffold(
+      drawer: CKDrawer(
+        appName: 'Overlays',
+        items: _drawerItems,
+        selectedIndex: _drawerSelected,
+        onItemSelected: (i) {
+          setState(() => _drawerSelected = i);
+          Navigator.of(context).pop();
+          _showMenuMessage('Selected: ${_drawerItems[i].label}');
+        },
+      ),
+      body: SingleChildScrollView(
+        padding: EdgeInsets.all(s.lg),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _label('DIALOGS', theme),
+            Wrap(
+              spacing: s.sm,
+              runSpacing: s.sm,
+              children: [
+                CKButton.outline(
+                  onPressed: () => showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      title: const Text('Dialog Title'),
+                      content: const Text(
+                        'This is the dialog body content. Confirm that you want to proceed with this action.',
+                      ),
+                      actions: [
+                        TextButton(
+                          onPressed: () => Navigator.of(context).pop(),
+                          child: const Text('Cancel'),
+                        ),
+                        TextButton(
+                          onPressed: () => Navigator.of(context).pop(),
+                          child: const Text('Confirm'),
+                        ),
+                      ],
+                    ),
+                  ),
+                  child: const Text('Material Dialog'),
+                ),
+                CKButton.outline(
+                  onPressed: () => CKDialog.show(
+                    context: context,
+                    title: 'Dialog Title',
                     content: const Text(
                       'This is the dialog body content. Confirm that you want to proceed with this action.',
                     ),
-                    actions: [
-                      TextButton(
-                        onPressed: () => Navigator.of(context).pop(),
-                        child: const Text('Cancel'),
-                      ),
-                      TextButton(
-                        onPressed: () => Navigator.of(context).pop(),
-                        child: const Text('Confirm'),
-                      ),
-                    ],
+                    confirmLabel: 'Confirm',
+                    cancelLabel: 'Cancel',
+                    onConfirm: () => Navigator.of(context).pop(),
                   ),
+                  child: const Text('Default Dialog'),
                 ),
-                child: const Text('Material Dialog'),
-              ),
-              CKButton.outline(
-                onPressed: () => CKDialog.show(
-                  context: context,
-                  title: 'Dialog Title',
-                  content: const Text(
-                    'This is the dialog body content. Confirm that you want to proceed with this action.',
+                CKButton.outline(
+                  onPressed: () => CKDialog.show(
+                    context: context,
+                    title: 'Custom Content',
+                    content: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Text('This dialog has custom content.'),
+                        SizedBox(height: s.md),
+                        CKBadge.success(label: 'New Feature'),
+                      ],
+                    ),
+                    confirmLabel: 'OK',
+                    cancelLabel: 'Cancel',
+                    onConfirm: () => Navigator.of(context).pop(),
                   ),
-                  confirmLabel: 'Confirm',
-                  cancelLabel: 'Cancel',
-                  onConfirm: () => Navigator.of(context).pop(),
+                  child: const Text('Custom Content Dialog'),
                 ),
-                child: const Text('Default Dialog'),
-              ),
-              CKButton.outline(
-                onPressed: () => CKDialog.show(
-                  context: context,
-                  title: 'Custom Content',
-                  content: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      const Text('This dialog has custom content.'),
-                      SizedBox(height: s.md),
-                      CKBadge.success(label: 'New Feature'),
-                    ],
+                CKButton.destructive(
+                  onPressed: () => CKDialog.showDestructive(
+                    context: context,
+                    title: 'Delete Item',
+                    content: const Text(
+                      'This cannot be undone.\nAre you sure you want to delete?',
+                    ),
+                    confirmLabel: 'Yes, Delete Permanently',
+                    cancelLabel: 'Cancel',
+                    onConfirm: () => Navigator.of(context).pop(),
                   ),
-                  confirmLabel: 'OK',
-                  cancelLabel: 'Cancel',
-                  onConfirm: () => Navigator.of(context).pop(),
+                  child: const Text('Destructive Dialog'),
                 ),
-                child: const Text('Custom Content Dialog'),
-              ),
-              CKButton.destructive(
-                onPressed: () => CKDialog.showDestructive(
-                  context: context,
-                  title: 'Delete Item',
-                  content: const Text(
-                    'This cannot be undone.\nAre you sure you want to delete?',
+                CKButton.outline(
+                  onPressed: () => CKDialog.show(
+                    context: context,
+                    title: 'Info',
+                    content: const Text('Operation completed successfully.'),
+                    confirmLabel: 'OK',
                   ),
-                  confirmLabel: 'Yes, Delete Permanently',
-                  cancelLabel: 'Cancel',
-                  onConfirm: () => Navigator.of(context).pop(),
+                  child: const Text('Info Dialog'),
                 ),
-                child: const Text('Destructive Dialog'),
-              ),
-              CKButton.outline(
-                onPressed: () => CKDialog.show(
-                  context: context,
-                  title: 'Info',
-                  content: const Text('Operation completed successfully.'),
-                  confirmLabel: 'OK',
-                ),
-                child: const Text('Info Dialog'),
-              ),
-            ],
-          ),
-          SizedBox(height: s.xl),
-          _label('BOTTOM SHEET', theme),
-          CKButton.outline(
-            onPressed: () => CKBottomSheet.show(
-              context: context,
-              title: 'Share Options',
-              children: [
-                _SheetItem(icon: LucideIcons.link, label: 'Copy Link'),
-                _SheetItem(icon: LucideIcons.mail, label: 'Send Email'),
-                _SheetItem(
-                  icon: LucideIcons.messageCircle,
-                  label: 'Share via Chat',
-                ),
-                _SheetItem(icon: LucideIcons.smartphone, label: 'Share to App'),
               ],
             ),
-            child: const Text('Open Bottom Sheet'),
-          ),
-          SizedBox(height: s.xl),
-          _label('MENU', theme),
-          CKMenu(
-            trigger: CKButton.outline(
-              onPressed: null,
-              child: const Text('Open Menu'),
+            SizedBox(height: s.xl),
+            _label('BOTTOM SHEET', theme),
+            CKButton.outline(
+              onPressed: () => CKBottomSheet.show(
+                context: context,
+                title: 'Share Options',
+                children: [
+                  _SheetItem(icon: LucideIcons.link, label: 'Copy Link'),
+                  _SheetItem(icon: LucideIcons.mail, label: 'Send Email'),
+                  _SheetItem(
+                    icon: LucideIcons.messageCircle,
+                    label: 'Share via Chat',
+                  ),
+                  _SheetItem(
+                    icon: LucideIcons.smartphone,
+                    label: 'Share to App',
+                  ),
+                ],
+              ),
+              child: const Text('Open Bottom Sheet'),
             ),
-            items: [
-              CKMenuItem(
-                label: 'Refresh data',
-                icon: LucideIcons.refreshCw,
-                onTap: () => _showMenuMessage('Refresh started.'),
+            SizedBox(height: s.xl),
+            _label('MENU', theme),
+            CKMenu(
+              trigger: CKButton.outline(
+                onPressed: null,
+                child: const Text('Open Menu'),
               ),
-              CKMenuItem(
-                label: 'Pin dashboard',
-                icon: LucideIcons.pin,
-                onTap: () => _showMenuMessage('Dashboard pinned.'),
-              ),
-              CKMenuItem(
-                label: 'Export CSV (Coming soon)',
-                icon: LucideIcons.download,
-                onTap: () => _showMenuMessage('Export CSV is coming soon.'),
-              ),
-              CKMenuItem(
-                label: 'Delete view',
-                icon: LucideIcons.trash2,
-                destructive: true,
-                onTap: () =>
-                    _showMenuMessage('Delete view requires confirmation.'),
-              ),
-            ],
-          ),
-          SizedBox(height: s.xl),
-          _label('DRAWER', theme),
-          SizedBox(
-            height: 420,
-            width: 280,
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(r.lg),
-              child: DecoratedBox(
-                decoration: BoxDecoration(
-                  border: Border.all(color: c.outline),
-                  borderRadius: BorderRadius.circular(r.lg),
+              items: [
+                CKMenuItem(
+                  label: 'Refresh data',
+                  icon: LucideIcons.refreshCw,
+                  onTap: () => _showMenuMessage('Refresh started.'),
                 ),
-                child: _DrawerPreview(
-                  items: _drawerItems,
-                  selected: _drawerSelected,
-                  onSelected: (i) => setState(() => _drawerSelected = i),
+                CKMenuItem(
+                  label: 'Pin dashboard',
+                  icon: LucideIcons.pin,
+                  onTap: () => _showMenuMessage('Dashboard pinned.'),
+                ),
+                CKMenuItem(
+                  label: 'Export CSV (Coming soon)',
+                  icon: LucideIcons.download,
+                  onTap: () => _showMenuMessage('Export CSV is coming soon.'),
+                ),
+                CKMenuItem(
+                  label: 'Delete view',
+                  icon: LucideIcons.trash2,
+                  destructive: true,
+                  onTap: () =>
+                      _showMenuMessage('Delete view requires confirmation.'),
+                ),
+              ],
+            ),
+            SizedBox(height: s.xl),
+            _label('DRAWER', theme),
+            Builder(
+              builder: (context) => CKButton(
+                onPressed: () => Scaffold.of(context).openDrawer(),
+                child: const Text('Open Drawer'),
+              ),
+            ),
+            SizedBox(height: s.xl),
+            SizedBox(
+              height: 420,
+              width: 280,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(r.lg),
+                child: DecoratedBox(
+                  decoration: BoxDecoration(
+                    border: Border.all(color: c.outline),
+                    borderRadius: BorderRadius.circular(r.lg),
+                  ),
+                  child: _DrawerPreview(
+                    items: _drawerItems,
+                    selected: _drawerSelected,
+                    onSelected: (i) => setState(() => _drawerSelected = i),
+                  ),
                 ),
               ),
             ),
-          ),
-          SizedBox(height: s.xl),
-        ],
+            SizedBox(height: s.xl),
+          ],
+        ),
       ),
     );
   }

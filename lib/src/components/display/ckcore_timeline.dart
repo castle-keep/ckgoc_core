@@ -84,7 +84,7 @@ class _VerticalTimeline extends StatelessWidget {
 
     final resolvedLine = lineColor ?? colors.outlineVariant;
     final resolvedDot = dotColor ?? colors.success;
-    final dotSize = spacing.s12; // 12dp dot
+    final dotSize = spacing.s20; // 20dp dot
     final dotBorder = spacing.xxs; // 2dp border
 
     return Column(
@@ -176,21 +176,26 @@ class _VerticalTimeline extends StatelessWidget {
     final theme = context.ckcoreTheme;
     final colors = theme.colors;
 
-    // If caller provided a custom icon widget, size and center it to the
-    // expected dot size so it never overflows or gets clipped awkwardly.
-    if (event.icon != null) {
-      return SizedBox(
-        width: size,
-        height: size,
-        child: Center(child: event.icon),
-      );
-    }
-
     // Determine color, honoring explicit dotColor first, then status-based
     // defaults. Rejected events show the theme's `error` color.
     final color =
         event.dotColor ??
         (event.status == StepStatus.rejected ? colors.error : defaultColor);
+
+    // If caller provided a custom icon widget, size and center it to the
+    // expected dot size so it never overflows or gets clipped awkwardly.
+    if (event.icon != null) {
+      return Container(
+        width: size,
+        height: size,
+        decoration: BoxDecoration(
+          color: color,
+          shape: BoxShape.circle,
+          border: Border.all(color: color, width: border),
+        ),
+        child: Center(child: event.icon),
+      );
+    }
 
     return Container(
       width: size,
@@ -232,7 +237,7 @@ class _HorizontalTimeline extends StatelessWidget {
 
     final resolvedLine = lineColor ?? colors.outlineVariant;
     final resolvedDot = dotColor ?? colors.success;
-    final dotSize = spacing.s12; // 12dp dot
+    final dotSize = spacing.s20; // 20dp dot
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -318,17 +323,25 @@ class _HorizontalTimeline extends StatelessWidget {
     final theme = context.ckcoreTheme;
     final colors = theme.colors;
 
-    if (event.icon != null) {
-      return SizedBox(
-        width: size,
-        height: size,
-        child: Center(child: event.icon),
-      );
-    }
-
     final color =
         event.dotColor ??
         (event.status == StepStatus.rejected ? colors.error : defaultColor);
+
+    if (event.icon != null) {
+      return Container(
+        width: size,
+        height: size,
+        decoration: BoxDecoration(color: color, shape: BoxShape.circle),
+        child: Center(
+          child: SizedBox(
+            width: size * 0.75,
+            height: size * 0.75,
+            child: FittedBox(fit: BoxFit.contain, child: event.icon),
+          ),
+        ),
+      );
+    }
+
     return Container(
       width: size,
       height: size,

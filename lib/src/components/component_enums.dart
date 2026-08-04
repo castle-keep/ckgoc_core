@@ -216,10 +216,19 @@ enum SideNavStyle { surface, brand }
 
 /// Model for side navigation item.
 class CKSideNavItem {
-  const CKSideNavItem({required this.icon, required this.label, this.badge});
+  const CKSideNavItem({
+    required this.icon,
+    required this.label,
+    this.badge,
+    this.itemKey,
+  });
   final IconData icon;
   final String label;
   final int? badge;
+  // Optional opaque key for the item. If provided, `CKSideNav` will prefer
+  // using `itemKey` for selection and callbacks. If omitted, the item's
+  // positional index is used for backwards compatibility.
+  final Object? itemKey;
 }
 
 /// Section container for side navigation items.

@@ -339,9 +339,7 @@ class DocsNavigationRail extends StatelessWidget {
                 final item = _items[index];
                 final selected = index == currentIndex;
                 return Material(
-                  color: selected
-                      ? theme.colors.surfaceElevated
-                      : Colors.transparent,
+                  color: selected ? theme.colors.primary : Colors.transparent,
                   child: InkWell(
                     onTap: () {
                       currentRoute.value = item.route;
@@ -356,15 +354,16 @@ class DocsNavigationRail extends StatelessWidget {
                           Icon(item.icon,
                               size: 20,
                               color: selected
-                                  ? theme.colors.primary
+                                  ? theme.colors.accent
                                   : theme.colors.onSurface),
                           SizedBox(width: theme.spacing.md),
                           Expanded(
                             child: Text(
                               item.title,
                               style: selected
-                                  ? theme.typography.labelMd
-                                      .copyWith(color: theme.colors.primary)
+                                  ? theme.typography.textLg.copyWith(
+                                      color: theme.colors.accent,
+                                      fontWeight: FontWeight.w600)
                                   : theme.typography.textMd,
                             ),
                           ),
@@ -422,15 +421,20 @@ class DocSection extends StatelessWidget {
                   Text(data.summary, style: theme.typography.textSm),
                   if (data.notes.isNotEmpty) ...[
                     const VSpace(height: 12),
-                    ...data.notes.map(
-                      (note) => Padding(
+                    ...data.notes.map((note) {
+                      final isMigration =
+                          note.toLowerCase().contains('migration note');
+                      return Padding(
                         padding: const EdgeInsets.only(bottom: 6),
                         child: Text(
                           '• $note',
-                          style: theme.typography.textXs,
+                          style: isMigration
+                              ? theme.typography.textXs
+                                  .copyWith(color: theme.colors.error)
+                              : theme.typography.textXs,
                         ),
-                      ),
-                    ),
+                      );
+                    }),
                   ],
                   const VSpace(height: 16),
                   Text('Live demo', style: theme.typography.labelMd),
@@ -490,15 +494,20 @@ class DocSection extends StatelessWidget {
                   Text(data.summary, style: theme.typography.textSm),
                   if (data.notes.isNotEmpty) ...[
                     const VSpace(height: 12),
-                    ...data.notes.map(
-                      (note) => Padding(
+                    ...data.notes.map((note) {
+                      final isRoadmap = note.toLowerCase().contains('roadmap');
+                      return Padding(
                         padding: const EdgeInsets.only(bottom: 6),
                         child: Text(
                           '• $note',
-                          style: theme.typography.textXs,
+                          style: isRoadmap
+                              ? theme.typography.textXs.copyWith(
+                                  color: theme.colors.warning,
+                                  fontWeight: FontWeight.w600)
+                              : theme.typography.textXs,
                         ),
-                      ),
-                    ),
+                      );
+                    }),
                   ],
                   const VSpace(height: 16),
                   Text('Live demo', style: theme.typography.labelMd),

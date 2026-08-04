@@ -15,6 +15,8 @@ class CKScreenLayout extends StatefulWidget {
     required this.sections,
     required this.selectedIndex,
     required this.onItemSelected,
+    this.selectedKey,
+    this.onItemSelectedKey,
     this.logo,
     this.brandName,
     this.version,
@@ -40,6 +42,14 @@ class CKScreenLayout extends StatefulWidget {
 
   /// Callback when a navigation item is selected.
   final ValueChanged<int> onItemSelected;
+
+  /// Optional preferred key-based selection. Provide `selectedKey` to select
+  /// an item by its `CKSideNavItem.itemKey` instead of positional index.
+  final Object? selectedKey;
+
+  /// Optional key-based selection callback. If provided, `onItemSelectedKey`
+  /// will be invoked with the tapped item's `itemKey`.
+  final ValueChanged<Object?>? onItemSelectedKey;
 
   /// Optional logo widget for the side nav header.
   final Widget? logo;
@@ -123,7 +133,9 @@ class _CKScreenLayoutState extends State<CKScreenLayout> {
               onLogout: widget.onLogout,
               sections: widget.sections,
               selectedIndex: widget.selectedIndex,
+              selectedKey: widget.selectedKey,
               onItemSelected: widget.onItemSelected,
+              onItemSelectedKey: widget.onItemSelectedKey,
               collapsed: _sideNavCollapsed,
               onToggleCollapse: widget.allowSideNavCollapse
                   ? () => setState(() => _sideNavCollapsed = !_sideNavCollapsed)

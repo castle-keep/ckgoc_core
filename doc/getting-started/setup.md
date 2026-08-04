@@ -48,6 +48,31 @@ ckcoreTheme(
 )
 ```
 
+## Router & Delegate (Navigator 2.0)
+
+If your app uses Navigator 2.0 (declarative routing) you can use the `CKApp.router` or `CKApp.delegate` constructors to integrate with `RouterConfig` or a custom `RouterDelegate`/`RouteInformationParser`.
+
+```dart
+// Router-based app (RouterConfig)
+CKApp.router(
+  brand: ckcoreBrand.castleKeep,
+  routerConfig: myRouterConfig, // RouterConfig or GoRouter
+  title: 'My App',
+)
+
+// Delegate-based app (explicit RouterDelegate + RouteInformationParser)
+CKApp.delegate(
+  brand: ckcoreBrand.castleKeep,
+  routerDelegate: myRouterDelegate,
+  routeInformationParser: myRouteInformationParser,
+  title: 'My App',
+)
+```
+
+Notes:
+- Use `CKApp.router` when integrating with modern router frameworks (e.g. `GoRouter` or a `RouterConfig`).
+- Use `CKApp.delegate` when you need a fully custom `RouterDelegate` and `RouteInformationParser` implementation.
+
 ## Text Extensions
 
 ### Blockquote
@@ -186,6 +211,3 @@ pana
 flutter pub publish --dry-run
 ```
 
-This will surface missing metadata or example/package issues before publishing.
-
-If you'd like, I can run `flutter analyze` and `pana` now and fix any issues found.

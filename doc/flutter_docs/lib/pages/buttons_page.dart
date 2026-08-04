@@ -43,7 +43,8 @@ CKButton.ghost(onPressed: () {}, child: Text('Ghost'))
       DocParam(
         name: 'variant',
         type: 'ButtonVariant',
-        description: 'Visual style of the button.',
+        description:
+            'Visual style of the button. Deprecated: prefer named constructors (e.g. `CKButton.secondary()`); the `variant` parameter will become internal.',
         defaultValue: 'ButtonVariant.primary',
       ),
       DocParam(
@@ -94,6 +95,7 @@ CKButton.ghost(onPressed: () {}, child: Text('Ghost'))
       ),
     ],
     notes: [
+      'Roadmap: The package is gradually moving toward a more consistent API. Some variant/type parameters may become internal or be replaced by named constructors in a future major release as the design system matures. Existing APIs remain supported for backward compatibility.',
       'Enum demo coverage: all ButtonVariant values and all ButtonSize values are rendered in the live demo.',
       'Named constructors: CKButton.secondary, CKButton.outline, CKButton.ghost, CKButton.accent, CKButton.destructive, CKButton.success, CKButton.warning, CKButton.info, CKButton.link.',
       'Accessibility: Provide descriptive `child` text for non-text children or wrap with `Semantics`. Pass `tooltip` for icon-only buttons; focus rings are handled by the component.',

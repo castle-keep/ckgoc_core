@@ -169,7 +169,8 @@ CKBadge.count(count: 7)
       DocParam(
         name: 'variant',
         type: 'BadgeVariant',
-        description: 'Visual badge style.',
+        description:
+            'Visual badge style. Deprecated: prefer named constructors like `CKBadge.success()`; the `variant` parameter will become internal.',
         defaultValue: 'BadgeVariant.error',
       ),
       DocParam(
@@ -198,6 +199,7 @@ CKBadge.count(count: 7)
       ),
     ],
     notes: [
+      'Roadmap: The package is gradually moving toward a more consistent API. Some variant/type parameters may become internal or be replaced by named constructors in a future major release as the design system matures. Existing APIs remain supported for backward compatibility.',
       'Enum demo coverage: all BadgeVariant values are rendered.',
       'Named constructors: CKBadge.success, CKBadge.error, CKBadge.count, CKBadge.outline, CKBadge.online/offline presence variants.',
       'Accessibility: Prefer succinct `label` text; use presence variants with explicit semantics when conveying availability.',
@@ -282,6 +284,7 @@ CKCard.error(...)
       ),
     ],
     notes: [
+      'Roadmap: The package is gradually moving toward a more consistent API. Some variant/type parameters may become internal or be replaced by named constructors in a future major release as the design system matures. Existing APIs remain supported for backward compatibility.',
       'Enum demo coverage: all CardVariant values plus horizontal and vertical layouts are rendered.',
       'Named constructors: CKCard.success, CKCard.warning, CKCard.error, CKCard.info.',
       'Accessibility: When using `onTap` ensure the card content provides a clear, accessible label; prefer including an explicit action button for important primary actions.',
@@ -416,6 +419,7 @@ CKContainer.muted(...)
       ),
     ],
     notes: [
+      'Roadmap: The package is gradually moving toward a more consistent API. Some variant/type parameters may become internal or be replaced by named constructors in a future major release as the design system matures. Existing APIs remain supported for backward compatibility.',
       'Enum demo coverage: all ContainerVariant values are rendered.',
       'Named constructors/variants: CKContainer.outlined, CKContainer.muted, CKContainer (surface).',
       'Accessibility: Containers are visual wrappers only; ensure interactive children expose semantics and focus behavior.',

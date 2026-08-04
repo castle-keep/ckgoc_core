@@ -1,3 +1,16 @@
+## 0.4.2
+
+### Fixed
+- Improved `CKSideNav` selection by adding optional key-based navigation support.
+- Fixed `CKCard` trailing alignment and layout behavior.
+- Improved validation behavior for `CKDropdown` and `CKRadio`.
+- Refined `CKAccordion` spacing and styling consistency.
+- Improved `CKTimeline` dot sizing and custom icon rendering.
+
+### Internal
+- Added TODO for future `CKLoadingState` enhancements.
+
+
 ## 0.4.1
 
 ### Changed
@@ -12,7 +25,6 @@
 ## 0.4.0
 
 ### Added
-- Added `CKTooltip`.
 - Expanded theme customization options.
 - Added migration guide for upgrading from 0.3.x.
 

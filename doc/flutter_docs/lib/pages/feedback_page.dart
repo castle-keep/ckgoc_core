@@ -54,7 +54,7 @@ CKAlert.error(...)
           type: 'String',
           description: 'Body message content.',
           requiredParam: true,
-          ),
+        ),
         DocParam(
           name: 'title',
           type: 'String?',
@@ -65,7 +65,7 @@ CKAlert.error(...)
           type: 'AlertVariant',
           description: 'Severity / meaning.',
           defaultValue: 'AlertVariant.info',
-          ),
+        ),
         DocParam(
           name: 'onDismiss',
           type: 'VoidCallback?',
@@ -84,6 +84,7 @@ CKAlert.error(...)
         ),
       ],
       notes: [
+        'Roadmap: The package is gradually moving toward a more consistent API. Some variant/type parameters may become internal or be replaced by named constructors in a future major release as the design system matures. Existing APIs remain supported for backward compatibility.',
         'Enum demo coverage: all AlertVariant values are rendered.',
       ],
     );
@@ -114,7 +115,7 @@ Wrap(
           type: 'LoaderType',
           description: 'Loader visual style.',
           defaultValue: 'LoaderType.circular',
-          ),
+        ),
         DocParam(
           name: 'color',
           type: 'Color?',
@@ -125,7 +126,7 @@ Wrap(
           type: 'double',
           description: 'Base visual size.',
           defaultValue: '40',
-          ),
+        ),
       ],
       faqs: [
         DocFaq(
@@ -141,6 +142,7 @@ Wrap(
       ],
       notes: [
         'Enum demo coverage: all LoaderType values are rendered.',
+        'Roadmap: The package is gradually moving toward a more consistent API. Some variant/type parameters may become internal or be replaced by named constructors in a future major release as the design system matures. Existing APIs remain supported for backward compatibility.',
       ],
     );
 
@@ -164,37 +166,37 @@ CKProgressBar.error(value: 0.25)
           type: 'double?',
           description:
               'Current progress value. Null plus indeterminate variant yields animated mode.',
-          ),
+        ),
         DocParam(
           name: 'maxValue',
           type: 'double',
           description: 'Upper bound used for normalization.',
-          ),
+        ),
         DocParam(
           name: 'variant',
           type: 'ProgressVariant',
           description: 'Color and indeterminate behavior.',
-          ),
+        ),
         DocParam(
           name: 'showValue',
           type: 'bool',
           description: 'Displays numeric percentage for determinate progress.',
-          ),
+        ),
         DocParam(
           name: 'onChanged',
           type: 'ValueChanged<double>',
           description: 'Slider-only callback.',
-          ),
+        ),
         DocParam(
           name: 'min',
           type: 'double',
           description: 'Slider-only minimum.',
-          ),
+        ),
         DocParam(
           name: 'max',
           type: 'double',
           description: 'Slider-only maximum.',
-          ),
+        ),
         DocParam(
           name: 'color',
           type: 'Color?',
@@ -213,6 +215,7 @@ CKProgressBar.error(value: 0.25)
         ),
       ],
       notes: [
+        'Roadmap: The package is gradually moving toward a more consistent API. Some variant/type parameters may become internal or be replaced by named constructors in a future major release as the design system matures. Existing APIs remain supported for backward compatibility.',
         'Enum demo coverage: all ProgressVariant values are rendered.',
       ],
     );
@@ -289,18 +292,22 @@ ComponentDocData _toastDoc() => const ComponentDocData(
           type: 'String',
           description: 'Toast body text.',
           requiredParam: true,
-          ),
+        ),
         DocParam(
           name: 'variant',
           type: 'ToastVariant',
           description: 'Toast styling variant.',
           defaultValue: 'ToastVariant.defaultToast',
-          ),
+        ),
         DocParam(
           name: 'onDismiss',
           type: 'VoidCallback?',
           description: 'Optional close affordance handler.',
         ),
+      ],
+      notes: [
+        'Roadmap: The package is gradually moving toward a more consistent API. Some variant/type parameters may become internal or be replaced by named constructors in a future major release as the design system matures. Existing APIs remain supported for backward compatibility.',
+        'Enum demo coverage: all ToastVariant values are rendered.',
       ],
       faqs: [
         DocFaq(
@@ -313,9 +320,6 @@ ComponentDocData _toastDoc() => const ComponentDocData(
           answer:
               'Use it for neutral system updates that do not need success, warning, info, or error semantics.',
         ),
-      ],
-      notes: [
-        'Enum demo coverage: all ToastVariant values are rendered.',
       ],
     );
 
@@ -338,13 +342,13 @@ CKSkeleton(
           type: 'double',
           description: 'Skeleton width.',
           requiredParam: true,
-          ),
+        ),
         DocParam(
           name: 'height',
           type: 'double',
           description: 'Skeleton height.',
           requiredParam: true,
-          ),
+        ),
         DocParam(
           name: 'borderRadius',
           type: 'double?',
@@ -388,7 +392,7 @@ ComponentDocData _emptyStateDoc() => const ComponentDocData(
           type: 'String',
           description: 'Primary empty-state heading.',
           requiredParam: true,
-          ),
+        ),
         DocParam(
           name: 'description',
           type: 'String?',
@@ -450,7 +454,7 @@ CKLoadingState(
           type: 'LoaderType',
           description: 'Selects which loader visual is rendered.',
           defaultValue: 'LoaderType.circular',
-          ),
+        ),
       ],
       faqs: [
         DocFaq(
@@ -465,6 +469,7 @@ CKLoadingState(
       ],
       notes: [
         'The loader type is forwarded to the internal CKLoader via the variant property.',
+        'Roadmap: The package is gradually moving toward a more consistent API. Some variant/type parameters may become internal or be replaced by named constructors in a future major release as the design system matures. Existing APIs remain supported for backward compatibility.',
       ],
     );
 
@@ -487,7 +492,7 @@ CKErrorState(
           type: 'String',
           description: 'Primary error heading.',
           requiredParam: true,
-          ),
+        ),
         DocParam(
           name: 'description',
           type: 'String?',
