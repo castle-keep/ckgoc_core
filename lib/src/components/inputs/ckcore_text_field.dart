@@ -19,10 +19,10 @@ class CKTextField extends StatefulWidget {
     this.onChanged,
     this.onEditingComplete,
     this.validator,
+    this.isRequired = false,
     this.textAlign,
     this.inputFormatters,
     this.enabled = true,
-    this.readOnly = false,
     this.maxLines = 1,
     this.keyboardType,
     this.obscureText = false,
@@ -43,8 +43,8 @@ class CKTextField extends StatefulWidget {
   final ValueChanged<String>? onChanged;
   final VoidCallback? onEditingComplete;
   final String? Function(String?)? validator;
+  final bool isRequired;
   final bool enabled;
-  final bool readOnly;
   final TextAlign? textAlign;
   final List<TextInputFormatter>? inputFormatters;
   final int? maxLines;
@@ -79,12 +79,16 @@ class _CompanyTextFieldState extends State<CKTextField> {
   }
 
   void _handleChange(String value) {
-    if (widget.validator != null) {
-      setState(() {
-        _isDirty = true;
+    setState(() {
+      _isDirty = true;
+      if (widget.isRequired && (value.trim().isEmpty)) {
+        _validationError = 'This field is required';
+      } else if (widget.validator != null) {
         _validationError = widget.validator!(value);
-      });
-    }
+      } else {
+        _validationError = null;
+      }
+    });
     widget.onChanged?.call(value);
   }
 
@@ -222,7 +226,6 @@ class _CompanyTextFieldState extends State<CKTextField> {
           onChanged: _handleChange,
           onEditingComplete: widget.onEditingComplete,
           enabled: widget.enabled,
-          readOnly: widget.readOnly,
           maxLines: widget.obscureText ? 1 : widget.maxLines,
           keyboardType: widget.keyboardType,
           obscureText: widget.obscureText,
@@ -237,14 +240,25 @@ class _CompanyTextFieldState extends State<CKTextField> {
 
     if (widget.label == null) return field;
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+    final labelRow = Row(
       mainAxisSize: MainAxisSize.min,
       children: [
         Text(
           widget.label!,
           style: typography.labelMd.copyWith(color: colors.onSurface),
         ),
+        if (widget.isRequired) ...[
+          SizedBox(width: spacing.xs),
+          Text('*', style: typography.labelMd.copyWith(color: colors.error)),
+        ],
+      ],
+    );
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        labelRow,
         SizedBox(height: spacing.xs),
         field,
       ],

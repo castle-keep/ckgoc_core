@@ -6,10 +6,19 @@ import 'package:ckcoreui/src/themes/ckcore_theme.dart';
 /// Tappable control that opens a time picker and reports the selection via
 /// [onChanged]. Use [label] to provide an accessible label for the control.
 class CKTimePicker extends StatelessWidget {
-  const CKTimePicker({this.value, this.onChanged, this.label, super.key});
+  const CKTimePicker({
+    this.value,
+    this.onChanged,
+    this.label,
+    this.validator,
+    this.isRequired = false,
+    super.key,
+  });
   final TimeOfDay? value;
   final ValueChanged<TimeOfDay?>? onChanged;
   final String? label;
+  final String? Function(TimeOfDay?)? validator;
+  final bool isRequired;
 
   @override
   Widget build(BuildContext context) {

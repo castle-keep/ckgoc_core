@@ -16,6 +16,8 @@ class CKDatePicker extends StatelessWidget {
     this.label,
     this.firstDate,
     this.lastDate,
+    this.validator,
+    this.isRequired = false,
     super.key,
   });
   final DateTime? value;
@@ -23,6 +25,8 @@ class CKDatePicker extends StatelessWidget {
   final String? label;
   final DateTime? firstDate;
   final DateTime? lastDate;
+  final String? Function(DateTime?)? validator;
+  final bool isRequired;
 
   @override
   Widget build(BuildContext context) {

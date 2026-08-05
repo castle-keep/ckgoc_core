@@ -111,9 +111,10 @@ CKTextField(
           defaultValue: 'true',
         ),
         DocParam(
-          name: 'readOnly',
+          name: 'isRequired',
           type: 'bool',
-          description: 'Prevents text edits while allowing focus.',
+          description:
+              'When true enforces a required validator and appends a red `*` to the label.',
           defaultValue: 'false',
         ),
         DocParam(
@@ -564,6 +565,13 @@ CKDropdown<String>(
               'Inline validation function. Runs after first selection (dirty state).',
         ),
         DocParam(
+          name: 'isRequired',
+          type: 'bool',
+          description:
+              'When true enforces a required selection and appends a red `*` to the label.',
+          defaultValue: 'false',
+        ),
+        DocParam(
           name: 'menuMaxHeight',
           type: 'double',
           description: 'Maximum overlay height before the menu scrolls.',
@@ -795,6 +803,18 @@ CKDatePicker(
           description: 'Accessible or visible label.',
         ),
         DocParam(
+          name: 'validator',
+          type: 'String? Function(TimeOfDay?)?',
+          description: 'Inline validator; runs when selection changes.',
+        ),
+        DocParam(
+          name: 'isRequired',
+          type: 'bool',
+          description:
+              'When true enforces a required selection and appends a red `*` to the label.',
+          defaultValue: 'false',
+        ),
+        DocParam(
           name: 'firstDate',
           type: 'DateTime?',
           description: 'Lower bound for allowed dates.',
@@ -803,6 +823,18 @@ CKDatePicker(
           name: 'lastDate',
           type: 'DateTime?',
           description: 'Upper bound for allowed dates.',
+        ),
+        DocParam(
+          name: 'validator',
+          type: 'String? Function(DateTime?)?',
+          description: 'Inline validator; runs when selection changes.',
+        ),
+        DocParam(
+          name: 'isRequired',
+          type: 'bool',
+          description:
+              'When true enforces a required selection and appends a red `*` to the label.',
+          defaultValue: 'false',
         ),
       ],
       faqs: [

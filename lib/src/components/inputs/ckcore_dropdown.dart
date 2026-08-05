@@ -23,6 +23,7 @@ class CKDropdown<T> extends StatefulWidget {
     this.menuMaxHeight = 400,
     this.menuMinHeight = 144,
     this.validator,
+    this.isRequired = false,
     super.key,
   });
 
@@ -41,6 +42,7 @@ class CKDropdown<T> extends StatefulWidget {
   final double menuMaxHeight;
   final double menuMinHeight;
   final String? Function(T?)? validator;
+  final bool isRequired;
 
   @override
   State<CKDropdown<T>> createState() => _CKDropdownState<T>();
@@ -82,7 +84,10 @@ class _CKDropdownState<T> extends State<CKDropdown<T>> {
 
   String? _getValidationError() {
     if (widget.errorText != null) return widget.errorText;
-    if (!_isDirty || widget.validator == null) return null;
+    if (!_isDirty) return null;
+    if (widget.isRequired && widget.value == null)
+      return 'This field is required';
+    if (widget.validator == null) return null;
     return widget.validator?.call(widget.value);
   }
 
@@ -369,14 +374,25 @@ class _CKDropdownState<T> extends State<CKDropdown<T>> {
 
     if (widget.label == null) return wrapped;
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+    final labelRow = Row(
       mainAxisSize: MainAxisSize.min,
       children: [
         Text(
           widget.label!,
           style: typography.labelMd.copyWith(color: colors.onSurface),
         ),
+        if (widget.isRequired) ...[
+          SizedBox(width: spacing.xs),
+          Text('*', style: typography.labelMd.copyWith(color: colors.error)),
+        ],
+      ],
+    );
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        labelRow,
         SizedBox(height: spacing.xs),
         wrapped,
       ],
