@@ -64,6 +64,32 @@ class CKSideNav extends StatefulWidget {
 class _CKSideNavState extends State<CKSideNav> {
   late OverlayEntry _overlayEntry;
   final GlobalKey _profileCardKey = GlobalKey();
+  bool _showExpanded = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _showExpanded = !widget.collapsed;
+  }
+
+  @override
+  void didUpdateWidget(CKSideNav oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    if (oldWidget.collapsed != widget.collapsed) {
+      if (widget.collapsed) {
+        // Hide immediately before shrinking
+        _showExpanded = false;
+        setState(() {});
+      } else {
+        Future.delayed(context.ckcoreTheme.motion.normal, () {
+          if (mounted && !widget.collapsed) {
+            setState(() => _showExpanded = true);
+          }
+        });
+      }
+    }
+  }
 
   void _showProfileMenu(BuildContext context) {
     final theme = context.ckcoreTheme;
@@ -368,12 +394,12 @@ class _CKSideNavState extends State<CKSideNav> {
                 vertical: spacing.sm,
               ),
               child: Row(
-                mainAxisAlignment: widget.collapsed
+                mainAxisAlignment: !_showExpanded
                     ? MainAxisAlignment.center
                     : MainAxisAlignment.start,
                 children: [
                   iconWidget,
-                  if (!widget.collapsed) ...[
+                  if (_showExpanded) ...[
                     SizedBox(width: spacing.sm),
                     Expanded(
                       child: Text(
@@ -453,7 +479,7 @@ class _CKSideNavState extends State<CKSideNav> {
       width: double.infinity,
       height: spacing.x3l,
       padding: EdgeInsets.symmetric(horizontal: spacing.sm),
-      child: widget.collapsed
+      child: !_showExpanded
           ? Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -578,28 +604,30 @@ class _CKSideNavState extends State<CKSideNav> {
                                 .join()
                                 .toUpperCase(),
                           ),
-                      SizedBox(width: spacing.sm),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              widget.profileName!,
-                              style: typography.labelMd.copyWith(color: fg),
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                            if (widget.profilePosition != null)
+                      if (_showExpanded) ...[
+                        SizedBox(width: spacing.sm),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
                               Text(
-                                widget.profilePosition!,
-                                style: typography.textXs.copyWith(
-                                  color: fgMuted,
-                                ),
+                                widget.profileName!,
+                                style: typography.labelMd.copyWith(color: fg),
                                 overflow: TextOverflow.ellipsis,
-                                maxLines: 2,
                               ),
-                          ],
+                              if (widget.profilePosition != null)
+                                Text(
+                                  widget.profilePosition!,
+                                  style: typography.textXs.copyWith(
+                                    color: fgMuted,
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 2,
+                                ),
+                            ],
+                          ),
                         ),
-                      ),
+                      ],
                     ],
                   ),
                 ),
