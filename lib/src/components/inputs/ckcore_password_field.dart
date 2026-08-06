@@ -16,6 +16,7 @@ class CKPasswordField extends StatefulWidget {
     this.onChanged,
     this.onEditingComplete,
     this.enabled = true,
+    this.validator,
     this.textInputAction,
     this.autoFocus = false,
     super.key,
@@ -31,6 +32,7 @@ class CKPasswordField extends StatefulWidget {
   final bool enabled;
   final TextInputAction? textInputAction;
   final bool autoFocus;
+  final String? Function(String?)? validator;
 
   @override
   State<CKPasswordField> createState() => _CompanyPasswordFieldState();
@@ -55,6 +57,7 @@ class _CompanyPasswordFieldState extends State<CKPasswordField> {
       onEditingComplete: widget.onEditingComplete,
       enabled: widget.enabled,
       textInputAction: widget.textInputAction,
+      validator: widget.validator,
       autoFocus: widget.autoFocus,
       obscureText: _obscure,
       trailing: GestureDetector(

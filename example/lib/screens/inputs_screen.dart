@@ -33,6 +33,7 @@ class _InputsScreenState extends State<InputsScreen> {
   int _quantity = 1;
 
   final _filledCtrl = TextEditingController(text: 'Maria Santos');
+  final searchController = TextEditingController();
   String? _otpValue;
 
   @override
@@ -80,8 +81,9 @@ class _InputsScreenState extends State<InputsScreen> {
               ),
               SizedBox(
                 width: 200,
-                child: CKTextField(controller: _filledCtrl, label: 'Label'),
+                child: CKTextField(controller: _filledCtrl, label: 'added '),
               ),
+
               SizedBox(
                 width: 200,
                 child: CKTextField(
@@ -104,7 +106,8 @@ class _InputsScreenState extends State<InputsScreen> {
                 width: 200,
                 child: CKTextField(
                   hint: 'invalid-email',
-                  errorText: 'Invalid format',
+                  errorText:
+                      'Invalid format This is a very long error message to test the max lines of the error text. It should not overflow or break the layout.',
                 ),
               ),
               SizedBox(
@@ -118,7 +121,7 @@ class _InputsScreenState extends State<InputsScreen> {
               SizedBox(
                 width: 200,
                 child: CKDropdown<String>(
-                  label: 'Select option',
+                  label: 'Option',
                   hint: 'Choose...',
                   value: _dropdownValue,
                   errorText: _dropdownValue == null
@@ -205,6 +208,27 @@ class _InputsScreenState extends State<InputsScreen> {
             ],
           ),
           SizedBox(height: s.xl),
+          _label('PASSWORD', theme),
+          SizedBox(height: s.sm),
+          Wrap(
+            spacing: s.md,
+            runSpacing: s.md,
+            children: [
+              SizedBox(
+                width: 200,
+                child: CKPasswordField(
+                  hint: 'Enter password...',
+                  label: 'Password',
+                  validator: (v) {
+                    if (v == null || v.isEmpty) return null;
+                    return v.length >= 8
+                        ? null
+                        : 'Password must be at least 8 characters';
+                  },
+                ),
+              ),
+            ],
+          ),
           _label('TEXTAREA', theme),
           SizedBox(height: s.sm),
           Wrap(
@@ -240,6 +264,21 @@ class _InputsScreenState extends State<InputsScreen> {
                 ),
               ),
             ],
+          ),
+          SizedBox(height: s.xl),
+          _label('SEARCH FIELD (used by CKDataTable)', theme),
+          SizedBox(height: s.sm),
+          SizedBox(
+            width: 320,
+            child: CKSearchField(
+              controller: searchController,
+              hint: 'Search...',
+              onChanged: (v) => debugPrint('Search value: $v'),
+              onClear: () {
+                searchController.clear();
+                debugPrint('Search cleared');
+              },
+            ),
           ),
           SizedBox(height: s.xl),
           _label('TEXT FIELD — EMAIL VALIDATION', theme),

@@ -23,9 +23,21 @@ class CKSearchField extends StatelessWidget {
   final VoidCallback? onClear;
   final bool enabled;
   final bool autoFocus;
-
   @override
   Widget build(BuildContext context) {
+    if (controller == null) {
+      return _buildField(context, '');
+    }
+
+    return ValueListenableBuilder<TextEditingValue>(
+      valueListenable: controller!,
+      builder: (context, value, child) {
+        return _buildField(context, value.text);
+      },
+    );
+  }
+
+  Widget _buildField(BuildContext context, String text) {
     final colors = context.ckcoreTheme.colors;
     final spacing = context.ckcoreTheme.spacing;
 
@@ -41,7 +53,7 @@ class CKSearchField extends StatelessWidget {
         size: spacing.md,
         color: colors.onSurfaceVariant,
       ),
-      trailing: onClear != null
+      trailing: onClear != null && text.isNotEmpty
           ? GestureDetector(
               onTap: onClear,
               child: Icon(
@@ -54,7 +66,3 @@ class CKSearchField extends StatelessWidget {
     );
   }
 }
-
-/// Deprecated: Use [CKSearchField] instead.
-@Deprecated('Use CKSearchField instead')
-typedef ckcoresearchField = CKSearchField;

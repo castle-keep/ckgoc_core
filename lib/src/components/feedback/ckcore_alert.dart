@@ -100,26 +100,9 @@ class CKAlert extends StatelessWidget {
             horizontal: spacing.md,
             vertical: spacing.s12,
           ),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          child: Stack(
+            alignment: Alignment.topRight,
             children: [
-              Icon(icon, size: spacing.md, color: fg),
-              SizedBox(width: spacing.sm),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    if (title != null)
-                      Text(
-                        title!,
-                        style: typography.labelMd.copyWith(color: fg),
-                      ),
-                    if (title != null) SizedBox(height: spacing.xxs),
-                    Text(message, style: typography.textSm.copyWith(color: fg)),
-                  ],
-                ),
-              ),
               if (onDismiss != null) ...[
                 SizedBox(width: spacing.sm),
                 GestureDetector(
@@ -127,6 +110,31 @@ class CKAlert extends StatelessWidget {
                   child: Icon(LucideIcons.x, size: spacing.md, color: fg),
                 ),
               ],
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Icon(icon, size: spacing.lg, color: fg),
+                  SizedBox(width: spacing.sm),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        if (title != null)
+                          Text(
+                            title!,
+                            style: typography.labelMd.copyWith(color: fg),
+                          ),
+                        if (title != null) SizedBox(height: spacing.xxs),
+                        Text(
+                          message,
+                          style: typography.textSm.copyWith(color: fg),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ],
           ),
         ),

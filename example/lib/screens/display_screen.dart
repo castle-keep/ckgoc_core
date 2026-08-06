@@ -148,8 +148,6 @@ class _DisplayScreenState extends State<DisplayScreen> {
               CKBadge.live(label: 'LIVE'),
               CKBadge.beta(label: 'Beta'),
               CKBadge.pro(label: 'PRO'),
-              CKBadge.count(count: 5),
-              CKBadge.count(count: 120),
             ],
           ),
           SizedBox(height: s.lg),
@@ -201,6 +199,7 @@ class _DisplayScreenState extends State<DisplayScreen> {
                 .map(
                   (label) => CKInputChip(
                     key: ValueKey(label),
+                    leading: const Icon(Icons.tag),
                     label: label,
                     onRemove: () => _removeChip(label),
                   ),

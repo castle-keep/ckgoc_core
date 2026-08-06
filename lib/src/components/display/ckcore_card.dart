@@ -178,7 +178,7 @@ class CKCard extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   if (variantIcon != null) ...[
                     Icon(variantIcon, size: spacing.md, color: accentColor),

@@ -288,6 +288,9 @@ class _CKDropdownState<T> extends State<CKDropdown<T>> {
 
     final decoration = widget.borderless
         ? InputDecoration(
+            errorMaxLines: 6,
+            helperMaxLines: 6,
+
             helperText: hasSuccess ? widget.successText : widget.helperText,
             errorText: validationError,
             errorStyle: typography.textSm.copyWith(color: colors.error),
@@ -299,6 +302,8 @@ class _CKDropdownState<T> extends State<CKDropdown<T>> {
             disabledBorder: InputBorder.none,
           )
         : InputDecoration(
+            errorMaxLines: 6,
+            helperMaxLines: 6,
             helperText: hasSuccess ? widget.successText : widget.helperText,
             helperStyle: typography.textSm.copyWith(
               color: hasSuccess ? colors.success : colors.onSurfaceVariant,

@@ -155,6 +155,8 @@ class _CompanyTextFieldState extends State<CKTextField> {
                 : null,
             suffixIconConstraints: const BoxConstraints(),
             filled: false,
+            errorMaxLines: 6,
+            helperMaxLines: 6,
             contentPadding: EdgeInsets.zero,
             enabledBorder: InputBorder.none,
             focusedBorder: InputBorder.none,
@@ -162,6 +164,8 @@ class _CompanyTextFieldState extends State<CKTextField> {
             disabledBorder: InputBorder.none,
           )
         : InputDecoration(
+            errorMaxLines: 6,
+            helperMaxLines: 6,
             hintText: widget.hint,
             hintStyle: typography.textMd.copyWith(
               color: colors.onSurfaceVariant,

@@ -151,7 +151,6 @@ CKBadge(label: 'New')
 
 // Named constructors for other variants
 CKBadge.success(label: 'Approved')
-CKBadge.count(count: 7)
 ''';
   return const ComponentDocData(
     title: 'CKBadge',
@@ -173,25 +172,8 @@ CKBadge.count(count: 7)
             'Visual badge style. Deprecated: prefer named constructors like `CKBadge.success()`; the `variant` parameter will become internal.',
         defaultValue: 'BadgeVariant.error',
       ),
-      DocParam(
-        name: 'count',
-        type: 'int?',
-        description: 'Optional numeric count displayed with the label.',
-        requiredParam: true,
-      ),
-      DocParam(
-        name: 'maxCount',
-        type: 'int',
-        description: 'Maximum displayed count before compacting.',
-        defaultValue: '99',
-      ),
     ],
     faqs: [
-      DocFaq(
-        question: 'How do I show only a count?',
-        answer:
-            'Use the count constructor or provide a numeric label yourself, depending on the pattern you need.',
-      ),
       DocFaq(
         question: 'Which variants are best for system state?',
         answer:
@@ -201,7 +183,7 @@ CKBadge.count(count: 7)
     notes: [
       'Roadmap: The package is gradually moving toward a more consistent API. Some variant/type parameters may become internal or be replaced by named constructors in a future major release as the design system matures. Existing APIs remain supported for backward compatibility.',
       'Enum demo coverage: all BadgeVariant values are rendered.',
-      'Named constructors: CKBadge.success, CKBadge.error, CKBadge.count, CKBadge.outline, CKBadge.online/offline presence variants.',
+      'Named constructors: CKBadge.success, CKBadge.error, CKBadge.outline, CKBadge.online/offline presence variants.',
       'Accessibility: Prefer succinct `label` text; use presence variants with explicit semantics when conveying availability.',
       'See also: CKAvatar for presence displays and CKCard for labeled status surfaces.',
     ],
@@ -728,7 +710,6 @@ class _BadgeDemo extends StatelessWidget {
       children: [
         for (final variant in BadgeVariant.values)
           badgeForVariant(variant, variant.name),
-        const CKBadge.count(count: 124),
       ],
     );
   }

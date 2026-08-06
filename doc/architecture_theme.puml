@@ -1,0 +1,102 @@
+@startuml
+title CKCoreUI Theme Flow
+
+actor Developer
+
+package "Application" {
+    component "CKApp\n(ck_app.dart)" as CKApp
+    note bottom of CKApp
+      Entry point.
+      Receives brand,
+      ThemeMode, and
+      optional brightness.
+    end note
+}
+
+package "Theme Resolution" {
+    component "ckcoreThemeResolver\n(ckcore_theme_resolver.dart)" as Resolver
+    note bottom of Resolver
+      Resolves the
+      correct brand
+      + brightness theme.
+    end note
+
+    component "CastleKeep\nLight/Dark Theme\n(castlekeep_light_theme.dart\ncastlekeep_dark_theme.dart)" as Castle
+
+    component "SkyGo\nLight/Dark Theme\n(skygo_light_theme.dart\nskygo_dark_theme.dart)" as Sky
+
+    component "CkcoreuiThemeData\n(ckcore_theme_data.dart)\n<<Design Tokens>>" as ThemeData
+    note bottom of ThemeData
+      Single source of truth
+      for colors, typography,
+      spacing, radius,
+      shadows, motion,
+      opacity and more.
+    end note
+}
+
+package "Theme Provider" {
+    component "CkcoreuiTheme\n(ckcore_theme.dart)\n(InheritedWidget)" as Provider
+    note bottom of Provider
+      Makes design tokens
+      available anywhere
+      in the widget tree.
+    end note
+}
+
+package "Flutter" {
+
+    component "_materialFrom()\n(ck_app.dart)" as MaterialBuilder
+    note bottom of MaterialBuilder
+      Converts design tokens
+      into Flutter ThemeData.
+
+      Material styling stays
+      consistent across brands.
+      Only the design tokens
+      change.
+    end note
+
+    component "Material ThemeData" as MaterialTheme
+    component MaterialApp
+}
+
+package "Components" {
+    component CKButton
+    component CKTextField
+    component CKCard
+    component CKDropdown
+    component "Other\nCK Widgets" as OtherWidgets
+
+    note bottom
+      Components never know
+      the active brand.
+      They simply consume
+      the current theme.
+    end note
+}
+
+Developer --> CKApp : brand\nThemeMode\n(optional brightness)
+
+CKApp --> Resolver : resolve(brand, brightness)
+
+Resolver --> Castle
+Resolver --> Sky
+
+Castle --> ThemeData
+Sky --> ThemeData
+
+ThemeData --> Provider
+
+ThemeData --> MaterialBuilder
+MaterialBuilder --> MaterialTheme
+
+MaterialTheme --> MaterialApp
+
+Provider --> CKButton
+Provider --> CKTextField
+Provider --> CKCard
+Provider --> CKDropdown
+Provider --> OtherWidgets
+
+@enduml

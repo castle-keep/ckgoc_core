@@ -1,4 +1,4 @@
-# ckcoreui Quick Guide
+# ckcoreui Quick Guide (OUTDATED--refer documentation to https://castle-keep.github.io/ckgoc_core/ instead)
 
 Key points
 - Use the default `CKApp(...)` constructor for typical Navigator 1.0 apps.
@@ -417,15 +417,12 @@ CKBadge.online(label: 'Online')
 CKBadge.away(label: 'Away')
 CKBadge.busy(label: 'Busy')
 CKBadge.offline(label: 'Offline')
-CKBadge.count(count: 7)                         // count badge
-CKBadge.count(count: 99, maxCount: 99)          // with max
 ```
 
 
 Params:
 - `label` (String?): Badge text.
-- `count` (int?): Display count instead of label (with `.count()`).
-- `maxCount` (int?): Max before showing '+' (e.g., "99+").
+-  
 
 Example
 ```dart

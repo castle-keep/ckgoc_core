@@ -223,6 +223,11 @@ CKPasswordField(
           description: 'Keyboard completion callback.',
         ),
         DocParam(
+          name: 'validator',
+          type: 'String? Function(String?)?',
+          description: 'Inline validation function.',
+        ),
+        DocParam(
           name: 'enabled',
           type: 'bool',
           description: 'Disables interaction when false.',
@@ -497,7 +502,7 @@ CKSwitch.error(...)
         ),
       ],
       notes: [
-        'Roadmap: The package is gradually moving toward a more consistent API. Some variant/type parameters may become internal or be replaced by named constructors in a future major release as the design system matures. Existing APIs remain supported for backward compatibility.',
+        // 'Roadmap: The package is gradually moving toward a more consistent API. Some variant/type parameters may become internal or be replaced by named constructors in a future major release as the design system matures. Existing APIs remain supported for backward compatibility.',
         'Accessibility: Use `onChanged: null` to disable the switch. If `color` is provided it overrides the active track color.',
         'Enum demo coverage: both SwitchVariant values are rendered in the live demo.',
       ],

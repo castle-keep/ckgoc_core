@@ -116,17 +116,6 @@ widget for the active brand. The package also exposes `BrandIcon` constants
 for every bundled variant and a convenience `assetLogoWidget` helper that
 renders raster assets and uses `flutter_svg` to render SVG assets.
 
-Next steps
-----------
-- Remove non-image files from `assets/images/logos/` (e.g. `.DS_Store`, `.eps`) before publishing.
-- Optionally add `flutter_svg` to your app to render SVG variants directly.
-- Consider using `ckcoreSideNav.logo` to inject a specific logo variant when you need precise control.
-If you want a higher-level API, we added `BrandIconWidget` that accepts `brand` + `variant` enums and handles raster/SVG selection and rendering.
-
-The script will rename files and directories under `assets/images/logos` to
-the canonical underscore format and attempt to use `git mv` when run inside a
-git repository.
-
 Quick start
 -----------
 Wrap your app with `ckcoreApp` to inject the design system:
@@ -174,13 +163,7 @@ component examples in the `example/` application for usage patterns.
 
 More documentation
 ------------------
-Detailed guides and API notes live in the `docs/` folder. Start with:
-
-- `docs/getting-started/installation.md`
-- `docs/getting-started/quickguide.md`
-- `docs/getting-started/setup.md`
-- `docs/getting-started/brand-configuration.md`
-- `docs/getting-started/data-table.md`
+visit (this link)[https://castle-keep.github.io/ckgoc_core/] for more info about this package
 
 Contributing
 ------------

@@ -233,7 +233,7 @@ class _CKNumberStepperState extends State<CKNumberStepper> {
                 borderless: true,
                 keyboardType: TextInputType.number,
                 textAlign: TextAlign.center,
-                enabled: !widget.enabled,
+                enabled: widget.enabled,
                 inputFormatters: [numericFormatter],
               ),
             ),
