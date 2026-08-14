@@ -16,6 +16,7 @@ class CKContainer extends StatelessWidget {
   const CKContainer({
     required this.child,
     this.variant = ContainerVariant.surface,
+    this.constraints,
     this.padding,
     this.elevated = false,
     super.key,
@@ -25,6 +26,7 @@ class CKContainer extends StatelessWidget {
   const CKContainer.muted({
     required this.child,
     this.padding,
+    this.constraints,
     this.elevated = false,
     super.key,
   }) : variant = ContainerVariant.muted;
@@ -32,12 +34,14 @@ class CKContainer extends StatelessWidget {
   /// Outlined variant container (surface with border).
   const CKContainer.outlined({
     required this.child,
+    this.constraints,
     this.padding,
     this.elevated = false,
     super.key,
   }) : variant = ContainerVariant.outlined;
   final Widget child;
   final ContainerVariant variant;
+  final BoxConstraints? constraints;
   final EdgeInsetsGeometry? padding;
   final bool elevated;
 
@@ -66,6 +70,7 @@ class CKContainer extends StatelessWidget {
         borderRadius: BorderRadius.circular(r.lg),
         boxShadow: elevated ? sh.sm : null,
       ),
+      constraints: constraints,
       padding: padding ?? EdgeInsets.all(s.md),
       child: child,
     );

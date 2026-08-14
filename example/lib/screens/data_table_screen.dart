@@ -83,9 +83,15 @@ class _DataTableScreenState extends State<DataTableScreen> {
   String _multiSearch = '';
 
   // Section 4: Paginated
-  static const int _pageSize = 3;
+  int _pageSize = 3;
   int _page = 1;
   String _pagedSearch = '';
+
+  // Section 6: Sortable and Filterable
+  String? _sortableColumnKey;
+  bool _sortableAscending = true;
+  List<CKTableFilter> _sortableFilters = [];
+  String _sortableSearch = '';
 
   @override
   void initState() {
@@ -101,6 +107,7 @@ class _DataTableScreenState extends State<DataTableScreen> {
       label: 'Name',
       type: CKColumnType.avatarText,
       sortable: true,
+      filterable: true,
       width: 300,
       cellBuilder: (value, _) => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -394,12 +401,130 @@ class _DataTableScreenState extends State<DataTableScreen> {
             currentPage: _page,
             pageSize: _pageSize,
             onPageChanged: (p) => setState(() => _page = p),
+            onPageSizeChanged: (sz) => setState(() {
+              _pageSize = sz;
+              _page = 1; // ensure page is reset
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text('Page size changed to $sz')),
+              );
+            }),
           ),
 
           SizedBox(height: s.x3l),
+          Text(
+            ' 6. Sortable & Filterable Columns',
+            style: t.labelLg.copyWith(color: c.onSurface),
+          ),
+          SizedBox(height: s.xs),
+          Text(
+            'Click the sort and filter icons in the column headers to interact. '
+            'The table emits filter and sort changes through callbacks—you decide how to handle them.',
+            style: t.textSm.copyWith(color: c.onSurfaceVariant),
+          ),
+          SizedBox(height: s.md),
+          CKDataTable(
+            columns: _baseColumns,
+            rows: _filterRows(_seed, _sortableSearch),
+            rowKey: 'id',
+            title: 'Users',
+            subtitle: '${_seed.length} records',
+            searchQuery: _sortableSearch,
+            searchHint: 'Search users…',
+
+            onSearchChanged: (v) => setState(() => _sortableSearch = v),
+            sortColumnKey: _sortableColumnKey,
+            sortAscending: _sortableAscending,
+            onSortChanged: (key, ascending) {
+              setState(() {
+                _sortableColumnKey = key;
+                _sortableAscending = ascending;
+              });
+              // In a real app, you'd sort the data based on these values
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(
+                    'Sorting by "$key" ${ascending ? 'ascending' : 'descending'}',
+                  ),
+                  duration: const Duration(seconds: 2),
+                ),
+              );
+            },
+            onFilterChanged: (filters) {
+              setState(() => _sortableFilters = filters);
+              // Show active filters
+              if (filters.isNotEmpty) {
+                final filterText = filters
+                    .map((f) => '${f.field} ${f.operator.label} "${f.value}"')
+                    .join(', ');
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('Active filters: $filterText'),
+                    duration: const Duration(seconds: 3),
+                  ),
+                );
+              }
+            },
+            totalCount: _seed.length,
+            pageSize: _seed.length.clamp(1, 999),
+            currentPage: 1,
+          ),
+          SizedBox(height: s.sm),
+          if (_sortableFilters.isNotEmpty)
+            Container(
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: c.surfaceVariant,
+                borderRadius: BorderRadius.circular(theme.radius.md),
+                border: Border.all(color: c.outlineVariant, width: s.xxs / 2),
+              ),
+              padding: EdgeInsets.all(s.md),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Active Filters (${_sortableFilters.length})',
+                    style: t.labelSm.copyWith(color: c.onSurfaceVariant),
+                  ),
+                  SizedBox(height: s.sm),
+                  for (final filter in _sortableFilters)
+                    Padding(
+                      padding: EdgeInsets.symmetric(vertical: s.xs),
+                      child: Text(
+                        '${filter.field}: ${filter.operator.label} "${filter.value}"',
+                        style: t.textSm.copyWith(color: c.onSurface),
+                      ),
+                    ),
+                  SizedBox(height: s.sm),
+                  Text(
+                    'Note: Filtering is not applied by the table. '
+                    'The parent component receives filter data and decides how to use it '
+                    '(e.g., local filtering, API query parameters, custom logic).',
+                    style: t.textXs.copyWith(
+                      color: c.onSurfaceVariant,
+                      fontStyle: FontStyle.italic,
+                    ),
+                  ),
+                ],
+              ),
+            ),
         ],
       ),
     );
+  }
+
+  void addRow() {
+    setState(() {
+      final newId =
+          _seed
+              .map((r) => r['id'] as int)
+              .fold(0, (prev, curr) => curr > prev ? curr : prev) +
+          1;
+      _seed.add({
+        'id': newId,
+        'name': 'New User $newId',
+        'email': 'newuser$newId@example.com',
+      });
+    });
   }
 }
 

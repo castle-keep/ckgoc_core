@@ -14,6 +14,7 @@ class CKTableColumn {
     this.flex = 1,
     this.minWidth = 120,
     this.sortable = false,
+    this.filterable = false,
     this.hidden = false,
     this.textAlign = TextAlign.start,
     this.badgeVariantBuilder,
@@ -44,6 +45,10 @@ class CKTableColumn {
   // Whether the header renders a sort affordance and fires
   // [CKDataTable.onSortChanged] when tapped.
   final bool sortable;
+
+  // Whether the header renders a filter affordance and fires
+  // [CKDataTable.onFilterChanged] when a filter is applied.
+  final bool filterable;
 
   // Hidden columns are excluded from both the header and every row.
   final bool hidden;

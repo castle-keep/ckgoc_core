@@ -257,6 +257,11 @@ CKSnackbar.show(
           type: 'VoidCallback?',
           description: 'Custom dismiss action.',
         ),
+        DocParam(
+          name: 'position',
+          type: 'CKSnackbarPosition',
+          description: 'SnackBar vertical position.',
+        ),
       ],
       faqs: [
         DocFaq(

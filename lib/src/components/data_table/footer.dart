@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:ckcoreui/src/themes/ckcore_theme.dart';
+import 'package:ckcoreui/src/components/inputs/ckcore_dropdown.dart';
 
 class TableFooter extends StatelessWidget {
   const TableFooter({
@@ -8,6 +9,7 @@ class TableFooter extends StatelessWidget {
     required this.pageSize,
     this.totalCount,
     this.onPageChanged,
+    this.onPageSizeChanged,
     this.showTotalCount = true,
     this.backgroundColor,
     super.key,
@@ -20,6 +22,7 @@ class TableFooter extends StatelessWidget {
   final int currentPage;
   final int pageSize;
   final ValueChanged<int>? onPageChanged;
+  final ValueChanged<int>? onPageSizeChanged;
   final Color? backgroundColor;
 
   int get _totalPages => (totalCount != null && pageSize > 0)
@@ -50,13 +53,51 @@ class TableFooter extends StatelessWidget {
           )
         : null;
 
-    final pagination = (totalCount != null && _totalPages > 1)
-        ? PaginationWidget(
-            currentPage: currentPage,
-            totalPages: _totalPages,
-            onPageChanged: onPageChanged,
-          )
-        : null;
+    // Page size options (as requested). Include current size if missing.
+    final pageSizeOptions = <int>[10, 20, 50, 100, 5];
+    if (!pageSizeOptions.contains(pageSize)) pageSizeOptions.add(pageSize);
+
+    final pagination = Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        PaginationWidget(
+          currentPage: currentPage,
+          totalPages: _totalPages,
+          onPageChanged: onPageChanged,
+        ),
+        SizedBox(width: s.md),
+        // Page size selector
+        Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              'Rows:',
+              style: t.textSm.copyWith(color: theme.colors.onSurfaceVariant),
+            ),
+            SizedBox(width: s.xs),
+            ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 80, maxHeight: 40),
+              child: CKDropdown<int>(
+                value: pageSize,
+                items: pageSizeOptions
+                    .map(
+                      (p) => DropdownMenuItem<int>(value: p, child: Text('$p')),
+                    )
+                    .toList(),
+                onChanged: (p) {
+                  if (p == null) return;
+                  if (p != pageSize) {
+                    // When page size changes, reset to first page per requirement
+                    onPageSizeChanged?.call(p);
+                    onPageChanged?.call(1);
+                  }
+                },
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
 
     return LayoutBuilder(
       builder: (context, constraints) {
@@ -71,10 +112,7 @@ class TableFooter extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   if (countText != null) countText,
-                  if (pagination != null) ...[
-                    SizedBox(height: s.sm),
-                    Center(child: pagination),
-                  ],
+                  ...[SizedBox(height: s.sm), Center(child: pagination)],
                 ],
               ),
             ),
@@ -89,10 +127,7 @@ class TableFooter extends StatelessWidget {
               alignment: WrapAlignment.spaceBetween,
               runSpacing: s.sm,
               crossAxisAlignment: WrapCrossAlignment.center,
-              children: [
-                if (countText != null) countText,
-                if (pagination != null) pagination,
-              ],
+              children: [if (countText != null) countText, pagination],
             ),
           ),
         );
@@ -137,6 +172,13 @@ class PaginationWidget extends StatelessWidget {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
+        // First page
+        PageButton(
+          icon: Icons.first_page,
+          onTap: currentPage > 1 ? () => onPageChanged?.call(1) : null,
+        ),
+        SizedBox(width: s.xxs),
+        // Previous
         PageButton(
           icon: Icons.chevron_left,
           onTap: currentPage > 1
@@ -153,10 +195,19 @@ class PaginationWidget extends StatelessWidget {
                 )
               : const EllipsisWidget(),
         SizedBox(width: s.xxs),
+        // Next
         PageButton(
           icon: Icons.chevron_right,
           onTap: currentPage < totalPages
               ? () => onPageChanged?.call(currentPage + 1)
+              : null,
+        ),
+        SizedBox(width: s.xxs),
+        // Last page
+        PageButton(
+          icon: Icons.last_page,
+          onTap: currentPage < totalPages
+              ? () => onPageChanged?.call(totalPages)
               : null,
         ),
       ],

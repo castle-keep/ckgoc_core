@@ -15,10 +15,118 @@ class DataTablePage extends StatelessWidget {
           'Documentation for the data table files under lib/src/components/data_table.',
       children: [
         DocSection(data: _dataTableDoc()),
+        DocSection(
+          data: _dataTableColumn(),
+        )
       ],
     );
   }
 }
+
+ComponentDocData _dataTableColumn() => const ComponentDocData(
+    title: 'CKTableColumn',
+    summary:
+        'Column definition for CKDataTable. Includes key, label, type, and optional cell builder.',
+    code: '''
+CKTableColumn(
+  key: 'name',
+  label: 'Name',
+  type: CKColumnType.text,
+  sortable: true,
+)
+''',
+    demo: SizedBox.shrink(),
+    params: [
+      DocParam(
+        name: 'key',
+        type: 'String',
+        description: 'Unique column key.',
+        requiredParam: true,
+      ),
+      DocParam(
+        name: 'label',
+        type: 'String',
+        description: 'Column header label.',
+      ),
+      DocParam(
+        name: 'type',
+        type: 'CKColumnType',
+        description:
+            'Built-in cell renderer type. Use CKColumnType.custom for a custom cellBuilder.',
+        defaultValue: 'CKColumnType.text',
+      ),
+      DocParam(
+        name: 'width',
+        type: 'double?',
+        description: 'Fixed pixel width. Overrides flex.',
+      ),
+      DocParam(
+        name: 'flex',
+        type: 'int',
+        description:
+            'Proportional share of remaining space when width is null. Ignored when width is set.',
+        defaultValue: '1',
+      ),
+      DocParam(
+        name: 'minWidth',
+        type: 'double',
+        description:
+            'Minimum pixel width used for this column when the table is in compact mode. Ignored in stretch mode. Has no effect on columns with a fixed width.',
+        defaultValue: '120',
+      ),
+      DocParam(
+        name: 'sortable',
+        type: 'bool',
+        description:
+            'Whether the header renders a sort affordance and fires onSortChanged when tapped.',
+        defaultValue: 'false',
+      ),
+      DocParam(
+        name: 'filterable',
+        type: 'bool',
+        description:
+            'Whether the header renders a filter affordance and fires onFilterChanged when a filter is applied.',
+        defaultValue: 'false',
+      ),
+      DocParam(
+        name: 'hidden',
+        type: 'bool',
+        description:
+            'Hidden columns are excluded from both the header and every row.',
+        defaultValue: 'false',
+      ),
+      DocParam(
+        name: 'textAlign',
+        type: 'TextAlign',
+        description: 'Horizontal alignment of cell content.',
+        defaultValue: 'TextAlign.start',
+      ),
+      DocParam(
+        name: 'badgeVariantBuilder',
+        type: 'BadgeVariant Function(dynamic value)?',
+        description:
+            'Required when type is CKColumnType.badge. Maps a cell value to the appropriate BadgeVariant.',
+      ),
+      DocParam(
+        name: 'cellBuilder',
+        type: 'Widget Function(dynamic value, Map<String, dynamic> row)?',
+        description:
+            'Required when type is CKColumnType.custom. Also accepted by any other type as an override.',
+      ),
+    ],
+    faqs: [
+      DocFaq(
+        question:
+            'What is the difference between CKTableColumn and CKDataTable?',
+        answer:
+            'CKTableColumn defines a single column, while CKDataTable is the overall table widget that uses a list of CKTableColumn objects.',
+      ),
+      DocFaq(
+        question: 'How do I create a custom cell renderer?',
+        answer:
+            'Set the type to CKColumnType.custom and provide a cellBuilder function that returns a Widget for the cell content.',
+      ),
+    ]);
 
 ComponentDocData _dataTableDoc() => const ComponentDocData(
       title: 'CKDataTable',
@@ -43,19 +151,19 @@ CKDataTable(
           type: 'List<CKTableColumn>',
           description: 'Column definitions.',
           requiredParam: true,
-          ),
+        ),
         DocParam(
           name: 'rows',
           type: 'List<Map<String, dynamic>>',
           description: 'Row data.',
           requiredParam: true,
-          ),
+        ),
         DocParam(
           name: 'rowKey',
           type: 'String',
           description: 'Primary key field used for selection and edits.',
           defaultValue: 'id',
-          ),
+        ),
         DocParam(
           name: 'title',
           type: 'String?',
@@ -96,7 +204,7 @@ CKDataTable(
           type: 'bool',
           description: 'Controlled sort direction.',
           defaultValue: 'true',
-          ),
+        ),
         DocParam(
           name: 'onSortChanged',
           type: 'void Function(String, bool)?',
@@ -107,13 +215,13 @@ CKDataTable(
           type: 'TableSelectionMode',
           description: 'Selection behavior.',
           defaultValue: 'TableSelectionMode.none',
-          ),
+        ),
         DocParam(
           name: 'selectedKeys',
           type: 'Set<dynamic>',
           description: 'Controlled selected row keys.',
           defaultValue: 'const {}',
-          ),
+        ),
         DocParam(
           name: 'onSelectionChanged',
           type: 'ValueChanged<Set<dynamic>>?',
@@ -124,19 +232,19 @@ CKDataTable(
           type: 'int',
           description: 'Full dataset size for pagination.',
           defaultValue: '0',
-          ),
+        ),
         DocParam(
           name: 'currentPage',
           type: 'int',
           description: 'Current page number.',
           defaultValue: '1',
-          ),
+        ),
         DocParam(
           name: 'pageSize',
           type: 'int',
           description: 'Page size.',
           defaultValue: '10',
-          ),
+        ),
         DocParam(
           name: 'onPageChanged',
           type: 'ValueChanged<int>?',
@@ -147,7 +255,7 @@ CKDataTable(
           type: 'bool',
           description: 'Shows skeleton rows.',
           defaultValue: 'false',
-          ),
+        ),
         DocParam(
           name: 'errorMessage',
           type: 'String?',
@@ -173,7 +281,7 @@ CKDataTable(
           type: 'TableWidthBehavior',
           description: 'Stretch or compact width logic.',
           defaultValue: 'TableWidthBehavior.stretch',
-          ),
+        ),
         DocParam(
           name: 'maxHeight',
           type: 'double?',
@@ -195,6 +303,16 @@ CKDataTable(
               'void Function(dynamic rowKey, String columnKey, dynamic newValue)?',
           description:
               'Inline edit commit callback. Signature: `(rowKey, columnKey, newValue)`.',
+        ),
+        DocParam(
+          name: 'onFilterChanged',
+          type: 'void Function(List<CKTableFilter>)?',
+          description: 'Column filter change callback. Signature: `(filters)`.',
+        ),
+        DocParam(
+          name: 'onPageSizeChanged',
+          type: 'ValueChanged<int>?',
+          description: 'Page size change callback.',
         ),
       ],
       faqs: [

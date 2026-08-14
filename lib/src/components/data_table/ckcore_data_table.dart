@@ -9,6 +9,7 @@ import 'package:ckcoreui/src/components/data_table/utils.dart';
 import 'package:ckcoreui/src/components/data_table/row.dart';
 import 'package:ckcoreui/src/components/data_table/misc.dart';
 import 'package:ckcoreui/src/components/data_table/footer.dart';
+import 'package:ckcoreui/src/components/data_table/ckcore_table_filter.dart';
 
 class CKDataTable extends StatefulWidget {
   const CKDataTable({
@@ -31,6 +32,7 @@ class CKDataTable extends StatefulWidget {
     this.currentPage = 1,
     this.pageSize = 10,
     this.onPageChanged,
+    this.onPageSizeChanged,
     this.isLoading = false,
     this.errorMessage,
     this.emptyMessage,
@@ -43,6 +45,7 @@ class CKDataTable extends StatefulWidget {
     this.onRowTap,
     this.editableColumns,
     this.onCellChanged,
+    this.onFilterChanged,
     super.key,
   });
   final List<CKTableColumn> columns;
@@ -64,6 +67,7 @@ class CKDataTable extends StatefulWidget {
   final int currentPage;
   final int pageSize;
   final ValueChanged<int>? onPageChanged;
+  final ValueChanged<int>? onPageSizeChanged;
   final bool isLoading;
   final String? errorMessage;
   final String? emptyMessage;
@@ -77,6 +81,7 @@ class CKDataTable extends StatefulWidget {
   final Set<String>? editableColumns;
   final void Function(dynamic rowKey, String columnKey, dynamic newValue)?
   onCellChanged;
+  final ValueChanged<List<CKTableFilter>>? onFilterChanged;
 
   @override
   State<CKDataTable> createState() => _CompanyDataTableState();
@@ -88,6 +93,7 @@ class _CompanyDataTableState extends State<CKDataTable> {
   final Map<String, TextEditingController> _editControllers = {};
   final ScrollController _hScrollController = ScrollController();
   final ScrollController _vScrollController = ScrollController();
+  final List<CKTableFilter> _filters = [];
 
   String? _internalSortColumnKey;
   bool _internalSortAscending = true;
@@ -311,6 +317,25 @@ class _CompanyDataTableState extends State<CKDataTable> {
     });
   }
 
+  void _handleFilterApply(CKTableFilter filter) {
+    setState(() {
+      // Remove existing filter for this field if it exists
+      _filters.removeWhere((f) => f.field == filter.field);
+      // Add the new filter
+      _filters.add(filter);
+      // Notify parent of current filters
+      widget.onFilterChanged?.call(List<CKTableFilter>.unmodifiable(_filters));
+    });
+  }
+
+  void _handleFilterClear(String fieldKey) {
+    setState(() {
+      _filters.removeWhere((f) => f.field == fieldKey);
+      // Notify parent of current filters
+      widget.onFilterChanged?.call(List<CKTableFilter>.unmodifiable(_filters));
+    });
+  }
+
   void _handleBadgeFilterChanged(String colKey, Set<dynamic> selectedVariants) {
     setState(() {
       _badgeFilters[colKey] = selectedVariants;
@@ -492,6 +517,9 @@ class _CompanyDataTableState extends State<CKDataTable> {
                         ? widget.sortAscending
                         : _internalSortAscending,
                     onSort: _handleSort,
+                    onFilterApply: _handleFilterApply,
+                    onFilterClear: _handleFilterClear,
+                    activeFilters: _filters,
                     rowHeight: s.s40,
                   ),
                   Divider(
@@ -536,6 +564,7 @@ class _CompanyDataTableState extends State<CKDataTable> {
             currentPage: widget.currentPage,
             pageSize: widget.pageSize,
             onPageChanged: widget.onPageChanged,
+            onPageSizeChanged: widget.onPageSizeChanged,
             backgroundColor: widget.headerFooterColor,
           ),
         ],

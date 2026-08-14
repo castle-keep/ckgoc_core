@@ -8,6 +8,7 @@ abstract final class CKSnackbar {
     String message, {
     ToastVariant variant = ToastVariant.defaultToast,
     Duration duration = const Duration(seconds: 3),
+    CKSnackbarPosition position = CKSnackbarPosition.top,
     VoidCallback? onDismiss,
   }) {
     final messenger = ScaffoldMessenger.of(context);
@@ -24,6 +25,13 @@ abstract final class CKSnackbar {
         behavior: SnackBarBehavior.floating,
         duration: duration,
         padding: EdgeInsets.zero,
+        margin: position == CKSnackbarPosition.top
+            ? EdgeInsets.only(
+                bottom: MediaQuery.of(context).size.height - 60,
+                left: 10,
+                right: 10,
+              )
+            : null,
       ),
     );
   }

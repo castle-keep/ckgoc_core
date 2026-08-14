@@ -387,6 +387,11 @@ CKContainer.muted(...)
         description: 'Adds depth styling.',
         defaultValue: 'false',
       ),
+      DocParam(
+        name: 'constraints',
+        type: 'BoxConstraints?',
+        description: 'Optional size constraints.',
+      ),
     ],
     faqs: [
       DocFaq(

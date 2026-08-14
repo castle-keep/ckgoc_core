@@ -1,5 +1,6 @@
 export 'ckcore_table_column.dart';
 export 'ckcore_data_table.dart';
+export 'ckcore_table_filter.dart' show CKTableFilter;
 export 'header.dart' show TableHeader;
 export 'column_header.dart' show ColumnHeaderRow, SortIcon;
 export 'row.dart' show DataRowWidget;

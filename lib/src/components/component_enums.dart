@@ -259,3 +259,23 @@ class CKMenuItem {
   final VoidCallback? onTap;
   final bool destructive;
 }
+
+/// Filter operators supported by [CKDataTable].
+enum CKFilterOperator {
+  equals('Equals'),
+  notEquals('Not Equals'),
+  contains('Contains'),
+  startsWith('Starts With'),
+  endsWith('Ends With'),
+  greaterThan('Greater Than'),
+  lessThan('Less Than'),
+  greaterThanOrEqual('Greater Than or Equal'),
+  lessThanOrEqual('Less Than or Equal');
+
+  const CKFilterOperator(this.label);
+  final String label;
+}
+
+//Snackbar Position
+/// Positions for the snackbar.
+enum CKSnackbarPosition { top, bottom }
