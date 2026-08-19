@@ -1,3 +1,17 @@
+## 0.4.3
+
+### Added
+- Constraints parameters in `CKContainer` for enhanced layout control.
+- `pageSize` selector in `CKDataTable` for dynamic page size selection.
+- Filtering support in `CKDataTable` for improved data interaction.
+- `isRequired` parameter support in `CKTextField` and `CKDropdown`.
+
+### Fixed
+- Fixed `CKSideNav` collapse behavior.
+- Fixed overflow exception in `CKSideNav`.
+- Removed redundant `readOnly` parameters on input fields.
+- Improved minor layout issues and documentation updates.
+
 ## 0.4.2
 
 ### Fixed
