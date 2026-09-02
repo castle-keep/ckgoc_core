@@ -1,3 +1,16 @@
+## 0.5.0
+
+### Added
+- `CKEditableCell` class for editable data table cells supporting multiple input types (text field, dropdown, checkbox, switch, date picker).
+- Date range selection support in date picker with improved UI.
+- New logo assets for enhanced branding options.
+
+### Changed
+- Enhanced `CKDataTable` with editable cell support and improved validation error handling.
+- Improved `CKTextField` with controlled value input and better focus handling.
+- Limited `CKDropdown` menu height for improved usability.
+- Adjusted footer page size options in data table.
+
 ## 0.4.3
 
 ### Added

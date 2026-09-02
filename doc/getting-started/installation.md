@@ -6,7 +6,7 @@ Add the released package from pub.dev to your app's `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  ckcoreui: ^0.4.3
+  ckcoreui: ^0.5.0
 ```
 
 Or, while developing locally, point to a path:
