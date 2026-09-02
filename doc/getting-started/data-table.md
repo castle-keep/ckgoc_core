@@ -118,3 +118,83 @@ ckcoreDataTable uses theme tokens for header/footer and striping so colors follo
 - Row stripes: `theme.colors.background` (the light theme background is `#FAFAFA`).
 
 If you want different striping or header/footer colors, adjust your `ckcoreThemeData` implementation for `colors.surfaceVariant` and `colors.background`.
+
+---
+
+## Editable Cells with Custom Inputs & Row-Aware Validation
+
+CKDataTable supports editable cells with custom input widgets and validation rules that can depend on other cell values in the same row.
+
+### Quick Example
+
+```dart
+CKDataTable(
+  columns: [...],
+  rows: _rows,
+  rowKey: 'id',
+  
+  // Configure editable cells with custom input widgets
+  editableCells: {
+    'name': CKEditableCell.textField(
+      hint: 'Enter name',
+      validator: (value, row) {
+        if (value?.isEmpty ?? true) return 'Name is required';
+        return null;
+      },
+    ),
+    'status': CKEditableCell.dropdown(
+      items: const [
+        DropdownMenuItem(value: 'Active', child: Text('Active')),
+        DropdownMenuItem(value: 'Inactive', child: Text('Inactive')),
+      ],
+    ),
+    'verified': CKEditableCell.checkbox(label: 'Verified'),
+  },
+  
+  // Handle value changes
+  onCellValueChanged: (rowKey, columnKey, newValue) {
+    setState(() {
+      // Update your data
+    });
+  },
+)
+```
+
+### Features
+
+1. **Custom Input Widgets**: Support for TextField, Dropdown, Checkbox, Switch, and DatePicker
+2. **Row-Aware Validation**: Validators receive the complete row, enabling conditional rules
+3. **Active Cell Highlighting**: Visual feedback for focused cells
+4. **Validation Error Display**: Inline error messages
+
+### Supported Input Types
+
+- **CKEditableCell.textField()** - Text input with optional validation
+- **CKEditableCell.dropdown()** - Single selection with static or dynamic options
+- **CKEditableCell.checkbox()** - Boolean toggle with label
+- **CKEditableCell.switch_()** - Switch toggle with optional variants
+- **CKEditableCell.datePicker()** - Date selection
+
+### Row-Aware Validation Example
+
+```dart
+'courier': CKEditableCell.dropdown(
+  items: const [
+    DropdownMenuItem(value: 'FedEx', child: Text('FedEx')),
+    DropdownMenuItem(value: 'UPS', child: Text('UPS')),
+  ],
+  validator: (value, row) {
+    // Validation depends on another field!
+    if (row['transfer_type'] == 'External' && value?.isEmpty == true) {
+      return 'Required for external transfers';
+    }
+    return null;
+  },
+),
+```
+
+### For More Information
+
+- [Editable Cells Complete Guide](editable-data-table-custom-inputs.md)
+- [Quick Reference](editable-cells-quick-reference.md)
+- See the example in [data_table_screen.dart](../../example/lib/screens/data_table_screen.dart) (Section 7)

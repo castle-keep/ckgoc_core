@@ -296,7 +296,7 @@ class _InputsScreenState extends State<InputsScreen> {
               ),
               successText: 'Looks good',
               validator: (v) {
-                if (v == null || v.isEmpty) return null;
+                if (v == null || v.isEmpty) return 'Required';
                 return RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$').hasMatch(v)
                     ? null
                     : 'Enter a valid email address';
@@ -481,6 +481,107 @@ class _InputsScreenState extends State<InputsScreen> {
                   value: 'e',
                   groupValue: _radioCKGroup,
                   onChanged: (v) => setState(() => _radioCKGroup = v),
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: s.xl),
+          _label('DATE PICKER', theme),
+          SizedBox(height: s.sm),
+          Wrap(
+            spacing: s.md,
+            runSpacing: s.md,
+            children: [
+              SizedBox(
+                width: 200,
+                child: CKDatePicker(
+                  enabled: false,
+                  label: 'Select full date',
+                  firstDate: DateTime(2020),
+                  lastDate: DateTime(2030),
+                ),
+              ),
+              SizedBox(
+                width: 200,
+                child: CKDatePicker(
+                  label: 'Select Month',
+                  firstDate: DateTime(2020),
+                  lastDate: DateTime(2030),
+                  mode: CKDatePickerMode.month,
+                ),
+              ),
+              SizedBox(
+                width: 200,
+                child: CKDatePicker(
+                  label: 'Select Date',
+                  firstDate: DateTime(2020),
+                  lastDate: DateTime(2030),
+                  mode: CKDatePickerMode.date,
+                ),
+              ),
+              SizedBox(
+                width: 500,
+                child: CKDatePicker(
+                  isRequired: true,
+                  label: 'Select Range',
+                  firstDate: DateTime(2020),
+                  lastDate: DateTime(2030),
+                  mode: CKDatePickerMode.range,
+                ),
+              ),
+            ],
+          ),
+
+          //Side by side
+          SizedBox(height: s.xl),
+          _label('DATE PICKER — SIDE BY SIDE', theme),
+          SizedBox(height: s.sm),
+          Wrap(
+            spacing: s.md,
+            runSpacing: s.md,
+            children: [
+              SizedBox(
+                width: 200,
+                child: CKTextField(
+                  isRequired: true,
+                  label: 'This is a text field',
+                  hint: 'Enter text...',
+                  validator: (v) {
+                    if (v == null || v.isEmpty) return 'This field is required';
+                    return null;
+                  },
+                ),
+              ),
+              SizedBox(
+                width: 200,
+                child: CKDatePicker(
+                  label: 'Select full date',
+                  isRequired: true,
+                  firstDate: DateTime(2020),
+                  lastDate: DateTime(2030),
+                  validator: (v) {
+                    if (v == null) return 'This field is required';
+                    return null;
+                  },
+                ),
+              ),
+              SizedBox(
+                width: 200,
+                child: CKDropdown(
+                  isRequired: true,
+                  label: 'This is a dropdown',
+                  hint: 'Choose...',
+                  validator: (v) {
+                    if (v == null) return 'This field is required';
+                    return null;
+                  },
+                  value: _dropdownValue,
+                  items: const [
+                    DropdownMenuItem(value: 'a', child: Text('Option A')),
+                    DropdownMenuItem(value: 'b', child: Text('Option B')),
+                    DropdownMenuItem(value: 'c', child: Text('Option C')),
+                  ],
+                  onChanged: (value) => setState(() => _dropdownValue = value),
                 ),
               ),
             ],

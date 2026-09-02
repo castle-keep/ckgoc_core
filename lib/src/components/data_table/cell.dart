@@ -1,4 +1,5 @@
 import 'package:ckcoreui/src/components/data_table/ckcore_table_column.dart';
+import 'package:ckcoreui/src/components/data_table/ckcore_editable_cell.dart';
 import 'package:ckcoreui/src/components/display/ckcore_avatar.dart';
 import 'package:ckcoreui/src/components/display/ckcore_badge.dart';
 import 'package:ckcoreui/src/components/inputs/ckcore_text_field.dart';
@@ -12,27 +13,73 @@ class TableCellWidget extends StatelessWidget {
     required this.column,
     required this.value,
     required this.row,
+    // Legacy editable support
     this.editController,
     this.onCellChanged,
+    // New editable cells support
+    this.editableCell,
+    this.onCellValueChanged,
+    this.validationError,
+    this.isActive = false,
+    this.onFocusChanged,
     super.key,
   });
   final CKTableColumn column;
   final dynamic value;
   final Map<String, dynamic> row;
+
+  // Legacy editable support
   final TextEditingController? editController;
   final ValueChanged<dynamic>? onCellChanged;
 
+  // New editable cells support
+  final CKEditableCell? editableCell;
+  final ValueChanged<dynamic>? onCellValueChanged;
+  final String? validationError;
+  final bool isActive;
+  final ValueChanged<bool>? onFocusChanged;
+
   @override
   Widget build(BuildContext context) {
-    if (editController != null) {
-      return EditableCellWidget(
-        controller: editController!,
-        onChanged: onCellChanged,
+    // New editable cells system (takes precedence)
+    if (editableCell != null) {
+      // Compute validation immediately if parent didn't provide an error.
+      final effectiveError =
+          validationError ?? editableCell!.validator?.call(value, row);
+      return FocusableEditableCell(
+        child: editableCell!.builder(
+          context,
+          value,
+          onCellValueChanged ?? (_) {},
+          row,
+          isActive,
+          effectiveError,
+        ),
+        isActive: isActive,
+        hasError: effectiveError != null,
+        onFocusChanged: onFocusChanged,
       );
     }
+
+    // Legacy editable support (TextEditingController-based)
+    if (editController != null) {
+      return FocusableEditableCell(
+        child: EditableCellWidget(
+          controller: editController!,
+          onChanged: onCellChanged,
+        ),
+        isActive: isActive,
+        hasError: false,
+        onFocusChanged: onFocusChanged,
+      );
+    }
+
+    // Custom cell builder from column
     if (column.cellBuilder != null) {
       return column.cellBuilder!(value, row);
     }
+
+    // Built-in cell types
     return switch (column.type) {
       CKColumnType.badge => _badgeCell(context),
       CKColumnType.avatarText => _avatarTextCell(context),
@@ -138,6 +185,103 @@ class EditableCellWidget extends StatelessWidget {
       onChanged: onChanged == null ? null : (v) => onChanged!(v),
       maxLines: 1,
       borderless: true,
+    );
+  }
+}
+
+/// Wrapper for editable cells that provides visual feedback for active state
+/// and validation errors.
+class FocusableEditableCell extends StatefulWidget {
+  const FocusableEditableCell({
+    required this.child,
+    required this.isActive,
+    required this.hasError,
+    this.onFocusChanged,
+    super.key,
+  });
+
+  final Widget child;
+  final bool isActive;
+  final bool hasError;
+  final ValueChanged<bool>? onFocusChanged;
+
+  @override
+  State<FocusableEditableCell> createState() => _FocusableEditableCellState();
+}
+
+class _FocusableEditableCellState extends State<FocusableEditableCell> {
+  late final FocusNode _focusNode;
+
+  @override
+  void initState() {
+    super.initState();
+    _focusNode = FocusNode();
+    _focusNode.addListener(_onFocusChanged);
+  }
+
+  void _onFocusChanged() {
+    widget.onFocusChanged?.call(_focusNode.hasFocus);
+  }
+
+  @override
+  void didUpdateWidget(FocusableEditableCell oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    // Sync focus node when isActive changes
+    if (widget.isActive && !oldWidget.isActive) {
+      // Cell became active, request focus
+      _focusNode.requestFocus();
+    } else if (!widget.isActive && oldWidget.isActive) {
+      // Cell lost active status, unfocus
+      _focusNode.unfocus();
+    }
+  }
+
+  @override
+  void dispose() {
+    _focusNode.removeListener(_onFocusChanged);
+    _focusNode.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = context.ckcoreTheme;
+    final c = theme.colors;
+    final r = theme.radius;
+
+    return Focus(
+      focusNode: _focusNode,
+      child: GestureDetector(
+        onTap: () {
+          if (!_focusNode.hasFocus) {
+            _focusNode.requestFocus();
+          }
+        },
+        child: AnimatedContainer(
+          duration: theme.motion.fast,
+          decoration: BoxDecoration(
+            border: widget.isActive
+                ? Border.all(
+                    color: widget.hasError ? c.error : c.primary,
+                    width: 2,
+                  )
+                : widget.hasError
+                ? Border.all(color: c.error, width: 1)
+                : null,
+            borderRadius: BorderRadius.circular(r.sm),
+            color: widget.isActive
+                ? c.primary.withValues(alpha: theme.opacity.subtle)
+                : widget.hasError
+                ? c.error.withValues(alpha: theme.opacity.subtle)
+                : null,
+          ),
+          // padding: EdgeInsets.symmetric(
+          //   horizontal: s.xs,
+          //   vertical: s.xxs,
+          // ),
+          child: Center(child: widget.child),
+        ),
+      ),
     );
   }
 }

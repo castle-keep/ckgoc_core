@@ -16,8 +16,15 @@ class DataRowWidget extends StatelessWidget {
     required this.onTap,
     required this.onHoverChanged,
     this.isStriped = false,
+    // Legacy editable columns support
     this.editControllers = const {},
     this.onCellChanged,
+    // New editable cells support
+    this.editableCells,
+    this.onCellValueChanged,
+    this.getValidationError,
+    this.isCellActive,
+    this.onCellFocusChanged,
     super.key,
   });
   final Map<String, dynamic> row;
@@ -32,8 +39,18 @@ class DataRowWidget extends StatelessWidget {
   final double rowHeight;
   final VoidCallback onTap;
   final ValueChanged<bool> onHoverChanged;
+
+  // Legacy editable columns support
   final Map<String, TextEditingController> editControllers;
   final void Function(String colKey, dynamic value)? onCellChanged;
+
+  // New editable cells support
+  final Map<String, CKEditableCell>? editableCells;
+  final void Function(String colKey, dynamic value)? onCellValueChanged;
+  final String? Function(String colKey)? getValidationError;
+  final bool Function(String colKey)? isCellActive;
+  final void Function(String colKey, dynamic rowKey, bool isFocused)?
+  onCellFocusChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -91,10 +108,25 @@ class DataRowWidget extends StatelessWidget {
                           column: col,
                           value: row[col.key],
                           row: row,
+                          // Legacy editable support
                           editController: editControllers[col.key],
                           onCellChanged: onCellChanged == null
                               ? null
                               : (v) => onCellChanged!(col.key, v),
+                          // New editable cells support
+                          editableCell: editableCells?[col.key],
+                          onCellValueChanged: onCellValueChanged == null
+                              ? null
+                              : (v) => onCellValueChanged!(col.key, v),
+                          validationError: getValidationError?.call(col.key),
+                          isActive: isCellActive?.call(col.key) ?? false,
+                          onFocusChanged: onCellFocusChanged == null
+                              ? null
+                              : (isFocused) => onCellFocusChanged!(
+                                  col.key,
+                                  row[rowKey],
+                                  isFocused,
+                                ),
                         ),
                       ),
                     ),

@@ -54,8 +54,9 @@ class TableFooter extends StatelessWidget {
         : null;
 
     // Page size options (as requested). Include current size if missing.
-    final pageSizeOptions = <int>[10, 20, 50, 100, 5];
+    final pageSizeOptions = <int>[5, 10, 20, 50, 100];
     if (!pageSizeOptions.contains(pageSize)) pageSizeOptions.add(pageSize);
+    pageSizeOptions.sort((a, b) => a.compareTo(b));
 
     final pagination = Row(
       mainAxisSize: MainAxisSize.min,

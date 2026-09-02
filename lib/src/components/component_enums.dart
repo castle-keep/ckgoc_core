@@ -279,3 +279,18 @@ enum CKFilterOperator {
 //Snackbar Position
 /// Positions for the snackbar.
 enum CKSnackbarPosition { top, bottom }
+
+/// Selection mode for the date picker.
+enum CKDatePickerMode {
+  /// Only month selection (e.g., January 2024)
+  month,
+
+  /// Month and day selection (e.g., January 15)
+  date,
+
+  /// Full date selection (e.g., January 15, 2024)
+  fullDate,
+
+  /// Range selection mode (select start and end dates)
+  range,
+}

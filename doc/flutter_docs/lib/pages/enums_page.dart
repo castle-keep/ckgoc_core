@@ -43,6 +43,7 @@ class EnumsPage extends StatelessWidget {
         EnumCasesCard(title: 'TabVariant', cases: _tabVariants),
         EnumCasesCard(title: 'SideNavStyle', cases: _sideNavStyles),
         EnumCasesCard(title: 'BrandIconVariant', cases: _brandIconVariants),
+        EnumCasesCard(title: 'CKDatePickerMode', cases: _datePickerModes),
       ],
     );
   }
@@ -236,4 +237,15 @@ const _brandIconVariants = [
   EnumCaseDoc(name: 'master', description: 'Full master logo lockup.'),
   EnumCaseDoc(name: 'logo', description: 'Symbol-only logo variant.'),
   EnumCaseDoc(name: 'name', description: 'Wordmark-only variant.'),
+];
+
+const _datePickerModes = [
+  EnumCaseDoc(
+      name: 'month', description: 'Month selection mode. (month + year)'),
+  EnumCaseDoc(name: 'date', description: 'Date selection mode. (day + month)'),
+  EnumCaseDoc(
+      name: 'fullDate',
+      description: 'Full date selection mode (month + day + year).'),
+  EnumCaseDoc(
+      name: 'range', description: 'Date range selection mode (start + end).'),
 ];

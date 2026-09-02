@@ -8,7 +8,10 @@ import 'package:ckcoreui/src/themes/ckcore_theme.dart';
 class CKTextField extends StatefulWidget {
   const CKTextField({
     this.controller,
+    this.value,
     this.focusNode,
+    this.readOnly = false,
+    this.onTap,
     this.label,
     this.hint,
     this.helperText,
@@ -30,9 +33,20 @@ class CKTextField extends StatefulWidget {
     this.autoFocus = false,
     this.borderless = false,
     super.key,
-  });
+  }) : assert(
+         controller == null || value == null,
+         'Cannot provide both controller and value',
+       );
+
   final TextEditingController? controller;
+
+  /// Initial or controlled value for the text field.
+  /// Cannot be used with [controller].
+  final String? value;
+
   final FocusNode? focusNode;
+  final bool readOnly;
+  final VoidCallback? onTap;
   final String? label;
   final String? hint;
   final String? helperText;
@@ -63,15 +77,33 @@ class CKTextField extends StatefulWidget {
 
 class _CompanyTextFieldState extends State<CKTextField> {
   late FocusNode _focusNode;
+  TextEditingController? _internalController;
   bool _isFocused = false;
   String? _validationError;
   bool _isDirty = false;
 
+  TextEditingController get _effectiveController =>
+      widget.controller ?? _internalController!;
+
   @override
   void initState() {
     super.initState();
+    if (widget.controller == null) {
+      _internalController = TextEditingController(text: widget.value ?? '');
+    }
     _focusNode = widget.focusNode ?? FocusNode();
     _focusNode.addListener(_onFocusChange);
+  }
+
+  @override
+  void didUpdateWidget(CKTextField oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    // Update internal controller if value changes
+    if (widget.controller == null &&
+        widget.value != oldWidget.value &&
+        widget.value != _internalController!.text) {
+      _internalController!.text = widget.value ?? '';
+    }
   }
 
   void _onFocusChange() {
@@ -96,6 +128,7 @@ class _CompanyTextFieldState extends State<CKTextField> {
   void dispose() {
     _focusNode.removeListener(_onFocusChange);
     if (widget.focusNode == null) _focusNode.dispose();
+    _internalController?.dispose();
     super.dispose();
   }
 
@@ -212,7 +245,7 @@ class _CompanyTextFieldState extends State<CKTextField> {
         : colors.primary.withValues(alpha: 0.2);
 
     final field = Padding(
-      padding: const EdgeInsets.all(3),
+      padding: widget.borderless ? EdgeInsets.zero : const EdgeInsets.all(3),
       child: AnimatedContainer(
         duration: theme.motion.fast,
         decoration: BoxDecoration(
@@ -221,9 +254,13 @@ class _CompanyTextFieldState extends State<CKTextField> {
               ? [BoxShadow(color: ringColor, spreadRadius: 3, blurRadius: 0)]
               : const [],
         ),
-        child: TextField(
-          controller: widget.controller,
+        child: TextFormField(
+          autovalidateMode: AutovalidateMode.always,
+          validator: widget.validator,
+          controller: _effectiveController,
           focusNode: _focusNode,
+          readOnly: widget.readOnly,
+          onTap: widget.onTap,
           textAlign: widget.textAlign ?? TextAlign.start,
           inputFormatters: widget.inputFormatters,
           decoration: decoration,
@@ -263,7 +300,7 @@ class _CompanyTextFieldState extends State<CKTextField> {
       mainAxisSize: MainAxisSize.min,
       children: [
         labelRow,
-        SizedBox(height: spacing.xs),
+        // SizedBox(height: spacing.xs),
         field,
       ],
     );

@@ -10,6 +10,7 @@ import 'package:ckcoreui/src/components/data_table/row.dart';
 import 'package:ckcoreui/src/components/data_table/misc.dart';
 import 'package:ckcoreui/src/components/data_table/footer.dart';
 import 'package:ckcoreui/src/components/data_table/ckcore_table_filter.dart';
+import 'package:ckcoreui/src/components/data_table/ckcore_editable_cell.dart';
 
 class CKDataTable extends StatefulWidget {
   const CKDataTable({
@@ -43,8 +44,10 @@ class CKDataTable extends StatefulWidget {
     this.widthBehavior = TableWidthBehavior.stretch,
     this.maxHeight,
     this.onRowTap,
-    this.editableColumns,
-    this.onCellChanged,
+    @Deprecated('Use editableCells instead') this.editableColumns,
+    @Deprecated('Use onCellValueChanged instead') this.onCellChanged,
+    this.editableCells,
+    this.onCellValueChanged,
     this.onFilterChanged,
     super.key,
   });
@@ -78,9 +81,52 @@ class CKDataTable extends StatefulWidget {
   final TableWidthBehavior widthBehavior;
   final double? maxHeight;
   final void Function(Map<String, dynamic> row)? onRowTap;
+
+  /// DEPRECATED: Use [editableCells] instead for custom input widgets and validation.
+  @Deprecated('Use editableCells instead')
   final Set<String>? editableColumns;
+
+  /// DEPRECATED: Use the validator in [CKEditableCell] for row-aware validation.
+  @Deprecated('Use CKEditableCell.validator instead')
   final void Function(dynamic rowKey, String columnKey, dynamic newValue)?
   onCellChanged;
+
+  /// Map of column keys to editable cell configurations.
+  ///
+  /// Each [CKEditableCell] defines how a cell should be rendered when editable,
+  /// including custom input widgets and row-aware validation.
+  ///
+  /// Example:
+  /// ```dart
+  /// editableCells: {
+  ///   'item': CKEditableCell.textField(
+  ///     hint: 'Enter item name',
+  ///     validator: (value, row) => value?.isEmpty ?? true ? 'Required' : null,
+  ///   ),
+  ///   'transfer_type': CKEditableCell.dropdown<String>(
+  ///     items: const [
+  ///       DropdownMenuItem(value: 'Internal', child: Text('Internal')),
+  ///       DropdownMenuItem(value: 'External', child: Text('External')),
+  ///     ],
+  ///   ),
+  ///   'courier': CKEditableCell.textField(
+  ///     validator: (value, row) {
+  ///       if (row['transfer_type'] == 'External' && (value?.isEmpty ?? true)) {
+  ///         return 'Required for external transfers';
+  ///       }
+  ///       return null;
+  ///     },
+  ///   ),
+  /// }
+  /// ```
+  final Map<String, CKEditableCell>? editableCells;
+
+  /// Callback invoked when a cell value changes.
+  ///
+  /// Receives the row key, column key, and new value.
+  final void Function(dynamic rowKey, String columnKey, dynamic newValue)?
+  onCellValueChanged;
+
   final ValueChanged<List<CKTableFilter>>? onFilterChanged;
 
   @override
@@ -90,7 +136,15 @@ class CKDataTable extends StatefulWidget {
 class _CompanyDataTableState extends State<CKDataTable> {
   dynamic _hoveredKey;
   late final TextEditingController _searchController;
+
+  // Legacy editable columns support (TextEditingController-based)
   final Map<String, TextEditingController> _editControllers = {};
+
+  // New editable cells support
+  String? _activeCellRowKey;
+  String? _activeCellColumnKey;
+  final Map<String, String> _validationErrors = {}; // key: "rowKey_columnKey"
+
   final ScrollController _hScrollController = ScrollController();
   final ScrollController _vScrollController = ScrollController();
   final List<CKTableFilter> _filters = [];
@@ -130,13 +184,17 @@ class _CompanyDataTableState extends State<CKDataTable> {
         widget.searchQuery != _searchController.text) {
       _searchController.text = widget.searchQuery ?? '';
     }
+
+    // Legacy editable columns support
     if (widget.rows != oldWidget.rows ||
         widget.editableColumns != oldWidget.editableColumns) {
       _syncEditControllers();
     }
+
     if (widget.columns != oldWidget.columns) {
       _initBadgeFilters();
     }
+
     // Keep internal sort state in sync when uncontrolled.
     if (widget.onSortChanged == null) {
       if (widget.sortColumnKey != oldWidget.sortColumnKey ||
@@ -149,6 +207,12 @@ class _CompanyDataTableState extends State<CKDataTable> {
     } else {
       // if parent takes control, drop internal cache
       _sortedRows = null;
+    }
+
+    // Revalidate all cells when rows or editableCells change
+    if (widget.rows != oldWidget.rows ||
+        widget.editableCells != oldWidget.editableCells) {
+      _revalidateAllCells();
     }
   }
 
@@ -342,6 +406,75 @@ class _CompanyDataTableState extends State<CKDataTable> {
     });
   }
 
+  void _handleCellChanged(dynamic rowKey, String columnKey, dynamic newValue) {
+    // Validate the new value using the row-aware validator
+    final editableCell = widget.editableCells?[columnKey];
+    if (editableCell?.validator != null) {
+      final row = _displayRows.firstWhere((r) => r[widget.rowKey] == rowKey);
+      // Create a copy of the row with the new value for validation
+      final updatedRow = Map<String, dynamic>.from(row);
+      updatedRow[columnKey] = newValue;
+      final error = editableCell!.validator!(newValue, updatedRow);
+
+      setState(() {
+        final key = '${rowKey}_$columnKey';
+        if (error != null) {
+          _validationErrors[key] = error;
+        } else {
+          _validationErrors.remove(key);
+        }
+      });
+    }
+
+    // Call the new or legacy callback
+    widget.onCellValueChanged?.call(rowKey, columnKey, newValue);
+    // ignore: deprecated_member_use_from_same_package
+    widget.onCellChanged?.call(rowKey, columnKey, newValue);
+  }
+
+  void _setActiveCell(dynamic rowKey, String columnKey) {
+    setState(() {
+      _activeCellRowKey = rowKey?.toString();
+      _activeCellColumnKey = columnKey;
+    });
+  }
+
+  void _clearActiveCell() {
+    setState(() {
+      _activeCellRowKey = null;
+      _activeCellColumnKey = null;
+    });
+  }
+
+  void _revalidateAllCells() {
+    _validationErrors.clear();
+    if (widget.editableCells == null) return;
+
+    for (final row in widget.rows) {
+      final rowKey = row[widget.rowKey];
+      for (final entry in widget.editableCells!.entries) {
+        final columnKey = entry.key;
+        final editableCell = entry.value;
+        if (editableCell.validator != null) {
+          final value = row[columnKey];
+          final error = editableCell.validator!(value, row);
+          if (error != null) {
+            _validationErrors['${rowKey}_$columnKey'] = error;
+          }
+        }
+      }
+    }
+  }
+
+  String? _getValidationError(dynamic rowKey, String columnKey) {
+    return _validationErrors['${rowKey}_$columnKey'];
+  }
+
+  bool _isCellActive(dynamic rowKey, String columnKey) {
+    return _activeCellRowKey == rowKey.toString() &&
+        _activeCellColumnKey == columnKey;
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = context.ckcoreTheme;
@@ -447,6 +580,7 @@ class _CompanyDataTableState extends State<CKDataTable> {
                                   ? _displayRows[i][widget.rowKey]
                                   : null,
                             ),
+                            // Legacy editable columns support
                             editControllers: widget.editableColumns == null
                                 ? const {}
                                 : {
@@ -457,13 +591,44 @@ class _CompanyDataTableState extends State<CKDataTable> {
                                         col:
                                             _editControllers['${_displayRows[i][widget.rowKey]}_$col']!,
                                   },
-                            onCellChanged: widget.onCellChanged == null
-                                ? null
-                                : (colKey, value) => widget.onCellChanged!(
+                            // Legacy callback
+                            onCellChanged:
+                                widget.editableColumns != null &&
+                                    (widget.onCellChanged != null ||
+                                        widget.onCellValueChanged != null)
+                                ? (colKey, value) => _handleCellChanged(
                                     _displayRows[i][widget.rowKey],
                                     colKey,
                                     value,
-                                  ),
+                                  )
+                                : null,
+                            // New editable cells support
+                            editableCells: widget.editableCells,
+                            onCellValueChanged: widget.editableCells != null
+                                ? (colKey, value) => _handleCellChanged(
+                                    _displayRows[i][widget.rowKey],
+                                    colKey,
+                                    value,
+                                  )
+                                : null,
+                            getValidationError: (colKey) => _getValidationError(
+                              _displayRows[i][widget.rowKey],
+                              colKey,
+                            ),
+                            isCellActive: (colKey) => _isCellActive(
+                              _displayRows[i][widget.rowKey],
+                              colKey,
+                            ),
+                            onCellFocusChanged: (colKey, rowKey, isFocused) {
+                              if (isFocused) {
+                                _setActiveCell(rowKey, colKey);
+                              } else {
+                                // Only clear if this is the currently active cell
+                                if (_isCellActive(rowKey, colKey)) {
+                                  _clearActiveCell();
+                                }
+                              }
+                            },
                           ),
                         if (widget.footerRow != null) ...[
                           Divider(

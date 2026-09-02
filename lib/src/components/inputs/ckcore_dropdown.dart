@@ -20,7 +20,7 @@ class CKDropdown<T> extends StatefulWidget {
     this.trailing,
     this.enabled = true,
     this.borderless = false,
-    this.menuMaxHeight = 400,
+    this.menuMaxHeight = 150,
     this.menuMinHeight = 144,
     this.validator,
     this.isRequired = false,

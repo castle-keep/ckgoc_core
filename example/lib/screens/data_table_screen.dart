@@ -93,11 +93,52 @@ class _DataTableScreenState extends State<DataTableScreen> {
   List<CKTableFilter> _sortableFilters = [];
   String _sortableSearch = '';
 
+  // Section 7: Editable with Custom Inputs & Row-Aware Validation
+  late List<Map<String, dynamic>> _itemTransferRows;
+
   @override
   void initState() {
     super.initState();
     _editableRows = _copy();
     _deletableRows = _copy();
+    _itemTransferRows = [
+      {
+        'id': 1,
+        'item': 'Laptop',
+        'transfer_type': 'Internal',
+        'destination': 'Warehouse B',
+        'courier': '',
+        'tracking_no': '',
+        'verified': true,
+      },
+      {
+        'id': 2,
+        'item': 'Monitor',
+        'transfer_type': 'External',
+        'destination': 'Customer Site A',
+        'courier': null, // Will be invalid
+        'tracking_no': null, // Will be invalid
+        'verified': false,
+      },
+      {
+        'id': 3,
+        'item': 'Keyboard',
+        'transfer_type': 'External',
+        'destination': 'Warehouse C',
+        'courier': 'FedEx',
+        'tracking_no': null, // Will be invalid
+        'verified': true,
+      },
+      {
+        'id': 4,
+        'item': 'Mouse',
+        'transfer_type': 'External',
+        'destination': 'Customer Site B',
+        'courier': 'DHL',
+        'tracking_no': '123456789',
+        'verified': true,
+      },
+    ];
   }
 
   //  Shared base columns
@@ -236,6 +277,82 @@ class _DataTableScreenState extends State<DataTableScreen> {
     final s = theme.spacing;
     final c = theme.colors;
     final t = theme.typography;
+
+    // Editable cell configuration extracted so validators can be checked
+    final Map<String, CKEditableCell> itemEditableCells = {
+      // Text field for Item (always required)
+      'item': CKEditableCell.textField(
+        hint: 'Enter item name',
+        validator: (value, row) {
+          if (value == null || value.toString().trim().isEmpty) {
+            return 'Item is required';
+          }
+          return null;
+        },
+      ),
+
+      // Dropdown for Transfer Type
+      'transfer_type': CKEditableCell.dropdown(
+        items: const [
+          DropdownMenuItem(value: 'Internal', child: Text('Internal')),
+          DropdownMenuItem(value: 'External', child: Text('External')),
+        ],
+        hint: 'Select type',
+      ),
+
+      // Text field for Destination (always required)
+      'destination': CKEditableCell.textField(
+        hint: 'Enter destination',
+        validator: (value, row) {
+          if (value == null || value.toString().trim().isEmpty) {
+            return 'Destination is required';
+          }
+          return null;
+        },
+      ),
+
+      // Dropdown for Courier (required if External)
+      'courier': CKEditableCell.dropdown(
+        items: const [
+          DropdownMenuItem(value: 'FedEx', child: Text('FedEx')),
+          DropdownMenuItem(value: 'UPS', child: Text('UPS')),
+          DropdownMenuItem(value: 'DHL', child: Text('DHL')),
+          DropdownMenuItem(value: 'USPS', child: Text('USPS')),
+        ],
+        hint: 'Select courier',
+        validator: (value, row) {
+          // Only required if transfer type is External
+          if (row['transfer_type'] == 'External') {
+            if (value == null || value.toString().trim().isEmpty) {
+              return 'Required for external transfers';
+            }
+          }
+          return null;
+        },
+      ),
+
+      // Text field for Tracking No. (required if External)
+      'tracking_no': CKEditableCell.textField(
+        hint: 'Enter tracking number',
+        validator: (value, row) {
+          // Only required if transfer type is External
+          if (row['transfer_type'] == 'External') {
+            if (value == null || value.toString().trim().isEmpty) {
+              return 'Required for external transfers';
+            }
+            // Additional validation: must be numeric
+            final str = value.toString();
+            if (str.isNotEmpty && int.tryParse(str) == null) {
+              return 'Must be a number';
+            }
+          }
+          return null;
+        },
+      ),
+
+      // Checkbox for Verified
+      'verified': CKEditableCell.checkbox(label: 'Verified'),
+    };
 
     return SingleChildScrollView(
       padding: EdgeInsets.all(s.xl),
@@ -507,6 +624,131 @@ class _DataTableScreenState extends State<DataTableScreen> {
                 ],
               ),
             ),
+
+          SizedBox(height: s.x3l),
+
+          //  7. Editable with Custom Inputs & Row-Aware Validation
+          _SectionLabel(
+            '7 · Editable Cells with Custom Inputs & Row-Aware Validation',
+            theme,
+          ),
+          SizedBox(height: s.xs),
+          Text(
+            'Demonstrates custom input types (dropdown, checkbox) and validation rules that depend on other cell values.',
+            style: t.textSm.copyWith(color: c.onSurfaceVariant),
+          ),
+          SizedBox(height: s.md),
+          Text(
+            'Validation rules:',
+            style: t.labelSm.copyWith(color: c.onSurface),
+          ),
+          SizedBox(height: s.xs),
+          Text(
+            '• Item and Destination are always required\n'
+            '• If Transfer Type = Internal: Courier and Tracking No. are optional\n'
+            '• If Transfer Type = External: Courier and Tracking No. are required',
+            style: t.textSm.copyWith(color: c.onSurfaceVariant),
+          ),
+          SizedBox(height: s.md),
+          CKDataTable(
+            columns: [
+              CKTableColumn(
+                key: 'x',
+                label: '',
+                width: 60,
+                cellBuilder: (v, row) {
+                  // Consider all configured editable validators for this row.
+                  final allValid = itemEditableCells.entries.every((entry) {
+                    final validator = entry.value.validator;
+                    if (validator == null) return true;
+                    final colKey = entry.key;
+                    final val = row[colKey];
+                    return validator(val, row) == null;
+                  });
+                  final icon = allValid ? Icons.check_circle : Icons.cancel;
+                  final color = allValid ? c.success : c.error;
+                  return Center(child: Icon(icon, size: 18, color: color));
+                },
+              ),
+              CKTableColumn(key: 'item', label: 'Item', sortable: true),
+              CKTableColumn(
+                key: 'transfer_type',
+                label: 'Transfer Type',
+                sortable: true,
+              ),
+              CKTableColumn(
+                key: 'destination',
+                label: 'Destination',
+                sortable: true,
+              ),
+              CKTableColumn(key: 'courier', label: 'Courier'),
+              CKTableColumn(key: 'tracking_no', label: 'Tracking No.'),
+              CKTableColumn(
+                key: 'verified',
+                label: '',
+                textAlign: TextAlign.center,
+                cellBuilder: (v, row) => Builder(
+                  builder: (ctx) {
+                    final theme = ctx.ckcoreTheme;
+                    final color = v == true
+                        ? theme.colors.success
+                        : theme.colors.error;
+                    return Center(
+                      child: Icon(
+                        v == true ? Icons.check_circle : Icons.cancel,
+                        color: color,
+                        size: 18,
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ],
+            rows: _itemTransferRows,
+            rowKey: 'id',
+            title: 'Item Transfers',
+            subtitle: 'Manage item transfers with validation',
+
+            // Configure editable cells with custom inputs and row-aware validation
+            editableCells: itemEditableCells,
+
+            // Handle cell value changes
+            onCellValueChanged: (rowKey, columnKey, newValue) {
+              setState(() {
+                final rowIndex = _itemTransferRows.indexWhere(
+                  (row) => row['id'] == rowKey,
+                );
+                if (rowIndex != -1) {
+                  _itemTransferRows[rowIndex][columnKey] = newValue;
+
+                  // If transfer type changes, clear courier and tracking fields
+                  if (columnKey == 'transfer_type' && newValue == 'Internal') {
+                    _itemTransferRows[rowIndex]['courier'] = '';
+                    _itemTransferRows[rowIndex]['tracking_no'] = '';
+                  }
+                }
+              });
+            },
+
+            // Table settings
+            selectionMode: TableSelectionMode.none,
+            totalCount: _itemTransferRows.length,
+            pageSize: 10,
+            striped: true,
+          ),
+          SizedBox(height: s.sm),
+          _DataPreview(
+            label: 'Item Transfer Data',
+            rows: _itemTransferRows,
+            fields: const [
+              'id',
+              'item',
+              'transfer_type',
+              'courier',
+              'tracking_no',
+              'verified',
+            ],
+          ),
         ],
       ),
     );

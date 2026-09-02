@@ -15,9 +15,8 @@ class DataTablePage extends StatelessWidget {
           'Documentation for the data table files under lib/src/components/data_table.',
       children: [
         DocSection(data: _dataTableDoc()),
-        DocSection(
-          data: _dataTableColumn(),
-        )
+        DocSection(data: _dataTableColumn()),
+        DocSection(data: _editableCellDoc()),
       ],
     );
   }
@@ -298,11 +297,24 @@ CKDataTable(
           description: 'Columns that allow inline editing.',
         ),
         DocParam(
+          name: 'editableCells',
+          type: 'Map<String, CKEditableCell>?',
+          description:
+              'Map of columnKey -> CKEditableCell configuration. Use this to provide custom input widgets and row-aware validators for editable cells.',
+        ),
+        DocParam(
           name: 'onCellChanged',
           type:
               'void Function(dynamic rowKey, String columnKey, dynamic newValue)?',
           description:
               'Inline edit commit callback. Signature: `(rowKey, columnKey, newValue)`.',
+        ),
+        DocParam(
+          name: 'onCellValueChanged',
+          type:
+              'void Function(dynamic rowKey, String columnKey, dynamic newValue)?',
+          description:
+              'New preferred callback for editable cells. Receives `(rowKey, columnKey, newValue)`. Use when `editableCells` is provided.',
         ),
         DocParam(
           name: 'onFilterChanged',
@@ -330,11 +342,70 @@ CKDataTable(
       notes: [
         'Enum demo coverage: TableSelectionMode and TableWidthBehavior are both exercised in the live demo selector.',
         'onCellChanged: When provided, receives `(rowKey, columnKey, newValue)` for the edited cell — useful for committing inline edits to external state.',
+        'New editable cells API: prefer `editableCells` + `onCellValueChanged` for per-column custom inputs and row-aware validation. See `CKEditableCell` documentation below for factory helpers and examples.',
+      ],
+    );
+
+ComponentDocData _editableCellDoc() => const ComponentDocData(
+      title: 'CKEditableCell',
+      summary:
+          'Configuration object for editable table cells. Provides builders for custom input widgets and row-aware validators.',
+      demo: SizedBox.shrink(),
+      code: '''
+// Example: per-column editable configuration
+editableCells: {
+  'courier': CKEditableCell.dropdown(
+    items: const [
+      DropdownMenuItem(value: 'FedEx', child: Text('FedEx')),
+      DropdownMenuItem(value: 'UPS', child: Text('UPS')),
+    ],
+    validator: (value, row) {
+      if (row['transfer_type'] == 'External' && (value == null || value.toString().isEmpty)) {
+        return 'Required for external transfers';
+      }
+      return null;
+    },
+  ),
+  'tracking_no': CKEditableCell.textField(
+    hint: 'Enter tracking number',
+    validator: (value, row) {
+      if (row['transfer_type'] == 'External' && (value == null || value.toString().isEmpty)) {
+        return 'Required for external transfers';
+      }
+      return null;
+    },
+  ),
+}
+''',
+      params: [
+        DocParam(
+          name: 'builder',
+          type:
+              'Widget Function(BuildContext, dynamic value, ValueChanged<dynamic> onChanged, Map<String,dynamic> row, bool isActive, String? validationError)',
+          description: 'Builds the custom input widget for the cell.',
+        ),
+        DocParam(
+          name: 'validator',
+          type: 'String? Function(dynamic value, Map<String,dynamic> row)?',
+          description:
+              'Row-aware validator that receives the current row map along with the value. Return null for valid, or an error string for invalid.',
+        ),
+      ],
+      faqs: [
+        DocFaq(
+          question: 'When should I use CKEditableCell?',
+          answer:
+              'Use CKEditableCell when you need per-column custom inputs or validation logic that depends on other values in the same row. For simple text-only inline edits you can continue using the legacy editableColumns + onCellChanged API.',
+        ),
+      ],
+      notes: [
+        'Factory helpers exist for common input types: textField, dropdown, checkbox, switch_, datePicker.',
+        'Validators receive the full row map so rules can depend on sibling cell values.',
       ],
     );
 
 class _DataTableDemo extends StatefulWidget {
-  const _DataTableDemo();
+  const _DataTableDemo({Key? key}) : super(key: key);
 
   @override
   State<_DataTableDemo> createState() => _DataTableDemoState();

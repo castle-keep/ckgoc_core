@@ -55,6 +55,12 @@ CKTextField(
           description: 'External focus management.',
         ),
         DocParam(
+          name: 'value',
+          type: 'String?',
+          description:
+              'Controlled value for the field. Use this for inline table editing where the table drives the field value and needs to reflect external state changes.',
+        ),
+        DocParam(
           name: 'label',
           type: 'String?',
           description: 'Field label displayed above the input.',
@@ -151,6 +157,11 @@ CKTextField(
           description: 'Removes filled and outline styles for inline contexts.',
           defaultValue: 'false',
         ),
+        DocParam(
+            name: 'value',
+            type: 'String?',
+            description:
+                'Controlled value for the field; asserted that controller should be null when this is provided.'),
       ],
       faqs: [
         DocFaq(
@@ -579,7 +590,8 @@ CKDropdown<String>(
         DocParam(
           name: 'menuMaxHeight',
           type: 'double',
-          description: 'Maximum overlay height before the menu scrolls.',
+          description:
+              'Maximum overlay height before the menu scrolls. ALWAYS adjust this according to the number of children in the menu to avoid awkward dropdown if overlay is on top',
         ),
         DocParam(
           name: 'menuMinHeight',
@@ -777,12 +789,13 @@ CKOtpField(
     );
 
 ComponentDocData _datePickerDoc() => const ComponentDocData(
-      comingSoon: true,
+      comingSoon: false,
       title: 'CKDatePicker',
       summary:
-          'Date picker API surface. The current package implementation is still a placeholder that returns an empty widget.',
+          'Date picker with single-date and range modes. Supports `mode` to choose month/date/fullDate or `range` for start/end selection, bounds, validation, and controlled or uncontrolled usage.',
       demo: _DatePickerDocDemo(),
       code: '''
+// Single date
 CKDatePicker(
   label: 'Start date',
   value: selectedDate,
@@ -790,34 +803,46 @@ CKDatePicker(
   lastDate: DateTime(2030),
   onChanged: (date) => setState(() => selectedDate = date),
 )
+
+// Range selection
+CKDatePicker(
+  label: 'Date range',
+  mode: CKDatePickerMode.range,
+  range: selectedRange,
+  onRangeChanged: (r) => setState(() => selectedRange = r),
+  firstDate: DateTime(2020),
+  lastDate: DateTime(2030),
+)
 ''',
       params: [
         DocParam(
           name: 'value',
           type: 'DateTime?',
-          description: 'Currently selected date.',
+          description: 'Currently selected date (single-date mode).',
+        ),
+        DocParam(
+          name: 'range',
+          type: 'DateTimeRange?',
+          description: 'Currently selected range (range mode).',
         ),
         DocParam(
           name: 'onChanged',
           type: 'ValueChanged<DateTime?>?',
-          description: 'Selection callback.',
+          description: 'Selection callback for single-date mode.',
         ),
+        DocParam(
+          name: 'onRangeChanged',
+          type: 'ValueChanged<DateTimeRange?>?',
+          description: 'Selection callback for range mode.',
+        ),
+        DocParam(
+            name: 'mode',
+            type: 'CKDatePickerMode',
+            description: 'Selection mode: month, date, fullDate, or range.'),
         DocParam(
           name: 'label',
           type: 'String?',
           description: 'Accessible or visible label.',
-        ),
-        DocParam(
-          name: 'validator',
-          type: 'String? Function(TimeOfDay?)?',
-          description: 'Inline validator; runs when selection changes.',
-        ),
-        DocParam(
-          name: 'isRequired',
-          type: 'bool',
-          description:
-              'When true enforces a required selection and appends a red `*` to the label.',
-          defaultValue: 'false',
         ),
         DocParam(
           name: 'firstDate',
@@ -832,7 +857,8 @@ CKDatePicker(
         DocParam(
           name: 'validator',
           type: 'String? Function(DateTime?)?',
-          description: 'Inline validator; runs when selection changes.',
+          description:
+              'Inline validator for single-date mode; runs when selection changes.',
         ),
         DocParam(
           name: 'isRequired',
@@ -844,18 +870,19 @@ CKDatePicker(
       ],
       faqs: [
         DocFaq(
-          question: 'Why is the live output blank?',
+          question: 'How do I select a range?',
           answer:
-              'This component is still unimplemented in the package and returns SizedBox.shrink().',
+              'Set `mode: CKDatePickerMode.range`. The first tap picks the start (start == end), the second tap picks the end and finalizes the range.',
         ),
         DocFaq(
-          question: 'Should I wrap it with my own button for now?',
+          question: 'Can I control the picker externally?',
           answer:
-              'If you need production behavior immediately, yes. Keep this API in docs so the public contract remains clear.',
+              'Yes. Provide `value` or `range` and handle `onChanged`/`onRangeChanged` to drive the component externally.',
         ),
       ],
       notes: [
-        'Implementation status: placeholder widget body in the package source.',
+        'Range UX: first tap sets start; second tap finalizes end. You can update this behavior to require an explicit confirm button if desired.',
+        'Validation: `validator` currently applies to single-date mode. Consider adding a range validator if you need start/end rules.',
       ],
     );
 
