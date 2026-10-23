@@ -1,98 +1,180 @@
 # Getting Started with ckcoreui
 
-## Essential Guides
+Go from an empty Flutter project to a themed, branded screen in about five minutes.
 
-### Component Guides
+> **Prefer to click around?** Run the interactive docs app and open **Get Started**
+> (see [Explore the docs app](#explore-the-docs-app)). Every snippet below has a live version there.
 
-- **[Data Table Guide](data-table.md)** - All features of CKDataTable including selection, sorting, pagination, and filtering
-  - **[Editable Cells with Custom Inputs](editable-data-table-custom-inputs.md)** - Custom input widgets, row-aware validation, and visual feedback
-  - **[Editable Cells Quick Reference](editable-cells-quick-reference.md)** - API reference and common patterns
+## Prerequisites
 
-### Setup & Installation
+| You need | Version |
+| --- | --- |
+| Flutter | `>=3.10.0` |
+| Dart SDK | `^3.9.2` |
+| Platforms | Android, iOS, Web, macOS, Linux, Windows |
 
-- **[Installation](installation.md)** - How to install and set up ckcoreui
-- **[Setup](setup.md)** - Initial app configuration
-- **[Brand Configuration](brand-configuration.md)** - Configuring your brand theme
-- **[Brand Scaffolding](brand-scaffolding.md)** - Complete scaffolding structure for a new brand
-
-### Design System
-
-- **[Design Tokens Quick Access](design-tokens-quick-access.md)** - Using colors, spacing, typography, and other design tokens
+Check yours with `flutter --version`. No Flutter project yet? `flutter create my_app && cd my_app`.
 
 ---
 
-## Quick Start
+## 1. Install
 
-### 1. Install the Package
-```dart
-// pubspec.yaml
-dependencies:
-  ckcoreui: ^0.1.0
+```bash
+flutter pub add ckcoreui
 ```
 
-### 2. Create Your App
-```dart
-import 'package:ckcoreui/ckcore_core.dart';
+This edits `pubspec.yaml` and runs `pub get` for you. `flutter_svg` and `lucide_icons_flutter` come along automatically, and so do the bundled fonts and brand logos. You don't need to declare them.
 
-void main() {
-  runApp(
-    CKApp(
-      brand: ckcoreBrand.castleKeep,
-      home: HomePage(),
+Working from a local checkout instead? Use a path dependency:
+
+```yaml
+dependencies:
+  ckcoreui:
+    path: ../ckcoreui
+```
+
+## 2. Wrap your app in `CKApp`
+
+`CKApp` is a drop-in replacement for `MaterialApp`. It takes the same parameters, plus `brand` and `brightness`.
+
+```dart
+import 'package:ckcoreui/ckcoreui.dart';
+import 'package:flutter/material.dart';
+
+void main() => runApp(const MyApp());
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return CKApp(
+      brand: ckcoreBrand.castleKeep, // or ckcoreBrand.skyGo
       title: 'My App',
-    ),
-  );
+      home: const HomePage(),
+    );
+  }
 }
 ```
 
-### 3. Access Design Tokens
+| Parameter | What it does |
+| --- | --- |
+| `brand` | **Required.** Picks the colour palette, typography and logos: `ckcoreBrand.castleKeep` or `ckcoreBrand.skyGo`. |
+| `brightness` | `Brightness.light` / `Brightness.dark` to force a mode. Leave `null` to follow the device. |
+| `responsive` | Wraps the app in a responsive-aware layout provider. Defaults to `false`. |
+| everything else | Forwarded to `MaterialApp` (`home`, `routes`, `title`, `locale`, ...). |
+
+Using `go_router` or another Navigator 2.0 setup? Use `CKApp.router(brand: ..., routerConfig: ...)`. See [Setup](setup.md#router--delegate-navigator-20).
+
+> **Coming from `ckcoreApp(child: MaterialApp(...))`?** It still works but is deprecated. Move your `home:` and other options onto `CKApp` directly. See [Migrating](setup.md#migrating-from-ckcoreapp).
+
+## 3. Build your first screen
+
 ```dart
-// In any widget with BuildContext
-Container(
-  color: context.ckColors.primary,
-  padding: EdgeInsets.all(context.ckSpacing.md),
-  child: Text('Hello', style: context.ckTypography.textMd),
-)
+class HomePage extends StatelessWidget {
+  const HomePage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: context.ckColors.background,
+      body: Padding(
+        padding: EdgeInsets.all(context.ckSpacing.lg),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text('Welcome back').h2,
+            SizedBox(height: context.ckSpacing.md),
+            const CKTextField(label: 'Email', hint: 'you@company.com'),
+            SizedBox(height: context.ckSpacing.md),
+            CKButton(
+              onPressed: () {},
+              child: const Text('Continue'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
 ```
 
+Run it with `flutter run`. Then change `ckcoreBrand.castleKeep` to `ckcoreBrand.skyGo` and hot reload. The whole app re-skins.
+
+Three things to notice:
+
+- **Components are prefixed `CK`**: `CKButton`, `CKTextField`, `CKCard`, `CKDataTable`.
+- **Buttons take a `child`**, not a `label` string. Use `CKButton.outline`, `.ghost`, `.secondary`, `.accent` for other variants, or `variant: ButtonVariant.destructive`.
+- **Tokens come from `BuildContext`.** Never hard-code colours or pixel values.
+
+## 4. Use design tokens
+
+Read tokens from any widget below `CKApp`:
+
+| Accessor | Gives you | Example |
+| --- | --- | --- |
+| `context.ckColors` | semantic colours | `.primary`, `.surface`, `.onSurface`, `.error`, `.success` |
+| `context.ckSpacing` | spacing scale | `.xs` `.sm` `.md` `.lg` `.xl` |
+| `context.ckTypography` | text styles | `.displayLg`, `.textMd`, `.labelSm`, `.codeMd` |
+| `context.ckRadius` | corner radii | `.sm` `.md` `.lg` |
+| `context.ckElevation` / `ckShadows` | depth | `.sm` `.md` |
+| `context.ckMotion` | durations and curves | `.fast` `.normal` `.slow` |
+| `context.ckBreakpoints` | responsive thresholds | `.md` |
+| `context.ckcoreTheme` | the whole bundle | `.colors`, `.spacing`, `.typography` |
+
+Text also has chainable helpers, so you can skip manual `TextStyle`s:
+
+```dart
+Text('Page title').h1
+Text('Saved!').bold.success      // modifiers first, then colour/style
+Text('Muted caption').textSm.muted
+```
+
+More in [Design Tokens Quick Access](design-tokens-quick-access.md).
+
 ---
 
-## Common Tasks
+## Where to next?
 
-### Use CKDataTable with Selection
-See [Data Table Guide - Selection](data-table.md#selection)
+| I want to... | Read |
+| --- | --- |
+| Add a table with sorting, paging and editing | [Data Table Guide](data-table.md) |
+| Make table cells editable | [Editable cells](editable-cells.md) |
+| Set up routing, text extensions or migrate an old app | [Setup](setup.md) |
+| Understand, switch or add a brand | [Brands](brands.md) |
+| Use or add logos | [Brand logos](brand-logos.md) |
+| Look up tokens | [Design Tokens Quick Access](design-tokens-quick-access.md) · [Colors](../foundation/colors.md) · [Typography](../foundation/typography.md) · [Spacing](../foundation/spacing.md) |
+| Add motion to screens | [Animation (`CKAnimate`)](animation.md) |
+| Let Copilot, Claude Code or Cursor write ckcoreui correctly | [AI tools: MCP server and skills](ai-tools.md) |
 
-### Make CKDataTable Cells Editable
-See [Editable Cells Guide](editable-data-table-custom-inputs.md)
+## Explore the docs app
 
-### Implement Row-Aware Validation
-See [Editable Cells Guide - Row-Aware Validation](editable-data-table-custom-inputs.md#row-aware-validation)
+The repo ships a Flutter app where every component has a live demo, copy-ready code, a parameter table and FAQs. Switch brand and light/dark from the top-right corner and watch every demo update.
 
-### Sort or Filter Server-Side
-See [Data Table Guide - Sorting](data-table.md#sorting)
-
----
-
-## Example App
-
-The example app in `example/lib/screens/data_table_screen.dart` demonstrates all CKDataTable features including:
-
-1. Inline editable cells (legacy API)
-2. Delete multiple rows
-3. Multiple row selection
-4. Pagination with custom page sizes
-5. Sortable & filterable columns
-6. **NEW:** Editable cells with custom inputs and row-aware validation (Section 7)
-
-Run it with:
 ```bash
-flutter run -d chrome -t example/lib/main.dart
+cd doc/flutter_docs
+flutter pub get
+flutter run -d chrome
 ```
 
----
+The docs app depends on the local package by path, so after changing `lib/src` re-run `flutter pub get` in that folder. Or browse the hosted version at <https://castle-keep.github.io/ckgoc_core/>.
 
-## Need Help?
+There's also a smaller showcase in `example/`:
 
-- **API Reference**: See inline documentation in the source files
-- **Examples**: Check `example/lib/screens/` for working examples
-- **Design System**: Visit the design documentation at https://castle-keep.github.io/ckgoc_core/
+```bash
+cd example
+flutter run -d chrome
+```
+
+## Troubleshooting
+
+| Symptom | Fix |
+| --- | --- |
+| `No CkcoreuiTheme found in context` | The widget is above `CKApp`. Move `CKApp` to the root of `runApp`. (The message says `ckcoreApp`; `CKApp` provides the same theme.) |
+| `ckcoreApp is deprecated` warning | Switch to `CKApp`. See [Migrating](setup.md#migrating-from-ckcoreapp). |
+| `The named parameter 'label' isn't defined` on `CKButton` | Use `child: Text('...')`. |
+| Fonts look different from the docs | Make sure you didn't override `theme:` on `CKApp`. Let `brand` supply it. |
+| Logos don't show | Pass `package: 'ckcoreui'` when using `Image.asset`, or use `BrandIcon.brandLogoWidget(...)`. |
+| Version conflict on `flutter_svg` | Run `flutter pub upgrade flutter_svg`. |
+
+Still stuck? [Open an issue](https://github.com/castle-keep/ckgoc_core/issues/new/choose).

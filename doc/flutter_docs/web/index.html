@@ -18,21 +18,53 @@
 
   <meta charset="UTF-8">
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
-  <meta name="description" content="A new Flutter project.">
+  <meta name="description" content="Live component docs for ckcoreui: a multi-brand Flutter design system.">
 
   <!-- iOS meta tags & icons -->
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <meta name="apple-mobile-web-app-title" content="ckcoreui_docs_app">
+  <meta name="apple-mobile-web-app-title" content="ckcoreui docs">
   <link rel="apple-touch-icon" href="icons/Icon-192.png">
 
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="favicon.png"/>
 
-  <title>ckcoreui_docs_app</title>
+  <title>ckcoreui docs</title>
   <link rel="manifest" href="manifest.json">
+
+  <style>
+    /* Shown while the Flutter engine downloads and boots. */
+    #boot {
+      position: fixed; inset: 0; z-index: 10;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 20px; background: #02372e; color: #fff;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      transition: opacity .35s ease;
+    }
+    #boot.done { opacity: 0; pointer-events: none; }
+    #boot .word { font-size: 28px; font-weight: 700; letter-spacing: .02em; }
+    #boot .bar { width: 160px; height: 3px; border-radius: 3px; overflow: hidden; background: rgba(255,255,255,.2); }
+    #boot .bar::after {
+      content: ""; display: block; width: 40%; height: 100%; border-radius: 3px; background: #e9bb43;
+      animation: slide 1.1s ease-in-out infinite;
+    }
+    @keyframes slide { 0% { transform: translateX(-100%); } 100% { transform: translateX(260%); } }
+    @media (prefers-reduced-motion: reduce) { #boot .bar::after { animation: none; width: 100%; } }
+  </style>
 </head>
 <body>
+  <div id="boot" role="status" aria-label="Loading">
+    <div class="word">ckcoreui</div>
+    <div class="bar"></div>
+  </div>
+  <script>
+    window.addEventListener('flutter-first-frame', function () {
+      var boot = document.getElementById('boot');
+      if (!boot) return;
+      boot.classList.add('done');
+      setTimeout(function () { boot.remove(); }, 400);
+    });
+  </script>
   <script src="flutter_bootstrap.js" async></script>
 </body>
 </html>

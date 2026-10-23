@@ -1,29 +1,73 @@
 # Setup
 
+> New here? Start with the [Getting Started guide](README.md). This page covers configuration in more depth.
+
 ## Wrap your app
 
-Wrap your root widget with `ckcoreApp` to inject the design system into the widget tree.
+`CKApp` replaces `MaterialApp` and injects the design system into the widget tree.
 
 ```dart
 void main() {
   runApp(
-    ckcoreApp(
-      brand: ckcoreBrand.skyGo,  // or ckcoreBrand.castleKeep
-      child: MaterialApp(
-        home: MyHomePage(),
-      ),
+    CKApp(
+      brand: ckcoreBrand.skyGo, // or ckcoreBrand.castleKeep
+      title: 'My App',
+      home: const MyHomePage(),
     ),
   );
 }
 ```
 
-`ckcoreApp` reads the system brightness by default. To override:
+`CKApp` follows the system brightness by default. To override:
 
 ```dart
-ckcoreApp(
+CKApp(
   brand: ckcoreBrand.castleKeep,
-  brightness: Brightness.dark,  // force dark mode
-  child: ...,
+  brightness: Brightness.dark, // force dark mode
+  home: const MyHomePage(),
+)
+```
+
+### Switching brand or mode at runtime
+
+Hold the choice in state and rebuild `CKApp`. This is how the docs app's top-right switcher works.
+
+```dart
+class _MyAppState extends State<MyApp> {
+  ckcoreBrand _brand = ckcoreBrand.castleKeep;
+  Brightness? _brightness; // null = follow system
+
+  @override
+  Widget build(BuildContext context) {
+    return CKApp(
+      brand: _brand,
+      brightness: _brightness,
+      home: Switch(
+        value: _brand == ckcoreBrand.skyGo,
+        onChanged: (v) => setState(
+          () => _brand = v ? ckcoreBrand.skyGo : ckcoreBrand.castleKeep,
+        ),
+      ),
+    );
+  }
+}
+```
+
+## Migrating from `ckcoreApp`
+
+`ckcoreApp(brand:, child: MaterialApp(...))` is deprecated. Move the `MaterialApp` options onto `CKApp`:
+
+```dart
+// Before
+ckcoreApp(
+  brand: ckcoreBrand.skyGo,
+  child: MaterialApp(home: MyHomePage()),
+)
+
+// After
+CKApp(
+  brand: ckcoreBrand.skyGo,
+  home: MyHomePage(),
 )
 ```
 
@@ -32,6 +76,10 @@ ckcoreApp(
 ```dart
 // Preferred — extension method
 final theme = context.ckcoreTheme;
+
+// Individual token families
+final colors = context.ckColors;
+final gap = context.ckSpacing.md;
 
 // Explicit static method
 final theme = ckcoreTheme.of(context);
@@ -142,9 +190,9 @@ After:
 
 ```dart
 void main() => runApp(
-  ckcoreApp(
+  CKApp(
     brand: ckcoreBrand.skyGo,
-    child: MaterialApp(home: MyHomePage()),
+    home: MyHomePage(),
   ),
 );
 ```
@@ -167,7 +215,7 @@ final theme = context.ckcoreTheme;
 
 5. Replace component types and imports
 
-- Replace local widgets like `CompanyButton` with `ckcoreButton` and remove local imports in favor of the package import above.
+- Replace local widgets like `CompanyButton` with `CKButton` and remove local imports in favor of the package import above.
 
 Before:
 
@@ -182,7 +230,7 @@ After:
 ```dart
 import 'package:ckcoreui/ckcore_core.dart';
 
-ckcoreButton(onPressed: () {}, label: 'Save')
+CKButton(onPressed: () {}, child: Text('Save'))
 ```
 
 6. Update assets & fonts

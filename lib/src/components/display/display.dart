@@ -8,3 +8,4 @@ export 'ckcore_list_tile.dart';
 export 'ckcore_accordion.dart';
 export 'ckcore_stepper.dart';
 export 'ckcore_timeline.dart';
+export 'ckcore_animate.dart';

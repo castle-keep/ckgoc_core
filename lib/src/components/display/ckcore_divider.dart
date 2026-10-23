@@ -1,17 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:ckcoreui/src/themes/ckcore_theme.dart';
 
-// TODO: Implement widget body.
+/// Thin separator line, horizontal by default.
+///
+/// A vertical divider fills the height it is given, so place it in a
+/// bounded-height parent (for example a `SizedBox` or an `IntrinsicHeight`
+/// row).
 class CKDivider extends StatelessWidget {
   const CKDivider({this.direction = Axis.horizontal, super.key});
   final Axis direction;
 
   @override
   Widget build(BuildContext context) {
-    // ignore: unused_local_variable
-    final theme = context.ckcoreTheme;
-    // TODO: implement
-    return const SizedBox.shrink();
+    final colors = context.ckcoreTheme.colors;
+
+    return direction == Axis.horizontal
+        ? Divider(height: 1, thickness: 1, color: colors.outlineVariant)
+        : VerticalDivider(width: 1, thickness: 1, color: colors.outlineVariant);
   }
 }
 

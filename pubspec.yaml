@@ -1,6 +1,6 @@
 name: ckcoreui
 description: A Flutter design system package providing reusable UI components, design tokens, and multi-brand themes (CastleKeep & SkyGo).
-version: 0.5.0
+version: 0.6.0
 
 # Update them if repo is renamed to ckcoreui
 homepage: https://github.com/castle-keep/ckgoc_core
@@ -22,7 +22,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  lucide_icons_flutter: ^3.1.15
+  lucide_icons_flutter: ^4.0.1
   flutter_svg: ^2.0.0
 
 dev_dependencies:

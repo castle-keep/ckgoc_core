@@ -15,6 +15,7 @@ class EnumsPage extends StatelessWidget {
       children: [
         EnumCasesCard(title: 'ButtonVariant', cases: _buttonVariants),
         EnumCasesCard(title: 'ButtonSize', cases: _buttonSizes),
+        EnumCasesCard(title: 'ButtonHoverStyle', cases: _buttonHoverStyles),
         EnumCasesCard(title: 'BadgeVariant', cases: _badgeVariants),
         EnumCasesCard(title: 'ChipState', cases: _chipStates),
         EnumCasesCard(title: 'AvatarSize', cases: _avatarSizes),
@@ -68,6 +69,15 @@ const _buttonSizes = [
   EnumCaseDoc(name: 'md', description: 'Default height.'),
   EnumCaseDoc(name: 'lg', description: 'Large height.'),
   EnumCaseDoc(name: 'xl', description: 'Extra large height.'),
+];
+
+const _buttonHoverStyles = [
+  EnumCaseDoc(
+    name: 'lift',
+    description: 'Floats up slightly with a soft shadow (default).',
+  ),
+  EnumCaseDoc(name: 'grow', description: 'Grows slightly.'),
+  EnumCaseDoc(name: 'none', description: 'No hover effect.'),
 ];
 
 const _badgeVariants = [

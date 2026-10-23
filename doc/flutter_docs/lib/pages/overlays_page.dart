@@ -222,10 +222,9 @@ ComponentDocData _menuDoc() => const ComponentDocData(
     );
 
 ComponentDocData _popoverDoc() => const ComponentDocData(
-      comingSoon: true,
       title: 'CKPopover',
       summary:
-          'Popover API surface for anchored floating content. The current package implementation is still a placeholder widget body.',
+          'Floating panel anchored below a trigger. Tap the trigger to open; tap outside to close.',
       demo: _PopoverDemo(),
       code: '''
 CKPopover(
@@ -252,26 +251,19 @@ CKPopover(
       ],
       faqs: [
         DocFaq(
-          question: 'Why is the live output blank?',
-          answer:
-              'This component is still a placeholder in the package implementation and currently returns SizedBox.shrink().',
-        ),
-        DocFaq(
           question: 'How is popover different from tooltip?',
           answer:
               'Popover content can be richer and interactive; tooltip is typically compact and purely informational.',
         ),
       ],
       notes: [
-        'Implementation status: placeholder widget body in the package source.',
       ],
     );
 
 ComponentDocData _tooltipDoc() => const ComponentDocData(
-      comingSoon: true,
       title: 'CKTooltip',
       summary:
-          'Tooltip API surface for compact helper text. The current package implementation is still a placeholder widget body.',
+          'Compact helper text shown on hover (desktop) or long-press (touch).',
       demo: _TooltipDemo(),
       code: '''
 CKTooltip(
@@ -295,18 +287,12 @@ CKTooltip(
       ],
       faqs: [
         DocFaq(
-          question: 'Why is the live output blank?',
-          answer:
-              'This component is still a placeholder in the package implementation and currently returns SizedBox.shrink().',
-        ),
-        DocFaq(
           question: 'When should I use tooltip instead of helper text?',
           answer:
               'Use tooltip for contextual, on-demand explanations that should not add persistent visual weight.',
         ),
       ],
       notes: [
-        'Implementation status: placeholder widget body in the package source.',
       ],
     );
 
@@ -437,8 +423,6 @@ class _PopoverDemo extends StatelessWidget {
     return const Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('Current implementation returns an empty widget.'),
-        VSpace(height: 12),
         CKPopover(
           trigger: Icon(Icons.info_outline),
           content: Padding(
@@ -459,8 +443,6 @@ class _TooltipDemo extends StatelessWidget {
     return const Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('Current implementation returns an empty widget.'),
-        VSpace(height: 12),
         CKTooltip(
           message: 'More information',
           child: Icon(Icons.help_outline),

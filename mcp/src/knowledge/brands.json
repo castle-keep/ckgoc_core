@@ -1,0 +1,129 @@
+{
+    "metadata": {
+        "description": "Brand configuration and theme setup for ckcoreui"
+    },
+    "brands": {
+        "castleKeep": {
+            "name": "CastleKeep",
+            "description": "Navy and gold brand theme",
+            "enum": "ckcoreBrand.castleKeep",
+            "primaryColor": "#02372E",
+            "primaryName": "Navy",
+            "secondaryColor": "#E9BB43",
+            "secondaryName": "Gold",
+            "useCase": "Professional, corporate applications with strong branding",
+            "characteristics": "Traditional, trustworthy, premium feel",
+            "setup": "CKApp(brand: ckcoreBrand.castleKeep, home: HomePage())",
+            "themes": {
+                "light": {
+                    "name": "CastleKeep Light",
+                    "brightness": "light",
+                    "background": "#FFFFFF",
+                    "surface": "#F5F5F5",
+                    "description": "Light theme with navy accents"
+                },
+                "dark": {
+                    "name": "CastleKeep Dark",
+                    "brightness": "dark",
+                    "background": "#0F1419",
+                    "surface": "#1A1F26",
+                    "description": "Dark theme with gold highlights"
+                }
+            }
+        },
+        "skyGo": {
+            "name": "SkyGo",
+            "description": "Blue and violet brand theme",
+            "enum": "ckcoreBrand.skyGo",
+            "primaryColor": "#0070DE",
+            "primaryName": "Sky Blue",
+            "secondaryColor": "#6366F1",
+            "secondaryName": "Indigo/Violet",
+            "useCase": "Modern, tech-forward applications with dynamic feel",
+            "characteristics": "Contemporary, friendly, innovative",
+            "setup": "CKApp(brand: ckcoreBrand.skyGo, home: HomePage())",
+            "themes": {
+                "light": {
+                    "name": "SkyGo Light",
+                    "brightness": "light",
+                    "background": "#FFFFFF",
+                    "surface": "#F8F9FA",
+                    "description": "Light theme with blue accents"
+                },
+                "dark": {
+                    "name": "SkyGo Dark",
+                    "brightness": "dark",
+                    "background": "#0F172A",
+                    "surface": "#1E293B",
+                    "description": "Dark theme with violet highlights"
+                }
+            }
+        }
+    },
+    "themeSetup": {
+        "basicSetup": {
+            "description": "Basic app setup with default theme",
+            "code": "import 'package:ckcoreui/ckcoreui.dart';\nimport 'package:flutter/material.dart';\n\nvoid main() {\n  runApp(const MyApp());\n}\n\nclass MyApp extends StatelessWidget {\n  const MyApp({super.key});\n\n  @override\n  Widget build(BuildContext context) {\n    return CKApp(\n      brand: ckcoreBrand.skyGo, // choose your brand\n      title: 'My App',\n      home: const HomePage(),\n    );\n  }\n}"
+        },
+        "themeSwitching": {
+            "description": "Runtime theme switching between light and dark modes",
+            "code": "class _MyAppState extends State<MyApp> {\n  Brightness? _brightness; // null = follow the system\n\n  @override\n  Widget build(BuildContext context) {\n    return CKApp(\n      brand: ckcoreBrand.skyGo,\n      brightness: _brightness,\n      home: Scaffold(\n        body: Center(\n          child: CKSwitch(\n            label: 'Dark mode',\n            value: _brightness == Brightness.dark,\n            onChanged: (dark) => setState(\n              () => _brightness = dark ? Brightness.dark : Brightness.light,\n            ),\n          ),\n        ),\n      ),\n    );\n  }\n}"
+        },
+        "brandSwitching": {
+            "description": "Switching between brands at runtime",
+            "code": "class _MyAppState extends State<MyApp> {\n  ckcoreBrand _brand = ckcoreBrand.skyGo;\n\n  @override\n  Widget build(BuildContext context) {\n    return CKApp(\n      brand: _brand,\n      home: Scaffold(\n        body: Center(\n          child: DropdownButton<ckcoreBrand>(\n            value: _brand,\n            items: [\n              for (final brand in ckcoreBrand.values)\n                DropdownMenuItem(value: brand, child: Text(brand.displayName)),\n            ],\n            onChanged: (brand) {\n              if (brand != null) setState(() => _brand = brand);\n            },\n          ),\n        ),\n      ),\n    );\n  }\n}"
+        }
+    },
+    "brandComparison": {
+        "table": [
+            [
+                "Feature",
+                "CastleKeep",
+                "SkyGo"
+            ],
+            [
+                "Primary Color",
+                "Navy (#02372E)",
+                "Sky Blue (#0070DE)"
+            ],
+            [
+                "Secondary Color",
+                "Gold (#E9BB43)",
+                "Indigo (#6366F1)"
+            ],
+            [
+                "Vibe",
+                "Professional, Corporate",
+                "Modern, Tech-Forward"
+            ],
+            [
+                "Use Case",
+                "Enterprise, Finance",
+                "Startup, Tech Product"
+            ],
+            [
+                "Feel",
+                "Traditional, Premium",
+                "Contemporary, Friendly"
+            ],
+            [
+                "Light Mode Background",
+                "White (#FFFFFF)",
+                "White (#FFFFFF)"
+            ],
+            [
+                "Dark Mode Background",
+                "Very Dark Navy (#0F1419)",
+                "Slate Black (#0F172A)"
+            ]
+        ],
+        "colorUsage": {
+            "primary": "Main brand color for primary actions, buttons, links",
+            "secondary": "Complementary color for accents, highlights, secondary features",
+            "error": "Always used for errors, dangers, destructive actions",
+            "success": "Always used for success states, approvals, positive actions",
+            "warning": "Always used for warnings, cautions, attention-needed states",
+            "info": "Always used for informational messages, notices, hints"
+        }
+    }
+}

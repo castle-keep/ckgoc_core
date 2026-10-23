@@ -1,3 +1,25 @@
+## 0.6.0
+
+### Added
+- `CKAnimate` and `CKAnimation`: token-driven entrance animations (fade, slide, scale) with `delay`, `trigger` replay, `CKAnimate.stagger` and reduced-motion support.
+- `ButtonHoverStyle` and `CKButton.hoverStyle`: on hover a button floats up with a soft shadow (`lift`, the default), grows (`grow`) or stays still (`none`).
+- `CKErrorState.icon` and `CKErrorState.retryLabel`.
+- AI tooling: a Claude Code skill and a Copilot instructions file in `skills/`, and the `@ckcore/ui-mcp` server (`mcp/`, versioned and published to npm separately; first release 0.1.0).
+- A test suite for the library: theme-matrix smoke tests for every component plus behaviour tests for buttons, inputs, display, feedback, navigation, overlays, the data table, theme and tokens, text extensions and `CKApp`.
+
+### Changed
+- Updated `lucide_icons_flutter` to `^4.0.1` so all dependencies are on their latest versions.
+- `CKButton` polish: pressing scales the button down and springs it back, labels use the type tokens for each size, and corners are slightly softer. Hover and press motion is skipped for disabled or loading buttons and when the platform asks for reduced motion.
+- Implemented the widgets that used to build to an empty box: `CKDivider`, `CKListTile`, `CKSkeleton`, `CKEmptyState`, `CKErrorState`, `CKTimePicker`, `CKBreadcrumb`, `CKNavigationRail`, `CKTooltip` and `CKPopover`.
+
+### Removed
+- **Breaking:** the screen templates `LoginTemplate`, `RegisterTemplate`, `ForgotPasswordTemplate`, `ListTemplate`, `CreateTemplate`, `EditTemplate`, `DetailTemplate`, `DashboardTemplate`, `LoadingTemplate`, `ErrorTemplate`, `EmptyTemplate` and `OfflineTemplate`. They were unimplemented stubs that rendered nothing. `CKScreenLayout` is unchanged.
+
+### Fixed
+- `CKButton` could be tapped repeatedly while `loading: true` (double submit); taps are now blocked while loading.
+- A full-width `CKButton` overflowed on long labels, for example the default "Yes, Delete Permanently" in `CKDialog.destructive`; the label now wraps.
+- `CKNavigationRail` items were announced twice by screen readers.
+
 ## 0.5.0
 
 ### Added

@@ -45,16 +45,13 @@ class OverviewPage extends StatelessWidget {
                   '• Themes and assets: ckcoreBrand, BrandIcon, BrandIconVariant, all packaged logo assets',
                 ),
                 Text(
-                  '• App wrapper: ckcoreApp with CKApp.router for Navigator 2.0',
+                  '• App wrapper: CKApp (and CKApp.router for Navigator 2.0)',
                 ),
                 Text(
                   '• Foundation tokens: colors, typography, spacing, radius, elevation, shadows, motion, opacity, breakpoints',
                 ),
                 Text(
                   '• Text extensions: semantic heading shortcuts (.h1–.h6), typography styles, color modifiers, text transforms',
-                ),
-                Text(
-                  '• Templates: auth, CRUD, dashboard, loading/error/empty/offline exports',
                 ),
               ],
             ),

@@ -1,0 +1,58 @@
+{
+    "metadata": {
+        "description": "Common patterns and best practices for ckcoreui usage"
+    },
+    "patterns": {
+        "setupApp": {
+            "name": "Setting up your app with CKApp",
+            "description": "Use CKApp in place of MaterialApp to enable theme and token access",
+            "code": "import 'package:ckcoreui/ckcoreui.dart';\nimport 'package:flutter/material.dart';\n\nvoid main() {\n  runApp(const MyApp());\n}\n\nclass MyApp extends StatelessWidget {\n  const MyApp({super.key});\n\n  @override\n  Widget build(BuildContext context) {\n    return CKApp(\n      brand: ckcoreBrand.skyGo, // or ckcoreBrand.castleKeep\n      title: 'My App',\n      home: const HomePage(),\n    );\n  }\n}"
+        },
+        "accessTokens": {
+            "name": "Accessing design tokens",
+            "description": "Use context extensions to access tokens in any widget",
+            "code": "class MyWidget extends StatelessWidget {\n  @override\n  Widget build(BuildContext context) {\n    // Access tokens via context extensions\n    final primaryColor = context.ckColors.primary;\n    final mediumSpacing = context.ckSpacing.md;\n    final labelStyle = context.ckTypography.labelMd;\n    \n    return Padding(\n      padding: EdgeInsets.all(mediumSpacing),\n      child: Text('Hello', style: labelStyle),\n    );\n  }\n}"
+        },
+        "buttonVariants": {
+            "name": "Using button variants",
+            "description": "CKButton supports multiple semantic variants for different actions",
+            "code": "Row(\n  children: [\n    CKButton(\n      onPressed: handleSave,\n      child: const Text('Save'),  // Primary (default)\n    ),\n    const SizedBox(width: 8),\n    CKButton.secondary(\n      onPressed: handleCancel,\n      child: const Text('Cancel'),\n    ),\n    const SizedBox(width: 8),\n    CKButton.destructive(\n      onPressed: handleDelete,\n      child: const Text('Delete'),\n    ),\n  ],\n)"
+        },
+        "form": {
+            "name": "Building a form",
+            "description": "Common pattern for forms using ckcoreui input components",
+            "code": "class LoginForm extends StatefulWidget {\n  @override\n  State<LoginForm> createState() => _LoginFormState();\n}\n\nclass _LoginFormState extends State<LoginForm> {\n  late TextEditingController _emailController;\n  late TextEditingController _passwordController;\n  final _formKey = GlobalKey<FormState>();\n\n  @override\n  void initState() {\n    super.initState();\n    _emailController = TextEditingController();\n    _passwordController = TextEditingController();\n  }\n\n  @override\n  Widget build(BuildContext context) {\n    return Form(\n      key: _formKey,\n      child: Column(\n        spacing: context.ckSpacing.md,\n        children: [\n          CKTextField(\n            controller: _emailController,\n            label: 'Email',\n            hint: 'user@example.com',\n            leading: const Icon(Icons.email),\n            validator: (v) => v?.contains('@') == true ? null : 'Invalid email',\n          ),\n          CKPasswordField(\n            controller: _passwordController,\n            label: 'Password',\n            validator: (v) => v?.length ?? 0 < 8 ? 'Min 8 chars' : null,\n          ),\n          CKButton(\n            onPressed: () {\n              if (_formKey.currentState!.validate()) {\n                handleLogin(_emailController.text, _passwordController.text);\n              }\n            },\n            isFullWidth: true,\n            child: const Text('Login'),\n          ),\n        ],\n      ),\n    );\n  }\n}"
+        },
+        "dataTable": {
+            "name": "Using CKDataTable with sorting and filtering",
+            "description": "Advanced table with server-side operations",
+            "code": "class DataTableExample extends StatefulWidget {\n  @override\n  State<DataTableExample> createState() => _DataTableExampleState();\n}\n\nclass _DataTableExampleState extends State<DataTableExample> {\n  late List<Map<String, dynamic>> _rows;\n  String _sortColumnKey = 'name';\n  bool _sortAscending = true;\n  String _searchQuery = '';\n\n  @override\n  void initState() {\n    super.initState();\n    _loadData();\n  }\n\n  void _loadData() {\n    // Load and filter data\n    _rows = [\n      {'id': '1', 'name': 'John', 'email': 'john@example.com', 'status': 'Active'},\n      {'id': '2', 'name': 'Jane', 'email': 'jane@example.com', 'status': 'Pending'},\n    ];\n    setState(() {});\n  }\n\n  @override\n  Widget build(BuildContext context) {\n    return CKDataTable(\n      columns: [\n        CKTableColumn(title: 'Name', key: 'name', type: ColumnType.text),\n        CKTableColumn(title: 'Email', key: 'email', type: ColumnType.text),\n        CKTableColumn(title: 'Status', key: 'status', type: ColumnType.badge),\n      ],\n      rows: _rows,\n      sortColumnKey: _sortColumnKey,\n      sortAscending: _sortAscending,\n      onSortChanged: (key, ascending) {\n        setState(() {\n          _sortColumnKey = key;\n          _sortAscending = ascending;\n          _loadData();\n        });\n      },\n      searchQuery: _searchQuery,\n      onSearchChanged: (query) {\n        setState(() => _searchQuery = query);\n        _loadData();\n      },\n      selectionMode: TableSelectionMode.multiple,\n    );\n  }\n}"
+        },
+        "theming": {
+            "name": "Switching themes and brands",
+            "description": "How to switch between light/dark modes and brands",
+            "code": "class SettingsPage extends StatefulWidget {\n  @override\n  State<SettingsPage> createState() => _SettingsPageState();\n}\n\nclass _SettingsPageState extends State<SettingsPage> {\n  late Brand _selectedBrand;\n  late bool _isDarkMode;\n\n  @override\n  void initState() {\n    super.initState();\n    // Load from preferences\n    _selectedBrand = ckcoreBrand.skyGo;\n    _isDarkMode = false;\n  }\n\n  @override\n  Widget build(BuildContext context) {\n    return Column(\n      children: [\n        ListTile(\n          title: const Text('Brand'),\n          trailing: DropdownButton<ckcoreBrand>(\n            value: _selectedBrand,\n            items: ckcoreBrand.values.map((brand) {\n              return DropdownMenuItem(\n                value: brand,\n                child: Text(brand.name),\n              );\n            }).toList(),\n            onChanged: (brand) {\n              if (brand != null) {\n                setState(() => _selectedBrand = brand);\n                // Update theme\n              }\n            },\n          ),\n        ),\n        ListTile(\n          title: const Text('Dark Mode'),\n          trailing: CKSwitch(\n            value: _isDarkMode,\n            onChanged: (value) {\n              setState(() => _isDarkMode = value);\n              // Update brightness\n            },\n          ),\n        ),\n      ],\n    );\n  }\n}"
+        },
+        "customComponent": {
+            "name": "Building custom components with tokens",
+            "description": "Example of creating a custom widget that respects design tokens",
+            "code": "class CustomCard extends StatelessWidget {\n  final String title;\n  final Widget child;\n\n  const CustomCard({required this.title, required this.child});\n\n  @override\n  Widget build(BuildContext context) {\n    return Container(\n      padding: EdgeInsets.all(context.ckSpacing.lg),\n      decoration: BoxDecoration(\n        color: context.ckColors.surface,\n        borderRadius: BorderRadius.circular(context.ckRadius.lg),\n        boxShadow: [context.ckShadows.md],\n      ),\n      child: Column(\n        crossAxisAlignment: CrossAxisAlignment.start,\n        spacing: context.ckSpacing.md,\n        children: [\n          Text(title, style: context.ckTypography.labelLg),\n          child,\n        ],\n      ),\n    );\n  }\n}"
+        },
+        "responsiveLayout": {
+            "name": "Creating responsive layouts",
+            "description": "Use breakpoints for responsive design",
+            "code": "class ResponsiveGrid extends StatelessWidget {\n  @override\n  Widget build(BuildContext context) {\n    final isMobile = MediaQuery.of(context).size.width < context.ckBreakpoints.md;\n    final isTablet = MediaQuery.of(context).size.width < context.ckBreakpoints.lg;\n    \n    final columns = isMobile ? 1 : isTablet ? 2 : 3;\n    \n    return GridView.count(\n      crossAxisCount: columns,\n      mainAxisSpacing: context.ckSpacing.lg,\n      crossAxisSpacing: context.ckSpacing.lg,\n      children: List.generate(12, (i) => CKCard(title: 'Item $i')),\n    );\n  }\n}"
+        },
+        "noHardcodedValues": {
+            "name": "IMPORTANT: Never hardcode design values",
+            "description": "Always use tokens - this ensures consistency and theme support",
+            "bad": "// ❌ WRONG - hardcoded values\nPadding(\n  padding: const EdgeInsets.all(16),  // hardcoded\n  child: Text('Hello', style: TextStyle(fontSize: 16)),  // hardcoded\n)",
+            "good": "// CORRECT - using tokens\nPadding(\n  padding: EdgeInsets.all(context.ckSpacing.md),\n  child: Text('Hello', style: context.ckTypography.textMd),\n)"
+        },
+        "animation": {
+            "title": "Entrance animations",
+            "description": "Animate widgets in with CKAnimate. Duration and curve come from the theme's motion tokens, and reduced-motion is respected automatically.",
+            "code": "// Single widget\nCKAnimate(\n  animation: CKAnimation.slideUp,\n  child: CKCard(title: 'Welcome'),\n)\n\n// Cascade a list (each child starts 60ms after the previous)\nColumn(\n  children: CKAnimate.stagger(\n    children: [\n      CKCard(title: 'One'),\n      CKCard(title: 'Two'),\n      CKCard(title: 'Three'),\n    ],\n  ),\n)\n\n// Replay when a value changes\nCKAnimate(\n  trigger: selectedTab,\n  animation: CKAnimation.fade,\n  child: TabContent(selectedTab),\n)"
+        }
+    }
+}

@@ -7,7 +7,6 @@ import 'feedback_screen.dart';
 import 'inputs_screen.dart';
 import 'navigation_screen.dart';
 import 'overlays_screen.dart';
-import 'templates_screen.dart';
 import 'tokens_screen.dart';
 import 'layout_example_screen.dart';
 
@@ -41,7 +40,6 @@ class _HomeScreenState extends State<HomeScreen> {
     const FeedbackScreen(),
     const NavigationScreen(),
     const OverlaysScreen(),
-    const TemplatesScreen(),
     const LayoutExampleScreen(),
   ];
 
@@ -123,10 +121,6 @@ class _HomeScreenState extends State<HomeScreen> {
               NavigationRailDestination(
                 icon: Icon(LucideIcons.layers),
                 label: Text('Overlays'),
-              ),
-              NavigationRailDestination(
-                icon: Icon(LucideIcons.layoutTemplate),
-                label: Text('Templates'),
               ),
               NavigationRailDestination(
                 icon: Icon(LucideIcons.grid),

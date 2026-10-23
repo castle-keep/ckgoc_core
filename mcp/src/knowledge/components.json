@@ -1,0 +1,347 @@
+{
+    "metadata": {
+        "package": "ckcoreui",
+        "version": "0.6.0",
+        "description": "Flutter Design System - CastleKeep & SkyGo brands",
+        "documentation": "https://github.com/castlekeeper/ckcoreui"
+    },
+    "components": {
+        "CKButton": {
+            "name": "CKButton",
+            "description": "Primary button component with semantic color variants and size options",
+            "category": "Buttons",
+            "import": "import 'package:ckcoreui/ckcore_core.dart';",
+            "basicUsage": "CKButton(\n  onPressed: () => print('Clicked'),\n  child: Text('Save')\n)",
+            "variants": {
+                "primary": {
+                    "description": "Default filled button, high visual emphasis",
+                    "usage": "CKButton(onPressed: () {}, child: Text('Action'))"
+                },
+                "secondary": {
+                    "description": "Filled button with lower emphasis than primary",
+                    "usage": "CKButton.secondary(onPressed: () {}, child: Text('Secondary'))"
+                },
+                "outline": {
+                    "description": "Bordered button with lower emphasis",
+                    "usage": "CKButton.outline(onPressed: () {}, child: Text('Outline'))"
+                },
+                "ghost": {
+                    "description": "Minimal text-only appearance",
+                    "usage": "CKButton.ghost(onPressed: () {}, child: Text('Ghost'))"
+                },
+                "accent": {
+                    "description": "Accent color for secondary actions",
+                    "usage": "CKButton.accent(onPressed: () {}, child: Text('Feature'))"
+                },
+                "destructive": {
+                    "description": "Error color for dangerous/destructive actions",
+                    "usage": "CKButton.destructive(onPressed: () {}, child: Text('Delete'))"
+                },
+                "success": {
+                    "description": "Success color for positive actions",
+                    "usage": "CKButton.success(onPressed: () {}, child: Text('Approve'))"
+                },
+                "warning": {
+                    "description": "Warning color for cautionary actions",
+                    "usage": "CKButton.warning(onPressed: () {}, child: Text('Caution'))"
+                },
+                "info": {
+                    "description": "Info color for informational actions",
+                    "usage": "CKButton.info(onPressed: () {}, child: Text('Learn More'))"
+                },
+                "link": {
+                    "description": "Text-only with underline, lowest emphasis",
+                    "usage": "CKButton.link(onPressed: () {}, child: Text('Link'))"
+                }
+            },
+            "sizes": [
+                "xs: 32dp",
+                "sm: 40dp",
+                "md: 48dp (default)",
+                "lg: 56dp",
+                "xl: 64dp"
+            ],
+            "props": {
+                "onPressed": "VoidCallback? - Callback when button is pressed",
+                "child": "Widget? - Button label/content",
+                "loading": "bool (default: false) - Shows loading indicator",
+                "disabled": "bool (default: false) - Disables button interaction",
+                "isFullWidth": "bool (default: false) - Stretches to full width",
+                "hoverStyle": "ButtonHoverStyle (default: lift) - Mouse hover effect: lift, grow or none; presses always scale down briefly",
+                "size": "ButtonSize? - Button size"
+            },
+            "examples": [
+                "CKButton(onPressed: () => print('Clicked'), child: Text('Save'))",
+                "CKButton.secondary(onPressed: handleCancel, child: Text('Cancel'))",
+                "CKButton.destructive(onPressed: handleDelete, child: Text('Delete'), size: ButtonSize.lg)",
+                "CKButton(onPressed: null, child: Text('Disabled'), disabled: true)",
+                "CKButton(onPressed: handleSubmit, child: Text('Submit'), loading: true, isFullWidth: true)"
+            ]
+        },
+        "CKIconButton": {
+            "name": "CKIconButton",
+            "description": "Icon-only button component",
+            "category": "Buttons",
+            "basicUsage": "CKIconButton(\n  onPressed: () {},\n  icon: Icon(Icons.edit)\n)",
+            "props": {
+                "onPressed": "VoidCallback? - Callback when pressed",
+                "icon": "Widget - Icon widget to display",
+                "tooltip": "String? - Hover tooltip text"
+            }
+        },
+        "CKFab": {
+            "name": "CKFab",
+            "description": "Floating Action Button component",
+            "category": "Buttons",
+            "basicUsage": "CKFab(\n  onPressed: () {},\n  icon: Icon(Icons.add)\n)"
+        },
+        "CKTextField": {
+            "name": "CKTextField",
+            "description": "Text field with validation, helper and success states",
+            "category": "Inputs",
+            "basicUsage": "CKTextField(\n  label: 'Email',\n  hint: 'user@example.com',\n  validator: (v) => v?.contains('@') == true ? null : 'Invalid email'\n)",
+            "props": {
+                "label": "String? - Field label",
+                "hint": "String? - Placeholder text",
+                "helperText": "String? - Helper text below field",
+                "errorText": "String? - Error message text",
+                "successText": "String? - Success message text",
+                "leading": "Widget? - Prefix icon/widget",
+                "trailing": "Widget? - Suffix icon/widget",
+                "isRequired": "bool (default: false) - Mark as required",
+                "validator": "String? Function(String?)? - Custom validation",
+                "controller": "TextEditingController? - Text editing controller",
+                "onChanged": "ValueChanged<String>? - Value change callback"
+            },
+            "examples": [
+                "CKTextField(label: 'Name', hint: 'John Doe')",
+                "CKTextField(label: 'Email', isRequired: true, validator: (v) => v?.contains('@') == true ? null : 'Invalid')",
+                "CKTextField(leading: Icon(Icons.search), hint: 'Search...')",
+                "CKTextField(label: 'Bio', maxLines: 3, hint: 'Tell us about yourself')"
+            ]
+        },
+        "CKPasswordField": {
+            "name": "CKPasswordField",
+            "description": "Password field with visibility toggle",
+            "category": "Inputs",
+            "basicUsage": "CKPasswordField(\n  label: 'Password',\n  validator: (v) => v?.length ?? 0 < 8 ? 'Min 8 chars' : null\n)",
+            "props": "Inherits CKTextField properties"
+        },
+        "CKSearchField": {
+            "name": "CKSearchField",
+            "description": "Search field optimized for search queries",
+            "category": "Inputs",
+            "basicUsage": "CKSearchField(\n  hint: 'Search...',\n  onChanged: handleSearch\n)"
+        },
+        "CKCheckbox": {
+            "name": "CKCheckbox",
+            "description": "Checkbox with optional label and status variants",
+            "category": "Inputs",
+            "basicUsage": "CKCheckbox(\n  value: isSelected,\n  onChanged: (v) => setState(() => isSelected = v)\n)",
+            "variants": [
+                "default",
+                "success",
+                "error"
+            ],
+            "props": {
+                "value": "bool? - Checked state (true/false/null for indeterminate)",
+                "onChanged": "ValueChanged<bool?>? - State change callback",
+                "label": "String? - Optional label text",
+                "variant": "SwitchVariant? - Visual variant"
+            }
+        },
+        "CKSwitch": {
+            "name": "CKSwitch",
+            "description": "Toggle switch component",
+            "category": "Inputs",
+            "basicUsage": "CKSwitch(\n  value: isEnabled,\n  onChanged: (v) => setState(() => isEnabled = v)\n)",
+            "props": {
+                "value": "bool - Toggle state",
+                "onChanged": "ValueChanged<bool>? - State change callback"
+            }
+        },
+        "CKDropdown": {
+            "name": "CKDropdown",
+            "description": "Dropdown/select component with menu overlay",
+            "category": "Inputs",
+            "basicUsage": "CKDropdown<String>(\n  items: [DropdownMenuItem(value: 'opt1', child: Text('Option 1'))],\n  value: selected,\n  onChanged: (v) => setState(() => selected = v),\n  label: 'Select'\n)",
+            "props": {
+                "items": "List<DropdownMenuItem<T>>? - Menu items",
+                "value": "T? - Currently selected value",
+                "onChanged": "ValueChanged<T?>? - Selection change callback",
+                "label": "String? - Field label",
+                "hint": "String? - Placeholder text",
+                "menuMaxHeight": "double (default: 150) - Max menu height"
+            }
+        },
+        "CKDatePicker": {
+            "name": "CKDatePicker",
+            "description": "Date picker with calendar overlay",
+            "category": "Inputs",
+            "basicUsage": "CKDatePicker(\n  onChanged: (date) => setState(() => selectedDate = date)\n)"
+        },
+        "CKTimePicker": {
+            "name": "CKTimePicker",
+            "description": "Time picker component",
+            "category": "Inputs",
+            "basicUsage": "CKTimePicker(\n  onChanged: (time) => setState(() => selectedTime = time)\n)"
+        },
+        "CKAvatar": {
+            "name": "CKAvatar",
+            "description": "Circular/square avatar with initials, image, and status indicator",
+            "category": "Display",
+            "basicUsage": "CKAvatar(\n  initials: 'JD',\n  size: AvatarSize.md,\n  status: AvatarStatus.online\n)",
+            "sizes": [
+                "xs: 24dp",
+                "sm: 32dp",
+                "md: 40dp (default)",
+                "lg: 48dp",
+                "xl: 56dp",
+                "x2l: 64dp",
+                "x3l: 80dp"
+            ],
+            "props": {
+                "initials": "String? - Display initials",
+                "image": "ImageProvider? - Image to display",
+                "size": "AvatarSize (default: md) - Avatar size",
+                "status": "AvatarStatus? - Status indicator (online, away, busy, offline)",
+                "backgroundColor": "Color? - Custom background color",
+                "square": "bool (default: false) - Square instead of circle"
+            }
+        },
+        "CKBadge": {
+            "name": "CKBadge",
+            "description": "Badge component for labels, counts, and status indicators",
+            "category": "Display",
+            "basicUsage": "CKBadge(label: 'Featured')\nCKBadge.success(label: 'Approved')\nCKBadge.pro(label: 'Premium')",
+            "variants": [
+                "primary",
+                "success",
+                "warning",
+                "error",
+                "info",
+                "draft",
+                "live",
+                "newBadge",
+                "beta",
+                "pro",
+                "outline",
+                "outlineSuccess",
+                "outlineError",
+                "online",
+                "away",
+                "busy",
+                "offline"
+            ],
+            "props": {
+                "label": "String - Badge text",
+                "icon": "IconData? - Optional icon"
+            }
+        },
+        "CKCard": {
+            "name": "CKCard",
+            "description": "Card container with optional media, title, description, and action",
+            "category": "Display",
+            "basicUsage": "CKCard(\n  title: 'Report',\n  description: 'Q4 2026 Summary',\n  media: Image.network('url')\n)",
+            "variants": [
+                "default",
+                "success",
+                "warning",
+                "error",
+                "info"
+            ],
+            "props": {
+                "title": "String - Card title",
+                "subtitle": "String? - Subtitle text",
+                "description": "String? - Description text",
+                "media": "Widget? - Media widget (image, etc.)",
+                "action": "Widget? - Action button or widget",
+                "layout": "CardLayout - vertical or horizontal",
+                "elevated": "bool (default: false) - Add elevation/shadow"
+            }
+        },
+        "CKDialog": {
+            "name": "CKDialog",
+            "description": "Modal dialog with title, content, and action buttons",
+            "category": "Overlays",
+            "basicUsage": "showDialog(\n  context: context,\n  builder: (ctx) => CKDialog(\n    title: 'Confirm',\n    content: Text('Are you sure?'),\n    onConfirm: handleConfirm,\n    onCancel: handleCancel\n  )\n)",
+            "variants": [
+                "default",
+                "info",
+                "destructive"
+            ],
+            "props": {
+                "content": "Widget - Dialog content",
+                "title": "String? - Dialog title",
+                "confirmLabel": "String (default: 'Confirm') - Confirm button text",
+                "cancelLabel": "String (default: 'Cancel') - Cancel button text",
+                "onConfirm": "VoidCallback? - Confirm callback",
+                "onCancel": "VoidCallback? - Cancel callback"
+            }
+        },
+        "CKDataTable": {
+            "name": "CKDataTable",
+            "description": "Advanced data table with sorting, filtering, pagination, and inline editing",
+            "category": "Data Table",
+            "basicUsage": "CKDataTable(\n  columns: [\n    CKTableColumn(title: 'Name', key: 'name'),\n    CKTableColumn(title: 'Email', key: 'email')\n  ],\n  rows: data,\n  sortColumnKey: 'name',\n  onSortChanged: (key, ascending) => handleSort(key, ascending)\n)",
+            "features": [
+                "Server-side sorting",
+                "Server-side filtering",
+                "Pagination with page size options",
+                "Multi-row selection (single/multiple modes)",
+                "Inline cell editing with validation",
+                "Custom column types (text, badge, avatarText, progress, custom)",
+                "Column filtering overlay",
+                "Search functionality",
+                "Loading and error states"
+            ],
+            "props": {
+                "columns": "List<CKTableColumn> - Column definitions",
+                "rows": "List<Map<String, dynamic>> - Row data",
+                "rowKey": "String (default: 'id') - Row key field",
+                "sortColumnKey": "String? - Currently sorted column",
+                "sortAscending": "bool (default: true) - Sort direction",
+                "onSortChanged": "void Function(String, bool)? - Sort callback",
+                "selectionMode": "TableSelectionMode (default: none) - none/single/multiple",
+                "selectedKeys": "Set<dynamic> - Selected row keys",
+                "onSelectionChanged": "ValueChanged<Set<dynamic>>? - Selection callback",
+                "currentPage": "int (default: 1) - Current page",
+                "pageSize": "int (default: 10) - Rows per page",
+                "onPageChanged": "ValueChanged<int>? - Page change callback",
+                "isLoading": "bool (default: false) - Show loading state",
+                "errorMessage": "String? - Error message to display",
+                "editableCells": "Map<String, CKEditableCell>? - Editable cell configs"
+            },
+            "examples": [
+                "CKDataTable(columns: cols, rows: data, selectionMode: TableSelectionMode.multiple)",
+                "CKDataTable(columns: cols, rows: data, sortColumnKey: 'name', sortAscending: false)",
+                "CKDataTable(columns: cols, rows: data, currentPage: 1, pageSize: 25)"
+            ]
+        },
+        "CKAnimate": {
+            "name": "CKAnimate",
+            "description": "Entrance-animation wrapper. Wraps any widget with a fade, slide or scale effect driven by the theme's motion tokens. Respects the platform reduced-motion setting.",
+            "category": "Display",
+            "import": "import 'package:ckcoreui/ckcoreui.dart';",
+            "basicUsage": "CKAnimate(\n  animation: CKAnimation.slideUp,\n  child: CKCard(title: 'Hello'),\n)\n\n// Staggered list\nColumn(children: CKAnimate.stagger(children: [a, b, c]))",
+            "variants": [
+                "fade",
+                "slideUp",
+                "slideDown",
+                "slideLeft",
+                "slideRight",
+                "scale"
+            ],
+            "props": {
+                "child": "Widget - Content to animate (required)",
+                "animation": "CKAnimation - Effect, default fade",
+                "duration": "Duration? - Defaults to theme motion.slow",
+                "delay": "Duration - Wait before starting, default zero",
+                "curve": "Curve? - Defaults to theme motion.decelerate",
+                "offset": "double - Slide distance in px, default 16",
+                "autoPlay": "bool - Start on first build, default true",
+                "trigger": "Object? - Change this value to replay"
+            }
+        }
+    }
+}

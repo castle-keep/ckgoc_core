@@ -887,10 +887,9 @@ CKDatePicker(
     );
 
 ComponentDocData _timePickerDoc() => const ComponentDocData(
-      comingSoon: true,
       title: 'CKTimePicker',
       summary:
-          'Time picker API surface. The package implementation currently returns an empty widget.',
+          'Read-only field that opens the platform time picker. Works controlled (pass value) or uncontrolled (it remembers the last pick). Supports isRequired and a validator.',
       demo: _TimePickerDocDemo(),
       code: '''
 CKTimePicker(
@@ -918,18 +917,12 @@ CKTimePicker(
       ],
       faqs: [
         DocFaq(
-          question: 'Why is the live output blank?',
-          answer:
-              'This component is still unimplemented in the package and returns SizedBox.shrink().',
-        ),
-        DocFaq(
           question: 'Should time and date pickers share layout conventions?',
           answer:
-              'Yes. Keep labels, helper content, and form placement consistent even before the final package body is implemented.',
+              'Yes. Keep labels, helper content, and form placement consistent across CKDatePicker and CKTimePicker.',
         ),
       ],
       notes: [
-        'Implementation status: placeholder widget body in the package source.',
       ],
     );
 
@@ -1197,8 +1190,6 @@ class _DatePickerDocDemo extends StatelessWidget {
     return const Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('Current implementation returns an empty widget.'),
-        VSpace(height: 12),
         CKDatePicker(label: 'Start date'),
       ],
     );
@@ -1213,8 +1204,6 @@ class _TimePickerDocDemo extends StatelessWidget {
     return const Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('Current implementation returns an empty widget.'),
-        VSpace(height: 12),
         CKTimePicker(label: 'Meeting time'),
       ],
     );

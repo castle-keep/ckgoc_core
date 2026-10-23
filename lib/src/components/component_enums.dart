@@ -22,6 +22,18 @@ enum ButtonVariant {
 /// Size options for buttons.
 enum ButtonSize { xs, sm, md, lg, xl }
 
+/// How a `CKButton` reacts to a mouse hover.
+enum ButtonHoverStyle {
+  /// Floats up slightly and gains a soft shadow (default).
+  lift,
+
+  /// Grows slightly.
+  grow,
+
+  /// No hover effect.
+  none,
+}
+
 // Badge
 
 /// Variants for badge appearance.

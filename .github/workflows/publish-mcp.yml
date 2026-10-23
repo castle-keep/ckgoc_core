@@ -1,0 +1,48 @@
+name: Publish MCP server
+
+on:
+  push:
+    tags:
+      - 'mcp-v*'
+
+permissions:
+  contents: read
+  id-token: write # npm provenance
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: mcp
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          registry-url: https://registry.npmjs.org
+          cache: npm
+          cache-dependency-path: mcp/package-lock.json
+
+      - name: Tag must match package.json version
+        run: |
+          pkg="mcp-v$(node -p "require('./package.json').version")"
+          if [ "$pkg" != "${GITHUB_REF_NAME}" ]; then
+            echo "Tag ${GITHUB_REF_NAME} does not match package.json ($pkg)"; exit 1
+          fi
+
+      - run: npm ci
+      - run: npm run build
+
+      - name: Smoke test (server must start and list tools)
+        run: |
+          printf '%s\n' \
+            '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"ci","version":"1"}}}' \
+            '{"jsonrpc":"2.0","method":"notifications/initialized"}' \
+            '{"jsonrpc":"2.0","id":2,"method":"tools/list"}' \
+            | (cat; sleep 2) | node dist/index.js 2>/dev/null | grep -q '"getComponent"'
+
+      - run: npm publish --provenance --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

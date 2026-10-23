@@ -81,8 +81,20 @@ CKButton.ghost(onPressed: () {}, child: Text('Ghost'))
         description: 'Expands the button to full available width.',
         defaultValue: 'false',
       ),
+      DocParam(
+        name: 'hoverStyle',
+        type: 'ButtonHoverStyle',
+        description:
+            'Mouse hover effect: lift (floats up with a soft shadow), grow, or none. Presses always scale down briefly.',
+        defaultValue: 'ButtonHoverStyle.lift',
+      ),
     ],
     faqs: [
+      DocFaq(
+        question: 'Can I turn the hover and press animation off?',
+        answer:
+            'Set hoverStyle: ButtonHoverStyle.none to remove the hover effect. The press and hover motion is skipped automatically for disabled or loading buttons and when the device asks for reduced motion.',
+      ),
       DocFaq(
         question: 'When should I use disabled versus onPressed: null?',
         answer:

@@ -32,7 +32,10 @@ class _ShowcaseAppState extends State<ShowcaseApp> {
           : ThemeMode.light,
       home: HomeScreen(
         currentBrand: _brand,
-        currentBrightness: _brightness ?? Brightness.dark,
+        // Show the mode actually in effect while following the system.
+        currentBrightness:
+            _brightness ??
+            WidgetsBinding.instance.platformDispatcher.platformBrightness,
         onBrandChanged: (brand) => setState(() => _brand = brand),
         onBrightnessChanged: (b) => setState(() => _brightness = b),
       ),

@@ -1,4 +1,4 @@
-# ckcoreDataTable — Component Guide & Migration Plan
+# CKDataTable — Component Guide & Migration Plan
 
 ## Overview
 
@@ -83,7 +83,7 @@ Example (controlled):
 
 ```dart
 // parent state: _sortKey, _sortAsc
-ckcoreDataTable(
+CKDataTable(
   columns: [...],
   rows: _rows,
   sortColumnKey: _sortKey,
@@ -98,10 +98,10 @@ ckcoreDataTable(
 Example (uncontrolled):
 
 ```dart
-ckcoreDataTable(
+CKDataTable(
   columns: [
-    ckcoreTableColumn(key: 'name', label: 'Name', sortable: true),
-    ckcoreTableColumn(key: 'age', label: 'Age', sortable: true),
+    CKTableColumn(key: 'name', label: 'Name', sortable: true),
+    CKTableColumn(key: 'age', label: 'Age', sortable: true),
   ],
   rows: _localRows, // small in-memory dataset
   // omit onSortChanged -> table sorts internally when headers are tapped
@@ -112,7 +112,7 @@ Comparators: the internal comparator supports numbers and `DateTime`, and falls 
 
 ## Styling: header/footer and row stripes
 
-ckcoreDataTable uses theme tokens for header/footer and striping so colors follow your brand theme:
+CKDataTable uses theme tokens for header/footer and striping so colors follow your brand theme:
 
 - Header and footer background: `theme.colors.surfaceVariant` (we set this to neutral100 in the SkyGo light theme).
 - Row stripes: `theme.colors.background` (the light theme background is `#FAFAFA`).
@@ -195,6 +195,5 @@ CKDataTable(
 
 ### For More Information
 
-- [Editable Cells Complete Guide](editable-data-table-custom-inputs.md)
-- [Quick Reference](editable-cells-quick-reference.md)
+- [Editable cells guide and quick reference](editable-cells.md)
 - See the example in [data_table_screen.dart](../../example/lib/screens/data_table_screen.dart) (Section 7)

@@ -1,6 +1,9 @@
 import 'package:ckcoreui/ckcoreui.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
+import 'package:ckcore_docs_app/pages/ai_tools_page.dart';
+import 'package:ckcore_docs_app/pages/animate_page.dart';
 import 'package:ckcore_docs_app/pages/brand_icons_page.dart';
 import 'package:ckcore_docs_app/pages/buttons_page.dart';
 import 'package:ckcore_docs_app/pages/data_table_page.dart';
@@ -10,11 +13,11 @@ import 'package:ckcore_docs_app/pages/feedback_page.dart';
 import 'package:ckcore_docs_app/pages/inputs_page.dart';
 import 'package:ckcore_docs_app/pages/navigation_page.dart';
 import 'package:ckcore_docs_app/pages/overlays_page.dart';
+import 'package:ckcore_docs_app/pages/getting_started_page.dart';
 import 'package:ckcore_docs_app/pages/overview_page.dart';
 import 'package:ckcore_docs_app/pages/foundation_page.dart';
 import 'package:ckcore_docs_app/pages/app_page.dart';
 import 'package:ckcore_docs_app/pages/screen_layout_page.dart';
-import 'package:ckcore_docs_app/pages/templates_page.dart';
 import 'package:ckcore_docs_app/pages/themes_page.dart';
 import 'package:ckcore_docs_app/pages/router_page.dart';
 import '../docs_navigation.dart';
@@ -37,7 +40,16 @@ class _DocsAppState extends State<DocsApp> {
   Widget _pageForRoute(String route) {
     switch (route) {
       case '/':
+        return const GettingStartedPage();
+
+      case '/overview':
         return const OverviewPage();
+
+      case '/ai-tools':
+        return const AiToolsPage();
+
+      case '/animate':
+        return const AnimatePage();
 
       case '/buttons':
         return const ButtonsPage();
@@ -78,14 +90,11 @@ class _DocsAppState extends State<DocsApp> {
       case '/themes':
         return const ThemesPage();
 
-      case '/templates':
-        return const TemplatesPage();
-
       case '/screen-layout':
         return const ScreenLayoutPage();
 
       default:
-        return const OverviewPage();
+        return const GettingStartedPage();
     }
   }
 
@@ -231,30 +240,29 @@ class DocsScaffold extends StatelessWidget {
     return Scaffold(
       backgroundColor: ckcoreTheme.of(context).colors.background,
       body: SafeArea(
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: ListView(
+          padding: const EdgeInsets.all(24),
           children: [
-            Container(
-              width: 260,
-              child: const DocsNavigationRail(),
-            ),
-            const VerticalDivider(width: 1),
-            Expanded(
-              child: ListView(
-                padding: const EdgeInsets.all(24),
-                children: [
-                  Text(
-                    title,
-                    style: ckcoreTheme.of(context).typography.displayLg,
-                  ),
-                  const VSpace(height: 8),
-                  Text(
-                    subtitle,
-                    style: ckcoreTheme.of(context).typography.textLg,
-                  ),
-                  const VSpace(height: 24),
-                  ...children,
-                ],
+            // Keep long lines readable on very wide screens.
+            Center(
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 1100),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Text(
+                      title,
+                      style: ckcoreTheme.of(context).typography.displayLg,
+                    ),
+                    const VSpace(height: 8),
+                    Text(
+                      subtitle,
+                      style: ckcoreTheme.of(context).typography.textLg,
+                    ),
+                    const VSpace(height: 24),
+                    ...children,
+                  ],
+                ),
               ),
             ),
           ],
@@ -277,113 +285,6 @@ class HSpace extends StatelessWidget {
   final double width;
   @override
   Widget build(BuildContext context) => Container(width: width);
-}
-
-class DocsNavigationRail extends StatelessWidget {
-  const DocsNavigationRail({super.key});
-
-  static const _items = <({String title, String route, IconData icon})>[
-    (title: 'Overview', route: '/', icon: Icons.home_outlined),
-    (title: 'Buttons', route: '/buttons', icon: Icons.smart_button_outlined),
-    (title: 'Display', route: '/display', icon: Icons.slideshow_outlined),
-    (title: 'Inputs', route: '/inputs', icon: Icons.keyboard_outlined),
-    (title: 'Feedback', route: '/feedback', icon: Icons.info_outline),
-    (title: 'Navigation', route: '/navigation', icon: Icons.route_outlined),
-    (title: 'Router', route: '/router', icon: Icons.router_outlined),
-    (title: 'Overlays', route: '/overlays', icon: Icons.layers_outlined),
-    (
-      title: 'Data Table',
-      route: '/data-table',
-      icon: Icons.table_chart_outlined,
-    ),
-    (title: 'Enums', route: '/enums', icon: Icons.list_alt_outlined),
-    (title: 'Brand Icons', route: '/brand-icons', icon: Icons.image_outlined),
-    (title: 'App', route: '/app', icon: Icons.web_asset_outlined),
-    (
-      title: 'Foundation',
-      route: '/foundation',
-      icon: Icons.foundation_outlined,
-    ),
-    (title: 'Themes', route: '/themes', icon: Icons.palette_outlined),
-    (title: 'Templates', route: '/templates', icon: Icons.dashboard_outlined),
-    (
-      title: 'Screen Layout',
-      route: '/screen-layout',
-      icon: Icons.view_sidebar_outlined,
-    ),
-  ];
-
-  @override
-  Widget build(BuildContext context) {
-    final current = currentRoute.value;
-    final currentIndex = _items.indexWhere((item) => item.route == current);
-
-    final theme = ckcoreTheme.of(context);
-
-    return Container(
-      color: theme.colors.surface,
-      padding: EdgeInsets.symmetric(vertical: theme.spacing.md),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: theme.spacing.md),
-            child: Text('Docs', style: theme.typography.labelMd),
-          ),
-          const SizedBox(height: 8),
-          Expanded(
-            child: ListView.builder(
-              padding: EdgeInsets.zero,
-              itemCount: _items.length,
-              itemBuilder: (context, index) {
-                final item = _items[index];
-                final selected = index == currentIndex;
-                return Material(
-                  color: selected ? theme.colors.primary : Colors.transparent,
-                  child: InkWell(
-                    onTap: () {
-                      currentRoute.value = item.route;
-                    },
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(
-                        vertical: theme.spacing.sm,
-                        horizontal: theme.spacing.md,
-                      ),
-                      child: Row(
-                        children: [
-                          Icon(item.icon,
-                              size: 20,
-                              color: selected
-                                  ? theme.colors.accent
-                                  : theme.colors.onSurface),
-                          SizedBox(width: theme.spacing.md),
-                          Expanded(
-                            child: Text(
-                              item.title,
-                              style: selected
-                                  ? theme.typography.textLg.copyWith(
-                                      color: theme.colors.accent,
-                                      fontWeight: FontWeight.w600)
-                                  : theme.typography.textMd,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                );
-              },
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(
-                horizontal: theme.spacing.md, vertical: theme.spacing.sm),
-            child: Text('ckcoreui Core Docs', style: theme.typography.textXs),
-          ),
-        ],
-      ),
-    );
-  }
 }
 
 class DocSection extends StatelessWidget {
@@ -601,23 +502,114 @@ class ParamTable extends StatelessWidget {
   }
 }
 
-class CodeBlock extends StatelessWidget {
-  const CodeBlock({required this.code, super.key});
+/// Titled outlined container used by the guide-style docs pages.
+class DocPanel extends StatelessWidget {
+  const DocPanel({
+    super.key,
+    required this.title,
+    required this.blurb,
+    required this.child,
+    this.badge,
+  });
 
-  final String code;
+  final String title;
+  final String blurb;
+  final Widget child;
+  final String? badge;
 
   @override
   Widget build(BuildContext context) {
+    final theme = context.ckcoreTheme;
+    return CKContainer.outlined(
+      elevated: true,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              if (badge != null) ...[
+                CKBadge(label: badge!),
+                const HSpace(width: 8),
+              ],
+              Expanded(child: Text(title, style: theme.typography.textXl)),
+            ],
+          ),
+          const VSpace(height: 4),
+          Text(
+            blurb,
+            style: theme.typography.textSm.copyWith(
+              color: theme.colors.onSurfaceVariant,
+            ),
+          ),
+          const VSpace(height: 16),
+          child,
+        ],
+      ),
+    );
+  }
+}
+
+/// Selectable code with a one-click copy button.
+class CodeBlock extends StatefulWidget {
+  const CodeBlock({required this.code, this.title, super.key});
+
+  final String code;
+
+  /// Optional caption shown above the code, e.g. a file name.
+  final String? title;
+
+  @override
+  State<CodeBlock> createState() => _CodeBlockState();
+}
+
+class _CodeBlockState extends State<CodeBlock> {
+  bool _copied = false;
+
+  Future<void> _copy() async {
+    await Clipboard.setData(ClipboardData(text: widget.code.trim()));
+    if (!mounted) return;
+    setState(() => _copied = true);
+    await Future<void>.delayed(const Duration(seconds: 2));
+    if (mounted) setState(() => _copied = false);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = ckcoreTheme.of(context);
     return CKContainer(
       // use named constructor for muted surface
       variant: ContainerVariant.muted,
       elevated: true,
-      child: SizedBox(
-        width: double.infinity,
-        child: SelectableText(
-          code,
-          style: ckcoreTheme.of(context).typography.codeMd,
-        ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              if (widget.title != null)
+                Expanded(
+                  child: Text(widget.title!, style: theme.typography.labelSm),
+                )
+              else
+                const Spacer(),
+              TextButton.icon(
+                onPressed: _copy,
+                icon: Icon(
+                  _copied ? Icons.check : Icons.copy_outlined,
+                  size: 16,
+                  color: _copied ? theme.colors.success : null,
+                ),
+                label: Text(_copied ? 'Copied!' : 'Copy'),
+              ),
+            ],
+          ),
+          SizedBox(
+            width: double.infinity,
+            child: SelectableText(
+              widget.code,
+              style: theme.typography.codeMd,
+            ),
+          ),
+        ],
       ),
     );
   }

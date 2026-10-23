@@ -329,10 +329,9 @@ ComponentDocData _toastDoc() => const ComponentDocData(
     );
 
 ComponentDocData _skeletonDoc() => const ComponentDocData(
-      comingSoon: true,
       title: 'CKSkeleton',
       summary:
-          'Loading placeholder API surface. The current package implementation is a placeholder widget body.',
+          'Loading placeholder block with a gentle pulse. Respects reduced motion.',
       demo: _SkeletonDemo(),
       code: '''
 CKSkeleton(
@@ -361,27 +360,15 @@ CKSkeleton(
         ),
       ],
       faqs: [
-        DocFaq(
-          question: 'Why is the live output blank?',
-          answer:
-              'This component is still a placeholder in the package implementation and currently returns SizedBox.shrink().',
-        ),
-        DocFaq(
-          question: 'What should I document while it is incomplete?',
-          answer:
-              'Document expected width, height, and intended loading use cases so adopters know the contract before visuals land.',
-        ),
       ],
       notes: [
-        'Implementation status: placeholder widget body in the package source.',
       ],
     );
 
 ComponentDocData _emptyStateDoc() => const ComponentDocData(
-      comingSoon: true,
       title: 'CKEmptyState',
       summary:
-          'Empty state API surface for no-results and no-data scenarios. Current implementation is a placeholder widget body.',
+          'Centered message for no-results and no-data scenarios, with an optional illustration and action.',
       demo: _EmptyStateDemo(),
       code: '''
     // Recommended: semantic named constructors
@@ -416,18 +403,12 @@ ComponentDocData _emptyStateDoc() => const ComponentDocData(
       ],
       faqs: [
         DocFaq(
-          question: 'Why is the live output blank?',
-          answer:
-              'This component is still a placeholder in the package implementation and currently returns SizedBox.shrink().',
-        ),
-        DocFaq(
           question: 'What content belongs here?',
           answer:
               'Use a clear title, a short explanation, and one focused action that helps the user leave the empty state.',
         ),
       ],
       notes: [
-        'Implementation status: placeholder widget body in the package source.',
       ],
     );
 
@@ -480,9 +461,8 @@ CKLoadingState(
 
 ComponentDocData _errorStateDoc() => const ComponentDocData(
       title: 'CKErrorState',
-      comingSoon: true,
       summary:
-          'Error state API surface for failed page or module loads. Current implementation is a placeholder widget body.',
+          'Centered message for failed page or module loads. Shows a Try again button when onRetry is provided.',
       demo: _ErrorStateDemo(),
       code: '''
 CKErrorState(
@@ -511,18 +491,12 @@ CKErrorState(
       ],
       faqs: [
         DocFaq(
-          question: 'Why is the live output blank?',
-          answer:
-              'This component is still a placeholder in the package implementation and currently returns SizedBox.shrink().',
-        ),
-        DocFaq(
           question: 'What should retry do?',
           answer:
               'Retry should re-run the failed network or state action rather than just dismissing the error.',
         ),
       ],
       notes: [
-        'Implementation status: placeholder widget body in the package source.',
       ],
     );
 
@@ -670,8 +644,6 @@ class _SkeletonDemo extends StatelessWidget {
     return const Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('Current implementation returns an empty widget.'),
-        SizedBox(height: 12),
         CKSkeleton(width: 240, height: 18, borderRadius: 12),
       ],
     );
@@ -686,8 +658,6 @@ class _EmptyStateDemo extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text('Current implementation returns an empty widget.'),
-        const SizedBox(height: 12),
         CKEmptyState(
           title: 'No projects yet',
           description: 'Create your first project to get started.',
@@ -739,8 +709,6 @@ class _ErrorStateDemo extends StatelessWidget {
     return const Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('Current implementation returns an empty widget.'),
-        SizedBox(height: 12),
         CKErrorState(
           title: 'Could not load projects',
           description: 'Check your connection and try again.',

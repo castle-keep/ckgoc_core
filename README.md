@@ -4,7 +4,7 @@ ckcoreui — Company design system and UI components for Flutter
 ===============================================================
 
 ckcoreui packages a multi-brand design system (CastleKeep and SkyGo) with
-consistent design tokens, components, and full-screen templates. It's
+consistent design tokens, components, and a responsive screen layout. It's
 intended for apps that need a reusable, themeable UI foundation that follows
 company design guidelines.
 
@@ -16,8 +16,17 @@ Key features
 - Multi-brand themes: CastleKeep and SkyGo with light/dark variants
 - Design tokens: colors, typography, spacing, radius, elevation, motion
 - A broad components library: buttons, inputs, cards, tables, overlays
-- Templates: auth, CRUD, dashboard screens for fast scaffold
+- `CKScreenLayout`: responsive side-nav shell for app screens
+- `CKAnimate` entrance animations driven by motion tokens
+- MCP server and AI skills for Copilot, Claude Code and Cursor
 - Example application under `example/`
+
+Design principles
+-----------------
+- **No business logic**: only presentation, styling, layout, animation and composition.
+- **Stateless by default**: widgets receive state; they do not own it.
+- **Token-driven**: every visual value comes from the theme. No hard-coded numbers.
+- **Multi-brand**: one package, many visual identities.
 
 Installation
 ------------
@@ -25,7 +34,7 @@ Add the package from pub.dev to your application's `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  ckcoreui: ^0.5.0
+  ckcoreui: ^0.6.0
 ```
 
 Then run:
@@ -34,6 +43,81 @@ Then run:
 flutter pub get
 ```
 
+Quick start
+-----------
+`CKApp` is a drop-in replacement for `MaterialApp`. Pick a brand and build:
+
+```dart
+import 'package:ckcoreui/ckcoreui.dart';
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(
+    CKApp(
+      brand: ckcoreBrand.skyGo, // or ckcoreBrand.castleKeep
+      home: Scaffold(
+        body: Center(
+          child: CKButton(
+            onPressed: () {},
+            child: const Text('Hello ckcoreui'),
+          ),
+        ),
+      ),
+    ),
+  );
+}
+```
+
+Read design tokens from any widget below `CKApp`:
+
+```dart
+Container(
+  color: context.ckColors.primary,
+  padding: EdgeInsets.all(context.ckSpacing.md),
+  child: Text('Hello', style: context.ckTypography.textMd),
+)
+```
+
+Next steps
+- [Getting Started guide](doc/getting-started/README.md): five-minute walkthrough, tokens, troubleshooting
+- [Interactive docs](https://castle-keep.github.io/ckgoc_core/): live demos for every component
+- Run it yourself: `cd doc/flutter_docs && flutter pub get && flutter run -d chrome`
+
+AI-assisted development (MCP and skills)
+-----------------------------------------
+Give Copilot, Claude Code or Cursor live knowledge of ckcoreui so the code it writes uses the right components, props and tokens.
+
+1. **MCP server** (component, token and pattern lookup). Add it to your editor's MCP config, for example `.vscode/mcp.json`:
+
+   ```json
+   {
+     "servers": {
+       "ckcoreui": { "type": "stdio", "command": "npx", "args": ["-y", "@ckcore/ui-mcp"] }
+     }
+   }
+   ```
+
+   Claude Code: `claude mcp add ckcoreui -- npx -y @ckcore/ui-mcp`. Installing does not register it automatically.
+2. **Skill / instructions** (house rules): copy [`skills/ckcoreui`](skills/ckcoreui) to `.claude/skills/`, or [`skills/copilot-instructions.md`](skills/copilot-instructions.md) to `.github/copilot-instructions.md`.
+
+Then ask, for example:
+- *"How do I use CKButton?"*: props, variants, examples
+- *"What colors are available?"*: design tokens
+- *"Generate a login form using ckcoreui"*: Dart code
+- *"How do I set up the SkyGo theme?"*: brand configuration
+
+Step-by-step guide (all editors, troubleshooting): [doc/getting-started/ai-tools.md](doc/getting-started/ai-tools.md). Server reference: [mcp/README.md](mcp/README.md).
+
+Animation
+---------
+Wrap any widget in `CKAnimate` for a token-driven entrance, and use `CKAnimate.stagger` to cascade a list:
+
+```dart
+CKAnimate(animation: CKAnimation.slideUp, child: CKCard(title: 'Hello'))
+```
+
+See [doc/getting-started/animation.md](doc/getting-started/animation.md).
+
 Dependencies
 ------------
 This package depends on the Flutter SDK and a small set of runtime
@@ -41,129 +125,31 @@ dependencies, including `flutter_svg` for SVG rendering and `lucide_icons` for
 icons. Consumers only need to add `ckcoreui` to their `pubspec.yaml`; the
 package will bring the required runtime dependencies.
 
-Logo asset naming
-------------
-Logo assets are stored under `assets/images/logos/<brand>/` and should follow
-the project's canonical naming convention: lowercase, underscore-separated,
-and include a type segment. Use these names for clarity:
-
-- `brand_master_logo` — combined mark (both symbol and name)
-- `brand_logo` — symbol-only (logo)
-- `brand_name` — name-only (wordmark)
-
-When there are multiple variants include an index suffix, for example:
-
-- `assets/images/logos/castlekeep/castlekeep_master_logo_1.png`
-- `assets/images/logos/castlekeep/castlekeep_logo_1.svg`
-- `assets/images/logos/castlekeep/castlekeep_name_logo_1.png`
-
-To normalize existing files, run the provided script from the project root:
-
-```bash
-./tools/normalize_logos.sh
-```
-
-Using packaged logos
---------------------
-The package exports stable asset identifiers via `BrandIcon`. Use these
-constants and Flutter's asset loaders to render specific variants from the
-package. Examples:
-
-Image (PNG) from the package:
+Logos
+-----
+Logos ship in the package as `BrandIcon` constants:
 
 ```dart
-import 'package:ckcoreui/ckcore_core.dart';
-
-Image.asset(
-  BrandIcon.castlekeepName,
-  package: 'ckcoreui',
-  width: 160,
-  fit: BoxFit.contain,
-);
+BrandIcon.brandLogoWidget(context, ckcoreBrand.skyGo, size: 40);
 ```
 
-SVG from the package (rendered by the package using `flutter_svg`):
+Naming rules, all constants and more examples: [doc/getting-started/brand-logos.md](doc/getting-started/brand-logos.md).
 
-```dart
-import 'package:ckcoreui/ckcore_core.dart';
-
-// The package will render SVG assets where appropriate; you can also use
-// SvgPicture.asset directly if you prefer.
-Widget svg = BrandIcon.brandLogoWidget(context, ckcoreBrand.skyGo, size: 160);
-```
-
-Side-nav specific logo injection:
-
-```dart
-ckcoreSideNav(
-  sections: sections,
-  selectedIndex: selected,
-  onItemSelected: onSelect,
-  brandName: '',
-  logo: Image.asset(
-    BrandIcon.castlekeepSymbol,
-    package: 'ckcoreui',
-    width: 32,
-    height: 32,
-  ),
-)
-```
-
-Package helpers
----------------
-`BrandIcon.brandLogoWidget(context, brand)` provides a packaged default
-widget for the active brand. The package also exposes `BrandIcon` constants
-for every bundled variant and a convenience `assetLogoWidget` helper that
-renders raster assets and uses `flutter_svg` to render SVG assets.
-
-Quick start
------------
-Wrap your app with `ckcoreApp` to inject the design system:
-
-```dart
-void main() {
-  runApp(
-    ckcoreApp(
-      brand: CompanyBrand.skyGo,
-      child: MaterialApp(home: MyHomePage()),
-    ),
-  );
-}
-```
-
-Access tokens anywhere via `context.ckcoreTheme`:
-
-```dart
-final theme = context.ckcoreTheme;
-final colors = theme.colors;
-final typography = theme.typography;
-```
-
-Brand configuration
--------------------
-Select `CompanyBrand.castleKeep` or `CompanyBrand.skyGo` when creating
-`ckcoreApp`. To add a new brand, create a brand folder under
-`lib/src/themes/brands/` and register it in the theme resolver.
-
-Brand scaffolding CLI
----------------------
-This repository includes a small CLI to scaffold a new brand and auto-register it in the theme resolver. It creates a folder under `lib/src/themes/brands/<brand>/` with placeholder color, typography, and light/dark theme files, then updates the enum and resolver.
-
-Run from the project root:
-
-```bash
-dart run bin/ckgoc.dart add brand "Acme"
-```
+Brands
+------
+Pick `ckcoreBrand.castleKeep` or `ckcoreBrand.skyGo` on `CKApp`. To add a brand, run
+`dart run bin/ckgoc.dart add brand "Acme"`. Switching at runtime and the manual steps are in
+[doc/getting-started/brands.md](doc/getting-started/brands.md).
 
 Components and usage
 --------------------
-The library exposes themed components such as `ckcoreButton`,
-`ckcoreCard`, `ckcoreDataTable`, `ckcoreTextField`, and more. See the
+The library exposes themed components such as `CKButton`,
+`CKCard`, `CKDataTable`, `CKTextField`, and more. See the
 component examples in the `example/` application for usage patterns.
 
 More documentation
 ------------------
-visit (this link)[https://castle-keep.github.io/ckgoc_core/] for more info about this package
+Browse the interactive docs (live demos, code, parameters) at <https://castle-keep.github.io/ckgoc_core/>, or read the written guides in [`doc/getting-started`](doc/getting-started/README.md).
 
 Contributing
 ------------

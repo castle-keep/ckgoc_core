@@ -231,7 +231,10 @@ class _ScreenLayoutDemoState extends State<_ScreenLayoutDemo> {
     return LayoutBuilder(
       builder: (context, constraints) {
         return ConstrainedBox(
-          constraints: BoxConstraints(minHeight: constraints.maxHeight),
+          constraints: BoxConstraints(
+            minHeight:
+                constraints.hasBoundedHeight ? constraints.maxHeight : 0,
+          ),
           child: SingleChildScrollView(
             child: Padding(
               padding: EdgeInsets.all(theme.spacing.lg),

@@ -211,10 +211,9 @@ CKBottomNavigation(
     );
 
 ComponentDocData _breadcrumbDoc() => const ComponentDocData(
-      comingSoon: true,
       title: 'CKBreadcrumb',
       summary:
-          'Breadcrumb API surface for hierarchical paths. The current package implementation is a placeholder widget body.',
+          'Hierarchical path trail. Earlier items are links (tappable when they have an onTap); the last item is the current page. Wraps onto multiple lines when narrow.',
       demo: _BreadcrumbDemo(),
       code: '''
 CKBreadcrumb(
@@ -235,18 +234,12 @@ CKBreadcrumb(
       ],
       faqs: [
         DocFaq(
-          question: 'Why is the live output blank?',
-          answer:
-              'This component is still a placeholder in the package implementation and currently returns SizedBox.shrink().',
-        ),
-        DocFaq(
           question: 'What should each item do?',
           answer:
               'Earlier path segments should usually be tappable navigation targets; the current page is often presentational only.',
         ),
       ],
       notes: [
-        'Implementation status: placeholder widget body in the package source.',
       ],
     );
 
@@ -318,10 +311,9 @@ CKDrawer(
     );
 
 ComponentDocData _navigationRailDoc() => const ComponentDocData(
-      comingSoon: true,
       title: 'CKNavigationRail',
       summary:
-          'Navigation rail API surface for larger responsive shells. The current package implementation is a placeholder widget body.',
+          'Vertical icon-and-label navigation for tablet and desktop shells. Fills the height it is given, so place it in a Row inside a bounded-height parent.',
       demo: _NavigationRailDemo(),
       code: '''
 CKNavigationRail(
@@ -354,18 +346,12 @@ CKNavigationRail(
       ],
       faqs: [
         DocFaq(
-          question: 'Why is the live output blank?',
-          answer:
-              'This component is still a placeholder in the package implementation and currently returns SizedBox.shrink().',
-        ),
-        DocFaq(
           question: 'When would I prefer a rail over bottom navigation?',
           answer:
               'Use a rail on tablet or desktop layouts where vertical chrome is more appropriate.',
         ),
       ],
       notes: [
-        'Implementation status: placeholder widget body in the package source.',
       ],
     );
 
@@ -618,8 +604,6 @@ class _BreadcrumbDemo extends StatelessWidget {
     return const Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('Current implementation returns an empty widget.'),
-        VSpace(height: 12),
         CKBreadcrumb(
           items: [
             BreadcrumbItem(label: 'Home'),
@@ -655,24 +639,42 @@ class _DrawerDemo extends StatelessWidget {
   }
 }
 
-class _NavigationRailDemo extends StatelessWidget {
+class _NavigationRailDemo extends StatefulWidget {
   const _NavigationRailDemo();
 
   @override
+  State<_NavigationRailDemo> createState() => _NavigationRailDemoState();
+}
+
+class _NavigationRailDemoState extends State<_NavigationRailDemo> {
+  int _selected = 1;
+
+  @override
   Widget build(BuildContext context) {
-    return const Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text('Current implementation returns an empty widget.'),
-        VSpace(height: 12),
-        CKNavigationRail(
-          selectedIndex: 1,
-          items: [
-            CKNavItem(icon: Icons.home_outlined, label: 'Home'),
-            CKNavItem(icon: Icons.settings_outlined, label: 'Settings'),
-          ],
-        ),
-      ],
+    return SizedBox(
+      height: 260,
+      child: Row(
+        children: [
+          CKNavigationRail(
+            selectedIndex: _selected,
+            onDestinationSelected: (i) => setState(() => _selected = i),
+            items: const [
+              CKNavItem(
+                icon: Icons.home_outlined,
+                activeIcon: Icons.home,
+                label: 'Home',
+              ),
+              CKNavItem(icon: Icons.search, label: 'Search'),
+              CKNavItem(icon: Icons.settings_outlined, label: 'Settings'),
+            ],
+          ),
+          Expanded(
+            child: Center(
+              child: Text(['Home', 'Search', 'Settings'][_selected]),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

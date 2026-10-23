@@ -166,7 +166,7 @@ AnimatedContainer(
 
 ## See Also
 
-- [Existing Theme Access Pattern](../../CORE/overview_design_system.md)
-- [Color Tokens](../../CORE/color.md)
-- [Spacing & Grid](../../CORE/spacing_and_grid.md)
+- [Existing Theme Access Pattern](../CORE/overview_design_system.md)
+- [Color Tokens](../CORE/color.md)
+- [Spacing & Grid](../CORE/spacing_and_grid.md)
 - [Typography](../foundation/typography.md)

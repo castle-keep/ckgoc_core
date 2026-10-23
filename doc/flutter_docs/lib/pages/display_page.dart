@@ -425,7 +425,6 @@ Column(
 )
 ''';
   return const ComponentDocData(
-    comingSoon: true,
     title: 'CKDivider',
     summary:
         'Simple separator widget. The public API is intentionally small: horizontal or vertical via the direction parameter.',
@@ -452,8 +451,6 @@ Column(
       ),
     ],
     notes: [
-      'Implementation status: placeholder in the package source (returns SizedBox.shrink()).',
-      'When implemented: the public API will remain intentionally small; thickness and color will follow design tokens.',
     ],
   );
 }
@@ -474,7 +471,6 @@ CKListTile(
         'Simple list row wrapper for navigation or settings-style layouts.',
     demo: _ListTileDemo(),
     code: code,
-    comingSoon: true,
     params: [
       DocParam(
         name: 'title',
@@ -515,8 +511,7 @@ CKListTile(
       ),
     ],
     notes: [
-      'Implementation status: placeholder in the package source. The API is intentionally small to match design tokens; rendering will be implemented to match spacing conventions.',
-      'Accessibility: When implemented, ensure `title` and `subtitle` provide meaningful text; wrap non-text content with `Semantics` as needed.',
+      'Accessibility: ensure `title` and `subtitle` provide meaningful text; wrap non-text content with `Semantics` as needed.',
     ],
   );
 }

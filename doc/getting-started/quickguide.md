@@ -35,7 +35,7 @@ CKApp.delegate(
                            # ckcoreLoadingState, ckcoreAlert, ckcoreSkeleton…
       navigation/          # Nav bars, tabs, breadcrumbs, menus
       overlays/            # Modals, drawers, toasts, snackbars
-    templates/             # Full-screen layout templates (auth, CRUD, dashboard…)
+    templates/             # CKScreenLayout (responsive side-nav shell)
     extensions/            # Dart/Flutter extension helpers
     utils/                 # Internal utilities
 
@@ -205,6 +205,7 @@ Common properties:
 - `loading` (bool): Show spinner. Default: `false`.
 - `disabled` (bool): Force disabled state. Default: `false`.
 - `isFullWidth` (bool): Expand horizontally. Default: `false`.
+- `hoverStyle` (ButtonHoverStyle): Mouse hover effect: `lift` (floats up with a shadow), `grow` or `none`. Default: `lift`. Presses always scale down briefly; both are skipped when disabled, loading or under reduced motion.
 
 Example
 ```dart

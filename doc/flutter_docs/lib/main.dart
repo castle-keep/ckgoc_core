@@ -1,6 +1,8 @@
 import 'package:ckcoreui/ckcoreui.dart';
 import 'package:flutter/material.dart';
 
+import 'package:ckcore_docs_app/pages/ai_tools_page.dart';
+import 'package:ckcore_docs_app/pages/animate_page.dart';
 import 'package:ckcore_docs_app/pages/brand_icons_page.dart';
 import 'package:ckcore_docs_app/pages/buttons_page.dart';
 import 'package:ckcore_docs_app/pages/data_table_page.dart';
@@ -10,14 +12,17 @@ import 'package:ckcore_docs_app/pages/feedback_page.dart';
 import 'package:ckcore_docs_app/pages/inputs_page.dart';
 import 'package:ckcore_docs_app/pages/navigation_page.dart';
 import 'package:ckcore_docs_app/pages/overlays_page.dart';
+import 'package:ckcore_docs_app/pages/getting_started_page.dart';
 import 'package:ckcore_docs_app/pages/overview_page.dart';
 import 'package:ckcore_docs_app/pages/foundation_page.dart';
 import 'package:ckcore_docs_app/pages/app_page.dart';
 import 'package:ckcore_docs_app/pages/screen_layout_page.dart';
-import 'package:ckcore_docs_app/pages/templates_page.dart';
 import 'package:ckcore_docs_app/pages/themes_page.dart';
 import 'package:ckcore_docs_app/pages/router_page.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:ckcore_docs_app/pages/splash_screen.dart';
+import 'package:ckcore_docs_app/docs/docs_header.dart';
+import 'package:ckcore_docs_app/docs/docs_sidebar.dart';
+import 'package:flutter/services.dart';
 
 import 'docs_navigation.dart';
 
@@ -34,7 +39,30 @@ class DocsApp extends StatefulWidget {
 
 class _DocsAppState extends State<DocsApp> {
   ckcoreBrand _brand = ckcoreBrand.castleKeep;
-  Brightness? _brightness = Brightness.light;
+  Brightness? _brightness; // null = follow the system
+  bool _splashDone = false;
+
+  @override
+  void initState() {
+    super.initState();
+    ServicesBinding.instance.keyboard.addHandler(_onKey);
+  }
+
+  @override
+  void dispose() {
+    ServicesBinding.instance.keyboard.removeHandler(_onKey);
+    super.dispose();
+  }
+
+  /// Ctrl/Cmd+K focuses the sidebar search from anywhere.
+  bool _onKey(KeyEvent event) {
+    if (!_splashDone || event is! KeyDownEvent) return false;
+    if (event.logicalKey != LogicalKeyboardKey.keyK) return false;
+    final keys = HardwareKeyboard.instance;
+    if (!(keys.isControlPressed || keys.isMetaPressed)) return false;
+    docsSearchFocus.requestFocus();
+    return true;
+  }
 
   void _setBrand(ckcoreBrand brand) {
     setState(() {
@@ -48,30 +76,47 @@ class _DocsAppState extends State<DocsApp> {
     });
   }
 
+  Widget _docs() {
+    return Column(
+      children: [
+        DocsHeader(
+          brand: _brand,
+          brightness: _brightness,
+          onBrandChanged: _setBrand,
+          onBrightnessChanged: _setBrightness,
+        ),
+        Expanded(
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              const DocsSidebar(),
+              Expanded(
+                child: ValueListenableBuilder<String>(
+                  valueListenable: currentRoute,
+                  builder: (context, route, _) => _DocsPage(route: route),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return CKApp(
       brand: _brand,
       brightness: _brightness,
-      home: ValueListenableBuilder<String>(
-        valueListenable: currentRoute,
-        builder: (context, route, _) {
-          return Stack(
-            children: [
-              _DocsPage(route: route),
-              Positioned(
-                top: 12,
-                right: 12,
-                child: _ThemeSwitcher(
-                  brand: _brand,
-                  brightness: _brightness,
-                  onBrandChanged: _setBrand,
-                  onBrightnessChanged: _setBrightness,
-                ),
-              ),
-            ],
-          );
-        },
+      home: AnimatedSwitcher(
+        duration: const Duration(milliseconds: 400),
+        child: !_splashDone
+            ? SplashScreen(
+                key: const ValueKey('splash'),
+                brand: _brand,
+                onDone: () => setState(() => _splashDone = true),
+              )
+            : KeyedSubtree(key: const ValueKey('docs'), child: _docs()),
       ),
       title: 'ckcoreui Core Docs',
     );
@@ -87,6 +132,14 @@ class _DocsPage extends StatelessWidget {
 
   Widget _page() {
     switch (route) {
+      case '/':
+        return const GettingStartedPage();
+      case '/overview':
+        return const OverviewPage();
+      case '/ai-tools':
+        return const AiToolsPage();
+      case '/animate':
+        return const AnimatePage();
       case '/buttons':
         return const ButtonsPage();
       case '/display':
@@ -113,116 +166,15 @@ class _DocsPage extends StatelessWidget {
         return const FoundationPage();
       case '/themes':
         return const ThemesPage();
-      case '/templates':
-        return const TemplatesPage();
       case '/screen-layout':
         return const ScreenLayoutPage();
       default:
-        return const OverviewPage();
+        return const GettingStartedPage();
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return _page();
-  }
-}
-
-class _ThemeSwitcher extends StatelessWidget {
-  const _ThemeSwitcher({
-    required this.brand,
-    required this.brightness,
-    required this.onBrandChanged,
-    required this.onBrightnessChanged,
-  });
-
-  final ckcoreBrand brand;
-  final Brightness? brightness;
-
-  final ValueChanged<ckcoreBrand> onBrandChanged;
-  final ValueChanged<Brightness?> onBrightnessChanged;
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = context.ckcoreTheme;
-
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        CKIconButton(
-            icon: Icons.folder,
-            onPressed: () async {
-              final url = Uri.parse('https://pub.dev/packages/ckcoreui');
-
-              await launchUrl(url);
-            },
-            tooltip: 'Flutter Package'),
-        CKIconButton(
-            icon: Icons.code,
-            onPressed: () async {
-              final url =
-                  Uri.parse('https://github.com/castle-keep/ckgoc_core');
-
-              await launchUrl(url);
-            },
-            tooltip: 'Github repo'),
-        SizedBox(width: 12),
-        CKMenu(
-          trigger: CKContainer(
-            elevated: true,
-            variant: ContainerVariant.outlined,
-            padding: EdgeInsets.symmetric(
-              horizontal: theme.spacing.sm,
-              vertical: theme.spacing.xs,
-            ),
-            child: Text(
-              brand == ckcoreBrand.castleKeep ? 'CastleKeep' : 'SkyGo',
-            ),
-          ),
-          items: [
-            CKMenuItem(
-              label: 'CastleKeep',
-              onTap: () => onBrandChanged(ckcoreBrand.castleKeep),
-            ),
-            CKMenuItem(
-              label: 'SkyGo',
-              onTap: () => onBrandChanged(ckcoreBrand.skyGo),
-            ),
-          ],
-        ),
-        const SizedBox(width: 8),
-        CKMenu(
-          trigger: CKContainer(
-            elevated: true,
-            variant: ContainerVariant.outlined,
-            padding: EdgeInsets.symmetric(
-              horizontal: theme.spacing.sm,
-              vertical: theme.spacing.xs,
-            ),
-            child: Text(
-              brightness == null
-                  ? 'System'
-                  : brightness == Brightness.dark
-                      ? 'Dark'
-                      : 'Light',
-            ),
-          ),
-          items: [
-            CKMenuItem(
-              label: 'System',
-              onTap: () => onBrightnessChanged(null),
-            ),
-            CKMenuItem(
-              label: 'Light',
-              onTap: () => onBrightnessChanged(Brightness.light),
-            ),
-            CKMenuItem(
-              label: 'Dark',
-              onTap: () => onBrightnessChanged(Brightness.dark),
-            ),
-          ],
-        ),
-      ],
-    );
   }
 }

@@ -1,5 +1,7 @@
 import 'package:ckcoreui/src/foundation/colors/ckcore_colors.dart';
+import 'package:ckcoreui/src/foundation/motion/ckcore_motion.dart';
 import 'package:ckcoreui/src/foundation/spacing/ckcore_spacing.dart';
+import 'package:ckcoreui/src/foundation/typography/ckcore_typography.dart';
 import 'package:flutter/material.dart';
 import 'package:ckcoreui/src/themes/ckcore_theme.dart';
 import 'package:ckcoreui/src/components/component_enums.dart';
@@ -16,6 +18,10 @@ import 'package:ckcoreui/src/components/component_enums.dart';
 /// ```
 ///
 /// Supports `size`, loading state, disabled state and full-width mode.
+///
+/// On hover the button floats up with a soft shadow (see [hoverStyle]); on press
+/// it scales down slightly and springs back. Both are skipped for disabled or
+/// loading buttons and when the platform requests reduced motion.
 class CKButton extends StatelessWidget {
   /// Primary button (default, recommended appearance).
   /// Filled with high visual emphasis for primary actions.
@@ -27,6 +33,7 @@ class CKButton extends StatelessWidget {
     this.loading = false,
     this.disabled = false,
     this.isFullWidth = false,
+    this.hoverStyle = ButtonHoverStyle.lift,
     super.key,
   });
 
@@ -38,6 +45,7 @@ class CKButton extends StatelessWidget {
     this.loading = false,
     this.disabled = false,
     this.isFullWidth = false,
+    this.hoverStyle = ButtonHoverStyle.lift,
     super.key,
   }) : variant = ButtonVariant.secondary;
 
@@ -49,6 +57,7 @@ class CKButton extends StatelessWidget {
     this.loading = false,
     this.disabled = false,
     this.isFullWidth = false,
+    this.hoverStyle = ButtonHoverStyle.lift,
     super.key,
   }) : variant = ButtonVariant.outline;
 
@@ -60,6 +69,7 @@ class CKButton extends StatelessWidget {
     this.loading = false,
     this.disabled = false,
     this.isFullWidth = false,
+    this.hoverStyle = ButtonHoverStyle.lift,
     super.key,
   }) : variant = ButtonVariant.ghost;
 
@@ -71,6 +81,7 @@ class CKButton extends StatelessWidget {
     this.loading = false,
     this.disabled = false,
     this.isFullWidth = false,
+    this.hoverStyle = ButtonHoverStyle.lift,
     super.key,
   }) : variant = ButtonVariant.accent;
 
@@ -82,6 +93,7 @@ class CKButton extends StatelessWidget {
     this.loading = false,
     this.disabled = false,
     this.isFullWidth = false,
+    this.hoverStyle = ButtonHoverStyle.lift,
     super.key,
   }) : variant = ButtonVariant.destructive;
 
@@ -93,6 +105,7 @@ class CKButton extends StatelessWidget {
     this.loading = false,
     this.disabled = false,
     this.isFullWidth = false,
+    this.hoverStyle = ButtonHoverStyle.lift,
     super.key,
   }) : variant = ButtonVariant.success;
 
@@ -104,6 +117,7 @@ class CKButton extends StatelessWidget {
     this.loading = false,
     this.disabled = false,
     this.isFullWidth = false,
+    this.hoverStyle = ButtonHoverStyle.lift,
     super.key,
   }) : variant = ButtonVariant.warning;
 
@@ -115,6 +129,7 @@ class CKButton extends StatelessWidget {
     this.loading = false,
     this.disabled = false,
     this.isFullWidth = false,
+    this.hoverStyle = ButtonHoverStyle.lift,
     super.key,
   }) : variant = ButtonVariant.info;
 
@@ -126,6 +141,7 @@ class CKButton extends StatelessWidget {
     this.loading = false,
     this.disabled = false,
     this.isFullWidth = false,
+    this.hoverStyle = ButtonHoverStyle.lift,
     super.key,
   }) : variant = ButtonVariant.link;
 
@@ -137,6 +153,10 @@ class CKButton extends StatelessWidget {
   final bool disabled;
   final bool isFullWidth;
 
+  /// Hover effect for mouse pointers. Defaults to [ButtonHoverStyle.lift].
+  /// Presses always get a quick scale-down regardless of this setting.
+  final ButtonHoverStyle hoverStyle;
+
   @override
   Widget build(BuildContext context) {
     final theme = context.ckcoreTheme;
@@ -147,7 +167,7 @@ class CKButton extends StatelessWidget {
     final opacity = theme.opacity;
 
     final isDisabled = disabled || onPressed == null;
-    final borderRadius = BorderRadius.circular(radius.base);
+    final borderRadius = BorderRadius.circular(radius.md);
 
     Widget content = loading
         ? SizedBox(
@@ -161,9 +181,10 @@ class CKButton extends StatelessWidget {
         : child ?? const SizedBox.shrink();
 
     if (isFullWidth) {
+      // Flexible lets long labels wrap instead of overflowing narrow parents.
       content = Row(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: [content],
+        children: [Flexible(child: content)],
       );
     }
 
@@ -175,12 +196,28 @@ class CKButton extends StatelessWidget {
         curve: motion.decelerate,
         width: isFullWidth ? double.infinity : null,
         child: IgnorePointer(
-          ignoring: isDisabled,
-          child: _buildButton(
-            child: content,
+          // Block taps while loading so actions can't be double-submitted.
+          ignoring: isDisabled || loading,
+          child: _ButtonMotion(
+            enabled: !(isDisabled || loading),
+            hoverStyle: hoverStyle,
             borderRadius: borderRadius,
-            colors: colors,
-            spacing: spacing,
+            // Ghost, link and outline buttons have no surface to cast a shadow.
+            shadow: switch (variant) {
+              ButtonVariant.ghost ||
+              ButtonVariant.link ||
+              ButtonVariant.outline => false,
+              _ => true,
+            },
+            lift: variant != ButtonVariant.link,
+            child: _buildButton(
+              child: content,
+              borderRadius: borderRadius,
+              colors: colors,
+              spacing: spacing,
+              typography: theme.typography,
+              motion: motion,
+            ),
           ),
         ),
       ),
@@ -222,7 +259,15 @@ class CKButton extends StatelessWidget {
     required BorderRadius borderRadius,
     required ckcoreColors colors,
     required ckcoreSpacing spacing,
+    required ckcoreTypography typography,
+    required ckcoreMotion motion,
   }) {
+    final textStyle = switch (size) {
+      ButtonSize.xs => typography.labelSm,
+      ButtonSize.sm || ButtonSize.md => typography.labelMd,
+      ButtonSize.lg => typography.labelLg,
+      ButtonSize.xl => typography.labelXl,
+    };
     final shape = RoundedRectangleBorder(borderRadius: borderRadius);
     final padding = _padding(spacing);
     final minSize = _minSize(spacing);
@@ -253,6 +298,8 @@ class CKButton extends StatelessWidget {
         minimumSize: minSize,
         shape: shape,
         elevation: 0,
+        textStyle: textStyle,
+        animationDuration: motion.fast,
       ),
       fg,
     );
@@ -283,6 +330,8 @@ class CKButton extends StatelessWidget {
             padding: padding,
             minimumSize: minSize,
             shape: shape,
+            textStyle: textStyle,
+            animationDuration: motion.fast,
           ),
           colors.primary,
           defaultBorder: BorderSide(color: colors.primary, width: 1),
@@ -299,6 +348,8 @@ class CKButton extends StatelessWidget {
             padding: padding,
             minimumSize: minSize,
             shape: shape,
+            textStyle: textStyle,
+            animationDuration: motion.fast,
           ),
           colors.primary,
         ),
@@ -347,13 +398,108 @@ class CKButton extends StatelessWidget {
             padding: padding,
             minimumSize: minSize,
             shape: shape,
-            textStyle: const TextStyle(decoration: TextDecoration.underline),
+            textStyle: textStyle.copyWith(decoration: TextDecoration.underline),
           ),
           colors.primary,
         ),
         child: child,
       ),
     };
+  }
+}
+
+/// Hover-lift and press-scale motion around a button.
+class _ButtonMotion extends StatefulWidget {
+  const _ButtonMotion({
+    required this.enabled,
+    required this.hoverStyle,
+    required this.borderRadius,
+    required this.shadow,
+    required this.lift,
+    required this.child,
+  });
+  final bool enabled;
+  final ButtonHoverStyle hoverStyle;
+  final BorderRadius borderRadius;
+  final bool shadow;
+  final bool lift;
+  final Widget child;
+
+  @override
+  State<_ButtonMotion> createState() => _ButtonMotionState();
+}
+
+class _ButtonMotionState extends State<_ButtonMotion> {
+  bool _hovered = false;
+  bool _pressed = false;
+
+  void _setHovered(bool v) {
+    if (_hovered != v) setState(() => _hovered = v);
+  }
+
+  void _setPressed(bool v) {
+    if (_pressed != v) setState(() => _pressed = v);
+  }
+
+  @override
+  void didUpdateWidget(_ButtonMotion old) {
+    super.didUpdateWidget(old);
+    if (!widget.enabled && (_hovered || _pressed)) {
+      _hovered = false;
+      _pressed = false;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = context.ckcoreTheme;
+    final reduce = MediaQuery.maybeDisableAnimationsOf(context) ?? false;
+
+    final hovering =
+        widget.enabled && _hovered && widget.hoverStyle != ButtonHoverStyle.none;
+    final lifted = hovering &&
+        widget.hoverStyle == ButtonHoverStyle.lift &&
+        widget.lift &&
+        !_pressed;
+    final grown = hovering && widget.hoverStyle == ButtonHoverStyle.grow;
+
+    final scale = _pressed && widget.enabled
+        ? 0.96
+        : grown
+            ? 1.03
+            : 1.0;
+    final dy = lifted ? -theme.spacing.xxs : 0.0;
+
+    final shadows = lifted || grown
+        ? (widget.shadow ? theme.shadows.md : const <BoxShadow>[])
+        : const <BoxShadow>[];
+
+    return MouseRegion(
+      cursor: widget.enabled
+          ? SystemMouseCursors.click
+          : SystemMouseCursors.basic,
+      onEnter: (_) => _setHovered(true),
+      onExit: (_) => _setHovered(false),
+      child: Listener(
+        onPointerDown: (_) => _setPressed(true),
+        onPointerUp: (_) => _setPressed(false),
+        onPointerCancel: (_) => _setPressed(false),
+        child: AnimatedContainer(
+          duration: reduce
+              ? Duration.zero
+              : (_pressed ? theme.motion.fast : theme.motion.normal),
+          curve: _pressed ? Curves.easeOut : Curves.easeOutCubic,
+          transformAlignment: Alignment.center,
+          transform: Matrix4.translationValues(0, dy, 0)
+            ..scaleByDouble(scale, scale, 1, 1),
+          decoration: BoxDecoration(
+            borderRadius: widget.borderRadius,
+            boxShadow: shadows,
+          ),
+          child: widget.child,
+        ),
+      ),
+    );
   }
 }
 

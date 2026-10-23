@@ -8,3 +8,7 @@ test/
 golden/
 
 coverage/
+
+# MCP Server - published separately to npm
+mcp/
+skills/
