@@ -19,6 +19,7 @@
 - `CKButton` could be tapped repeatedly while `loading: true` (double submit); taps are now blocked while loading.
 - A full-width `CKButton` overflowed on long labels, for example the default "Yes, Delete Permanently" in `CKDialog.destructive`; the label now wraps.
 - `CKNavigationRail` items were announced twice by screen readers.
+- `CKSnackbar` at the top was squashed to a few pixels (so it looked missing) whenever its Scaffold was shorter than the window, for example under a header or with a bottom bar. It now floats above everything in the app (headers, side navigation, page) in the root overlay, full width by default (pass `width` to make it narrower and centered), with a slide-in, auto-dismiss, `onDismiss` support and `CKSnackbar.hide()`. The bottom position is unchanged.
 
 ## 0.5.0
 

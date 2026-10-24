@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:ckcore_docs_app/docs/docs_header.dart';
+import 'package:ckcore_docs_app/docs/docs_sidebar.dart';
 import 'package:ckcore_docs_app/docs_navigation.dart';
 import 'package:ckcore_docs_app/main.dart';
 import 'package:ckcore_docs_app/pages/splash_screen.dart';
@@ -204,6 +205,67 @@ void main() {
       expect(find.byType(DocsHeader), findsOneWidget);
       expect(_theme(tester).brand, ckcoreBrand.skyGo);
       expect(_theme(tester).isDark, isTrue);
+    });
+  });
+
+  group('snackbars over the header', () {
+    Future<void> showSuccess(WidgetTester tester) async {
+      currentRoute.value = '/feedback';
+      await tester.pump(const Duration(milliseconds: 500));
+      final button = find.widgetWithText(CKButton, 'success').first;
+      await tester.ensureVisible(button);
+      await tester.pump();
+      await tester.tap(button);
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 500));
+    }
+
+    Future<void> finish(WidgetTester tester) async {
+      await tester.pump(const Duration(seconds: 4));
+      await tester.pump(const Duration(seconds: 1));
+    }
+
+    testWidgets('floats above the header and is tappable', (tester) async {
+      await _openDocs(tester);
+      await showSuccess(tester);
+
+      final toast = find.text('Snackbar: success');
+      expect(toast, findsOneWidget);
+      expect(toast.hitTestable(), findsOneWidget);
+
+      final header = tester.getRect(find.byType(DocsHeader));
+      final rect = tester.getRect(
+        find.ancestor(of: toast, matching: find.byType(CKToast)).first,
+      );
+      expect(rect.height, greaterThanOrEqualTo(40), reason: 'not squashed');
+      expect(rect.top, lessThan(header.bottom), reason: 'covers the header');
+      await finish(tester);
+    });
+
+    testWidgets('floats above the sidebar on narrow windows', (tester) async {
+      tester.view.physicalSize = const Size(700, 900);
+      tester.view.devicePixelRatio = 1;
+      addTearDown(tester.view.reset);
+      currentRoute.value = '/';
+      await tester.pumpWidget(const DocsApp());
+      await tester.pump();
+      await tester.tap(find.byType(SplashScreen));
+      await tester.pump(const Duration(milliseconds: 600));
+      await tester.pump(const Duration(milliseconds: 600));
+      await showSuccess(tester);
+
+      final sidebar = tester.getRect(find.byType(DocsSidebar));
+      final rect = tester.getRect(
+        find
+            .ancestor(
+              of: find.text('Snackbar: success'),
+              matching: find.byType(CKToast),
+            )
+            .first,
+      );
+      expect(rect.left, lessThan(sidebar.right), reason: 'covers the sidebar');
+      expect(find.text('Snackbar: success').hitTestable(), findsOneWidget);
+      await finish(tester);
     });
   });
 }

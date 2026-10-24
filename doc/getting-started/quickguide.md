@@ -532,7 +532,7 @@ CKToast.warning(message: 'Caution')
 CKToast.info(message: 'FYI')
 ```
 
-Use `CKSnackbar.show()` to display toasts in a scaffold context.
+Use `CKSnackbar.show(context, message)` to show a toast above everything at the top of the window (or `position: CKSnackbarPosition.bottom` for a floating SnackBar). Pass `width:` for a narrower, centered toast. `CKSnackbar.hide()` closes it.
 
 ### CKSkeleton
 - Accepts layout hints (rows, columns, shapes) and `isLoading` to render placeholder shapes.

@@ -222,7 +222,8 @@ CKProgressBar.error(value: 0.25)
 
 ComponentDocData _snackbarDoc() => const ComponentDocData(
       title: 'CKSnackbar',
-      summary: 'Static helper that shows a SnackBar with CKToast content.',
+      summary:
+          'Static helper that shows CKToast content as transient feedback. The top position floats above everything in the app (header, side navigation, page) in the root overlay, spanning the window unless you pass a width; bottom uses a floating SnackBar.',
       demo: _SnackbarDemo(),
       code: '''
 CKSnackbar.show(
@@ -261,6 +262,12 @@ CKSnackbar.show(
           name: 'position',
           type: 'CKSnackbarPosition',
           description: 'SnackBar vertical position.',
+        ),
+        DocParam(
+          name: 'width',
+          type: 'double?',
+          description:
+              'Top position only. Null (default) spans the window; a value centers the toast at that width.',
         ),
       ],
       faqs: [

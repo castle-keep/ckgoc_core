@@ -32,6 +32,15 @@ jobs:
             echo "Tag ${GITHUB_REF_NAME} does not match package.json ($pkg)"; exit 1
           fi
 
+      - name: NPM_TOKEN secret must exist
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          if [ -z "$NPM_TOKEN" ]; then
+            echo "::error::The NPM_TOKEN repository secret is empty or missing. Add an npm Automation token under Settings > Secrets and variables > Actions."
+            exit 1
+          fi
+
       - run: npm ci
       - run: npm run build
 
