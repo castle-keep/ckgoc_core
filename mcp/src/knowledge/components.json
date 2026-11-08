@@ -3,7 +3,7 @@
         "package": "ckcoreui",
         "version": "0.6.0",
         "description": "Flutter Design System - CastleKeep & SkyGo brands",
-        "documentation": "https://github.com/castlekeeper/ckcoreui"
+        "documentation": "https://castle-keep.github.io/ckgoc_core/"
     },
     "components": {
         "CKButton": {
@@ -68,7 +68,7 @@
                 "disabled": "bool (default: false) - Disables button interaction",
                 "isFullWidth": "bool (default: false) - Stretches to full width",
                 "hoverStyle": "ButtonHoverStyle (default: lift) - Mouse hover effect: lift, grow or none; presses always scale down briefly",
-                "size": "ButtonSize? - Button size"
+                "size": "ButtonSize (default: md) - xs, sm, md, lg, xl"
             },
             "examples": [
                 "CKButton(onPressed: () => print('Clicked'), child: Text('Save'))",
@@ -82,10 +82,10 @@
             "name": "CKIconButton",
             "description": "Icon-only button component",
             "category": "Buttons",
-            "basicUsage": "CKIconButton(\n  onPressed: () {},\n  icon: Icon(Icons.edit)\n)",
+            "basicUsage": "CKIconButton(\n  onPressed: () {},\n  icon: Icons.edit\n)",
             "props": {
                 "onPressed": "VoidCallback? - Callback when pressed",
-                "icon": "Widget - Icon widget to display",
+                "icon": "IconData - Icon to display (required)",
                 "tooltip": "String? - Hover tooltip text"
             }
         },
@@ -93,7 +93,12 @@
             "name": "CKFab",
             "description": "Floating Action Button component",
             "category": "Buttons",
-            "basicUsage": "CKFab(\n  onPressed: () {},\n  icon: Icon(Icons.add)\n)"
+            "basicUsage": "CKFab(\n  onPressed: () {},\n  icon: Icons.add\n)",
+            "props": {
+                "icon": "IconData - Icon to display (required)",
+                "onPressed": "VoidCallback? - Callback when pressed",
+                "label": "String? - When set, renders an extended FAB"
+            }
         },
         "CKTextField": {
             "name": "CKTextField",
@@ -111,7 +116,11 @@
                 "isRequired": "bool (default: false) - Mark as required",
                 "validator": "String? Function(String?)? - Custom validation",
                 "controller": "TextEditingController? - Text editing controller",
-                "onChanged": "ValueChanged<String>? - Value change callback"
+                "onChanged": "ValueChanged<String>? - Value change callback",
+                "maxLines": "int (default: 1) - Number of lines",
+                "keyboardType": "TextInputType? - Keyboard type",
+                "obscureText": "bool (default: false) - Hide the text",
+                "enabled": "bool (default: true) - Enable input"
             },
             "examples": [
                 "CKTextField(label: 'Name', hint: 'John Doe')",
@@ -124,14 +133,34 @@
             "name": "CKPasswordField",
             "description": "Password field with visibility toggle",
             "category": "Inputs",
-            "basicUsage": "CKPasswordField(\n  label: 'Password',\n  validator: (v) => v?.length ?? 0 < 8 ? 'Min 8 chars' : null\n)",
-            "props": "Inherits CKTextField properties"
+            "basicUsage": "CKPasswordField(\n  label: 'Password',\n  validator: (v) => (v?.length ?? 0) < 8 ? 'Min 8 chars' : null\n)",
+            "props": {
+                "controller": "TextEditingController? - Text editing controller",
+                "focusNode": "FocusNode? - External focus node",
+                "label": "String? - Field label",
+                "hint": "String? - Placeholder text",
+                "helperText": "String? - Helper text",
+                "errorText": "String? - Error message text",
+                "onChanged": "ValueChanged<String>? - Value change callback",
+                "onEditingComplete": "VoidCallback? - Editing complete callback",
+                "enabled": "bool (default: true) - Enable input",
+                "validator": "String? Function(String?)? - Custom validation",
+                "textInputAction": "TextInputAction? - Keyboard action",
+                "autoFocus": "bool (default: false) - Focus on build"
+            }
         },
         "CKSearchField": {
             "name": "CKSearchField",
             "description": "Search field optimized for search queries",
             "category": "Inputs",
-            "basicUsage": "CKSearchField(\n  hint: 'Search...',\n  onChanged: handleSearch\n)"
+            "basicUsage": "CKSearchField(\n  hint: 'Search...',\n  onChanged: handleSearch\n)",
+            "props": {
+                "controller": "TextEditingController? - Text editing controller",
+                "hint": "String? - Placeholder text",
+                "onChanged": "ValueChanged<String>? - Value change callback",
+                "onClear": "VoidCallback? - Called when the clear button is pressed",
+                "enabled": "bool (default: true) - Enable input"
+            }
         },
         "CKCheckbox": {
             "name": "CKCheckbox",
@@ -139,7 +168,7 @@
             "category": "Inputs",
             "basicUsage": "CKCheckbox(\n  value: isSelected,\n  onChanged: (v) => setState(() => isSelected = v)\n)",
             "variants": [
-                "default",
+                "default (null)",
                 "success",
                 "error"
             ],
@@ -157,7 +186,10 @@
             "basicUsage": "CKSwitch(\n  value: isEnabled,\n  onChanged: (v) => setState(() => isEnabled = v)\n)",
             "props": {
                 "value": "bool - Toggle state",
-                "onChanged": "ValueChanged<bool>? - State change callback"
+                "onChanged": "ValueChanged<bool>? - State change callback",
+                "label": "String? - Optional label text",
+                "variant": "SwitchVariant? - success or error styling",
+                "color": "Color? - Custom active color"
             }
         },
         "CKDropdown": {
@@ -171,20 +203,43 @@
                 "onChanged": "ValueChanged<T?>? - Selection change callback",
                 "label": "String? - Field label",
                 "hint": "String? - Placeholder text",
-                "menuMaxHeight": "double (default: 150) - Max menu height"
+                "menuMaxHeight": "double (default: 150) - Max menu height",
+                "helperText": "String? - Helper text",
+                "errorText": "String? - Error message text",
+                "validator": "String? Function(T?)? - Custom validation",
+                "isRequired": "bool (default: false) - Mark as required",
+                "enabled": "bool (default: true) - Enable the dropdown"
             }
         },
         "CKDatePicker": {
             "name": "CKDatePicker",
             "description": "Date picker with calendar overlay",
             "category": "Inputs",
-            "basicUsage": "CKDatePicker(\n  onChanged: (date) => setState(() => selectedDate = date)\n)"
+            "basicUsage": "CKDatePicker(\n  onChanged: (date) => setState(() => selectedDate = date)\n)",
+            "props": {
+                "value": "DateTime? - Selected date",
+                "onChanged": "ValueChanged<DateTime?>? - Selection callback",
+                "range": "DateTimeRange? - Selected range (range mode)",
+                "onRangeChanged": "ValueChanged<DateTimeRange?>? - Range selection callback",
+                "label": "String? - Field label",
+                "firstDate": "DateTime? - Earliest selectable date",
+                "lastDate": "DateTime? - Latest selectable date",
+                "mode": "CKDatePickerMode (default: fullDate)",
+                "isRequired": "bool (default: false) - Mark as required",
+                "enabled": "bool (default: true) - Enable the picker"
+            }
         },
         "CKTimePicker": {
             "name": "CKTimePicker",
             "description": "Time picker component",
             "category": "Inputs",
-            "basicUsage": "CKTimePicker(\n  onChanged: (time) => setState(() => selectedTime = time)\n)"
+            "basicUsage": "CKTimePicker(\n  onChanged: (time) => setState(() => selectedTime = time)\n)",
+            "props": {
+                "value": "TimeOfDay? - Selected time",
+                "onChanged": "ValueChanged<TimeOfDay?>? - Selection callback",
+                "label": "String? - Field label",
+                "isRequired": "bool (default: false) - Mark as required"
+            }
         },
         "CKAvatar": {
             "name": "CKAvatar",
@@ -215,7 +270,7 @@
             "category": "Display",
             "basicUsage": "CKBadge(label: 'Featured')\nCKBadge.success(label: 'Approved')\nCKBadge.pro(label: 'Premium')",
             "variants": [
-                "primary",
+                "primary (default)",
                 "success",
                 "warning",
                 "error",
@@ -234,8 +289,8 @@
                 "offline"
             ],
             "props": {
-                "label": "String - Badge text",
-                "icon": "IconData? - Optional icon"
+                "label": "String - Badge text (required)",
+                "variant": "BadgeVariant (default: primary) - or use the named constructors, e.g. CKBadge.success"
             }
         },
         "CKCard": {
@@ -257,7 +312,10 @@
                 "media": "Widget? - Media widget (image, etc.)",
                 "action": "Widget? - Action button or widget",
                 "layout": "CardLayout - vertical or horizontal",
-                "elevated": "bool (default: false) - Add elevation/shadow"
+                "elevated": "bool (default: false) - Add elevation/shadow",
+                "trailing": "Widget? - Trailing widget",
+                "variant": "CardVariant (default: defaultCard) - defaultCard, success, warning, error, info",
+                "onTap": "VoidCallback? - Makes the card tappable"
             }
         },
         "CKDialog": {
@@ -266,9 +324,9 @@
             "category": "Overlays",
             "basicUsage": "showDialog(\n  context: context,\n  builder: (ctx) => CKDialog(\n    title: 'Confirm',\n    content: Text('Are you sure?'),\n    onConfirm: handleConfirm,\n    onCancel: handleCancel\n  )\n)",
             "variants": [
-                "default",
-                "info",
-                "destructive"
+                "CKDialog.show(...)",
+                "CKDialog.showDestructive(...)",
+                "CKDialog.showInfoDialog(...)"
             ],
             "props": {
                 "content": "Widget - Dialog content",
@@ -276,14 +334,16 @@
                 "confirmLabel": "String (default: 'Confirm') - Confirm button text",
                 "cancelLabel": "String (default: 'Cancel') - Cancel button text",
                 "onConfirm": "VoidCallback? - Confirm callback",
-                "onCancel": "VoidCallback? - Cancel callback"
+                "onCancel": "VoidCallback? - Cancel callback",
+                "showClose": "bool (default: true) - Show the close button",
+                "maxWidth": "double? - Maximum dialog width"
             }
         },
         "CKDataTable": {
             "name": "CKDataTable",
             "description": "Advanced data table with sorting, filtering, pagination, and inline editing",
             "category": "Data Table",
-            "basicUsage": "CKDataTable(\n  columns: [\n    CKTableColumn(title: 'Name', key: 'name'),\n    CKTableColumn(title: 'Email', key: 'email')\n  ],\n  rows: data,\n  sortColumnKey: 'name',\n  onSortChanged: (key, ascending) => handleSort(key, ascending)\n)",
+            "basicUsage": "CKDataTable(\n  columns: [\n    CKTableColumn(key: 'name', label: 'Name', sortable: true),\n    CKTableColumn(key: 'email', label: 'Email')\n  ],\n  rows: data,\n  sortColumnKey: 'name',\n  onSortChanged: (key, ascending) => handleSort(key, ascending)\n)",
             "features": [
                 "Server-side sorting",
                 "Server-side filtering",
@@ -310,13 +370,23 @@
                 "onPageChanged": "ValueChanged<int>? - Page change callback",
                 "isLoading": "bool (default: false) - Show loading state",
                 "errorMessage": "String? - Error message to display",
-                "editableCells": "Map<String, CKEditableCell>? - Editable cell configs"
+                "editableCells": "Map<String, CKEditableCell>? - Editable cell configs",
+                "title": "String? - Table title",
+                "subtitle": "String? - Table subtitle",
+                "totalCount": "int (default: 0) - Total rows across all pages",
+                "searchQuery": "String? - Current search text",
+                "onSearchChanged": "ValueChanged<String>? - Search callback",
+                "onPageSizeChanged": "ValueChanged<int>? - Page size callback",
+                "onCellValueChanged": "(rowKey, columnKey, newValue) - Called when an editable cell changes",
+                "striped": "bool (default: true) - Alternate row backgrounds"
             },
             "examples": [
                 "CKDataTable(columns: cols, rows: data, selectionMode: TableSelectionMode.multiple)",
                 "CKDataTable(columns: cols, rows: data, sortColumnKey: 'name', sortAscending: false)",
                 "CKDataTable(columns: cols, rows: data, currentPage: 1, pageSize: 25)"
-            ]
+            ],
+            "columns": "CKTableColumn(key, label, type: CKColumnType (text|badge|avatarText|progress|custom), width, flex, minWidth, sortable, filterable, hidden, textAlign, badgeVariantBuilder, cellBuilder)",
+            "notes": "Omit onSortChanged to let the table sort in memory; editableColumns/onCellChanged are deprecated in favour of editableCells/onCellValueChanged."
         },
         "CKAnimate": {
             "name": "CKAnimate",
@@ -342,6 +412,744 @@
                 "autoPlay": "bool - Start on first build, default true",
                 "trigger": "Object? - Change this value to replay"
             }
+        },
+        "CKAccordion": {
+            "name": "CKAccordion",
+            "description": "Expandable sections; one open at a time unless allowMultiple.",
+            "category": "Display",
+            "import": "import 'package:ckcoreui/ckcoreui.dart';",
+            "basicUsage": "CKAccordion(\n  items: [\n    CKAccordionItem(title: 'Section 1', content: Text('Details')),\n    CKAccordionItem(title: 'Section 2', content: Text('More')),\n  ],\n)",
+            "props": {
+                "items": "List<CKAccordionItem> - required",
+                "initiallyExpanded": "int?",
+                "allowMultiple": "bool (default: false)"
+            }
+        },
+        "CKAccordionItem": {
+            "name": "CKAccordionItem",
+            "description": "Item model for CKAccordion.",
+            "category": "Display",
+            "import": "import 'package:ckcoreui/ckcoreui.dart';",
+            "basicUsage": "CKAccordionItem(title: 'Section', content: Text('Body'))",
+            "props": {
+                "title": "String - required",
+                "content": "Widget - required"
+            }
+        },
+        "CKStepper": {
+            "name": "CKStepper",
+            "description": "Step-by-step progress indicator, vertical or horizontal.",
+            "category": "Display",
+            "import": "import 'package:ckcoreui/ckcoreui.dart';",
+            "basicUsage": "CKStepper(\n  steps: [\n    CKStep(title: 'Account', status: StepStatus.completed),\n    CKStep(title: 'Profile', status: StepStatus.inProgress),\n    CKStep(title: 'Review', status: StepStatus.pending),\n  ],\n)",
+            "props": {
+                "steps": "List<CKStep> - required",
+                "orientation": "CKStepperOrientation (default: CKStepperOrientation.vertical)",
+                "checkColor": "Color?",
+                "lineColor": "Color?"
+            },
+            "notes": "StepStatus: completed, inProgress, pending, rejected. CKStepperOrientation: vertical (default), horizontal."
+        },
+        "CKStep": {
+            "name": "CKStep",
+            "description": "Step model for CKStepper.",
+            "category": "Display",
+            "import": "import 'package:ckcoreui/ckcoreui.dart';",
+            "basicUsage": "CKStep(title: 'Review', status: StepStatus.pending)",
+            "props": {
+                "title": "String - required",
+                "status": "StepStatus - required",
+                "icon": "Widget?",
+                "color": "Color?"
+            }
+        },
+        "CKTimeline": {
+            "name": "CKTimeline",
+            "description": "Vertical or horizontal timeline of events.",
+            "category": "Display",
+            "import": "import 'package:ckcoreui/ckcoreui.dart';",
+            "basicUsage": "CKTimeline(\n  events: [\n    CKTimelineEvent(title: 'Created', timestamp: '09:00', status: StepStatus.completed),\n    CKTimelineEvent(title: 'Approved', timestamp: '10:30'),\n  ],\n)",
+            "props": {
+                "events": "List<CKTimelineEvent> - required",
+                "orientation": "CKTimelineOrientation (default: CKTimelineOrientation.vertical)",
+                "lineColor": "Color?",
+                "dotColor": "Color?"
+            }
+        },
+        "CKTimelineEvent": {
+            "name": "CKTimelineEvent",
+            "description": "Event model for CKTimeline.",
+            "category": "Display",
+            "import": "import 'package:ckcoreui/ckcoreui.dart';",
+            "basicUsage": "CKTimelineEvent(title: 'Created', timestamp: '09:00')",
+            "props": {
+                "title": "String - required",
+                "timestamp": "String?",
+                "icon": "Widget?",
+                "dotColor": "Color?",
+                "status": "StepStatus?"
+            }
+        },
+        "CKListTile": {
+            "name": "CKListTile",
+            "description": "List row with optional leading, subtitle and trailing widgets.",
+            "category": "Display",
+            "import": "import 'package:ckcoreui/ckcoreui.dart';",
+            "basicUsage": "CKListTile(\n  leading: Icon(Icons.person),\n  title: Text('Jane Doe'),\n  subtitle: Text('Admin'),\n  trailing: Icon(Icons.chevron_right),\n  onTap: () {},\n)",
+            "props": {
+                "title": "Widget - required",
+                "leading": "Widget?",
+                "subtitle": "Widget?",
+                "trailing": "Widget?",
+                "onTap": "VoidCallback?"
+            }
+        },
+        "CKDivider": {
+            "name": "CKDivider",
+            "description": "Thin separator line, horizontal by default. A vertical divider fills the height it is given.",
+            "category": "Display",
+            "import": "import 'package:ckcoreui/ckcoreui.dart';",
+            "basicUsage": "CKDivider()",
+            "props": {
+                "direction": "Axis (default: Axis.horizontal)"
+            },
+            "examples": [
+                "SizedBox(height: context.ckSpacing.lg, child: CKDivider(direction: Axis.vertical))"
+            ]
+        },
+        "CKContainer": {
+            "name": "CKContainer",
+            "description": "Surface container with design-system background, border and padding.",
+            "category": "Display",
+            "import": "import 'package:ckcoreui/ckcoreui.dart';",
+            "basicUsage": "CKContainer(child: Text('Content'))",
+            "variants": [
+                "muted",
+                "outlined"
+            ],
+            "props": {
+                "child": "Widget - required",
+                "variant": "ContainerVariant (default: ContainerVariant.surface)",
+                "constraints": "BoxConstraints?",
+                "padding": "EdgeInsetsGeometry?",
+                "elevated": "bool (default: false)"
+            },
+            "examples": [
+                "CKContainer.muted(child: Text('Muted'))",
+                "CKContainer.outlined(child: Text('Outlined'))"
+            ],
+            "notes": "ContainerVariant: surface (default), muted, outlined."
+        },
+        "CKFilterChip": {
+            "name": "CKFilterChip",
+            "description": "Selectable chip for filters.",
+            "category": "Display",
+            "import": "import 'package:ckcoreui/ckcoreui.dart';",
+            "basicUsage": "CKFilterChip(label: 'Active', selected: true, onTap: () {})",
+            "props": {
+                "label": "String - required",
+                "selected": "bool (default: false)",
+                "onTap": "VoidCallback?",
+                "state": "ChipState (default: ChipState.defaultState)"
+            },
+            "notes": "ChipState: defaultState, draft, selected, disabled, error."
+        },
+        "CKInputChip": {
+            "name": "CKInputChip",
+            "description": "Chip with a remove button, for entered values or tags.",
+            "category": "Display",
+            "import": "import 'package:ckcoreui/ckcoreui.dart';",
+            "basicUsage": "CKInputChip(label: 'flutter', onRemove: () {})",
+            "props": {
+                "label": "String - required",
+                "onRemove": "VoidCallback?",
+                "state": "ChipState (default: ChipState.defaultState)",
+                "leading": "Widget?"
+            }
+        },
+        "CKAvatarGroup": {
+            "name": "CKAvatarGroup",
+            "description": "Overlapping group of CKAvatar widgets with a +N overflow.",
+            "category": "Display",
+            "import": "import 'package:ckcoreui/ckcoreui.dart';",
+            "basicUsage": "CKAvatarGroup(\n  avatars: [CKAvatar(initials: 'AB'), CKAvatar(initials: 'CD'), CKAvatar(initials: 'EF')],\n  maxVisible: 3,\n)",
+            "props": {
+                "avatars": "List<CKAvatar> - required",
+                "maxVisible": "int (default: 4)",
+                "size": "AvatarSize (default: AvatarSize.md)"
+            }
+        },
+        "CKNumberStepper": {
+            "name": "CKNumberStepper",
+            "description": "Integer input with increment and decrement buttons, styled like CKTextField.",
+            "category": "Inputs",
+            "import": "import 'package:ckcoreui/ckcoreui.dart';",
+            "basicUsage": "CKNumberStepper(value: 1, min: 0, max: 10, onChanged: (v) {})",
+            "props": {
+                "value": "int? - required",
+                "onChanged": "ValueChanged<int>?",
+                "label": "String?",
+                "hint": "String?",
+                "helperText": "String?",
+                "errorText": "String?",
+                "successText": "String?",
+                "min": "int?",
+                "max": "int?",
+                "step": "int (default: 1)",
+                "enabled": "bool (default: true)",
+                "borderless": "bool (default: false)"
+            }
+        },
+        "CKOtpField": {
+            "name": "CKOtpField",
+            "description": "One-time-password input shown as fixed-width cells; numeric only.",
+            "category": "Inputs",
+            "import": "import 'package:ckcoreui/ckcoreui.dart';",
+            "basicUsage": "CKOtpField(length: 6, onCompleted: (code) {})",
+            "props": {
+                "length": "int (default: 6)",
+                "onChanged": "ValueChanged<String>?",
+                "onCompleted": "ValueChanged<String>?",
+                "autoFocus": "bool (default: false)",
+                "enabled": "bool (default: true)"
+            }
+        },
+        "CKRadio": {
+            "name": "CKRadio",
+            "description": "Radio control with optional label; generic over the value type.",
+            "category": "Inputs",
+            "import": "import 'package:ckcoreui/ckcoreui.dart';",
+            "basicUsage": "CKRadio<String>(value: 'a', groupValue: 'a', onChanged: (v) {}, label: 'Option A')",
+            "variants": [
+                "success",
+                "error"
+            ],
+            "props": {
+                "value": "T - required",
+                "groupValue": "T?",
+                "onChanged": "ValueChanged<T?>?",
+                "label": "String?",
+                "variant": "SwitchVariant?"
+            },
+            "notes": "Use CKRadio.success / CKRadio.error for status colouring (or variant: SwitchVariant)."
+        },
+        "CKAlert": {
+            "name": "CKAlert",
+            "description": "Inline message with semantic variants and optional dismiss.",
+            "category": "Feedback",
+            "import": "import 'package:ckcoreui/ckcoreui.dart';",
+            "basicUsage": "CKAlert(title: 'Heads up', message: 'Your trial ends soon')",
+            "variants": [
+                "success",
+                "warning",
+                "error"
+            ],
+            "props": {
+                "message": "String - required",
+                "title": "String?",
+                "variant": "AlertVariant (default: AlertVariant.info)",
+                "onDismiss": "VoidCallback?"
+            },
+            "examples": [
+                "CKAlert.error(message: 'Payment failed', onDismiss: () {})"
+            ],
+            "notes": "AlertVariant: info (default), success, warning, error."
+        },
+        "CKToast": {
+            "name": "CKToast",
+            "description": "Toast notification widget with semantic variants. Use CKSnackbar to show one transiently.",
+            "category": "Feedback",
+            "import": "import 'package:ckcoreui/ckcoreui.dart';",
+            "basicUsage": "CKToast.success(message: 'Saved')",
+            "variants": [
+                "success",
+                "error",
+                "warning",
+                "info"
+            ],
+            "props": {
+                "message": "String - required",
+                "variant": "ToastVariant (default: ToastVariant.defaultToast)",
+                "onDismiss": "VoidCallback?"
+            },
+            "notes": "ToastVariant: defaultToast, info, success, warning, error."
+        },
+        "CKSnackbar": {
+            "name": "CKSnackbar",
+            "description": "Shows a CKToast as transient feedback, by default floating at the top of the window.",
+            "category": "Feedback",
+            "import": "import 'package:ckcoreui/ckcoreui.dart';",
+            "basicUsage": "CKSnackbar.show(context, 'Saved', variant: ToastVariant.success);",
+            "props": {
+                "show": "static void show(BuildContext context, String message, {ToastVariant variant = defaultToast, Duration duration = 3s, CKSnackbarPosition position = top, VoidCallback? onDismiss, double? width})",
+                "hide": "static void hide() - dismisses the top snackbar"
+            },
+            "notes": "CKSnackbarPosition: top (default), bottom. Pass width to make the top snackbar narrower and centred."
+        },
+        "CKLoadingState": {
+            "name": "CKLoadingState",
+            "description": "Centered loader with an optional message.",
+            "category": "Feedback",
+            "import": "import 'package:ckcoreui/ckcoreui.dart';",
+            "basicUsage": "CKLoadingState(message: 'Loading...')",
+            "props": {
+                "message": "String?",
+                "loaderSize": "double?",
+                "variant": "LoaderType (default: LoaderType.circular)"
+            }
+        },
+        "CKLoader": {
+            "name": "CKLoader",
+            "description": "Spinner with several animation styles.",
+            "category": "Feedback",
+            "import": "import 'package:ckcoreui/ckcoreui.dart';",
+            "basicUsage": "CKLoader()",
+            "variants": [
+                "ring",
+                "bar",
+                "dots"
+            ],
+            "props": {
+                "type": "LoaderType (default: LoaderType.circular)",
+                "color": "Color?",
+                "size": "double (default: 40)"
+            },
+            "examples": [
+                "CKLoader.dots()"
+            ],
+            "notes": "LoaderType: circular (default), dots, bar, ring."
+        },
+        "CKProgressBar": {
+            "name": "CKProgressBar",
+            "description": "Progress bar. value runs from 0 to maxValue (default 1.0).",
+            "category": "Feedback",
+            "import": "import 'package:ckcoreui/ckcoreui.dart';",
+            "basicUsage": "CKProgressBar(value: 0.6, showValue: true)",
+            "variants": [
+                "success",
+                "warning",
+                "error",
+                "indeterminate"
+            ],
+            "props": {
+                "value": "double?",
+                "maxValue": "double (default: 1.0)",
+                "variant": "ProgressVariant (default: ProgressVariant.primary)",
+                "showValue": "bool (default: false)"
+            },
+            "examples": [
+                "CKProgressBar.indeterminate()"
+            ],
+            "notes": "ProgressVariant: primary (default), success, warning, error, indeterminate."
+        },
+        "CKSlider": {
+            "name": "CKSlider",
+            "description": "Slider bound to a double value.",
+            "category": "Feedback",
+            "import": "import 'package:ckcoreui/ckcoreui.dart';",
+            "basicUsage": "CKSlider(value: 40, onChanged: (v) {}, min: 0, max: 100)",
+            "props": {
+                "value": "double - required",
+                "onChanged": "ValueChanged<double> - required",
+                "min": "double (default: 0.0)",
+                "max": "double (default: 100.0)",
+                "showValue": "bool (default: false)",
+                "color": "Color?"
+            }
+        },
+        "CKSkeleton": {
+            "name": "CKSkeleton",
+            "description": "Placeholder block with a gentle pulse while content loads (skipped under reduced motion).",
+            "category": "Feedback",
+            "import": "import 'package:ckcoreui/ckcoreui.dart';",
+            "basicUsage": "CKSkeleton(width: 200, height: 16)",
+            "props": {
+                "width": "double - required",
+                "height": "double - required",
+                "borderRadius": "double?"
+            }
+        },
+        "CKEmptyState": {
+            "name": "CKEmptyState",
+            "description": "Centered message for a list, table or page with nothing to show.",
+            "category": "Feedback",
+            "import": "import 'package:ckcoreui/ckcoreui.dart';",
+            "basicUsage": "CKEmptyState(\n  title: 'No results',\n  description: 'Try a different search',\n  action: CKButton(onPressed: () {}, child: Text('Reset')),\n)",
+            "props": {
+                "title": "String - required",
+                "description": "String?",
+                "illustration": "Widget?",
+                "action": "Widget?"
+            }
+        },
+        "CKErrorState": {
+            "name": "CKErrorState",
+            "description": "Centered message for something that failed to load; shows a retry button when onRetry is set.",
+            "category": "Feedback",
+            "import": "import 'package:ckcoreui/ckcoreui.dart';",
+            "basicUsage": "CKErrorState(title: 'Could not load', description: 'Check your connection', onRetry: () {})",
+            "props": {
+                "title": "String - required",
+                "description": "String?",
+                "onRetry": "VoidCallback?",
+                "icon": "IconData?",
+                "retryLabel": "String?"
+            }
+        },
+        "CKMenu": {
+            "name": "CKMenu",
+            "description": "Menu opened from a trigger widget.",
+            "category": "Overlays",
+            "import": "import 'package:ckcoreui/ckcoreui.dart';",
+            "basicUsage": "CKMenu(\n  trigger: Icon(Icons.more_vert),\n  items: [\n    CKMenuItem(label: 'Edit', icon: Icons.edit, onTap: () {}),\n    CKMenuItem(label: 'Delete', destructive: true, onTap: () {}),\n  ],\n)",
+            "props": {
+                "trigger": "Widget - required",
+                "items": "List<CKMenuItem> - required"
+            }
+        },
+        "CKMenuItem": {
+            "name": "CKMenuItem",
+            "description": "Item model for CKMenu.",
+            "category": "Overlays",
+            "import": "import 'package:ckcoreui/ckcoreui.dart';",
+            "basicUsage": "CKMenuItem(label: 'Edit', icon: Icons.edit, onTap: () {})",
+            "props": {
+                "label": "String - required",
+                "icon": "IconData?",
+                "onTap": "VoidCallback?",
+                "destructive": "bool (default: false)"
+            }
+        },
+        "CKPopover": {
+            "name": "CKPopover",
+            "description": "Panel anchored below a trigger; tapping the trigger toggles it.",
+            "category": "Overlays",
+            "import": "import 'package:ckcoreui/ckcoreui.dart';",
+            "basicUsage": "CKPopover(trigger: Text('Info'), content: Text('Details'))",
+            "props": {
+                "trigger": "Widget - required",
+                "content": "Widget - required"
+            }
+        },
+        "CKTooltip": {
+            "name": "CKTooltip",
+            "description": "Tooltip on hover or long-press.",
+            "category": "Overlays",
+            "import": "import 'package:ckcoreui/ckcoreui.dart';",
+            "basicUsage": "CKTooltip(message: 'Save changes', child: Icon(Icons.save))",
+            "props": {
+                "message": "String - required",
+                "child": "Widget - required"
+            }
+        },
+        "CKBottomSheet": {
+            "name": "CKBottomSheet",
+            "description": "Bottom sheet following the design-system surface and spacing. Open it with CKBottomSheet.show.",
+            "category": "Overlays",
+            "import": "import 'package:ckcoreui/ckcoreui.dart';",
+            "basicUsage": "CKBottomSheet.show<void>(\n  context: context,\n  title: 'Options',\n  children: [Text('One'), Text('Two')],\n);",
+            "props": {
+                "children": "List<Widget> - required",
+                "title": "String?",
+                "onClose": "VoidCallback?",
+                "show": "static Future<T?> show<T>({required BuildContext context, required List<Widget> children, String? title, VoidCallback? onClose, bool isDismissible = true})"
+            }
+        },
+        "CKTabs": {
+            "name": "CKTabs",
+            "description": "Tabs with line (default), pill or card style.",
+            "category": "Navigation",
+            "import": "import 'package:ckcoreui/ckcoreui.dart';",
+            "basicUsage": "CKTabs(\n  tabs: [\n    CKTab(label: 'Overview', content: Text('Overview')),\n    CKTab(label: 'Activity', icon: Icons.history, badge: 3, content: Text('Activity')),\n  ],\n)",
+            "variants": [
+                "pill",
+                "card"
+            ],
+            "props": {
+                "tabs": "List<CKTab> - required",
+                "variant": "TabVariant (default: TabVariant.line)",
+                "scrollable": "bool (default: false)",
+                "initialIndex": "int (default: 0)",
+                "onTabChanged": "ValueChanged<int>?"
+            },
+            "examples": [
+                "CKTabs.pill(tabs: [CKTab(label: 'A', content: Text('A'))])"
+            ],
+            "notes": "TabVariant: line, pill, card."
+        },
+        "CKTab": {
+            "name": "CKTab",
+            "description": "Tab model for CKTabs.",
+            "category": "Navigation",
+            "import": "import 'package:ckcoreui/ckcoreui.dart';",
+            "basicUsage": "CKTab(label: 'Overview', content: Text('Overview'))",
+            "props": {
+                "label": "String - required",
+                "content": "Widget - required",
+                "icon": "IconData?",
+                "badge": "int?"
+            }
+        },
+        "CKBreadcrumb": {
+            "name": "CKBreadcrumb",
+            "description": "Breadcrumb trail. Every item except the last is a link when it has onTap.",
+            "category": "Navigation",
+            "import": "import 'package:ckcoreui/ckcoreui.dart';",
+            "basicUsage": "CKBreadcrumb(\n  items: [\n    BreadcrumbItem(label: 'Home', onTap: () {}),\n    BreadcrumbItem(label: 'Users', onTap: () {}),\n    BreadcrumbItem(label: 'Jane'),\n  ],\n)",
+            "props": {
+                "items": "List<BreadcrumbItem> - required"
+            }
+        },
+        "BreadcrumbItem": {
+            "name": "BreadcrumbItem",
+            "description": "Item model for CKBreadcrumb (note: not CK-prefixed).",
+            "category": "Navigation",
+            "import": "import 'package:ckcoreui/ckcoreui.dart';",
+            "basicUsage": "BreadcrumbItem(label: 'Home', onTap: () {})",
+            "props": {
+                "label": "String - required",
+                "onTap": "VoidCallback?"
+            }
+        },
+        "CKAppBar": {
+            "name": "CKAppBar",
+            "description": "App bar for Scaffold.appBar; primary (brand) background by default.",
+            "category": "Navigation",
+            "import": "import 'package:ckcoreui/ckcoreui.dart';",
+            "basicUsage": "CKAppBar(\n  title: Text('Dashboard'),\n  trailing: [CKIconButton(icon: Icons.settings, onPressed: () {})],\n)",
+            "variants": [
+                "surface",
+                "dark",
+                "transparent"
+            ],
+            "props": {
+                "title": "Widget?",
+                "leading": "Widget?",
+                "trailing": "List<Widget> (default: const [])",
+                "style": "AppBarStyle (default: AppBarStyle.primary)",
+                "largeTitle": "bool (default: false)"
+            },
+            "examples": [
+                "CKAppBar.surface(title: Text('Settings'))"
+            ],
+            "notes": "AppBarStyle: primary, surface, dark, transparent."
+        },
+        "CKBottomNavigation": {
+            "name": "CKBottomNavigation",
+            "description": "Bottom navigation bar for phones.",
+            "category": "Navigation",
+            "import": "import 'package:ckcoreui/ckcoreui.dart';",
+            "basicUsage": "CKBottomNavigation(\n  selectedIndex: 0,\n  items: [\n    CKNavItem(icon: Icons.home, label: 'Home'),\n    CKNavItem(icon: Icons.search, label: 'Search'),\n  ],\n  onDestinationSelected: (i) {},\n)",
+            "props": {
+                "selectedIndex": "int - required",
+                "items": "List<CKNavItem> - required",
+                "onDestinationSelected": "ValueChanged<int>?",
+                "fab": "Widget?"
+            }
+        },
+        "CKNavigationRail": {
+            "name": "CKNavigationRail",
+            "description": "Vertical navigation rail for tablet and desktop.",
+            "category": "Navigation",
+            "import": "import 'package:ckcoreui/ckcoreui.dart';",
+            "basicUsage": "CKNavigationRail(\n  selectedIndex: 0,\n  items: [\n    CKNavItem(icon: Icons.home, label: 'Home'),\n    CKNavItem(icon: Icons.search, label: 'Search'),\n  ],\n  onDestinationSelected: (i) {},\n)",
+            "props": {
+                "selectedIndex": "int - required",
+                "items": "List<CKNavItem> - required",
+                "onDestinationSelected": "ValueChanged<int>?"
+            }
+        },
+        "CKNavItem": {
+            "name": "CKNavItem",
+            "description": "Destination model for CKBottomNavigation and CKNavigationRail.",
+            "category": "Navigation",
+            "import": "import 'package:ckcoreui/ckcoreui.dart';",
+            "basicUsage": "CKNavItem(icon: Icons.home, label: 'Home')",
+            "props": {
+                "icon": "IconData - required",
+                "label": "String - required",
+                "activeIcon": "IconData?"
+            }
+        },
+        "CKDrawer": {
+            "name": "CKDrawer",
+            "description": "App drawer (Scaffold.drawer) with app name, optional user email and items.",
+            "category": "Navigation",
+            "import": "import 'package:ckcoreui/ckcoreui.dart';",
+            "basicUsage": "CKDrawer(\n  appName: 'My App',\n  userEmail: 'jane@example.com',\n  items: [\n    CKDrawerItem(icon: Icons.home, label: 'Home'),\n    CKDrawerItem(icon: Icons.settings, label: 'Settings'),\n  ],\n  selectedIndex: 0,\n  onItemSelected: (i) {},\n)",
+            "props": {
+                "appName": "String - required",
+                "items": "List<CKDrawerItem> - required",
+                "selectedIndex": "int - required",
+                "onItemSelected": "ValueChanged<int> - required",
+                "userEmail": "String?",
+                "logo": "Widget?"
+            }
+        },
+        "CKDrawerItem": {
+            "name": "CKDrawerItem",
+            "description": "Item model for CKDrawer.",
+            "category": "Navigation",
+            "import": "import 'package:ckcoreui/ckcoreui.dart';",
+            "basicUsage": "CKDrawerItem(icon: Icons.home, label: 'Home')",
+            "props": {
+                "icon": "IconData - required",
+                "label": "String - required"
+            }
+        },
+        "CKSideNav": {
+            "name": "CKSideNav",
+            "description": "Collapsible side navigation with sections, badges, branding and a profile card.",
+            "category": "Navigation",
+            "import": "import 'package:ckcoreui/ckcoreui.dart';",
+            "basicUsage": "CKSideNav(\n  brandName: 'My App',\n  sections: [\n    CKSideNavSection(label: 'Main', items: [\n      CKSideNavItem(icon: Icons.dashboard, label: 'Dashboard', itemKey: 'dashboard'),\n      CKSideNavItem(icon: Icons.people, label: 'Users', badge: 3, itemKey: 'users'),\n    ]),\n  ],\n  selectedIndex: 0,\n  onItemSelected: (i) {},\n  selectedKey: 'dashboard',\n  onItemSelectedKey: (key) {},\n)",
+            "props": {
+                "sections": "List<CKSideNavSection> - required",
+                "selectedIndex": "int - required",
+                "onItemSelected": "ValueChanged<int> - required",
+                "selectedKey": "Object?",
+                "onItemSelectedKey": "ValueChanged<Object?>?",
+                "collapsed": "bool (default: false)",
+                "onToggleCollapse": "VoidCallback?",
+                "logo": "Widget?",
+                "brandName": "String?",
+                "version": "String?",
+                "style": "SideNavStyle (default: SideNavStyle.surface)",
+                "profileName": "String?",
+                "profilePosition": "String?",
+                "profileAvatar": "Widget?",
+                "profileAuthProvider": "String?",
+                "onLogout": "VoidCallback?"
+            },
+            "notes": "Prefer selectedKey / onItemSelectedKey (matched against CKSideNavItem.itemKey). selectedIndex and onItemSelected are deprecated but still required. SideNavStyle: surface (default), brand. The logo comes from the theme (theme.logos.nav) unless you pass logo."
+        },
+        "CKSideNavSection": {
+            "name": "CKSideNavSection",
+            "description": "Section of items for CKSideNav, with an optional heading.",
+            "category": "Navigation",
+            "import": "import 'package:ckcoreui/ckcoreui.dart';",
+            "basicUsage": "CKSideNavSection(label: 'Main', items: [CKSideNavItem(icon: Icons.home, label: 'Home')])",
+            "props": {
+                "items": "List<CKSideNavItem> - required",
+                "label": "String?"
+            }
+        },
+        "CKSideNavItem": {
+            "name": "CKSideNavItem",
+            "description": "Item model for CKSideNav.",
+            "category": "Navigation",
+            "import": "import 'package:ckcoreui/ckcoreui.dart';",
+            "basicUsage": "CKSideNavItem(icon: Icons.home, label: 'Home', itemKey: 'home')",
+            "props": {
+                "icon": "IconData - required",
+                "label": "String - required",
+                "badge": "int?",
+                "itemKey": "Object?"
+            }
+        },
+        "CKTableColumn": {
+            "name": "CKTableColumn",
+            "description": "Column definition for CKDataTable.",
+            "category": "Data Table",
+            "import": "import 'package:ckcoreui/ckcoreui.dart';",
+            "basicUsage": "CKTableColumn(key: 'name', label: 'Name', sortable: true)",
+            "props": {
+                "key": "String - required; field name looked up in each row map",
+                "label": "String - required; header text",
+                "type": "CKColumnType (default: text) - text, badge, avatarText, progress, custom",
+                "width": "double? - fixed width",
+                "flex": "int (default: 1) - flex share when width is null",
+                "minWidth": "double (default: 120)",
+                "sortable": "bool (default: false)",
+                "filterable": "bool (default: false)",
+                "hidden": "bool (default: false)",
+                "textAlign": "TextAlign (default: start)",
+                "badgeVariantBuilder": "BadgeVariant Function(dynamic value)? - for badge columns",
+                "cellBuilder": "Widget Function(dynamic value, Map<String, dynamic> row)? - for custom columns"
+            },
+            "examples": [
+                "CKTableColumn(key: 'role', label: 'Role', type: CKColumnType.badge, badgeVariantBuilder: (v) => v == 'Admin' ? BadgeVariant.primary : BadgeVariant.outline)"
+            ],
+            "notes": "CKTableColumn.fromStrings(['Name', 'Email']) builds simple columns (keys are the snake_case labels)."
+        },
+        "CKEditableCell": {
+            "name": "CKEditableCell",
+            "description": "Editable-cell configuration for CKDataTable.editableCells (map of column key -> cell).",
+            "category": "Data Table",
+            "import": "import 'package:ckcoreui/ckcoreui.dart';",
+            "basicUsage": "CKEditableCell.textField(hint: 'Enter name', validator: (value, row) => null)",
+            "props": {
+                "textField": "factory({String? hint, String? label, int maxLines = 1, TextInputType? keyboardType, validator})",
+                "dropdown": "factory({List<DropdownMenuItem>? items, itemsBuilder: (row) => items, String? hint, String? label, validator}) - one of items/itemsBuilder required",
+                "checkbox": "factory({String? label, validator})",
+                "switch_": "factory({String? label, SwitchVariant? variant, validator})",
+                "datePicker": "factory({String? label, DateTime? firstDate, DateTime? lastDate, validator})",
+                "CKEditableCell(...)": "custom: builder: (context, value, onChanged, row, isActive, validationError) => Widget, validator",
+                "validator": "String? Function(dynamic value, Map<String, dynamic> row)? - return null when valid; receives the whole row"
+            },
+            "examples": [
+                "CKEditableCell.dropdown(items: const [DropdownMenuItem(value: 'A', child: Text('A'))], hint: 'Pick one')",
+                "CKEditableCell.checkbox(label: 'Verified')"
+            ],
+            "notes": "Use with CKDataTable(editableCells: {...}, onCellValueChanged: (rowKey, columnKey, newValue) {...})."
+        },
+        "CKTableFilter": {
+            "name": "CKTableFilter",
+            "description": "A single filter condition collected by CKDataTable (onFilterChanged); the table does not filter rows itself.",
+            "category": "Data Table",
+            "import": "import 'package:ckcoreui/ckcoreui.dart';",
+            "basicUsage": "CKTableFilter(field: 'status', operator: CKFilterOperator.equals, value: 'Active')",
+            "props": {
+                "field": "String - required",
+                "operator": "CKFilterOperator - required",
+                "value": "dynamic - required"
+            },
+            "notes": "CKFilterOperator: equals, notEquals, contains, startsWith, endsWith, greaterThan, lessThan, greaterThanOrEqual, lessThanOrEqual."
+        },
+        "CKScreenLayout": {
+            "name": "CKScreenLayout",
+            "description": "Responsive shell: persistent side nav at >= 840px; below that the side nav is hidden and opens as an overlay from a hamburger menu.",
+            "category": "Layout",
+            "import": "import 'package:ckcoreui/ckcoreui.dart';",
+            "basicUsage": "CKScreenLayout(\n  brandName: 'My App',\n  sections: [\n    CKSideNavSection(items: [CKSideNavItem(icon: Icons.home, label: 'Home', itemKey: 'home')]),\n  ],\n  selectedIndex: 0,\n  onItemSelected: (i) {},\n  selectedKey: 'home',\n  onItemSelectedKey: (key) {},\n  body: Center(child: Text('Home')),\n)",
+            "props": {
+                "body": "Widget - required",
+                "sections": "List<CKSideNavSection> - required",
+                "selectedIndex": "int - required",
+                "onItemSelected": "ValueChanged<int> - required",
+                "selectedKey": "Object?",
+                "onItemSelectedKey": "ValueChanged<Object?>?",
+                "logo": "Widget?",
+                "brandName": "String?",
+                "version": "String?",
+                "sideNavStyle": "SideNavStyle (default: SideNavStyle.surface)",
+                "allowSideNavCollapse": "bool (default: true)",
+                "bodyScrollable": "bool (default: true)",
+                "profileName": "String?",
+                "profilePosition": "String?",
+                "profileAvatar": "Widget?",
+                "profileAuthProvider": "String?",
+                "onLogout": "VoidCallback?"
+            },
+            "notes": "Takes the same selection parameters as CKSideNav (prefer selectedKey / onItemSelectedKey)."
+        },
+        "CKApp": {
+            "name": "CKApp",
+            "description": "Drop-in replacement for MaterialApp that applies the brand theme. Use CKApp.router or CKApp.delegate for Navigator 2.0.",
+            "category": "App",
+            "import": "import 'package:ckcoreui/ckcoreui.dart';",
+            "basicUsage": "CKApp(brand: ckcoreBrand.castleKeep, home: const Scaffold())",
+            "variants": [
+                "router (routerConfig)",
+                "delegate (routerDelegate + routeInformationParser)"
+            ],
+            "props": {
+                "brand": "ckcoreBrand - required (castleKeep or skyGo)",
+                "brightness": "Brightness? - force light/dark; null follows the system",
+                "responsive": "bool (default: false) - currently has no effect",
+                "home / routes / initialRoute / title / locale / themeMode ...": "forwarded to MaterialApp"
+            },
+            "notes": "Never nest a MaterialApp inside CKApp. Widgets above CKApp cannot read the theme."
         }
     }
 }

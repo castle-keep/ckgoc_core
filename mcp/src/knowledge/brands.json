@@ -18,27 +18,33 @@
                 "light": {
                     "name": "CastleKeep Light",
                     "brightness": "light",
-                    "background": "#FFFFFF",
-                    "surface": "#F5F5F5",
+                    "background": "#FAFAFA",
+                    "surface": "#FFFFFF",
                     "description": "Light theme with navy accents"
                 },
                 "dark": {
                     "name": "CastleKeep Dark",
                     "brightness": "dark",
-                    "background": "#0F1419",
-                    "surface": "#1A1F26",
+                    "background": "#0D1117",
+                    "surface": "#161B22",
                     "description": "Dark theme with gold highlights"
                 }
+            },
+            "logos": {
+                "master": "BrandIcon.castlekeepMaster",
+                "symbol": "BrandIcon.castlekeepSymbol",
+                "name": "BrandIcon.castlekeepName",
+                "nav": "BrandIcon.castlekeepLogo2Svg"
             }
         },
         "skyGo": {
             "name": "SkyGo",
-            "description": "Blue and violet brand theme",
+            "description": "Sky blue brand theme with pale-blue accents",
             "enum": "ckcoreBrand.skyGo",
             "primaryColor": "#0070DE",
             "primaryName": "Sky Blue",
-            "secondaryColor": "#6366F1",
-            "secondaryName": "Indigo/Violet",
+            "secondaryColor": "#F4FCFF",
+            "secondaryName": "Pale sky (accent)",
             "useCase": "Modern, tech-forward applications with dynamic feel",
             "characteristics": "Contemporary, friendly, innovative",
             "setup": "CKApp(brand: ckcoreBrand.skyGo, home: HomePage())",
@@ -46,17 +52,23 @@
                 "light": {
                     "name": "SkyGo Light",
                     "brightness": "light",
-                    "background": "#FFFFFF",
-                    "surface": "#F8F9FA",
+                    "background": "#FAFAFA",
+                    "surface": "#FFFFFF",
                     "description": "Light theme with blue accents"
                 },
                 "dark": {
                     "name": "SkyGo Dark",
                     "brightness": "dark",
-                    "background": "#0F172A",
-                    "surface": "#1E293B",
-                    "description": "Dark theme with violet highlights"
+                    "background": "#0D1117",
+                    "surface": "#161B22",
+                    "description": "Dark theme with sky-blue primary"
                 }
+            },
+            "logos": {
+                "master": "BrandIcon.skygoMasterSvg",
+                "symbol": "BrandIcon.skygoSymbol",
+                "name": "BrandIcon.skygoName",
+                "nav": "BrandIcon.skygoLogo2"
             }
         }
     },
@@ -72,6 +84,16 @@
         "brandSwitching": {
             "description": "Switching between brands at runtime",
             "code": "class _MyAppState extends State<MyApp> {\n  ckcoreBrand _brand = ckcoreBrand.skyGo;\n\n  @override\n  Widget build(BuildContext context) {\n    return CKApp(\n      brand: _brand,\n      home: Scaffold(\n        body: Center(\n          child: DropdownButton<ckcoreBrand>(\n            value: _brand,\n            items: [\n              for (final brand in ckcoreBrand.values)\n                DropdownMenuItem(value: brand, child: Text(brand.displayName)),\n            ],\n            onChanged: (brand) {\n              if (brand != null) setState(() => _brand = brand);\n            },\n          ),\n        ),\n      ),\n    );\n  }\n}"
+        },
+        "addingABrand": {
+            "description": "Steps to add a brand. The CLI (dart run bin/ckgoc.dart add brand \"Acme\", run inside a clone of the repo) does 1-4.",
+            "steps": [
+                "Add a value to ckcoreBrand in lib/src/themes/ckcore_brand.dart and a case in its displayName switch",
+                "Create lib/src/themes/brands/<name>/ with <name>_colors, _typography, _light_theme, _dark_theme",
+                "Register both themes in ckcoreThemeResolver.resolve()",
+                "Export the brand files from lib/src/themes/themes.dart",
+                "Optional: set logos: const BrandLogos(master:, symbol:, name:, nav:) in both theme builders (defaults to BrandLogos.none)"
+            ]
         }
     },
     "brandComparison": {
@@ -89,7 +111,7 @@
             [
                 "Secondary Color",
                 "Gold (#E9BB43)",
-                "Indigo (#6366F1)"
+                "Pale sky (#F4FCFF)"
             ],
             [
                 "Vibe",
@@ -108,13 +130,13 @@
             ],
             [
                 "Light Mode Background",
-                "White (#FFFFFF)",
-                "White (#FFFFFF)"
+                "Off-white (#FAFAFA)",
+                "Off-white (#FAFAFA)"
             ],
             [
                 "Dark Mode Background",
-                "Very Dark Navy (#0F1419)",
-                "Slate Black (#0F172A)"
+                "Near-black (#0D1117)",
+                "Near-black (#0D1117)"
             ]
         ],
         "colorUsage": {

@@ -1,12 +1,12 @@
 # ckcoreui MCP Server
 
-Model Context Protocol (MCP) server for [ckcoreui](https://github.com/castle-keep/ckcoreui) — the Flutter design system for multiple brands.
+Model Context Protocol (MCP) server for [ckcoreui](https://github.com/castle-keep/ckgoc_core) — the Flutter design system for multiple brands.
 
 This MCP server makes ckcoreui knowledge accessible to Copilot, Claude Code and Cursor, enabling intelligent code generation, component discovery, token lookup, and design system guidance directly in VS Code.
 
 ## Features
 
-**Component Knowledge** — Get full details on 20+ components with props, variants, and examples  
+**Component Knowledge** — Get full details on every `CK*` component and its model classes (65 entries) with props, variants, and examples. A test (`test/mcp/knowledge_sync_test.dart`) fails when the library and this list drift apart  
 **Design Tokens** — Lookup colors, spacing, typography, radius, elevation, shadows, motion, opacity, and breakpoints  
 **Code Generation** — Generate Dart code snippets for components  
 **Pattern Library** — Learn common patterns and best practices  
@@ -96,10 +96,10 @@ The server provides these tools:
 | Tool | Description |
 |------|-------------|
 | `getComponent` | Get component details, props, variants, examples |
-| `getTokens` | Retrieve design tokens by type |
+| `getTokens` | Retrieve design tokens by type (`colors`, `spacing`, `typography`, ...) or `designSpec`: the design team's values mapped to code tokens, each marked `exact`, `sizeOnly` or `none`. Always write the code names. |
 | `searchComponent` | Search components by keyword |
 | `generateCode` | Generate Dart code snippets |
-| `getBrandConfig` | Get brand setup and colors (`brandName`: `castleKeep` or `skyGo`) |
+| `getBrandConfig` | Get brand setup and colors (`brandName`: `castleKeep` or `skyGo`). The match is case-insensitive. |
 | `getPattern` | Learn common patterns and best practices |
 | `listComponents` | List all available components |
 | `listPatterns` | List all available patterns |
@@ -214,7 +214,7 @@ git tag mcp-v0.1.1                        # must match package.json
 git push && git push origin mcp-v0.1.1
 ```
 
-The [publish-mcp workflow](../.github/workflows/publish-mcp.yml) checks the tag against `package.json`, builds, smoke-tests that the server lists its tools, and runs `npm publish --provenance --access public`. For the very first release, skip the bump: tag `mcp-v0.1.0`.
+The [publish-mcp workflow](../.github/workflows/publish-mcp.yml) checks the tag against `package.json`, builds, runs `npm run smoke` (starts the server, lists its tools and calls each one once), and runs `npm publish --provenance --access public`. For the very first release, skip the bump: tag `mcp-v0.1.0`.
 
 **Manual.**
 

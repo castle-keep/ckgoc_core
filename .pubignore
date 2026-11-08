@@ -12,3 +12,12 @@ coverage/
 # MCP Server - published separately to npm
 mcp/
 skills/
+
+# Scratch apps and local tooling output
+smoketest/
+chrome-device/
+.DS_Store
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+node_modules/

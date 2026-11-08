@@ -45,11 +45,15 @@ const tools = {
     },
 
     getTokens: (tokenType: string): string => {
-        const typeKey = tokenType.toLowerCase() as keyof typeof knowledge.tokens;
-        if (!knowledge.tokens[typeKey]) {
-            return `Token type "${tokenType}" not found. Available types: colors, spacing, typography, radius, elevation, shadows, motion, opacity, breakpoints`;
+        const tokens = knowledge.tokens as Record<string, unknown>;
+        const types = Object.keys(tokens).filter((k) => k !== "metadata");
+        // Keys are camelCase (e.g. designSpec); match the input case-insensitively.
+        const wanted = String(tokenType ?? "").toLowerCase();
+        const key = types.find((k) => k.toLowerCase() === wanted);
+        if (!key) {
+            return `Token type "${tokenType}" not found. Available types: ${types.join(", ")}`;
         }
-        return JSON.stringify(knowledge.tokens[typeKey], null, 2);
+        return JSON.stringify(tokens[key], null, 2);
     },
 
     searchComponent: (keyword: string): string => {
@@ -81,7 +85,7 @@ const tools = {
             return `Component "${componentName}" not found`;
         }
 
-        let code = component.import || `import 'package:ckgoc_core/ckcore_core.dart';`;
+        let code = component.import || `import 'package:ckcoreui/ckcoreui.dart';`;
         code += "\n\n";
 
         if (variant && component.variants && component.variants[variant]) {
@@ -96,11 +100,14 @@ const tools = {
     },
 
     getBrandConfig: (brandName: string): string => {
-        const brand = knowledge.brands.brands[brandName.toLowerCase() as keyof typeof knowledge.brands.brands];
-        if (!brand) {
-            return `Brand "${brandName}" not found. Available brands: castleKeep, skyGo`;
+        const brands = knowledge.brands.brands as Record<string, unknown>;
+        // Keys are camelCase (castleKeep, skyGo); match the input case-insensitively.
+        const wanted = String(brandName ?? "").toLowerCase();
+        const key = Object.keys(brands).find((k) => k.toLowerCase() === wanted);
+        if (!key) {
+            return `Brand "${brandName}" not found. Available brands: ${Object.keys(brands).join(", ")}`;
         }
-        return JSON.stringify(brand, null, 2);
+        return JSON.stringify(brands[key], null, 2);
     },
 
     getPattern: (patternName: string): string => {
@@ -128,7 +135,7 @@ const tools = {
 
 // MCP Server setup
 const server = new Server(
-    { name: "ckcore-ui-mcp", version: "0.1.0" },
+    { name: "ckcore-ui-mcp", version: "0.1.1" },
     { capabilities: { tools: {} } },
 );
 
@@ -151,13 +158,13 @@ server.setRequestHandler(ListToolsRequestSchema, async () => ({
         },
         {
             name: "getTokens",
-            description: "Get design tokens by type (colors, spacing, typography, radius, elevation, shadows, motion, opacity, breakpoints)",
+            description: "Get design tokens by type (colors, spacing, typography, radius, elevation, shadows, motion, opacity, breakpoints) or designSpec (the design team's values mapped to code tokens)",
             inputSchema: {
                 type: "object" as const,
                 properties: {
                     tokenType: {
                         type: "string",
-                        description: "Type of tokens to retrieve: colors, spacing, typography, radius, elevation, shadows, motion, opacity, or breakpoints",
+                        description: "Type of tokens to retrieve: colors, spacing, typography, radius, elevation, shadows, motion, opacity, breakpoints, or designSpec",
                     },
                 },
                 required: ["tokenType"],
