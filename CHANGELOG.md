@@ -1,3 +1,12 @@
+## 0.7.0
+
+### Added
+- `BrandLogos` and `ckcoreThemeData.logos`: each brand theme now declares its own logo assets (`master`, `symbol`, `name`, `nav`). `BrandIcon.brandLogoWidget`, `CKSideNav` and `CKDrawer` read them from the theme instead of switching on the brand, so adding a brand no longer requires editing those widgets. `logos` is optional and defaults to `BrandLogos.none`, which renders the brand's initial.
+
+### Fixed
+- `CKSideNav`: the profile menu could throw if dismissed twice and stayed on screen if the nav was removed while it was open. It now closes through one method and in `dispose`.
+- `bin/ckgoc.dart` (`add brand`) no longer ends by telling you to re-run the same command, and generated themes now set `logos: BrandLogos.none`.
+
 ## 0.6.0
 
 ### Added

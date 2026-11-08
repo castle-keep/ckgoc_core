@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ckcoreui/src/themes/ckcore_brand.dart';
+import 'package:ckcoreui/src/themes/ckcore_theme.dart';
+import 'package:ckcoreui/src/themes/ckcore_theme_resolver.dart';
 import 'package:ckcoreui/src/components/component_enums.dart';
 // theme imports not required in this file
 import 'package:flutter_svg/flutter_svg.dart';
@@ -96,38 +98,41 @@ class BrandIcon {
     if (assetPath != null)
       return assetLogoWidget(context, assetPath, size: size);
 
-    // Pick the path based on brand + variant.
-    String path;
-    switch (brand) {
-      case ckcoreBrand.castleKeep:
-        switch (variant) {
-          case BrandIconVariant.master:
-            path = castlekeepMaster;
-            break;
-          case BrandIconVariant.name:
-            path = castlekeepName;
-            break;
-          case BrandIconVariant.logo:
-            path = castlekeepSymbol;
-            break;
-        }
-        break;
-      case ckcoreBrand.skyGo:
-        switch (variant) {
-          case BrandIconVariant.master:
-            path = skygoMasterSvg;
-            break;
-          case BrandIconVariant.name:
-            path = skygoName;
-            break;
-          case BrandIconVariant.logo:
-            path = skygoSymbol;
-            break;
-        }
-        break;
-    }
+    // Each brand theme declares its own logos (see `BrandLogos`), so this
+    // lookup needs no per-brand switch.
+    final path = ckcoreThemeResolver
+        .resolve(brand, Brightness.light)
+        .logos
+        .forVariant(variant);
+
+    if (path == null) return _fallbackMark(context, brand, size);
 
     return assetLogoWidget(context, path, size: size);
+  }
+
+  /// Typographic mark (the brand's initial) for brands without logo assets.
+  static Widget _fallbackMark(
+    BuildContext context,
+    ckcoreBrand brand,
+    double size,
+  ) {
+    final theme = context.ckcoreThemeMaybe;
+    final name = brand.displayName;
+    return SizedBox(
+      width: size,
+      height: size,
+      child: Center(
+        child: Text(
+          name.isEmpty ? '' : name[0].toUpperCase(),
+          semanticsLabel: '$name logo',
+          style: TextStyle(
+            fontSize: size * 0.6,
+            fontWeight: FontWeight.w700,
+            color: theme?.colors.primary,
+          ),
+        ),
+      ),
+    );
   }
 
   /// Returns a widget for a specific packaged asset path.

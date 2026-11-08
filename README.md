@@ -24,8 +24,8 @@ Key features
 Design principles
 -----------------
 - **No business logic**: only presentation, styling, layout, animation and composition.
-- **Stateless by default**: widgets receive state; they do not own it.
-- **Token-driven**: every visual value comes from the theme. No hard-coded numbers.
+- **Mostly presentational**: widgets receive their data and emit callbacks. Some keep local UI state (for example `CKDataTable` sorting when you omit `onSortChanged`, and the dropdown and date picker overlays).
+- **Token-driven**: visual values come from the theme wherever a token exists. A few small literals remain (for example `SizedBox(width: 8)` spacers).
 - **Multi-brand**: one package, many visual identities.
 
 Installation
@@ -34,7 +34,7 @@ Add the package from pub.dev to your application's `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  ckcoreui: ^0.6.0
+  ckcoreui: ^0.7.0
 ```
 
 Then run:
@@ -80,6 +80,7 @@ Container(
 
 Next steps
 - [Getting Started guide](doc/getting-started/README.md): five-minute walkthrough, tokens, troubleshooting
+- [Architecture](doc/architecture.md): file tree, how the package is designed, widget list and developer Q&A (start here to contribute)
 - [Interactive docs](https://castle-keep.github.io/ckgoc_core/): live demos for every component
 - Run it yourself: `cd doc/flutter_docs && flutter pub get && flutter run -d chrome`
 
@@ -121,7 +122,7 @@ See [doc/getting-started/animation.md](doc/getting-started/animation.md).
 Dependencies
 ------------
 This package depends on the Flutter SDK and a small set of runtime
-dependencies, including `flutter_svg` for SVG rendering and `lucide_icons` for
+dependencies, including `flutter_svg` for SVG rendering and `lucide_icons_flutter` for
 icons. Consumers only need to add `ckcoreui` to their `pubspec.yaml`; the
 package will bring the required runtime dependencies.
 
@@ -133,7 +134,7 @@ Logos ship in the package as `BrandIcon` constants:
 BrandIcon.brandLogoWidget(context, ckcoreBrand.skyGo, size: 40);
 ```
 
-Naming rules, all constants and more examples: [doc/getting-started/brand-logos.md](doc/getting-started/brand-logos.md).
+Naming rules, all constants and more examples: [doc/getting-started/brands.md](doc/getting-started/brands.md#logos).
 
 Brands
 ------

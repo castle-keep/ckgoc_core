@@ -17,6 +17,8 @@
 /// 2. Create `lib/src/themes/brands/<new_brand>/` directory.
 /// 3. Implement light + dark [CkcoreuiThemeData] constructors.
 /// 4. Register them in [ckcoreThemeResolver].
+/// 5. Add a case for the new value to `displayName` below.
+/// 6. Optionally set `logos` (see `BrandLogos`) in the theme builders.
 enum ckcoreBrand {
   // CastleKeep brand — deep navy, gold accents, stone grey neutrals.
   castleKeep,

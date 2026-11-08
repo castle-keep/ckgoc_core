@@ -9,6 +9,7 @@ import 'package:ckcoreui/src/foundation/spacing/ckcore_spacing.dart';
 import 'package:ckcoreui/src/foundation/typography/ckcore_typography.dart';
 import 'package:flutter/material.dart';
 
+import 'package:ckcoreui/src/themes/brand_logos.dart';
 import 'package:ckcoreui/src/themes/ckcore_brand.dart';
 
 /// Immutable theme data for a brand + brightness combination.
@@ -26,6 +27,7 @@ class CkcoreuiThemeData {
     required this.motion,
     required this.opacity,
     required this.breakpoints,
+    this.logos = BrandLogos.none,
   });
 
   /// Which brand this theme belongs to.
@@ -41,6 +43,9 @@ class CkcoreuiThemeData {
   final ckcoreMotion motion;
   final ckcoreOpacity opacity;
   final ckcoreBreakpoints breakpoints;
+
+  /// Logo assets for this brand. Defaults to [BrandLogos.none].
+  final BrandLogos logos;
 
   /// True when the theme's brightness is `Brightness.dark`.
   bool get isDark => brightness == Brightness.dark;
@@ -63,6 +68,7 @@ class CkcoreuiThemeData {
     ckcoreMotion? motion,
     ckcoreOpacity? opacity,
     ckcoreBreakpoints? breakpoints,
+    BrandLogos? logos,
   }) {
     return CkcoreuiThemeData(
       brand: brand ?? this.brand,
@@ -76,6 +82,7 @@ class CkcoreuiThemeData {
       motion: motion ?? this.motion,
       opacity: opacity ?? this.opacity,
       breakpoints: breakpoints ?? this.breakpoints,
+      logos: logos ?? this.logos,
     );
   }
 

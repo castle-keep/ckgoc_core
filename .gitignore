@@ -27,3 +27,6 @@ doc/flutter_docs/.flutter-plugins-dependencies
 doc/flutter_docs/.packages
 doc/flutter_docs/build/
 doc/flutter_docs/.metadata
+
+# flutter test / analyze output
+/build/

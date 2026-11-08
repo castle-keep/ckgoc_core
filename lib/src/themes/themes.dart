@@ -16,3 +16,4 @@ export 'brands/skygo/skygo_typography.dart';
 export 'brands/skygo/skygo_light_theme.dart';
 export 'brands/skygo/skygo_dark_theme.dart';
 export 'brand_icon.dart';
+export 'brand_logos.dart';

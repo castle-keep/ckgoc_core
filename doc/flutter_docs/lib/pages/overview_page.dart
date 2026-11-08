@@ -78,7 +78,8 @@ class OverviewPage extends StatelessWidget {
 )
 
 // Now use theme anywhere in the tree:
-Text('Hello').h1.primary // Heading with primary color
+Text('Hello').h1       // Heading style from the theme
+Text('Hello').primary  // Text in the primary colour
 ''',
                   style: context.ckcoreTheme.typography.codeMd,
                 ),

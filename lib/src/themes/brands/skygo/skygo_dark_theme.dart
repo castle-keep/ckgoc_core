@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'package:ckcoreui/src/foundation/foundation.dart';
+import 'package:ckcoreui/src/themes/brand_icon.dart';
+import 'package:ckcoreui/src/themes/brand_logos.dart';
 import 'package:ckcoreui/src/themes/ckcore_brand.dart';
 import 'package:ckcoreui/src/themes/ckcore_theme_data.dart';
 import 'package:ckcoreui/src/themes/brands/skygo/skygo_colors.dart';
@@ -92,6 +94,12 @@ final class SkyGoDarkTheme {
       motion: ckcoreMotion.defaults,
       opacity: ckcoreOpacity.defaults,
       breakpoints: ckcoreBreakpoints.defaults,
+      logos: const BrandLogos(
+        master: BrandIcon.skygoMasterSvg,
+        symbol: BrandIcon.skygoSymbol,
+        name: BrandIcon.skygoName,
+        nav: BrandIcon.skygoLogo2,
+      ),
     );
   }
 }

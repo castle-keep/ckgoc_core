@@ -391,9 +391,9 @@ class _DisplayScreenState extends State<DisplayScreen> {
                 ),
               ),
               CKAccordionItem(
-                title: 'What is shadcn_flutter?',
+                title: 'What is ckcoreui?',
                 content: Text(
-                  'A Flutter port of the shadcn/ui component library.',
+                  'A multi-brand Flutter design system: design tokens, themes and ready-made components.',
                 ),
               ),
               CKAccordionItem(

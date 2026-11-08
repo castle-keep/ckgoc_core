@@ -100,8 +100,8 @@ If you see `spawn npx ENOENT`, wrap the command: `"command": "cmd", "args": ["/c
 | `getComponent` | `name` | Props, variants, import and usage, e.g. `CKButton` |
 | `searchComponent` | `keyword` | Components matching a name, description or category |
 | `generateCode` | `componentName`, `variant?`, `props?` | A ready-to-paste Dart snippet |
-| `getTokens` | `tokenType` | Colours, spacing, typography, radius, elevation, shadows, motion, opacity, breakpoints |
-| `getBrandConfig` | `brandName` | Setup and palette for `castleKeep` or `skyGo` |
+| `getTokens` | `tokenType` | Colours, spacing, typography, radius, elevation, shadows, motion, opacity, breakpoints, or `designSpec` (the design team's values mapped to code tokens) |
+| `getBrandConfig` | `brandName` | Setup and palette for `castleKeep` or `skyGo`. The match is case-insensitive. |
 | `listPatterns` | none | Names of documented patterns |
 | `getPattern` | `patternName` | A pattern with code: `setupApp`, `form`, `dataTable`, `animation`, ... |
 
@@ -162,6 +162,64 @@ Ask for *"a primary Save button inside a card"*. A correct answer uses `CKButton
 | `npx` can't find `@ckcore/ui-mcp` | Use the **Local build** source. |
 | Outdated props in answers | The knowledge lives in `mcp/src/knowledge/*.json`. Pull the repo, run `npm run build` in `mcp/`, restart the server. |
 
-## Maintaining the knowledge base
+## Maintaining the server (for maintainers)
 
-See [Development](../../mcp/README.md#development) and [Releasing](../../mcp/README.md#releasing-maintainers) in the MCP README.
+The server is versioned and published separately from the Flutter package, as `@ckcore/ui-mcp` on npm. Everything it knows lives in `mcp/src/knowledge/*.json`.
+
+### A. Update what the server knows
+
+1. Edit the matching file in `mcp/src/knowledge/`:
+   - `components.json`: one entry per public `CK*` class (props, variants, `basicUsage`)
+   - `tokens.json`: token names that exist in code; design-team values go under `designSpec`
+   - `patterns.json`, `brands.json`
+2. Run `flutter test test/mcp/knowledge_sync_test.dart` from the repo root. It fails if a public `CK*` class has no entry, or an entry names a class that doesn't exist.
+3. Build and smoke-test:
+   ```bash
+   cd mcp
+   npm ci
+   npm run build
+   npm run smoke
+   ```
+   `npm run smoke` starts the built server and calls all 8 tools once.
+4. Try it in your editor against the local build (see **Local build** above), then restart the server.
+
+### B. Publish a new version to npm
+
+**One-time setup:** an npm account that owns the `@ckcore` scope, and an npm *Automation* token saved as the repository secret `NPM_TOKEN` (GitHub: Settings > Secrets and variables > Actions).
+
+1. Finish and check step A first.
+2. Pick the next version: run `npm view @ckcore/ui-mcp version`, then bump a patch for fixes and data updates (`0.1.1` to `0.1.2`) or a minor for a new tool (`0.2.0`). **Published versions are permanent.**
+3. Bump it in two places:
+   ```bash
+   cd mcp
+   npm version 0.1.2 --no-git-tag-version
+   ```
+   This updates `package.json` and `package-lock.json`. Then edit the version string in `mcp/src/index.ts` (`{ name: "ckcore-ui-mcp", version: "0.1.2" }`).
+4. Verify the package: `npm run build && npm run smoke && npm pack --dry-run`. The file list should be `dist/` and `src/knowledge/` (about 40 kB), with no `scripts/`.
+5. Commit the release from the repo root. Include `.github/workflows/publish-mcp.yml` only if you changed it:
+   ```bash
+   git add mcp
+   git commit -m "chore(mcp): release 0.1.2"
+   ```
+6. Tag it and push. Run these as three separate commands and do not add `# comments` to the same line (zsh passes them to `git push` as extra arguments and the tag push fails):
+   ```bash
+   git tag mcp-v0.1.2
+   git push origin main
+   git push origin mcp-v0.1.2
+   ```
+7. Watch GitHub > Actions > **Publish MCP server** (about 2 minutes). It checks that the tag equals the `package.json` version, checks that `NPM_TOKEN` exists, runs `npm ci`, the build and `npm run smoke`, then `npm publish --provenance --access public`.
+8. Confirm: `npm view @ckcore/ui-mcp version` prints the new version. Clients that start the server with `npx -y @ckcore/ui-mcp` pick it up the next time the server starts.
+
+### If something goes wrong
+
+| What you see | What to do |
+| --- | --- |
+| Workflow fails at "Tag must match package.json" | The tag and `package.json` differ. Delete the tag (`git tag -d mcp-v0.1.2` and `git push origin :refs/tags/mcp-v0.1.2`), fix the version, commit, tag again. |
+| Workflow fails at "NPM_TOKEN secret must exist" | Add the secret, then re-run the workflow from the Actions page. The tag can stay. |
+| Smoke test fails in the workflow | Nothing was published. Fix it, delete the tag as above, commit, and tag the same version again. |
+| `npm publish` says you cannot publish over an existing version | That version already exists on npm. Bump to the next one. |
+| A bug is found after publishing | Versions cannot be reused. Fix it and publish the next patch. |
+
+**Manual fallback** (no GitHub Actions): `cd mcp && npm login && npm run build && npm run smoke && npm pack --dry-run && npm publish --access public`. A local publish has no provenance attestation.
+
+More detail: [Development](../../mcp/README.md#development) and [Releasing](../../mcp/README.md#releasing-maintainers) in the MCP README.

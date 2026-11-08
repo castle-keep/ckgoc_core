@@ -26,10 +26,10 @@ void main() => runApp(
 1. **Tokens, never literals.** Colours `context.ckColors.*`, spacing `context.ckSpacing.*` (`xs sm md lg xl`), type `context.ckTypography.*` (`displayLg`, `textMd`, `labelSm`, `codeMd`), radius `context.ckRadius.*`, motion `context.ckMotion.*`.
 2. **Prefer `CK*` components**: `CKButton`, `CKTextField`, `CKCard`, `CKDataTable`, `CKDialog`, `CKBadge`, `CKAnimate`.
 3. **Buttons take `child`, not `label`**: `CKButton(onPressed: f, child: Text('Save'))`. Variants via constructors (`CKButton.outline`, `.ghost`, `.secondary`, `.accent`) or `variant: ButtonVariant.destructive`. Sizes via `ButtonSize.xs..xl`.
-4. **Text helpers** chain on `Text`: modifiers first, then style or colour. `Text('Hi').bold.h1`, `Text('Saved').success`.
+4. **Text helpers**: modifiers (`.bold`, `.italic`, ...) return `Text` and chain; style and colour helpers (`.h1`-`.h6`, `.textMd`, `.primary`, `.success`, ...) return a `Widget`, so use at most one and put it last. `Text('Hi').bold.h1` is fine, `Text('Hi').h1.primary` and `Text('Hi').h1.bold` do not compile.
 5. **Brand and mode are runtime state**: keep `ckcoreBrand` and `Brightness?` in state and pass them to `CKApp`.
 6. **Animate with `CKAnimate`**, not hand-rolled controllers: `CKAnimate(animation: CKAnimation.slideUp, child: ...)`; lists via `CKAnimate.stagger(children: [...])`.
-7. **Logos**: `BrandIcon.brandLogoWidget(context, brand)`; with `Image.asset` pass `package: 'ckcoreui'`.
+7. **Logos**: `BrandIcon.brandLogoWidget(context, brand)`; with `Image.asset` pass `package: 'ckcoreui'`. Each brand's logo paths live on the theme (`context.ckcoreTheme.logos`).
 
 ## Common mistakes
 
@@ -42,6 +42,11 @@ void main() => runApp(
 | `Brand.skyGo` | `ckcoreBrand.skyGo` |
 | `CKDataTable` editing via `editableColumns` / `onCellChanged` | `editableCells` with `CKEditableCell.validator` |
 | `CKSideNav(selectedIndex:, onItemSelected:)` | `selectedKey:`, `onItemSelectedKey:` |
+| `CKTableColumn(title: 'Name', ...)` | `CKTableColumn(key: 'name', label: 'Name')` |
+| `boxShadow: [context.ckShadows.md]` | `boxShadow: context.ckShadows.md` (already a list) |
+| `duration: context.ckMotion.standard` | `duration: context.ckMotion.normal` (`standard` is a curve) |
+| `CKIconButton(icon: Icon(Icons.edit))` | `CKIconButton(icon: Icons.edit)` (takes `IconData`) |
+| `Text('Hi').h1.bold` | `Text('Hi').bold.h1` |
 
 ## Looking things up
 

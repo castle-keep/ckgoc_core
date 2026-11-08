@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import 'package:ckcoreui/src/themes/brand_icon.dart';
-import 'package:ckcoreui/src/themes/ckcore_brand.dart';
 import 'package:ckcoreui/src/themes/ckcore_theme.dart';
 
 /// Collapsible side navigation used by app shells.
@@ -62,7 +61,7 @@ class CKSideNav extends StatefulWidget {
 }
 
 class _CKSideNavState extends State<CKSideNav> {
-  late OverlayEntry _overlayEntry;
+  OverlayEntry? _overlayEntry;
   final GlobalKey _profileCardKey = GlobalKey();
   bool _showExpanded = false;
 
@@ -70,6 +69,19 @@ class _CKSideNavState extends State<CKSideNav> {
   void initState() {
     super.initState();
     _showExpanded = !widget.collapsed;
+  }
+
+  /// Removes the profile menu if it is open. Safe to call repeatedly.
+  void _closeProfileMenu() {
+    _overlayEntry?.remove();
+    _overlayEntry = null;
+  }
+
+  @override
+  void dispose() {
+    // Do not leave the menu on the overlay if the nav is removed while open.
+    _closeProfileMenu();
+    super.dispose();
   }
 
   @override
@@ -104,6 +116,9 @@ class _CKSideNavState extends State<CKSideNav> {
 
     final renderBox = currentContext.findRenderObject() as RenderBox?;
     if (renderBox == null) return;
+
+    // Never orphan a menu that is already open.
+    _closeProfileMenu();
 
     try {
       final offset = renderBox.localToGlobal(Offset.zero);
@@ -148,7 +163,7 @@ class _CKSideNavState extends State<CKSideNav> {
             // Dismissible backdrop
             Positioned.fill(
               child: GestureDetector(
-                onTap: () => _overlayEntry.remove(),
+                onTap: _closeProfileMenu,
                 child: Container(color: Colors.transparent),
               ),
             ),
@@ -204,7 +219,7 @@ class _CKSideNavState extends State<CKSideNav> {
                             if (widget.onLogout != null)
                               InkWell(
                                 onTap: () {
-                                  _overlayEntry.remove();
+                                  _closeProfileMenu();
                                   widget.onLogout!();
                                 },
                                 child: Row(
@@ -226,7 +241,7 @@ class _CKSideNavState extends State<CKSideNav> {
                               ),
                             SizedBox(height: spacing.sm),
                             InkWell(
-                              onTap: () => _overlayEntry.remove(),
+                              onTap: _closeProfileMenu,
                               child: Text(
                                 'Cancel',
                                 textAlign: TextAlign.left,
@@ -245,7 +260,7 @@ class _CKSideNavState extends State<CKSideNav> {
         ),
       );
 
-      Overlay.of(context).insert(_overlayEntry);
+      Overlay.of(context).insert(_overlayEntry!);
     } catch (e) {
       debugPrint('Error showing profile menu: $e');
     }
@@ -513,24 +528,12 @@ class _CKSideNavState extends State<CKSideNav> {
                       width: spacing.xl,
                       height: spacing.xl,
                       child: Builder(
-                        builder: (ctx) {
-                          String? assetPath;
-                          switch (theme.brand) {
-                            case ckcoreBrand.castleKeep:
-                              assetPath = BrandIcon.castlekeepLogo2Svg;
-                              break;
-                            case ckcoreBrand.skyGo:
-                              assetPath = BrandIcon.skygoLogo2;
-                              break;
-                          }
-
-                          return BrandIcon.brandLogoWidget(
-                            ctx,
-                            theme.brand,
-                            size: spacing.xl,
-                            assetPath: assetPath,
-                          );
-                        },
+                        builder: (ctx) => BrandIcon.brandLogoWidget(
+                          ctx,
+                          theme.brand,
+                          size: spacing.xl,
+                          assetPath: theme.logos.nav,
+                        ),
                       ),
                     ),
                   ),

@@ -1,102 +1,106 @@
-@startuml
+@startuml architecture_theme
 title CKCoreUI Theme Flow
+skinparam shadowing false
+skinparam defaultFontSize 12
+skinparam componentStyle rectangle
+skinparam noteBackgroundColor #FFFBE6
+skinparam noteBorderColor #C9B458
+skinparam packageStyle rectangle
 
 actor Developer
 
 package "Application" {
     component "CKApp\n(ck_app.dart)" as CKApp
     note bottom of CKApp
-      Entry point.
-      Receives brand,
-      ThemeMode, and
-      optional brightness.
+      Entry point. Takes brand,
+      optional brightness and themeMode.
+      Resolves BOTH the light and dark
+      theme for the brand, then picks
+      the active one.
     end note
 }
 
-package "Theme Resolution" {
+package "Foundation tokens\n(lib/src/foundation)" as Foundation {
+    component "ckcoreColors\nckcoreTypography\nckcoreSpacing\nckcoreRadius" as TokensA
+    component "ckcoreElevation  ckcoreShadows\nckcoreMotion  ckcoreOpacity\nckcoreBreakpoints" as TokensB
+    component "ckcorePrimitiveColors\n(raw palette: neutral, semantic)" as Primitives
+}
+
+package "Brands\n(lib/src/themes/brands)" as Brands {
+    component "CastleKeep\ncolors + typography\nlight / dark builders" as Castle
+    component "SkyGo\ncolors + typography\nlight / dark builders" as Sky
+}
+
+package "Theme Resolution\n(lib/src/themes)" as Resolution {
     component "ckcoreThemeResolver\n(ckcore_theme_resolver.dart)" as Resolver
     note bottom of Resolver
-      Resolves the
-      correct brand
-      + brightness theme.
+      switch (brand, brightness)
+      over the four built-in themes.
     end note
 
-    component "CastleKeep\nLight/Dark Theme\n(castlekeep_light_theme.dart\ncastlekeep_dark_theme.dart)" as Castle
-
-    component "SkyGo\nLight/Dark Theme\n(skygo_light_theme.dart\nskygo_dark_theme.dart)" as Sky
-
-    component "CkcoreuiThemeData\n(ckcore_theme_data.dart)\n<<Design Tokens>>" as ThemeData
+    component "CkcoreuiThemeData\n(ckcore_theme_data.dart)\n<<immutable bundle>>" as ThemeData
     note bottom of ThemeData
-      Single source of truth
-      for colors, typography,
-      spacing, radius,
-      shadows, motion,
-      opacity and more.
+      brand, brightness, colors, typography,
+      spacing, radius, elevation, shadows,
+      motion, opacity, breakpoints, logos.
     end note
+
+    component "BrandLogos\n(brand_logos.dart)\nmaster, symbol, name, nav" as Logos
 }
 
 package "Theme Provider" {
-    component "CkcoreuiTheme\n(ckcore_theme.dart)\n(InheritedWidget)" as Provider
-    note bottom of Provider
-      Makes design tokens
-      available anywhere
-      in the widget tree.
-    end note
+    component "ckcoreTheme / CkcoreuiTheme\n(ckcore_theme.dart)\n<<InheritedWidget>>" as Provider
+    component "context.ckColors, ckSpacing,\nckTypography, ckRadius ...\nCKColors.of(context)" as Access
 }
 
 package "Flutter" {
-
     component "_materialFrom()\n(ck_app.dart)" as MaterialBuilder
     note bottom of MaterialBuilder
-      Converts design tokens
-      into Flutter ThemeData.
-
-      Material styling stays
-      consistent across brands.
-      Only the design tokens
-      change.
+      Maps tokens onto Material
+      ThemeData so stock Material
+      widgets match the brand.
     end note
-
     component "Material ThemeData" as MaterialTheme
     component MaterialApp
 }
 
-package "Components" {
-    component CKButton
-    component CKTextField
-    component CKCard
-    component CKDropdown
-    component "Other\nCK Widgets" as OtherWidgets
+package "Widgets" {
+    component "CK* components\n(buttons, inputs, display, feedback,\nnavigation, overlays, data table)" as Components
+    component "CKScreenLayout\n(template)" as Layout
+    component "Text extensions\n.h1  .bold  .primary" as TextExt
+    component "BrandIcon.brandLogoWidget\n(brand_icon.dart)" as BrandIcon
 
-    note bottom
-      Components never know
-      the active brand.
-      They simply consume
-      the current theme.
+    note bottom of Components
+      Components never know the active
+      brand. They read tokens from the
+      current theme. CKSideNav and
+      CKDrawer use theme.logos.nav.
     end note
 }
 
 Developer --> CKApp : brand\nThemeMode\n(optional brightness)
-
 CKApp --> Resolver : resolve(brand, brightness)
 
 Resolver --> Castle
 Resolver --> Sky
 
-Castle --> ThemeData
-Sky --> ThemeData
+Foundation ..> Brands : token classes,\nraw palette,\ndefaults
 
-ThemeData --> Provider
+Castle --> ThemeData : builds
+Sky --> ThemeData : builds
+Logos --> ThemeData : logos
 
+ThemeData --> Provider : ckcoreTheme(data)
 ThemeData --> MaterialBuilder
 MaterialBuilder --> MaterialTheme
-
 MaterialTheme --> MaterialApp
+Provider ..> MaterialApp : wraps
 
-Provider --> CKButton
-Provider --> CKTextField
-Provider --> CKCard
-Provider --> CKDropdown
-Provider --> OtherWidgets
+Provider --> Access
+Access --> Components
+Access --> Layout
+Access --> TextExt
 
+Components --> BrandIcon : nav logo
+BrandIcon --> Resolver : logos for brand
 @enduml

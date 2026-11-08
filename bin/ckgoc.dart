@@ -104,6 +104,7 @@ abstract final class ${pascal}Typography {
     lightFile.writeAsStringSync('''import 'package:flutter/material.dart';
 
   import 'package:ckcoreui/src/foundation/foundation.dart';
+  import 'package:ckcoreui/src/themes/brand_logos.dart';
   import 'package:ckcoreui/src/themes/ckcore_brand.dart';
   import 'package:ckcoreui/src/themes/ckcore_theme_data.dart';
   import 'package:ckcoreui/src/themes/brands/$dirName/${dirName}_colors.dart';
@@ -195,6 +196,8 @@ final class ${pascal}LightTheme {
       motion: ckcoreMotion.defaults,
       opacity: ckcoreOpacity.defaults,
       breakpoints: ckcoreBreakpoints.defaults,
+      // Set real asset paths once the brand's logos are added (see BrandLogos).
+      logos: BrandLogos.none,
     );
   }
 }
@@ -206,6 +209,7 @@ final class ${pascal}LightTheme {
     darkFile.writeAsStringSync('''import 'package:flutter/material.dart';
 
   import 'package:ckcoreui/src/foundation/foundation.dart';
+  import 'package:ckcoreui/src/themes/brand_logos.dart';
   import 'package:ckcoreui/src/themes/ckcore_brand.dart';
   import 'package:ckcoreui/src/themes/ckcore_theme_data.dart';
   import 'package:ckcoreui/src/themes/brands/$dirName/${dirName}_colors.dart';
@@ -297,6 +301,8 @@ final class ${pascal}DarkTheme {
       motion: ckcoreMotion.defaults,
       opacity: ckcoreOpacity.defaults,
       breakpoints: ckcoreBreakpoints.defaults,
+      // Set real asset paths once the brand's logos are added (see BrandLogos).
+      logos: BrandLogos.none,
     );
   }
 }
@@ -411,5 +417,6 @@ final class ${pascal}DarkTheme {
 
   resolverFile.writeAsStringSync(resolverContent);
 
-  print('Done. Run: dart run bin/ckgoc.dart add brand "$raw"');
+  print('Done. Next: run `flutter analyze`, then edit the generated files in');
+  print('$brandDir to set real colors, typography and logos.');
 }

@@ -195,10 +195,10 @@ class CKApp extends StatefulWidget {
   /// Optional brightness override. If not specified, follows system brightness.
   final Brightness? brightness;
 
-  /// Whether to wrap the app in a responsive layout provider.
+  /// Reserved for a responsive layout provider.
   ///
-  /// When `true`, the app will be wrapped with responsive-aware components
-  /// (if available). Default is `false`.
+  /// Currently accepted but not read: it has no effect on the built app.
+  /// Default is `false`.
   final bool responsive;
 
   // ========== MaterialApp Parameters ==========

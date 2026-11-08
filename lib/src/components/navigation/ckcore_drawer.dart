@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ckcoreui/src/themes/brand_icon.dart';
 import 'package:ckcoreui/src/themes/ckcore_theme.dart';
-import 'package:ckcoreui/src/themes/ckcore_brand.dart';
 
 /// Simple item model used by `CKDrawer`.
 class CKDrawerItem {
@@ -61,24 +60,12 @@ class CKDrawer extends StatelessWidget {
                   SizedBox.square(
                     dimension: spacing.s40,
                     child: Builder(
-                      builder: (ctx) {
-                        String? assetPath;
-                        switch (theme.brand) {
-                          case ckcoreBrand.castleKeep:
-                            assetPath = BrandIcon.castlekeepLogo2Svg;
-                            break;
-                          case ckcoreBrand.skyGo:
-                            assetPath = BrandIcon.skygoLogo2;
-                            break;
-                        }
-
-                        return BrandIcon.brandLogoWidget(
-                          ctx,
-                          theme.brand,
-                          size: spacing.s40,
-                          assetPath: assetPath,
-                        );
-                      },
+                      builder: (ctx) => BrandIcon.brandLogoWidget(
+                        ctx,
+                        theme.brand,
+                        size: spacing.s40,
+                        assetPath: theme.logos.nav,
+                      ),
                     ),
                   ),
                 SizedBox(height: spacing.sm),

@@ -13,6 +13,7 @@ import 'package:ckcoreui/src/themes/brands/skygo/skygo_dark_theme.dart';
 // 1. Add the brand value to [ckcoreBrand].
 // 2. Create light and dark theme builders under `brands/<new_brand>/`.
 // 3. Add a new case to [ckcoreThemeResolver.resolve].
+// 4. Add the `displayName` case on [ckcoreBrand] (see the steps there).
 abstract final class ckcoreThemeResolver {
   // Returns the [CkcoreuiThemeData] for [brand] at [brightness].
   static CkcoreuiThemeData resolve(ckcoreBrand brand, Brightness brightness) {

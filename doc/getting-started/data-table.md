@@ -1,12 +1,8 @@
-# CKDataTable — Component Guide & Migration Plan
+# CKDataTable: sorting, paging, selection and inline editing
 
-## Overview
+`CKDataTable` is a fully-themed data table. Your data stays outside it: it renders the rows you pass in and emits callbacks, and it never owns repositories, makes network calls, or mutates your data. It does keep internal sort state when you omit `onSortChanged` (see [Sorting](#sorting)).
 
-`CKDataTable` is a fully-themed, stateless data table for the Company design system. It renders UI and emits callbacks only — it never owns repositories, makes network calls, or mutates data.
-
----
-
-## Quick Start
+## Quick start
 
 ```dart
 CKDataTable(
@@ -41,159 +37,114 @@ CKDataTable(
 )
 ```
 
----
+1. Define `columns` with `CKTableColumn` (`key` is the field looked up in each row map, `label` is the header). Mark sortable columns with `sortable: true`.
+2. Pass `rows` as a `List<Map<String, dynamic>>` and a `rowKey` that uniquely identifies each row (default `'id'`).
+3. For server-driven paging and sorting, use the controlled pattern: pass `sortColumnKey`, `sortAscending`, `currentPage`, `totalCount` and implement `onSortChanged` / `onPageChanged` to fetch the page.
+4. For a small client-side dataset, omit `onSortChanged` and the table sorts in memory.
 
-## Setup
+`import 'package:ckcoreui/ckcoreui.dart';` is all you need. A working example is in [data_table_screen.dart](../../example/lib/screens/data_table_screen.dart) (run it with `flutter run -d chrome -t example/lib/main.dart`).
 
-- Add the package and import the component where you need it. If you're working in this repo, the component lives under `lib/src/components/data_table` and is exported from `lib/ckcoreui.dart`.
-- Ensure your app provides a `ckcoreThemeData` (example themes are in `lib/src/themes/brands`). The table uses `colors.surfaceVariant` for header/footer and `colors.background` for stripe backgrounds.
+## Main parameters
 
-Example import:
+| Parameter | Default | Purpose |
+| --- | --- | --- |
+| `columns`, `rows` | required | Column definitions and row maps |
+| `rowKey` | `'id'` | Field that identifies a row |
+| `title`, `subtitle`, `headerActions` | none | Header area |
+| `searchQuery`, `searchHint`, `onSearchChanged` | none | Search box |
+| `sortColumnKey`, `sortAscending`, `onSortChanged` | none, `true`, none | Sorting |
+| `selectionMode`, `selectedKeys`, `onSelectionChanged` | `none`, `{}`, none | Row selection (`none`, `single`, `multiple`) |
+| `totalCount`, `currentPage`, `pageSize`, `onPageChanged`, `onPageSizeChanged` | `0`, `1`, `10`, none | Paging |
+| `isLoading`, `errorMessage`, `emptyMessage`, `emptyWidget` | `false`, none | Loading, error and empty states |
+| `striped`, `headerFooterColor`, `widthBehavior`, `maxHeight` | `true`, none, `stretch`, none | Appearance |
+| `onRowTap`, `onFilterChanged`, `footerRow` | none | Extras |
+| `editableCells`, `onCellValueChanged` | none | Inline editing (below) |
 
-```dart
-import 'package:ckcoreui/ckcore_core.dart';
-```
-
-Run the example app to see the table in action:
-
-```bash
-flutter run -d chrome -t example/lib/main.dart
-```
-
----
-
-## Getting started
-
-1. Define your `columns` using `CKTableColumn`. Mark sortable columns with `sortable: true`.
-2. Provide `rows` as a `List<Map<String, dynamic>>` and a `rowKey` that uniquely identifies each row.
-3. For server-driven paging/sorting, use the controlled pattern: pass `sortColumnKey`, `sortAscending`, and implement `onSortChanged`/`onPageChanged` to fetch sorted pages.
-4. For small client-side datasets, omit `onSortChanged` to use the internal sorting fallback.
-5. Use `editableColumns` + `onCellChanged` for inline editing, and `selectionMode`/`onSelectionChanged` for row selection.
-
-
----
+`CKTableColumn` also accepts `type` (`CKColumnType`: `text`, `badge`, `avatarText`, `progress`, `custom`), `width` or `flex` (default 1), `minWidth` (120), `filterable`, `hidden`, `textAlign`, `badgeVariantBuilder` and `cellBuilder`.
 
 ## Sorting
 
-CKDataTable renders a sort affordance in the header when a column is declared with `sortable: true` on `CKTableColumn`.
+A sort affordance appears in the header of every `sortable: true` column.
 
-- Controlled sorting (recommended for server-side paging): provide `sortColumnKey`, `sortAscending`, and `onSortChanged`. The table will call `onSortChanged(columnKey, ascending)` when the user taps a sortable header; your parent widget is responsible for sorting the `rows` and passing the new values back into the table props.
+- **Controlled** (recommended for server-side paging): provide `sortColumnKey`, `sortAscending` and `onSortChanged`. The table calls `onSortChanged(columnKey, ascending)` when a header is tapped; your widget re-sorts or refetches `rows` and passes the new values back.
+- **Uncontrolled** (client-side): omit `onSortChanged`. The table initialises from `sortColumnKey` / `sortAscending` and sorts the in-memory `rows` itself. The comparator handles numbers and `DateTime`, falls back to string comparison, and sorts nulls last. For special orderings (enums, custom types) sort in the parent and use the controlled pattern.
 
-Example (controlled):
+## Styling
 
-```dart
-// parent state: _sortKey, _sortAsc
-CKDataTable(
-  columns: [...],
-  rows: _rows,
-  sortColumnKey: _sortKey,
-  sortAscending: _sortAsc,
-  onSortChanged: (k, asc) => setState(() { _sortKey = k; _sortAsc = asc; /* re-sort or refetch */ }),
-  // ...
-)
-```
-
-- Uncontrolled (client-side) fallback: if you omit `onSortChanged`, the table will perform sorting internally for you. It initializes from the optional `sortColumnKey`/`sortAscending` props and will sort the in-memory `rows` when the user taps sortable headers. This is useful for local, client-side datasets where you don't need server-driven sorting.
-
-Example (uncontrolled):
-
-```dart
-CKDataTable(
-  columns: [
-    CKTableColumn(key: 'name', label: 'Name', sortable: true),
-    CKTableColumn(key: 'age', label: 'Age', sortable: true),
-  ],
-  rows: _localRows, // small in-memory dataset
-  // omit onSortChanged -> table sorts internally when headers are tapped
-)
-```
-
-Comparators: the internal comparator supports numbers and `DateTime`, and falls back to string comparison; nulls sort last. If you need special ordering for enums or custom types, sort in the parent and use controlled sorting.
-
-## Styling: header/footer and row stripes
-
-CKDataTable uses theme tokens for header/footer and striping so colors follow your brand theme:
-
-- Header and footer background: `theme.colors.surfaceVariant` (we set this to neutral100 in the SkyGo light theme).
-- Row stripes: `theme.colors.background` (the light theme background is `#FAFAFA`).
-
-If you want different striping or header/footer colors, adjust your `ckcoreThemeData` implementation for `colors.surfaceVariant` and `colors.background`.
+Header and footer use `colors.surfaceVariant` and row stripes use `colors.background`, so they follow the brand theme (`surfaceVariant` is neutral200 in the light themes). To change them, pass `headerFooterColor` or adjust your theme.
 
 ---
 
-## Editable Cells with Custom Inputs & Row-Aware Validation
+## Inline editing with `CKEditableCell`
 
-CKDataTable supports editable cells with custom input widgets and validation rules that can depend on other cell values in the same row.
-
-### Quick Example
+Give `editableCells` a map from column key to a `CKEditableCell` and listen with `onCellValueChanged`. Validators receive the current value **and the whole row**, so a rule can depend on other cells.
 
 ```dart
 CKDataTable(
   columns: [...],
   rows: _rows,
   rowKey: 'id',
-  
-  // Configure editable cells with custom input widgets
   editableCells: {
     'name': CKEditableCell.textField(
       hint: 'Enter name',
-      validator: (value, row) {
-        if (value?.isEmpty ?? true) return 'Name is required';
-        return null;
-      },
+      validator: (value, row) =>
+          (value?.toString().trim().isEmpty ?? true) ? 'Name is required' : null,
     ),
-    'status': CKEditableCell.dropdown(
+    'transfer_type': CKEditableCell.dropdown(
       items: const [
-        DropdownMenuItem(value: 'Active', child: Text('Active')),
-        DropdownMenuItem(value: 'Inactive', child: Text('Inactive')),
+        DropdownMenuItem(value: 'Internal', child: Text('Internal')),
+        DropdownMenuItem(value: 'External', child: Text('External')),
       ],
+      hint: 'Select type',
+    ),
+    'courier': CKEditableCell.dropdown(
+      items: const [
+        DropdownMenuItem(value: 'FedEx', child: Text('FedEx')),
+        DropdownMenuItem(value: 'UPS', child: Text('UPS')),
+      ],
+      // Required only for external transfers: depends on another cell in the row.
+      validator: (value, row) =>
+          row['transfer_type'] == 'External' && (value == null || value.toString().isEmpty)
+              ? 'Required for external transfers'
+              : null,
     ),
     'verified': CKEditableCell.checkbox(label: 'Verified'),
+    'active': CKEditableCell.switch_(label: 'Active', variant: SwitchVariant.success),
+    'delivery_date': CKEditableCell.datePicker(label: 'Delivery date', firstDate: DateTime.now()),
   },
-  
-  // Handle value changes
   onCellValueChanged: (rowKey, columnKey, newValue) {
     setState(() {
-      // Update your data
+      final i = _rows.indexWhere((r) => r['id'] == rowKey);
+      if (i != -1) _rows[i][columnKey] = newValue;
     });
   },
 )
 ```
 
-### Features
+**Dynamic dropdown options.** Pass `itemsBuilder: (row) => [...]` instead of `items` to vary the options by row (for example a subcategory that depends on a category column).
 
-1. **Custom Input Widgets**: Support for TextField, Dropdown, Checkbox, Switch, and DatePicker
-2. **Row-Aware Validation**: Validators receive the complete row, enabling conditional rules
-3. **Active Cell Highlighting**: Visual feedback for focused cells
-4. **Validation Error Display**: Inline error messages
-
-### Supported Input Types
-
-- **CKEditableCell.textField()** - Text input with optional validation
-- **CKEditableCell.dropdown()** - Single selection with static or dynamic options
-- **CKEditableCell.checkbox()** - Boolean toggle with label
-- **CKEditableCell.switch_()** - Switch toggle with optional variants
-- **CKEditableCell.datePicker()** - Date selection
-
-### Row-Aware Validation Example
+**Custom input.** For full control use the builder constructor:
 
 ```dart
-'courier': CKEditableCell.dropdown(
-  items: const [
-    DropdownMenuItem(value: 'FedEx', child: Text('FedEx')),
-    DropdownMenuItem(value: 'UPS', child: Text('UPS')),
-  ],
-  validator: (value, row) {
-    // Validation depends on another field!
-    if (row['transfer_type'] == 'External' && value?.isEmpty == true) {
-      return 'Required for external transfers';
-    }
-    return null;
+'custom_field': CKEditableCell(
+  builder: (context, value, onChanged, row, isActive, validationError) {
+    return YourCustomWidget(value: value, onChanged: onChanged);
   },
+  validator: (value, row) => null,
 ),
 ```
 
-### For More Information
+**Signatures.** All validators have the type `String? Function(dynamic value, Map<String, dynamic> row)` and return `null` when the value is valid.
 
-- [Editable cells guide and quick reference](editable-cells.md)
-- See the example in [data_table_screen.dart](../../example/lib/screens/data_table_screen.dart) (Section 7)
+| Factory | Parameters |
+| --- | --- |
+| `CKEditableCell.textField` | `hint`, `label`, `maxLines = 1`, `keyboardType`, `validator` |
+| `CKEditableCell.dropdown` | `items` or `itemsBuilder` (one required), `hint`, `label`, `validator` |
+| `CKEditableCell.checkbox` | `label`, `validator` |
+| `CKEditableCell.switch_` | `label`, `variant` (`SwitchVariant.success` / `error`), `validator` |
+| `CKEditableCell.datePicker` | `label`, `firstDate`, `lastDate`, `validator` |
+| `CKEditableCell(builder:, validator:)` | `builder(context, currentValue, onChanged, row, isActive, validationError)` |
+
+Good practice: keep validators pure (do side effects in `onCellValueChanged`), give clear messages, and use dropdowns for constrained choices.
+
+**Migrating from the old API.** `editableColumns: {'name', 'email'}` with `onCellChanged` is deprecated but still works. Replace it with `editableCells` (one `CKEditableCell.textField` per column) and `onCellValueChanged`.
